@@ -1,3 +1,5 @@
+package simse.modelbuilder.rulebuilder;
+
 import java.awt.*;
 import java.awt.event.*;
 
