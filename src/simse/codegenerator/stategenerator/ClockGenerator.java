@@ -6,16 +6,12 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
-import simse.codegenerator.*;
 
-
-public class ClockGenerator implements CodeGeneratorConstants
+public class ClockGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private File directory; // directory to generate into
 
@@ -37,8 +33,6 @@ public class ClockGenerator implements CodeGeneratorConstants
 			FileWriter writer = new FileWriter(clockFile);
 			writer.write("package simse.state;");
 			writer.write(NEWLINE);
-			writer.write("import simse.gui.*;");
-			writer.write(NEWLINE);
 			writer.write("public class Clock");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
@@ -48,8 +42,6 @@ public class ClockGenerator implements CodeGeneratorConstants
 			writer.write("private int time;");
 			writer.write(NEWLINE);
 			writer.write("private boolean stopped;");
-			writer.write(NEWLINE);
-			writer.write("private SimSEGUI gui;");
 			writer.write(NEWLINE);
 
 			// constructor:
@@ -61,11 +53,8 @@ public class ClockGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("stopped = false;");
 			writer.write(NEWLINE);
-			writer.write("gui = null;");
-			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 
 			// methods:
 			// "incrementTime" method:
@@ -77,19 +66,7 @@ public class ClockGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-			writer.write(NEWLINE);
-
-writer.write("public void setGUI(SimSEGUI g)");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("gui = g;");
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-writer.write(NEWLINE);
-
-
+			
 			// "getTime" method:
 			writer.write("public int getTime()");
 			writer.write(NEWLINE);
@@ -99,8 +76,7 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-			writer.write(NEWLINE);
-
+			
 			// "isStopped" method:
 			writer.write("public boolean isStopped()");
 			writer.write(NEWLINE);
@@ -110,8 +86,7 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-			writer.write(NEWLINE);
-
+			
 			// "stop" method:
 			writer.write("public void stop()");
 			writer.write(NEWLINE);
@@ -119,14 +94,11 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("stopped = true;");
 			writer.write(NEWLINE);
-writer.write("gui.forceGUIUpdate();");
-writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-			writer.write(NEWLINE);
-
+			
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.close();
 		}
 		catch (IOException e)

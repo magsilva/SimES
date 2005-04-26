@@ -5,20 +5,17 @@ package simse.codegenerator.logicgenerator;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.codegenerator.logicgenerator.dialoggenerator.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class LogicGenerator implements CodeGeneratorConstants
+public class LogicGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private MiscUpdaterGenerator miscUGen; // generates MiscUpdater component
 	private TriggerCheckerGenerator trigGen; // generates trigger checker component
@@ -39,7 +36,7 @@ public class LogicGenerator implements CodeGeneratorConstants
 		miscUGen = new MiscUpdaterGenerator(directory);
 		trigGen = new TriggerCheckerGenerator(actTypes, directory);
 		destGen = new DestroyerCheckerGenerator(actTypes, directory);
-		menuGen = new MenuInputManagerGenerator(actTypes, objTypes, directory);
+		menuGen = new MenuInputManagerGenerator(actTypes, directory);
 		epsdGen = new EmployeeParticipantSelectionDialogGenerator(actTypes, objTypes, directory);
 		nepsdGen = new NonEmployeeParticipantSelectionDialogGenerator(actTypes, objTypes, directory);
 		psdDriverGen = new ParticipantSelectionDialogsDriverGenerator(actTypes, directory);
@@ -96,7 +93,7 @@ public class LogicGenerator implements CodeGeneratorConstants
 			writer.write("private MenuInputManager menInputMgr;");
 			writer.write(NEWLINE);
 			writer.write("private RuleExecutor ruleEx;");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 
 			// constructor:
 			writer.write("public Logic(State s)");
@@ -108,7 +105,7 @@ public class LogicGenerator implements CodeGeneratorConstants
 			writer.write("updater = new MiscUpdater(state);");
 			writer.write(NEWLINE);
 			writer.write("ruleEx = new RuleExecutor(state);");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.write("trigChecker = new TriggerChecker(state, ruleEx);");
 			writer.write(NEWLINE);
 			writer.write("destChecker = new DestroyerChecker(state, ruleEx, trigChecker);");
@@ -129,7 +126,7 @@ public class LogicGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// getTriggerChecker() method:
 			writer.write("public TriggerChecker getTriggerChecker()");
 			writer.write(NEWLINE);
@@ -138,7 +135,7 @@ public class LogicGenerator implements CodeGeneratorConstants
 			writer.write("return trigChecker;");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 
 			// update() method:
 			writer.write("public void update(JFrame mainGUI)");
@@ -152,7 +149,7 @@ public class LogicGenerator implements CodeGeneratorConstants
 			writer.write("ruleEx.update(mainGUI, RuleExecutor.UPDATE_ALL_CONTINUOUS, null, null);");
 			writer.write(NEWLINE);
 			writer.write("destChecker.update(false, mainGUI);");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 

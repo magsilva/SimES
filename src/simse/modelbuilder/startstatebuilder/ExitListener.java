@@ -1,5 +1,3 @@
-package simse.modelbuilder.startstatebuilder;
-
 import java.awt.*;
 import java.awt.event.*;
 

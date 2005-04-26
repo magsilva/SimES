@@ -6,21 +6,15 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
-import simse.codegenerator.*;
 
-
-public class LogoPanelGenerator implements CodeGeneratorConstants
+public class LogoPanelGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	private String imageURL = "/simse/gui/icons/"; // location of images directory
-	*/
-
 
 	private File directory; // directory to save generated code into
-
+	private String imageURL = "/simse/gui/icons/"; // location of images directory
 
 	public LogoPanelGenerator(File dir)
 	{
@@ -67,7 +61,7 @@ public class LogoPanelGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 
 			// member variables:
-			writer.write("private String path = \"" + imagesDirectory + "layout/\";");
+			writer.write("private String path = \"" + imageURL + "layout/\";");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("private TabPanel tabPane;");
@@ -83,7 +77,7 @@ public class LogoPanelGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("private JButton toolButton;");
 			writer.write(NEWLINE);
-			writer.write("private JButton aboutButton;");
+			writer.write("private JPanel aboutPanel;");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("private int selectedTabIndex = -1;");
@@ -213,21 +207,15 @@ public class LogoPanelGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
-			writer.write("aboutButton = new JButton();");
-
-writer.write(NEWLINE);
-writer.write("aboutButton.setBackground(new Color(0,0,0,0));");
-writer.write(NEWLINE);
-writer.write("aboutButton.setOpaque(false);");
-writer.write(NEWLINE);
+			writer.write("aboutPanel = new JPanel();");
 			writer.write(NEWLINE);
-			writer.write("aboutButton.setOpaque(false);");
+			writer.write("aboutPanel.setOpaque(false);");
 			writer.write(NEWLINE);
-			writer.write("aboutButton.setMinimumSize(new Dimension(188,88));");
+			writer.write("aboutPanel.setMinimumSize(new Dimension(188,88));");
 			writer.write(NEWLINE);
-			writer.write("aboutButton.setPreferredSize(new Dimension(188,88));");
+			writer.write("aboutPanel.setPreferredSize(new Dimension(188,88));");
 			writer.write(NEWLINE);
-			writer.write("addButton(aboutButton,0,0,1,5, 0,1);");
+			writer.write("addPanel(aboutPanel,0,0,1,5, 0,1);");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("// spacers to get the angled tab effect:");
@@ -302,6 +290,28 @@ writer.write(NEWLINE);
 			writer.write("gbl.setConstraints(jb, gbc);");
 			writer.write(NEWLINE);
 			writer.write("add(jb);");
+			writer.write(NEWLINE);
+			writer.write(CLOSED_BRACK);
+			writer.write(NEWLINE);
+			writer.write(NEWLINE);
+			writer.write(NEWLINE);
+			
+			// addPanel function:
+			writer.write("public void addPanel(JPanel jp, int x, int y, int rowspan, int colspan, double wx, double wy)");
+			writer.write(NEWLINE);
+			writer.write(OPEN_BRACK);
+			writer.write(NEWLINE);
+			writer.write("GridBagConstraints gbc = new GridBagConstraints(x,y,rowspan,colspan,wx,wy,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(1,0,1,0),0,0);");
+			writer.write(NEWLINE);
+			writer.write("jp.setBorder(null);");
+			writer.write(NEWLINE);
+			writer.write("jp.addMouseListener(this);");
+			writer.write(NEWLINE);
+			writer.write("jp.setOpaque(false);");
+			writer.write(NEWLINE);
+			writer.write("gbl.setConstraints(jp, gbc);");
+			writer.write(NEWLINE);
+			writer.write("add(jp);");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
@@ -403,7 +413,7 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-			writer.write("else if (source.equals(aboutButton))");
+			writer.write("else if (source.equals(aboutPanel))");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);

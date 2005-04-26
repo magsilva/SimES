@@ -6,19 +6,15 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
-import simse.codegenerator.*;
 
-public class ClockPanelGenerator implements CodeGeneratorConstants
+public class ClockPanelGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	private String imageDirURL = "/simse/gui/icons/"; // location of images directory
-	*/
 
 	private File directory; // directory to save generated code into
-
+	private String imageDirURL = "/simse/gui/icons/"; // location of images directory
 
 	public ClockPanelGenerator(File dir)
 	{
@@ -99,13 +95,13 @@ public class ClockPanelGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("private static ImageIcon icoNextEvent = new ImageIcon(ImageLoader.getImageFromURL(\""
-				 + imagesDirectory + "layout/btnNextEvent.gif\"));");
+				 + imageDirURL + "layout/btnNextEvent.gif\"));");
 			writer.write(NEWLINE);
 			writer.write("private static ImageIcon icoAdvClock = new ImageIcon(ImageLoader.getImageFromURL(\""
-				 + imagesDirectory + "layout/btnAdvClock.gif\"));");
+				 + imageDirURL + "layout/btnAdvClock.gif\"));");
 			writer.write(NEWLINE);
 			writer.write("private static ImageIcon icoStopClock = new ImageIcon(ImageLoader.getImageFromURL(\""
-				 + imagesDirectory + "layout/btnStopClock.gif\"));");
+				 + imageDirURL + "layout/btnStopClock.gif\"));");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 
@@ -218,7 +214,6 @@ public class ClockPanelGenerator implements CodeGeneratorConstants
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
 			writer.write("btnAdvClock.setIcon(icoStopClock);");
-			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
@@ -358,7 +353,7 @@ public class ClockPanelGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
-			writer.write("Image img = ImageLoader.getImageFromURL(\"" + imagesDirectory + "layout/clock.gif\");");
+			writer.write("Image img = ImageLoader.getImageFromURL(\"" + imageDirURL + "layout/clock.gif\");");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("g.setColor(Color.DARK_GRAY);");
@@ -446,7 +441,7 @@ public class ClockPanelGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("int digit = Character.digit(s.charAt(i),10);");
 			writer.write(NEWLINE);
-			writer.write("Image img = ImageLoader.getImageFromURL(\"" + imagesDirectory + "layout/n\" + digit + \".gif\");");
+			writer.write("Image img = ImageLoader.getImageFromURL(\"" + imageDirURL + "layout/n\" + digit + \".gif\");");
 			writer.write(NEWLINE);
 			writer.write("list.add(img);");
 			writer.write(NEWLINE);

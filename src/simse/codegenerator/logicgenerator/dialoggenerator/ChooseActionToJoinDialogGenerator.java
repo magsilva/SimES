@@ -4,32 +4,29 @@ package simse.codegenerator.logicgenerator.dialoggenerator;
 
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
+public class ChooseActionToJoinDialogGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
-
+	
 	private File directory; // directory to generate into
 	private File catjdFile; // file to generate
 	private DefinedActionTypes actTypes; // holds all of the defined action types from an ssa file
-
+	
 	public ChooseActionToJoinDialogGenerator(DefinedActionTypes acts, File dir)
 	{
 		directory = dir;
 		actTypes = acts;
 	}
-
-
+	
+	
 	public void generate()
 	{
 		try
@@ -83,7 +80,7 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("private String menuText;");
 			writer.write(NEWLINE);
-
+			
 			// constructor:
 			writer.write("public ChooseActionToJoinDialog(JFrame owner, Vector acts, Employee e, State s, String menText)");
 			writer.write(NEWLINE);
@@ -115,7 +112,7 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("simse.adts.actions.Action tempAct = (simse.adts.actions.Action)actions.elementAt(0);");
 			writer.write(NEWLINE);
-
+			
 			// make a Vector of all the action types with user triggers:
 			Vector userTrigActs = new Vector();
 			Vector allActs = actTypes.getAllActionTypes();
@@ -136,7 +133,7 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 			// go through each action type and generate code for it:
 			for(int j=0; j<userTrigActs.size(); j++)
 			{
-				ActionType act = (ActionType)userTrigActs.elementAt(j);
+				ActionType act = (ActionType)userTrigActs.elementAt(j);			
 				if(j > 0) // not on first element
 				{
 					writer.write("else ");
@@ -156,7 +153,7 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			for(int j=0; j<userTrigActs.size(); j++)
 			{
-				ActionType act = (ActionType)userTrigActs.elementAt(j);
+				ActionType act = (ActionType)userTrigActs.elementAt(j);			
 				if(j > 0) // not on first element
 				{
 					writer.write("else ");
@@ -164,16 +161,16 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 				writer.write("if(tempAct instanceof " + getUpperCaseLeading(act.getName()) + "Action)");
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);			
 				writer.write("for(int i=0; i<actions.size(); i++)");
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);	
 				writer.write(OPEN_BRACK);
-				writer.write(NEWLINE);
-				writer.write(getUpperCaseLeading(act.getName()) + "Action act = (" + getUpperCaseLeading(act.getName())
+				writer.write(NEWLINE);	
+				writer.write(getUpperCaseLeading(act.getName()) + "Action act = (" + getUpperCaseLeading(act.getName()) 
 					+ "Action)actions.elementAt(i);");
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);	
 				writer.write("StringBuffer label = new StringBuffer();");
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);	
 				// go through all participants:
 				Vector parts = act.getAllParticipants();
 				for(int k=0; k<parts.size(); k++)
@@ -181,28 +178,28 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 					if(k > 0) // not on first element
 					{
 						writer.write("label.append(\"; \");");
-						writer.write(NEWLINE);
+						writer.write(NEWLINE);	
 					}
 					ActionTypeParticipant tempPart = (ActionTypeParticipant)parts.elementAt(k);
 					writer.write("label.append(\"" + tempPart.getName() + "(s); \");");
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);	
 					writer.write("Vector all" + tempPart.getName() + "s = act.getAll" + tempPart.getName() + "s();");
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);	
 					writer.write("for(int j=0; j<all" + tempPart.getName() + "s.size(); j++)");
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);	
 					writer.write(OPEN_BRACK);
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);	
 					writer.write("if(j > 0)");
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);	
 					writer.write(OPEN_BRACK);
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);	
 					writer.write("label.append(\", \");");
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);	
 					writer.write(CLOSED_BRACK);
 					writer.write(NEWLINE);
-					writer.write(SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType()) + " a = ("
+					writer.write(SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType()) + " a = (" 
 						+ SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType()) + ")all" + tempPart.getName() + "s.elementAt(j);");
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);	
 					// go through all allowable SimSEObjectTypes for this participant:
 					Vector ssObjTypes = tempPart.getAllSimSEObjectTypes();
 					for(int m=0; m<ssObjTypes.size(); m++)
@@ -213,36 +210,36 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 							writer.write("else ");
 						}
 						writer.write("if(a instanceof " + getUpperCaseLeading(tempType.getName()) + ")");
-						writer.write(NEWLINE);
+						writer.write(NEWLINE);	
 						writer.write(OPEN_BRACK);
-						writer.write(NEWLINE);
+						writer.write(NEWLINE);	
 						writer.write("label.append(\"" + tempType.getName() + "(\" + ((" + getUpperCaseLeading(tempType.getName()) + ")a).get"
-							+ getUpperCaseLeading(tempType.getKey().getName()) + "() + \")\");");
-						writer.write(NEWLINE);
+							+ tempType.getKey().getName() + "() + \")\");");
+						writer.write(NEWLINE);	
 						writer.write(CLOSED_BRACK);
-						writer.write(NEWLINE);
-					}
+						writer.write(NEWLINE);	
+					}					
 					writer.write(CLOSED_BRACK);
-					writer.write(NEWLINE);
-				}
+					writer.write(NEWLINE);	
+				}				
 				writer.write("JPanel tempPane = new JPanel(new BorderLayout());");
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);	
 				writer.write("JRadioButton tempRadioButton = new JRadioButton(label.toString());");
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);	
 				writer.write("radioButtonGroup.add(tempRadioButton);");
 				writer.write(NEWLINE);
 				writer.write("tempPane.add(tempRadioButton, BorderLayout.WEST);");
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);	
 				writer.write("radioButtons.add(tempRadioButton);");
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);	
 				writer.write("middlePane.add(tempPane);");
 				writer.write(NEWLINE);
 				writer.write(CLOSED_BRACK);
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);					
 				writer.write(CLOSED_BRACK);
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);	
 			}
-
+			
 			// bottom pane:
 			writer.write("JPanel bottomPane = new JPanel();");
 			writer.write(NEWLINE);
@@ -258,7 +255,7 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("bottomPane.add(cancelButton);");
 			writer.write(NEWLINE);
-
+			
 			// add panes to main pane:
 			writer.write("mainPane.add(topPane);");
 			writer.write(NEWLINE);
@@ -266,7 +263,7 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("mainPane.add(bottomPane);");
 			writer.write(NEWLINE);
-
+			
 			// Set main window frame properties:
 			writer.write("setContentPane(mainPane);");
 			writer.write(NEWLINE);
@@ -303,8 +300,8 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
-
+			writer.write(NEWLINE);			
+			
 			// actionPerformed function:
 			writer.write("public void actionPerformed(ActionEvent evt)");
 			writer.write(NEWLINE);
@@ -369,10 +366,10 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
 			writer.write("simse.adts.actions.Action tempAct = (simse.adts.actions.Action)actions.elementAt(i);");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);	
 			writer.write("Vector participantNames = new Vector();");
-			writer.write(NEWLINE);
-
+			writer.write(NEWLINE);	
+			
 			// go through all action types w/ user triggers:
 			for(int i=0; i<userTrigActs.size(); i++)
 			{
@@ -385,7 +382,7 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
-
+				
 				// go through all employee participants:
 				Vector allParts = tempAct.getAllParticipants();
 				for(int j=0; j<allParts.size(); j++)
@@ -408,7 +405,7 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 						writer.write(NEWLINE);
 						writer.write(OPEN_BRACK);
 						writer.write(NEWLINE);
-
+						
 						// collect all the user triggers for this action:
 						Vector userTrigsTemp = new Vector();
 						Vector allTriggers = tempAct.getAllTriggers();
@@ -419,8 +416,8 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 							{
 								userTrigsTemp.add(tempTrig);
 							}
-						}
-
+						}		
+						
 						// go through all of the user triggers:
 						for(int k=0; k<userTrigsTemp.size(); k++)
 						{
@@ -433,7 +430,7 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 							writer.write(NEWLINE);
 							writer.write(OPEN_BRACK);
 							writer.write(NEWLINE);
-
+							
 							// go through all allowable types:
 							Vector types = part.getAllSimSEObjectTypes();
 							for(int m=0; m<types.size(); m++)
@@ -444,16 +441,16 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 									writer.write("else ");
 								}
 								writer.write("if((emp instanceof " + getUpperCaseLeading(type.getName()) + ")");
-
+								
 								// go through all attribute constraints:
-								ActionTypeParticipantAttributeConstraint[] attConstraints =
+								ActionTypeParticipantAttributeConstraint[] attConstraints = 
 									userTrig.getParticipantTrigger(part.getName()).getConstraint(type.getName()).getAllAttributeConstraints();
 								for(int n=0; n<attConstraints.length; n++)
 								{
 									ActionTypeParticipantAttributeConstraint attConst = attConstraints[n];
 									if(attConst.isConstrained())
 									{
-										writer.write(" && (((" + getUpperCaseLeading(type.getName()) + ")emp).get"
+										writer.write(" && (((" + getUpperCaseLeading(type.getName()) + ")emp).get" 
 											+ attConst.getAttribute().getName() + "() ");
 										if(attConst.getAttribute().getType() == AttributeTypes.STRING)
 										{
@@ -508,26 +505,26 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);	
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
-
+			writer.write(NEWLINE);	
+			
 			// onlyOneChoice function:
 			writer.write("private void onlyOneChoice(JFrame owner)");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);	
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
 			writer.write("for(int i=0; i<radioButtons.size(); i++)");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);	
 			writer.write(OPEN_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);	
 			writer.write("JRadioButton rButt = (JRadioButton)radioButtons.elementAt(i);");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);	
 			writer.write("simse.adts.actions.Action tempAct = (simse.adts.actions.Action)actions.elementAt(i);");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);	
 			writer.write("Vector participantNames = new Vector();");
-			writer.write(NEWLINE);
-
+			writer.write(NEWLINE);	
+			
 			// go through all action types w/ user triggers:
 			for(int i=0; i<userTrigActs.size(); i++)
 			{
@@ -540,7 +537,7 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
-
+				
 				// go through all employee participants:
 				Vector allParts = tempAct.getAllParticipants();
 				for(int j=0; j<allParts.size(); j++)
@@ -563,7 +560,7 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 						writer.write(NEWLINE);
 						writer.write(OPEN_BRACK);
 						writer.write(NEWLINE);
-
+						
 						// collect all the user triggers for this action:
 						Vector userTrigsTemp = new Vector();
 						Vector allTriggers = tempAct.getAllTriggers();
@@ -574,8 +571,8 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 							{
 								userTrigsTemp.add(tempTrig);
 							}
-						}
-
+						}		
+						
 						// go through all of the user triggers:
 						for(int k=0; k<userTrigsTemp.size(); k++)
 						{
@@ -587,8 +584,8 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 							writer.write("if(menuText.equals(\"" + userTrig.getMenuText() + "\"))");
 							writer.write(NEWLINE);
 							writer.write(OPEN_BRACK);
-							writer.write(NEWLINE);
-
+							writer.write(NEWLINE);	
+							
 							// go through all allowable types:
 							Vector types = part.getAllSimSEObjectTypes();
 							for(int m=0; m<types.size(); m++)
@@ -598,17 +595,17 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 								{
 									writer.write("else ");
 								}
-								writer.write("if((emp instanceof " + getUpperCaseLeading(type.getName()) + ")");
-
+								writer.write("if((emp instanceof " + getUpperCaseLeading(type.getName()) + ")");								
+								
 								// go through all attribute constraints:
-								ActionTypeParticipantAttributeConstraint[] attConstraints =
+								ActionTypeParticipantAttributeConstraint[] attConstraints = 
 									userTrig.getParticipantTrigger(part.getName()).getConstraint(type.getName()).getAllAttributeConstraints();
 								for(int n=0; n<attConstraints.length; n++)
 								{
 									ActionTypeParticipantAttributeConstraint attConst = attConstraints[n];
 									if(attConst.isConstrained())
 									{
-										writer.write(" && (((" + getUpperCaseLeading(type.getName()) + ")emp).get"
+										writer.write(" && (((" + getUpperCaseLeading(type.getName()) + ")emp).get" 
 											+ attConst.getAttribute().getName() + "() ");
 										if(attConst.getAttribute().getType() == AttributeTypes.STRING)
 										{
@@ -639,7 +636,7 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 								writer.write(NEWLINE);
 							}
 							writer.write(CLOSED_BRACK);
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);							
 						}
 						writer.write(CLOSED_BRACK);
 						writer.write(NEWLINE);
@@ -659,8 +656,8 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
-
+			writer.write(NEWLINE);	
+			
 			writer.close();
 		}
 		catch (IOException e)
@@ -669,8 +666,8 @@ public class ChooseActionToJoinDialogGenerator implements CodeGeneratorConstants
 				JOptionPane.WARNING_MESSAGE);
 		}
 	}
-
-
+	
+	
 	private String getUpperCaseLeading(String s)
 	{
 		return (s.substring(0, 1).toUpperCase() + s.substring(1));

@@ -6,15 +6,12 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
-import simse.codegenerator.*;
 
-public class DisplayedEmployeeGenerator implements CodeGeneratorConstants
+public class DisplayedEmployeeGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private File directory; // directory to save generated code into
 
@@ -38,7 +35,7 @@ public class DisplayedEmployeeGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("import simse.adts.objects.*;");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.write(NEWLINE);
 			writer.write("import java.awt.event.*;");
 			writer.write(NEWLINE);
@@ -49,7 +46,7 @@ public class DisplayedEmployeeGenerator implements CodeGeneratorConstants
 			writer.write("public class DisplayedEmployee");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);				
 
 			// member variables:
 			writer.write("private Employee userObject;");
@@ -75,14 +72,14 @@ public class DisplayedEmployeeGenerator implements CodeGeneratorConstants
 			writer.write("private JMenuItem userMenu;");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			// constructor:
 			writer.write("public DisplayedEmployee(Employee emp, String il, ActionListener a, boolean d, boolean ra, int x, int y)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
 			writer.write("userObject = emp;");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.write("userIconLocation = il;");
 			writer.write(NEWLINE);
 			writer.write("if(userIconLocation != null)");
@@ -101,8 +98,8 @@ public class DisplayedEmployeeGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-			writer.write(NEWLINE);
-
+			writer.write(NEWLINE);		
+			
 			// getUserIcon function:
 			writer.write("public Image getUserIcon()");
 			writer.write(NEWLINE);
@@ -113,7 +110,7 @@ public class DisplayedEmployeeGenerator implements CodeGeneratorConstants
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			// setUserIcon function:
 			writer.write("public void setUserIcon(String imageLocation)");
 			writer.write(NEWLINE);
@@ -125,7 +122,7 @@ public class DisplayedEmployeeGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);					
 
 			// getXLocation function:
 			writer.write("public int getXLocation()");
@@ -170,7 +167,7 @@ public class DisplayedEmployeeGenerator implements CodeGeneratorConstants
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			// setActivated function:
 			writer.write("public void setActivated(boolean a)");
 			writer.write(NEWLINE);
@@ -181,7 +178,7 @@ public class DisplayedEmployeeGenerator implements CodeGeneratorConstants
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			// setDisplayed function:
 			writer.write("public void setDisplayed(boolean b)");
 			writer.write(NEWLINE);
@@ -192,7 +189,7 @@ public class DisplayedEmployeeGenerator implements CodeGeneratorConstants
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			// setXYLocations function:
 			writer.write("public void setXYLocations(int x, int y)");
 			writer.write(NEWLINE);
@@ -201,11 +198,11 @@ public class DisplayedEmployeeGenerator implements CodeGeneratorConstants
 			writer.write("xLocation = x;");
 			writer.write(NEWLINE);
 			writer.write("yLocation = y;");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.write(CLOSED_BRACK);
+			writer.write(NEWLINE);	
 			writer.write(NEWLINE);
-			writer.write(NEWLINE);
-
+			
 			// checkXYLocations function:
 			writer.write("public boolean checkXYLocations(int x, int y)");
 			writer.write(NEWLINE);
@@ -216,7 +213,7 @@ public class DisplayedEmployeeGenerator implements CodeGeneratorConstants
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			// getEmployee function:
 			writer.write("// returns the Employee object associated with this DisplayedEmployee");
 			writer.write(NEWLINE);
@@ -227,9 +224,9 @@ public class DisplayedEmployeeGenerator implements CodeGeneratorConstants
 			writer.write("return userObject;");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
-
-			writer.write(CLOSED_BRACK);
+			writer.write(NEWLINE);			
+			
+			writer.write(CLOSED_BRACK);			
 			writer.close();
 		}
 		catch (IOException e)

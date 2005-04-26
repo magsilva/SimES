@@ -4,33 +4,30 @@ package simse.codegenerator.stategenerator;
 
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class ADTGenerator implements CodeGeneratorConstants
+public class ADTGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
-
+	
 	private File directory; // directory to save generated code into
 	private DefinedObjectTypes objTypes; // holds all of the defined object types from an sso file
 	private DefinedActionTypes actTypes; // holds all of the defined action types from an ssa file
-
+	
 	public ADTGenerator(DefinedObjectTypes dots, DefinedActionTypes dats, File dir)
 	{
 		objTypes = dots;
 		actTypes = dats;
 		directory = dir;
 	}
-
-
+	
+	
 	public void generate()
 	{
 		Vector objs = objTypes.getAllObjectTypes();
@@ -59,12 +56,12 @@ public class ADTGenerator implements CodeGeneratorConstants
 			JOptionPane.showMessageDialog(null, ("Error writing file SSObject.java"), "File IO Error",
 				JOptionPane.WARNING_MESSAGE);
 		}
-
+		
 		// generate abstract object classes:
 		generateAbstractObjectClass(SimSEObjectTypeTypes.getText(SimSEObjectTypeTypes.ARTIFACT));
 		generateAbstractObjectClass(SimSEObjectTypeTypes.getText(SimSEObjectTypeTypes.TOOL));
 		generateAbstractObjectClass(SimSEObjectTypeTypes.getText(SimSEObjectTypeTypes.PROJECT));
-
+		
 		// generate :
 		File empClass = new File(directory, ("simse\\adts\\objects\\Employee.java"));
 		if(empClass.exists())
@@ -94,13 +91,13 @@ public class ADTGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("menu = new Vector();");
 			writer.write(NEWLINE);
-			writer.write("clearMenu();");
+			writer.write("menu.add(\"Everyone stop what you're doing\");");
 			writer.write(NEWLINE);
 			writer.write("overheadText = new String();");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// "getMenu" function:
 			writer.write("public Vector getMenu()");
 			writer.write(NEWLINE);
@@ -110,7 +107,7 @@ public class ADTGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// "clearMenu" function:
 			writer.write("public void clearMenu()");
 			writer.write(NEWLINE);
@@ -122,7 +119,7 @@ public class ADTGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// "addMenuItem" function:
 			writer.write("public boolean addMenuItem(String s)");
 			writer.write(NEWLINE);
@@ -162,7 +159,7 @@ public class ADTGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// "removeMenuItem" function:
 			writer.write("public boolean removeMenuItem(String s)");
 			writer.write(NEWLINE);
@@ -185,12 +182,12 @@ public class ADTGenerator implements CodeGeneratorConstants
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.write("return false;");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// "getOverheadText" function:
 			writer.write("public String getOverheadText()");
 			writer.write(NEWLINE);
@@ -200,7 +197,7 @@ public class ADTGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// "setOverheadText" function:
 			writer.write("public void setOverheadText(String s)");
 			writer.write(NEWLINE);
@@ -221,7 +218,7 @@ public class ADTGenerator implements CodeGeneratorConstants
 			writer.write("overheadText = s;");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);		
 			writer.write("else if(overheadText.indexOf(s) == -1) // overhead text doesn't already contain this string");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
@@ -243,8 +240,8 @@ public class ADTGenerator implements CodeGeneratorConstants
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
-
+			writer.write(NEWLINE);		
+			
 			// "clearOverheadText" function:
 			writer.write("public void clearOverheadText()");
 			writer.write(NEWLINE);
@@ -254,28 +251,6 @@ public class ADTGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
-
-if (CodeGenerator.allowHireFire)
-{
-			// setHired function - this function will be overridden by subclasses
-			writer.write("// This function will be overridden by subclasses");
-			writer.write(NEWLINE);
-			writer.write("public void setHired(boolean t)");
-			writer.write(OPEN_BRACK);
-			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
-
-			// getHired function - this function will be overridden by subclasses
-			writer.write("// This function will be overridden by subclasses");
-			writer.write(NEWLINE);
-			writer.write("public boolean getHired()");
-			writer.write(OPEN_BRACK);
-			writer.write("return true;");
-			writer.write(CLOSED_BRACK);
-}
-
-
 			writer.write(CLOSED_BRACK);
 			writer.close();
 		}
@@ -284,7 +259,7 @@ if (CodeGenerator.allowHireFire)
 			JOptionPane.showMessageDialog(null, ("Error writing file " + empClass.getPath() + ": " + e.toString()), "File IO Error",
 				JOptionPane.WARNING_MESSAGE);
 		}
-
+		
 		// generate Customer class:
 		File custClass = new File(directory, ("simse\\adts\\objects\\Customer.java"));
 		if(custClass.exists())
@@ -357,7 +332,7 @@ if (CodeGenerator.allowHireFire)
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			writer.write(CLOSED_BRACK);
 			writer.close();
 		}
@@ -366,14 +341,14 @@ if (CodeGenerator.allowHireFire)
 			JOptionPane.showMessageDialog(null, ("Error writing file " + custClass.getPath() + ": " + e.toString()), "File IO Error",
 				JOptionPane.WARNING_MESSAGE);
 		}
-
-
+		
+		
 		// go through each object and generate code for it:
 		for(int i=0; i<objs.size(); i++)
 		{
 			generateObjectADT((SimSEObjectType)objs.elementAt(i));
 		}
-
+		
 		// generate Action class:
 		File actClass = new File(directory, ("simse\\adts\\actions\\Action.java"));
 		if(actClass.exists())
@@ -424,14 +399,14 @@ if (CodeGenerator.allowHireFire)
 			writer.write("public abstract Vector getAllInactiveParticipants();");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.close();
+			writer.close();			
 		}
 		catch (IOException e)
 		{
 			JOptionPane.showMessageDialog(null, ("Error writing file " + actClass.getPath()), "File IO Error",
 				JOptionPane.WARNING_MESSAGE);
 		}
-
+		
 		// go through each action and generate code for it:
 		Vector acts = actTypes.getAllActionTypes();
 		for(int i=0; i<acts.size(); i++)
@@ -439,8 +414,8 @@ if (CodeGenerator.allowHireFire)
 			generateActionADT((ActionType)acts.elementAt(i));
 		}
 	}
-
-
+	
+	
 	private void generateAbstractObjectClass(String className)
 	{
 		File absClass = new File(directory, ("simse\\adts\\objects\\" + className + ".java"));
@@ -468,8 +443,8 @@ if (CodeGenerator.allowHireFire)
 				JOptionPane.WARNING_MESSAGE);
 		}
 	}
-
-
+	
+	
 	private void generateObjectADT(SimSEObjectType objType)
 	{
 		File adtFile = new File(directory, ("simse\\adts\\objects\\" + getUpperCaseLeading(objType.getName()) + ".java"));
@@ -482,33 +457,27 @@ if (CodeGenerator.allowHireFire)
 			FileWriter writer = new FileWriter(adtFile);
 			writer.write("package simse.adts.objects;");
 			writer.write(NEWLINE);
-
-if (objType.getType() == SimSEObjectTypeTypes.EMPLOYEE && CodeGenerator.allowHireFire)
-{
-	writer.write("import java.util.Vector;");
-	writer.write(NEWLINE);
-}
 			writer.write("public class " + getUpperCaseLeading(objType.getName()) + " extends "
 				+ SimSEObjectTypeTypes.getText(objType.getType()));
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// member variables/attributes:
 			Vector attributes = objType.getAllAttributes();
 			for(int i=0; i<attributes.size(); i++)
 			{
 				Attribute att = (Attribute)attributes.elementAt(i);
 				writer.write("private ");
-
+				
 				// type:
 				writer.write(getTypeAsString(att) + " ");
-
+				
 				// variable name:
 				writer.write(att.getName().toLowerCase() + ";");
 				writer.write(NEWLINE);
 			}
-
+			
 			// constructor:
 			writer.write("public " + getUpperCaseLeading(objType.getName()) + "(");
 			for(int i=0; i<attributes.size(); i++)
@@ -532,12 +501,12 @@ if (objType.getType() == SimSEObjectTypeTypes.EMPLOYEE && CodeGenerator.allowHir
 			for(int i=0; i<attributes.size(); i++)
 			{
 				Attribute att = (Attribute)attributes.elementAt(i);
-				writer.write("set" + getUpperCaseLeading(att.getName()) + "(" + (att.getName().substring(0, 1).toLowerCase() + i) + ");");
+				writer.write("set" + att.getName() + "(" + (att.getName().substring(0, 1).toLowerCase() + i) + ");");
 				writer.write(NEWLINE);
 			}
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// get and set functions:
 			for(int i=0; i<attributes.size(); i++)
 			{
@@ -545,7 +514,7 @@ if (objType.getType() == SimSEObjectTypeTypes.EMPLOYEE && CodeGenerator.allowHir
 				// "get" method:
 				writer.write("public ");
 				writer.write(getTypeAsString(att) + " ");
-				writer.write("get" + getUpperCaseLeading(att.getName()) + "()");
+				writer.write("get" + att.getName() + "()");
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
@@ -554,7 +523,7 @@ if (objType.getType() == SimSEObjectTypeTypes.EMPLOYEE && CodeGenerator.allowHir
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
 				// "set" method:
-				writer.write("public void set" + getUpperCaseLeading(att.getName()) + "(");
+				writer.write("public void set" + att.getName() + "(");
 				writer.write(getTypeAsString(att) + " a)");
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
@@ -631,60 +600,6 @@ if (objType.getType() == SimSEObjectTypeTypes.EMPLOYEE && CodeGenerator.allowHir
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
 			}
-
-
-
-if(objType.getType() == SimSEObjectTypeTypes.EMPLOYEE && CodeGenerator.allowHireFire)
-{
-Vector v =  objType.getAllAttributes();
-Attribute keyAtt = null;
-
-for (int i = 0; i < v.size(); i++)
-{
-	Attribute att = (Attribute)v.elementAt(i);
-
-	if (att.isKey())
-		keyAtt = att;
-}
-
-
-
-writer.write("public Vector getMenu()");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("Vector v = new Vector();");
-writer.write(NEWLINE);
-writer.write("v.addAll(super.getMenu());");
-writer.write(NEWLINE);
-writer.write("if (getHired())");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("v.add(\"Fire Employee - \" + get"+ getUpperCaseLeading(keyAtt.getName()) + "());");
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-writer.write("else");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("v = new Vector();");
-writer.write(NEWLINE);
-writer.write("v.add(\"Hire Employee - \" + get"+ getUpperCaseLeading(keyAtt.getName()) + "());");
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-writer.write("return v;");
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-
-}
-
-
-
-
 			writer.write(CLOSED_BRACK);
 			writer.close();
 		}
@@ -694,7 +609,7 @@ writer.write(NEWLINE);
 				JOptionPane.WARNING_MESSAGE);
 		}
 	}
-
+	
 	private String getTypeAsString(Attribute att)
 	{
 		if(att.getType() == AttributeTypes.INTEGER)
@@ -714,8 +629,8 @@ writer.write(NEWLINE);
 			return "String";
 		}
 	}
-
-
+	
+	
 	private void generateActionADT(ActionType actType)
 	{
 		File adtFile = new File(directory, ("simse\\adts\\actions\\" + getUpperCaseLeading(actType.getName()) + "Action.java"));
@@ -736,7 +651,7 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// member variables/attributes:
 			Vector participants = actType.getAllParticipants();
 			for(int i=0; i<participants.size(); i++)
@@ -745,7 +660,7 @@ writer.write(NEWLINE);
 				writer.write("private Hashtable " + tempPart.getName().toLowerCase() + "s;");
 				writer.write(NEWLINE);
 			}
-
+			
 			boolean hasTimedDestroyer = false;
 			Vector allDests = actType.getAllDestroyers();
 			for(int i=0; i<allDests.size(); i++)
@@ -757,14 +672,14 @@ writer.write(NEWLINE);
 					break;
 				}
 			}
-
+			
 			if(hasTimedDestroyer) // timed destroyer
 			{
 				// give it a timeToLive member variable:
 				writer.write("private int timeToLive;");
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);			
 			}
-
+			
 			// constructor:
 			writer.write("public " + getUpperCaseLeading(actType.getName()) + "Action()");
 			writer.write(NEWLINE);
@@ -785,14 +700,14 @@ writer.write(NEWLINE);
 					if(tempDest instanceof TimedActionTypeDestroyer)
 					{
 						writer.write("timeToLive = " + ((TimedActionTypeDestroyer)tempDest).getTime() + ";");
-						writer.write(NEWLINE);
+						writer.write(NEWLINE);			
 						break;
 					}
 				}
-			}
+			}			
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// methods:
 			if(hasTimedDestroyer) // timed destroyer
 			{
@@ -805,7 +720,7 @@ writer.write(NEWLINE);
 				writer.write(NEWLINE);
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
-
+				
 				// "decrementTimeToLive" method:
 				writer.write("public void decrementTimeToLive()");
 				writer.write(NEWLINE);
@@ -824,7 +739,7 @@ writer.write(NEWLINE);
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
 			}
-
+			
 			// "getAllParticipants" method:
 			writer.write("public Vector getAllParticipants()");
 			writer.write(NEWLINE);
@@ -842,7 +757,7 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// "getAllActiveParticipants" method:
 			writer.write("public Vector getAllActiveParticipants()");
 			writer.write(NEWLINE);
@@ -860,7 +775,7 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// "getAllInactiveParticipants" method:
 			writer.write("public Vector getAllInactiveParticipants()");
 			writer.write(NEWLINE);
@@ -878,11 +793,11 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			for(int i=0; i<participants.size(); i++)
 			{
 				ActionTypeParticipant tempPart = (ActionTypeParticipant)participants.elementAt(i);
-
+				
 				// "getAll[Participant]s" method:
 				writer.write("public Vector getAll" + tempPart.getName() + "s()");
 				writer.write(NEWLINE);
@@ -904,7 +819,7 @@ writer.write(NEWLINE);
 				writer.write(NEWLINE);
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
-
+				
 				// "getAllActive[Participant]s" method:
 				writer.write("public Vector getAllActive" + tempPart.getName() + "s()");
 				writer.write(NEWLINE);
@@ -935,7 +850,7 @@ writer.write(NEWLINE);
 				writer.write(NEWLINE);
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
-
+				
 				// "getAllInactive[Participant]s" method:
 				writer.write("public Vector getAllInactive" + tempPart.getName() + "s()");
 				writer.write(NEWLINE);
@@ -966,27 +881,13 @@ writer.write(NEWLINE);
 				writer.write(NEWLINE);
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
-
+				
 				// "add" method:
 				writer.write("public boolean add" + tempPart.getName() + "("
 					+ SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType()) + " a)");
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
-
-if (CodeGenerator.allowHireFire)
-{
-	// do not allow nonHired employees to be part of any actions
-	writer.write("if (a instanceof Employee && !a.getHired())");
-	writer.write(NEWLINE);
-	writer.write(OPEN_BRACK);
-	writer.write(NEWLINE);
-	writer.write("return false;");
-	writer.write(NEWLINE);
-	writer.write(CLOSED_BRACK);
-	writer.write(NEWLINE);
-}
-
 				writer.write("if((" + tempPart.getName().toLowerCase() + "s.containsKey(a))");
 				Vector types = tempPart.getAllSimSEObjectTypes();
 				if(types.size() > 0)
@@ -1035,7 +936,7 @@ if (CodeGenerator.allowHireFire)
 				writer.write(NEWLINE);
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
-
+				
 				// "remove" method:
 				writer.write("public boolean remove" + tempPart.getName() + "("
 					+ SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType()) + " a)");
@@ -1056,7 +957,7 @@ if (CodeGenerator.allowHireFire)
 				writer.write(NEWLINE);
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
-
+				
 				// "setActive" method:
 				writer.write("public boolean set" + tempPart.getName() + "Active("
 					+ SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType()) + " a)");
@@ -1077,7 +978,7 @@ if (CodeGenerator.allowHireFire)
 				writer.write(NEWLINE);
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
-
+				
 				// "setInactive" method:
 				writer.write("public boolean set" + tempPart.getName() + "Inactive("
 					+ SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType()) + " a)");
@@ -1108,8 +1009,8 @@ if (CodeGenerator.allowHireFire)
 				JOptionPane.WARNING_MESSAGE);
 		}
 	}
-
-
+	
+	
 	private String getUpperCaseLeading(String s)
 	{
 		return (s.substring(0, 1).toUpperCase() + s.substring(1));

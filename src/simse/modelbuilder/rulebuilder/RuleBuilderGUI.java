@@ -20,7 +20,7 @@ import java.text.*;
 import java.awt.Color;
 import java.io.*;
 
-public class RuleBuilderGUI extends JPanel implements ActionListener, ListSelectionListener
+public class RuleBuilderGUI extends JPanel implements ActionListener
 {
 	private ModelBuilderGUI mainGUI;
 	private DefinedActionTypes actions; // data structure for holding all of the created action types
@@ -101,7 +101,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener, ListSelect
 		addDestroyObjectsRuleButton = new JButton("Add New Destroy Objects Rule");
 		addDestroyObjectsRuleButton.addActionListener(this);
 		addDestroyObjectsRuleButton.setEnabled(false);
-		middlePane.add(addDestroyObjectsRuleButton);
+		middlePane.add(addDestroyObjectsRuleButton);		
 
 		// Create bottom pane:
 		JPanel bottomPane = new JPanel();
@@ -112,7 +112,6 @@ public class RuleBuilderGUI extends JPanel implements ActionListener, ListSelect
 		definedActionsList.setVisibleRowCount(7); // make 7 items visible at a time
 		definedActionsList.setFixedCellWidth(250);
 		definedActionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only allow the user to select one item at a time
-		definedActionsList.addListSelectionListener(this);
 		JScrollPane definedActionsListPane = new JScrollPane(definedActionsList);
 		bottomPane.add(definedActionsListPane);
 		refreshDefinedActionsList();
@@ -123,7 +122,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener, ListSelect
 		bottomPane.add(viewEditRulesButton);
 		viewEditRulesButton.addActionListener(this);
 		viewEditRulesButton.setEnabled(false);
-
+		
 		// Warning pane:
 		warningPane = new WarningListPane();
 
@@ -137,7 +136,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener, ListSelect
 		JSeparator separator2 = new JSeparator();
 		separator2.setMaximumSize(new Dimension(2900, 1));
 		mainPane.add(separator2);
-		mainPane.add(warningPane);
+		mainPane.add(warningPane);		
 		add(mainPane);
 
 		// make it so no file is open to begin with:
@@ -147,42 +146,33 @@ public class RuleBuilderGUI extends JPanel implements ActionListener, ListSelect
 		repaint();
 	}
 
-	public void valueChanged(ListSelectionEvent e)
-	{
-		if(definedActionsList.getSelectedIndex() >= 0) // an action is selected
-		{
-			ActionType tempAct = (ActionType)(actions.getAllActionTypes().elementAt(definedActionsList.getSelectedIndex()));
-			// get the selected action type
-			setActionInFocus(tempAct);
-		}
-	}
-
+	
 	public void reload(File tempFile) // reloads the action types from a temporary file
-	{
+	{		
 		// reload:
 		Vector warnings = ruleFileManip.loadFile(tempFile);
 		generateWarnings(warnings);
-
+		
 		// reset UI stuff:
 		clearActionInFocus();
 		refreshDefinedActionsList();
-
+		
 		addCreateObjectsRuleButton.setEnabled(false);
 		addDestroyObjectsRuleButton.setEnabled(false);
 		addEffectRuleButton.setEnabled(false);
 		editRuleButton.setEnabled(false);
 		removeRuleButton.setEnabled(false);
-		viewEditRulesButton.setEnabled(false);
+		viewEditRulesButton.setEnabled(false);		
 	}
-
-
+	
+	
 	private void generateWarnings(Vector warnings) // displays warnings of errors found during checking for inconsistencies
 	{
 		if(warnings.size() > 0) // there is at least 1 warning
 		{
 			warningPane.setWarnings(warnings);
 		}
-	}
+	}	
 
 
 	public void actionPerformed(ActionEvent evt) // handles user actions
@@ -192,7 +182,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener, ListSelect
 		{
 			newCreateObjectsRule();
 		}
-
+		
 		else if(source == addDestroyObjectsRuleButton)
 		{
 			newDestroyObjectsRule();
@@ -271,8 +261,8 @@ public class RuleBuilderGUI extends JPanel implements ActionListener, ListSelect
 			}
 		}
 	}
-
-
+	
+	
 	private void newDestroyObjectsRule() // creates a new destroy objects rule and adds it to the action in focus
 	{
 		String response = JOptionPane.showInputDialog(null, "Enter a name for this Destroy Objects Rule:", "Enter Rule Name",
@@ -307,9 +297,9 @@ public class RuleBuilderGUI extends JPanel implements ActionListener, ListSelect
 				dInfoForm.addWindowFocusListener(l);
 			}
 		}
-	}
+	}				
 
-
+	
 	private void newEffectRule() // creates a new effect rule and adds it to the action in focus
 	{
 		String response = JOptionPane.showInputDialog(null, "Enter a name for this Effect Rule:", "Enter Rule Name",
@@ -375,7 +365,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener, ListSelect
 			};
 			rInfoForm.addWindowFocusListener(l);
 		}
-
+		
 		else if(rule instanceof DestroyObjectsRule)
 		{
 			DestroyObjectsRuleInfoForm rInfoForm = new DestroyObjectsRuleInfoForm(mainGUI, (DestroyObjectsRule)rule,
@@ -395,7 +385,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener, ListSelect
 				{}
 			};
 			rInfoForm.addWindowFocusListener(l);
-		}
+		}		
 
 		else if(rule instanceof EffectRule)
 		{
@@ -553,8 +543,8 @@ public class RuleBuilderGUI extends JPanel implements ActionListener, ListSelect
 		editRuleButton.setEnabled(false);
 		removeRuleButton.setEnabled(false);
 	}
-
-
+	
+	
 	public void setNewOpenFile(File f)
 	{
 		clearActionInFocus();

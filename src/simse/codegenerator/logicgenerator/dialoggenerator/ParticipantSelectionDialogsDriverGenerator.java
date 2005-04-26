@@ -5,20 +5,17 @@ package simse.codegenerator.logicgenerator.dialoggenerator;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.modelbuilder.rulebuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class ParticipantSelectionDialogsDriverGenerator implements CodeGeneratorConstants
+public class ParticipantSelectionDialogsDriverGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private File directory; // directory to generate into
 	private File psddFile; // file to generate
@@ -54,7 +51,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements CodeGenerator
 			writer.write("import simse.logic.*;");
 			writer.write(NEWLINE);
 			writer.write("import simse.gui.*;");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.write("import java.util.*;");
 			writer.write(NEWLINE);
 			writer.write("import javax.swing.*;");
@@ -139,7 +136,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements CodeGenerator
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			writer.write("if((participants.size() == 0) || ((SSObject)participants.elementAt(0) instanceof Employee))");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
@@ -185,7 +182,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements CodeGenerator
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			writer.write("if((selectedEmp != null) && (participantsContainsSelEmp)) // selectedEmp needs to be added to the action as one of these participants");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
@@ -203,7 +200,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements CodeGenerator
 			writer.write("break;");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write("else // pass null in instead of selectedEmp");
@@ -225,13 +222,13 @@ public class ParticipantSelectionDialogsDriverGenerator implements CodeGenerator
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
-
+			writer.write(NEWLINE);			
+			
 			writer.write("else");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
-			writer.write(NEWLINE);
-			writer.write("NonEmployeeParticipantSelectionDialog psd = new NonEmployeeParticipantSelectionDialog(gui, participantName, participants, action, state);");
+			writer.write(NEWLINE);		
+			writer.write("NonEmployeeParticipantSelectionDialog psd = new NonEmployeeParticipantSelectionDialog(gui, participantName, participants, action, state);");			
 			writer.write(NEWLINE);
 			writer.write("if(psd.actionCancelled())");
 			writer.write(NEWLINE);
@@ -242,7 +239,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements CodeGenerator
 			writer.write("break;");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
@@ -268,7 +265,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements CodeGenerator
 					}
 				}
 			}
-
+			
 			// go through each action type:
 			for(int i=0; i<userActs.size(); i++)
 			{
@@ -293,16 +290,16 @@ public class ParticipantSelectionDialogsDriverGenerator implements CodeGenerator
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
-
+				
 				// generate conditions for each user trigger:
 				Vector allTrigs = tempAct.getAllTriggers();
 				boolean putElse9 = false;
 				for(int j=0; j<allTrigs.size(); j++)
 				{
 					ActionTypeTrigger tempTrig = (ActionTypeTrigger)allTrigs.elementAt(j);
-					if((tempTrig instanceof UserActionTypeTrigger) && (tempTrig.getTriggerText() != null)
+					if((tempTrig instanceof UserActionTypeTrigger) && (tempTrig.getTriggerText() != null) 
 						&& (tempTrig.getTriggerText().length() > 0))
-					{
+					{				
 						if(putElse9)
 						{
 							writer.write("else ");
@@ -327,15 +324,15 @@ public class ParticipantSelectionDialogsDriverGenerator implements CodeGenerator
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
-
+				
 				// generate conditions for each user trigger:
 				boolean putElse8 = false;
 				for(int j=0; j<allTrigs.size(); j++)
 				{
 					ActionTypeTrigger tempTrig = (ActionTypeTrigger)allTrigs.elementAt(j);
-					if((tempTrig instanceof UserActionTypeTrigger) && (tempTrig.getTriggerText() != null)
+					if((tempTrig instanceof UserActionTypeTrigger) && (tempTrig.getTriggerText() != null) 
 						&& (tempTrig.getTriggerText().length() > 0))
-					{
+					{				
 						if(putElse8)
 						{
 							writer.write("else ");
@@ -353,7 +350,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements CodeGenerator
 						writer.write(CLOSED_BRACK);
 						writer.write(NEWLINE);
 					}
-				}
+				}				
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
 				writer.write(CLOSED_BRACK);
@@ -368,8 +365,8 @@ public class ParticipantSelectionDialogsDriverGenerator implements CodeGenerator
 					Rule tRule = (Rule)trigRules.elementAt(j);
 					writer.write("ruleExec.update(gui, RuleExecutor.UPDATE_ONE, \"" + tRule.getName() + "\", action);");
 					writer.write(NEWLINE);
-				}
-
+				}				
+				
 				// game-ending:
 				if(tempAct.hasGameEndingTrigger())
 				{
@@ -392,10 +389,10 @@ public class ParticipantSelectionDialogsDriverGenerator implements CodeGenerator
 							writer.write(NEWLINE);
 							writer.write(OPEN_BRACK);
 							writer.write(NEWLINE);
-
+						
 							writer.write("// stop game and give score:");
 							writer.write(NEWLINE);
-							writer.write(getUpperCaseLeading(tempAct.getName()) + "Action a = (" + getUpperCaseLeading(tempAct.getName())
+							writer.write(getUpperCaseLeading(tempAct.getName()) + "Action a = (" + getUpperCaseLeading(tempAct.getName()) 
 								+ "Action)action;");
 							writer.write(NEWLINE);
 							// find the scoring attribute:
@@ -424,19 +421,19 @@ public class ParticipantSelectionDialogsDriverGenerator implements CodeGenerator
 								}
 							}
 							if((scoringAttConst != null) && (scoringPartConst != null) && (scoringPartTrig != null))
-							{
+							{					
 								writer.write("if(a.getAll" + scoringPartTrig.getParticipant().getName() + "s().size() > 0)");
 								writer.write(NEWLINE);
 								writer.write(OPEN_BRACK);
-								writer.write(NEWLINE);
+								writer.write(NEWLINE);						
 								writer.write(getUpperCaseLeading(scoringPartConst.getSimSEObjectType().getName()) + " t = ("
-									+ getUpperCaseLeading(scoringPartConst.getSimSEObjectType().getName()) + ")(a.getAll"
+									+ getUpperCaseLeading(scoringPartConst.getSimSEObjectType().getName()) + ")(a.getAll" 
 									+ scoringPartTrig.getParticipant().getName() + "s().elementAt(0));");
 								writer.write(NEWLINE);
 								writer.write("if(t != null)");
 								writer.write(NEWLINE);
 								writer.write(OPEN_BRACK);
-								writer.write(NEWLINE);
+								writer.write(NEWLINE);							
 								if(scoringAttConst.getAttribute().getType() == AttributeTypes.INTEGER)
 								{
 									writer.write("int");
@@ -460,11 +457,11 @@ public class ParticipantSelectionDialogsDriverGenerator implements CodeGenerator
 								writer.write("((SimSEGUI)gui).update();");
 								writer.write(NEWLINE);
 								writer.write("JOptionPane.showMessageDialog(null, (\"Your score is \" + v), \"Game over!\", JOptionPane.INFORMATION_MESSAGE);");
-								writer.write(NEWLINE);
+								writer.write(NEWLINE);								
 								writer.write(CLOSED_BRACK);
 								writer.write(NEWLINE);
 								writer.write(CLOSED_BRACK);
-								writer.write(NEWLINE);
+								writer.write(NEWLINE);	
 								writer.write(CLOSED_BRACK);
 								writer.write(NEWLINE);
 							}

@@ -5,25 +5,21 @@ package simse.codegenerator.guigenerator;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.startstatebuilder.*;
 import simse.modelbuilder.graphicsbuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class AttributePanelGenerator implements CodeGeneratorConstants
+public class AttributePanelGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	private String imageDirURL = "/simse/gui/icons/"; // location of images directory
-	*/
 
 	private DefinedObjectTypes objTypes; // holds all of the defined object types from an sso file
 	private File directory; // directory to save generated code into
-
+	private String imageDirURL = "/simse/gui/icons/"; // location of images directory
 
 	public AttributePanelGenerator(DefinedObjectTypes objs, File dir)
 	{
@@ -132,9 +128,9 @@ public class AttributePanelGenerator implements CodeGeneratorConstants
 			writer.write("setLayout(gbl);");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-			writer.write("border = ImageLoader.getImageFromURL(\"" + imagesDirectory + "layout/border.gif\");");
+			writer.write("border = ImageLoader.getImageFromURL(\"" + imageDirURL + "layout/border.gif\");");
 			writer.write(NEWLINE);
-			writer.write("iconBorder = ImageLoader.getImageFromURL(\"" + imagesDirectory + "layout/iconBorder.gif\");");
+			writer.write("iconBorder = ImageLoader.getImageFromURL(\"" + imageDirURL + "layout/iconBorder.gif\");");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("state = s;");
@@ -183,7 +179,7 @@ public class AttributePanelGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("iconPanel.setPreferredSize(new Dimension(90,90));");
 			writer.write(NEWLINE);
-			writer.write("selectedIcon = new JLabel(new ImageIcon(ImageLoader.getImageFromURL(\"" + imagesDirectory + "grid.gif\")));");
+			writer.write("selectedIcon = new JLabel(new ImageIcon(ImageLoader.getImageFromURL(\"" + imageDirURL + "grid.gif\")));");
 			writer.write(NEWLINE);
 			writer.write("selectedIcon.setOpaque(true);");
 			writer.write(NEWLINE);
@@ -308,10 +304,7 @@ public class AttributePanelGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
-
-//			writer.write("if(!guiChanged)");
-
-			writer.write("if(false)");
+			writer.write("if(!guiChanged)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -400,12 +393,12 @@ public class AttributePanelGenerator implements CodeGeneratorConstants
 									writer.write(NEWLINE);
 								}
 								writer.write("attributes.add(\"<html><font size=2>" + numAtt.getName() + ": \" + numFormat.format(p.get"
-									+ getUpperCaseLeading(numAtt.getName()) + "()) + \"</font></html>\");");
+									+ numAtt.getName() + "()) + \"</font></html>\");");
 								writer.write(NEWLINE);
 							}
 							else // non-double att -- no formatting required
 							{
-								writer.write("attributes.add(\"<html><font size=2>" + a.getName() + ": \" + p.get" + getUpperCaseLeading(a.getName()) + "() + \"</font></html>\");");
+								writer.write("attributes.add(\"<html><font size=2>" + a.getName() + ": \" + p.get" + a.getName() + "() + \"</font></html>\");");
 								writer.write(NEWLINE);
 							}
 						}
@@ -463,7 +456,7 @@ public class AttributePanelGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
-			writer.write("setIcon(new ImageIcon(ImageLoader.getImageFromURL(\"" + imagesDirectory + "grid.gif\")));");
+			writer.write("setIcon(new ImageIcon(ImageLoader.getImageFromURL(\"" + imageDirURL + "grid.gif\")));");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);

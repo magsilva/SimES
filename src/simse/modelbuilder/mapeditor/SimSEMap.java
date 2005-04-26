@@ -19,23 +19,23 @@ import java.awt.event.*;
 public class SimSEMap extends JPanel implements MouseListener, ActionListener
 {
 	protected File iconDirectory;		// location of the icon directory
-
+	
 	protected DefinedObjectTypes objectTypes;
 	protected CreatedObjects objects;
 	protected DefinedActionTypes actions;
 	protected Hashtable startStateObjsToImages;
 	protected Hashtable ruleObjsToImages;
-
+	
 	protected TileData[][] mapRep;
 	protected ArrayList sopUsers;
 	protected int ssObjCount;
-
+	
 	// map constants:
 	private final String BEGIN_MAP_TAG = "<beginMap>";
-	private final String END_MAP_TAG = "<endMap>";
-
-
-	public SimSEMap(DefinedObjectTypes objTypes, CreatedObjects objs, DefinedActionTypes acts, File iconDir,
+	private final String END_MAP_TAG = "<endMap>";	
+	
+	
+	public SimSEMap(DefinedObjectTypes objTypes, CreatedObjects objs, DefinedActionTypes acts, File iconDir, 
 		Hashtable startStateObjs, Hashtable ruleObjs)
 	{
 		objectTypes = objTypes;
@@ -44,7 +44,7 @@ public class SimSEMap extends JPanel implements MouseListener, ActionListener
 		iconDirectory = iconDir;
 		startStateObjsToImages = startStateObjs;
 		ruleObjsToImages = ruleObjs;
-
+		
 		mapRep = new TileData[MapData.X_MAPSIZE][MapData.Y_MAPSIZE];
 		for (int i = 0; i < MapData.Y_MAPSIZE; i++)
 		{
@@ -53,71 +53,57 @@ public class SimSEMap extends JPanel implements MouseListener, ActionListener
 				mapRep[j][i] = new TileData(MapData.TILE_GRID, MapData.TRANSPARENT);
 			}
 		}
-
+		
 		sopUsers = new ArrayList();
 	}
-
-
+	
+	
 	public Vector loadFile(File inputFile, File iconDir) // loads the map from the input file (.mdl) and returns a Vector of warning messages
 	{
 		iconDirectory = iconDir;
 		Vector warnings = new Vector(); // vector of warning messages
 		sopUsers.clear();
-
+		
 		// load the startste objects
 		Enumeration ssObj = startStateObjsToImages.keys();
 		Enumeration ssImg = startStateObjsToImages.elements();
-
+		
 		while (ssObj.hasMoreElements())
 		{
 			SimSEObject simObj = (SimSEObject)ssObj.nextElement();
 			String tmpIconLoc = iconDirectory.getPath() + "\\" + (String)ssImg.nextElement();
-
+			
 			int type = simObj.getSimSEObjectType().getType();
 			String objType = SimSEObjectTypeTypes.getText(type);
-
+			
 			if(objType.equals(SimSEObjectTypeTypes.getText(SimSEObjectTypeTypes.EMPLOYEE)))
 			{
-				Vector attrib = simObj.getAllAttributes();
-
-				boolean hired = true;
-				for (int i = 0; i < attrib.size(); i++)
-				{
-					InstantiatedAttribute ia = (InstantiatedAttribute)attrib.get(i);
-
-					if (ia.getAttribute().getName().equalsIgnoreCase("hired"))
-					{
-						Boolean b = (Boolean)ia.getValue();
-						hired = b.booleanValue();
-					}
-				}
-				UserData tmpUser = new UserData(simObj,tmpIconLoc,this,false,hired,-1,-1);
+				UserData tmpUser = new UserData(simObj,tmpIconLoc,this,false,true,-1,-1);
 				sopUsers.add(tmpUser);
 			}
 		}
-
+		
 		ssObjCount = sopUsers.size();
-
+		
 		Enumeration rObj = ruleObjsToImages.keys();
 		Enumeration rImg = ruleObjsToImages.elements();
-
+		
 		// load the rule objects
 		while (rObj.hasMoreElements())
 		{
 			SimSEObject simObj = (SimSEObject)rObj.nextElement();
 			String tmpIconLoc = iconDirectory.getPath() + "\\" + (String)rImg.nextElement();
-
+			
 			int type = simObj.getSimSEObjectType().getType();
 			String objType = SimSEObjectTypeTypes.getText(type);
-
+			
 			if(objType.equals(SimSEObjectTypeTypes.getText(SimSEObjectTypeTypes.EMPLOYEE)))
 			{
 				UserData tmpUser = new UserData(simObj,tmpIconLoc,this,false,false,-1,-1);
 				sopUsers.add(tmpUser);
 			}
-		}
-
-
+		}		
+		
 		try
 		{
 			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
@@ -130,7 +116,7 @@ public class SimSEMap extends JPanel implements MouseListener, ActionListener
 					foundBeginningOfMap = true;
 					boolean endOfMap = false;
 					while(!endOfMap)
-					{
+					{						
 						currentLine = reader.readLine(); // read in the next line of text from the file
 						if(currentLine.equals(END_MAP_TAG)) // end of graphics
 						{
@@ -144,27 +130,27 @@ public class SimSEMap extends JPanel implements MouseListener, ActionListener
 								while (!currentLine.equals("<endSOPUsers>")) // read in the sop users:
 								{
 									String tmpName = currentLine;
-									boolean tmpDisplayed = reader.readLine().equals("true");
+									boolean tmpDisplayed = reader.readLine().equals("true");								
 									boolean activated = reader.readLine().equals("true");
 									int tmpX = Integer.parseInt(reader.readLine());
 									int tmpY = Integer.parseInt(reader.readLine());
-
+									
 									for(int i=0; i<sopUsers.size(); i++)
 									{
 										UserData user = (UserData)sopUsers.get(i);
 										if(user.getName().equals(tmpName))
 										{
 											user.setDisplayed(tmpDisplayed);
-//											user.setActivated(activated);
+											user.setActivated(activated);
 											user.setXYLocations(tmpX,tmpY);
 										}
 									}
-
+									
 									currentLine = reader.readLine();		// ignore space
 									currentLine = reader.readLine();		// next SOP object or <endSOPUsers>
 								}
 							}
-
+							
 							// draw map
 							for (int i = 0; i < MapData.Y_MAPSIZE; i++)
 							{
@@ -185,11 +171,10 @@ public class SimSEMap extends JPanel implements MouseListener, ActionListener
 			JOptionPane.showMessageDialog(null,"An error has occured while reading file.");
 		}
 		catch(NumberFormatException e){}
-
 		return warnings;
 	}
 
-
+	
 	public void mouseClicked(MouseEvent me){}
 	public void mousePressed(MouseEvent me){}
 	public void mouseReleased(MouseEvent me){}

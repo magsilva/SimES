@@ -6,26 +6,22 @@ import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.startstatebuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.modelbuilder.graphicsbuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class ActionPanelGenerator implements CodeGeneratorConstants
+public class ActionPanelGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	private String imageDirURL = "/simse/gui/icons/"; // location of images directory
-	*/
 
 	private DefinedObjectTypes objTypes; // holds all of the defined object types from an sso file
 	private DefinedActionTypes actTypes; // holds all of the defined action types from an ssa file
 	private File directory; // directory to save generated code into
-
+	private String imageDirURL = "/simse/gui/icons/"; // location of images directory
 
 	public ActionPanelGenerator(DefinedObjectTypes objs, DefinedActionTypes acts, File dir)
 	{
@@ -44,17 +40,6 @@ public class ActionPanelGenerator implements CodeGeneratorConstants
 		}
 		try
 		{
-			String dotEmpName = "";
-
-			Vector vEmp = objTypes.getAllObjectTypesOfType(SimSEObjectTypeTypes.EMPLOYEE);
-
-			for (int i = 0; i < vEmp.size();i++)
-			{
-				SimSEObjectType sso = (SimSEObjectType)vEmp.elementAt(i);
-				dotEmpName = sso.getName();
-			}
-
-
 			FileWriter writer = new FileWriter(actPanelFile);
 			writer.write("package simse.gui;");
 			writer.write(NEWLINE);
@@ -124,7 +109,7 @@ public class ActionPanelGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 
 			// constructor:
-			writer.write("public ActionPanel(SimSEGUI gui, State s, Logic l)");
+			writer.write("public ActionPanel(State s, Logic l, SimSEGUI gui)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -207,7 +192,6 @@ public class ActionPanelGenerator implements CodeGeneratorConstants
 			writer.write("popup.removeAll();");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
 			writer.write("if(mainGUIFrame.getEngine().isRunning())");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
@@ -215,7 +199,6 @@ public class ActionPanelGenerator implements CodeGeneratorConstants
 			writer.write("return;");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("if(selectedEmp != null)");
@@ -238,7 +221,7 @@ public class ActionPanelGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-			writer.write("if(menuItems.size() >= 1)");
+			writer.write("if(menuItems.size() > 1)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -298,16 +281,6 @@ public class ActionPanelGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("Employee emp = (Employee)allEmps.elementAt(i);");
 			writer.write(NEWLINE);
-
-
-if (CodeGenerator.allowHireFire)
-{
-writer.write("if (!emp.getHired())");
-writer.write(NEWLINE);
-writer.write("continue;");
-writer.write(NEWLINE);
-}
-
 			writer.write("if(empsToEmpPanels.get(emp) == null)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
@@ -402,19 +375,6 @@ writer.write(NEWLINE);
 				{
 					writer.write("else ");
 				}
-
-Vector v =  tempType.getAllAttributes();
-Attribute keyAtt = null;
-
-for (int j = 0; j < v.size(); j++)
-{
-	Attribute att = (Attribute)v.elementAt(j);
-
-	if (att.isKey())
-		keyAtt = att;
-}
-
-
 				writer.write("if(emp instanceof " + getUpperCaseLeading(tempType.getName()) + ")");
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
@@ -425,7 +385,7 @@ for (int j = 0; j < v.size(); j++)
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
-				writer.write("JLabel temp = new JLabel(\"\" + e.get"+getUpperCaseLeading(keyAtt.getName())+"());");
+				writer.write("JLabel temp = new JLabel(\"\" + e.getName());");
 				writer.write(NEWLINE);
 				writer.write("temp.setForeground(Color.WHITE);");
 				writer.write(NEWLINE);

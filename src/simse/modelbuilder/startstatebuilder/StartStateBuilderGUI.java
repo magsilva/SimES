@@ -17,14 +17,14 @@ import java.text.*;
 import java.awt.Color;
 import java.io.*;
 
-public class StartStateBuilderGUI extends JPanel implements ActionListener, ListSelectionListener
+public class StartStateBuilderGUI extends JPanel implements ActionListener
 {
 	private JFrame mainGUI;
 	private DefinedObjectTypes objectTypes; // defined object types that can be instantiated as objects
 	private CreatedObjects objects; // data structure for holding all of the SimSE objects that are being instantiated/created
 	private StartStateFileManipulator ssFileManip; // for generating/loading start state files
 	private ObjectFileManipulator objFileManip; // for loading object files
-
+	
 	private JLabel createNewObjLabel;
 	private JComboBox createObjectList; // drop-down list of objects to create
 	private JButton okCreateObjectButton; // button to "okay" choosing a new object to create
@@ -37,41 +37,41 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 	private JButton viewEditButton; // button for viewing/editing an already created object
 	private JButton removeObjectButton; // button for removing an already created object
 	private AttributeStartingValueForm aInfo; // form for entering the starting value of an attribute
-
+	
 	private WarningListPane warningPane;
-
-
+	
+	
 	public StartStateBuilderGUI(JFrame owner, DefinedObjectTypes objTypes)
 	{
 		mainGUI = owner;
 		objectTypes = objTypes;
 		objects = new CreatedObjects();
 		ssFileManip = new StartStateFileManipulator(objectTypes, objects);
-
+		
 		// Create main panel (box):
 		Box mainPane = Box.createVerticalBox();
 		mainPane.setPreferredSize(new Dimension(1024, 650));
-
+		
 		// Create "create object" pane:
 		JPanel createObjectPane = new JPanel();
 		createNewObjLabel = new JLabel("Create New Object:");
 		createObjectPane.add(createNewObjLabel);
-
+		
 		// Create and add "create object list":
 		createObjectList = new JComboBox();
 		resetCreateObjectList();
 		createObjectPane.add(createObjectList);
-
+		
 		// Create and add "ok" button for choosing object to define:
 		okCreateObjectButton = new JButton("OK");
 		okCreateObjectButton.addActionListener(this);
 		createObjectPane.add(okCreateObjectButton);
-
+		
 		// Create attribute table title label and pane:
 		JPanel attributeTableTitlePane = new JPanel();
 		attributeTableTitle = new JLabel("No object selected");
 		attributeTableTitlePane.add(attributeTableTitle);
-
+		
 		// Create "attribute table" pane:
 		attTblMod = new StartStateAttributeTableModel();
 		attributeTable = new JTable(attTblMod);
@@ -80,28 +80,27 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 		attributeTablePane.setPreferredSize(new Dimension(1024, 250));
 		setupAttributeTableRenderers();
 		setupAttributeTableSelectionListenerStuff();
-
+		
 		// Create attribute button pane and button:
 		JPanel attributeButtonPane = new JPanel();
 		editStartingValButton = new JButton("Edit Starting Value");
 		editStartingValButton.addActionListener(this);
 		attributeButtonPane.add(editStartingValButton);
 		editStartingValButton.setEnabled(false);
-
+		
 		// Create "created objects" pane:
 		JPanel createdObjectsPane = new JPanel();
 		createdObjectsPane.add(new JLabel("Objects Already Created:"));
-
+		
 		// Create and add created objects list to a scroll pane:
 		createdObjectsList = new JList();
 		createdObjectsList.setVisibleRowCount(7); // make 7 items visible at a time
 		createdObjectsList.setFixedCellWidth(500);
 		createdObjectsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only allow the user to select one item at a time
-		createdObjectsList.addListSelectionListener(this);
 		JScrollPane createdObjectsListPane = new JScrollPane(createdObjectsList);
 		createdObjectsPane.add(createdObjectsListPane);
 		setupCreatedObjectsListSelectionListenerStuff();
-
+		
 		// Create and add "view/edit" button, "remove" button, and pane for these buttons::
 		Box createdObjectsButtonPane = Box.createVerticalBox();
 		viewEditButton = new JButton("View/Edit");
@@ -113,10 +112,10 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 		removeObjectButton.addActionListener(this);
 		removeObjectButton.setEnabled(false);
 		createdObjectsPane.add(createdObjectsButtonPane);
-
+		
 		// Warning list pane:
 		warningPane = new WarningListPane();
-
+		
 		// Add panes and separators to main pane:
 		mainPane.add(createObjectPane);
 		JSeparator separator1 = new JSeparator();
@@ -131,38 +130,29 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 		mainPane.add(createdObjectsPane);
 		JSeparator separator3 = new JSeparator();
 		separator3.setMaximumSize(new Dimension(2900, 1));
-		mainPane.add(separator3);
+		mainPane.add(separator3);		
 		mainPane.add(warningPane);
 		add(mainPane);
-
+		
 		setNoOpenFile(); // make it blank to begin with
 
 		validate();
 		repaint();
 	}
-
-	public void valueChanged(ListSelectionEvent e)
-	{
-		if(createdObjectsList.getSelectedIndex() >= 0) // an item (object) is selected
-		{
-			SimSEObject tempObj = (SimSEObject)(objects.getAllObjects().elementAt(createdObjectsList.getSelectedIndex()));
-			// get the selected object type
-			setObjectInFocus(tempObj);
-		}
-	}
-
+	
+	
 	public CreatedObjects getCreatedObjects()
 	{
 		return objects;
 	}
 
-
+	
 	public void reload(File tempFile) // reloads the start state objects from a temporary file
-	{
+	{		
 		// reload:
 		Vector warnings = ssFileManip.loadFile(tempFile);
 		generateWarnings(warnings);
-
+		
 		// reset UI stuff:
 		resetCreateObjectList();
 		updateCreatedObjectsList();
@@ -183,7 +173,7 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 				{
 					createNewObjLabel.setEnabled(true);
 					createObjectList.setEnabled(true);
-					okCreateObjectButton.setEnabled(true);
+					okCreateObjectButton.setEnabled(true);		
 					break;
 				}
 			}
@@ -193,19 +183,19 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 			createNewObjLabel.setEnabled(false);
 			createObjectList.setEnabled(false);
 			okCreateObjectButton.setEnabled(false);
-		}
+		}					
 	}
 
-
+	
 	private void generateWarnings(Vector warnings) // displays warnings of errors found during checking for inconsistencies
 	{
 		if(warnings.size() > 0) // there is at least 1 warning
 		{
 			warningPane.setWarnings(warnings);
 		}
-	}
-
-
+	}	
+	
+	
 	public void actionPerformed(ActionEvent evt) // handles user actions
 	{
 		Object source = evt.getSource(); // get which component the action came from
@@ -213,18 +203,18 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 		{
 			createObject((String)createObjectList.getSelectedItem());
 		}
-
+		
 		else if(source == editStartingValButton)
 		{
 			if(attributeTable.getSelectedRow() >= 0) // a row is selected
 			{
-				InstantiatedAttribute tempAttr =
+				InstantiatedAttribute tempAttr = 
 					attTblMod.getObjectInFocus().getAttribute((String)(attTblMod.getValueAt(attributeTable.getSelectedRow(), 0)));
 				editStartingVal(tempAttr);
 				editStartingValButton.setEnabled(false);
 			}
 		}
-
+		
 		else if(source == viewEditButton)
 		{
 			if(createdObjectsList.getSelectedIndex() >= 0) // an item (object) is selected
@@ -234,7 +224,7 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 				setObjectInFocus(tempObj);
 			}
 		}
-
+		
 		else if(source == removeObjectButton)
 		{
 			if(createdObjectsList.getSelectedIndex() >= 0) // an item (object) is selected
@@ -245,8 +235,8 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 			}
 		}
 	}
-
-
+	
+	
 	private void createObject(String selectedItem) // creates a new SimSE object of the type based on selectedItem and adds it to the data structure
 	{
 		int type = 0;
@@ -281,13 +271,13 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 			name = selectedItem.substring(0, (selectedItem.length() - SimSEObjectTypeTypes.getText(SimSEObjectTypeTypes.CUSTOMER).length() - 1));
 			// parse object name from selected item
 		}
-
+		
 		SimSEObjectType objType = objectTypes.getObjectType(type, name);
 		SimSEObject newObj = new SimSEObject(objectTypes.getObjectType(type, name)); // create new object
 		InstantiatedAttribute instAtt = new InstantiatedAttribute(objType.getKey());
 		aInfo = new AttributeStartingValueForm(mainGUI, newObj, instAtt, ("Enter a starting value for this " + selectedItem
 			+ "'s key attribute:"), objects, attTblMod);
-
+		
 		// Makes it so attribute starting val form window holds focus exclusively:
 		WindowFocusListener l = new WindowFocusListener ()
 		{
@@ -307,12 +297,12 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 		};
 		aInfo.addWindowFocusListener(l);
 	}
-
-
+	
+	
 	private void editStartingVal(InstantiatedAttribute att) // allows user to edit starting val of this attribute
 	{
 		aInfo = new AttributeStartingValueForm(mainGUI, attTblMod.getObjectInFocus(), att, ("Edit starting value:"), objects, attTblMod);
-
+		
 		// Makes it so attribute starting val form window holds focus exclusively:
 		WindowFocusListener l = new WindowFocusListener ()
 		{
@@ -332,8 +322,8 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 		};
 		aInfo.addWindowFocusListener(l);
 	}
-
-
+	
+	
 	private void setObjectInFocus(SimSEObject newObj) // sets the given object as the focus of this GUI
 	{
 		attTblMod.setObjectInFocus(newObj); // set focus of attribute table to new object
@@ -347,16 +337,16 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 		// disable buttons:
 		editStartingValButton.setEnabled(false);
 	}
-
-
-
+	
+	
+	
 	private void setupAttributeTableRenderers()
 	{
 		// Set selction mode to only one row at a time:
 		attributeTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
-
-
+	
+	
 	private void setupAttributeTableSelectionListenerStuff() // enables edit starting val button whenever a row (attribute) is selected
 	{
 		// Copied from a Java tutorial:
@@ -365,7 +355,7 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 			public void valueChanged(ListSelectionEvent e) {
 				//Ignore extra messages.
 				if (e.getValueIsAdjusting()) return;
-
+				
 				ListSelectionModel lsm = (ListSelectionModel)e.getSource();
 				if (lsm.isSelectionEmpty() == false)
 				{
@@ -374,8 +364,8 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 			}
 		});
 	}
-
-
+	
+	
 	private void setupCreatedObjectsListSelectionListenerStuff() // enables view/edit button whenever a list item (object) is selected
 	{
 		// Copied from a Java tutorial:
@@ -384,7 +374,7 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 			public void valueChanged(ListSelectionEvent e) {
 				//Ignore extra messages.
 				if (e.getValueIsAdjusting()) return;
-
+				
 				ListSelectionModel lsm = (ListSelectionModel)e.getSource();
 				if (lsm.isSelectionEmpty() == false)
 				{
@@ -394,8 +384,8 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 			}
 		});
 	}
-
-
+	
+	
 	private void updateCreatedObjectsList()
 	{
 		Vector objectNamesTypesAndKeys = new Vector();
@@ -414,8 +404,8 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 		}
 		createdObjectsList.setListData(objectNamesTypesAndKeys);
 	}
-
-
+	
+	
 	private void removeObject(SimSEObject obj) // removes this object from the data structure
 	{
 		String keyVal = new String();
@@ -445,8 +435,8 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 		{
 		}
 	}
-
-
+	
+	
 	private void clearObjectInFocus() // clears the GUI so that it doesn't have an object in focus
 	{
 		attTblMod.clearObjectInFocus(); // clear the attribute table
@@ -455,7 +445,7 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 		editStartingValButton.setEnabled(false);
 	}
 
-
+	
 	public void setNewOpenFile(File f)
 	{
 		clearObjectInFocus();
@@ -468,8 +458,8 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 			reload(f);
 		}
 	}
-
-
+	
+	
 	public void setNoOpenFile() // makes it so there's no open file in the GUI
 	{
 		clearObjectInFocus();
@@ -483,7 +473,7 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener, List
 		warningPane.clearWarnings();
 	}
 
-
+	
 	private void resetCreateObjectList()
 	{
 		createObjectList.removeAllItems(); // clear list

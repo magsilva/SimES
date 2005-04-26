@@ -5,20 +5,17 @@ package simse.codegenerator.stategenerator;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.modelbuilder.startstatebuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class StateGenerator implements CodeGeneratorConstants
+public class StateGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private ADTGenerator adtGen; // generates ADTs
 	private RepositoryGenerator repGen; // generates state repositories
@@ -155,7 +152,7 @@ public class StateGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// getClock() method:
 			writer.write("public Clock getClock()");
 			writer.write(NEWLINE);

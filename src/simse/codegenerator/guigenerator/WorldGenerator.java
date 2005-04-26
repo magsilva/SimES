@@ -152,7 +152,7 @@ public class WorldGenerator
 			writer.write(NEWLINE);
 			writer.write("popup = new JPopupMenu();");
 			writer.write(NEWLINE);
-			writer.write("popupListener = new PopupListener(popup,mainGUIFrame);");
+			writer.write("popupListener = new PopupListener(popup);");
 			writer.write(NEWLINE);
 			writer.write("popupListener.setEnabled(false);");
 			writer.write(NEWLINE);
@@ -181,8 +181,6 @@ public class WorldGenerator
 			writer.write("popup.removeAll();");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
-			/*
 			writer.write("if(mainGUIFrame.getEngine().isRunning())");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
@@ -190,7 +188,6 @@ public class WorldGenerator
 			writer.write("return;");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			*/
 			writer.write(NEWLINE);
 
 			writer.write(NEWLINE);
@@ -631,7 +628,7 @@ public class WorldGenerator
 			writer.write(NEWLINE);
 			writer.write("// test if it conflicts with top left or bottom left");
 			writer.write(NEWLINE);
-			writer.write("for (int i = 3; i > 0 && !rconflict; i--)");
+			writer.write("for (int i = 3; i >=0 && !rconflict; i--)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -641,11 +638,7 @@ public class WorldGenerator
 			writer.write(NEWLINE);
 			writer.write("DisplayedEmployee tmp = (DisplayedEmployee)sopUsers.get(j);");
 			writer.write(NEWLINE);
-			writer.write("boolean clash = tmp.checkXYLocations(xLoc+i,yLoc+(2*yOffset)) || tmp.checkXYLocations(xLoc+i,yLoc+yOffset) || tmp.checkXYLocations(xLoc+i,yLoc);");
-			writer.write(NEWLINE);
-			writer.write("if ( clash && tmp.isActivated() )");
-			writer.write(NEWLINE);
-			//writer.write("if (tmp.checkXYLocations(xLoc+i,yLoc+yOffset) && tmp.isActivated() )");
+			writer.write("if (tmp.checkXYLocations(xLoc+i,yLoc+yOffset) && tmp.isActivated() )");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -682,7 +675,7 @@ public class WorldGenerator
 			writer.write(NEWLINE);
 			writer.write("// test if it conflicts with top left or bottom left (depending on yOffset)");
 			writer.write(NEWLINE);
-			writer.write("for (int i = 4; i > 0 && !lconflict; i--)");
+			writer.write("for (int i = 3; i >=0 && !lconflict; i--)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -692,11 +685,7 @@ public class WorldGenerator
 			writer.write(NEWLINE);
 			writer.write("DisplayedEmployee tmp = (DisplayedEmployee)sopUsers.get(j);");
 			writer.write(NEWLINE);
-			writer.write("boolean clash = tmp.checkXYLocations(xLoc-i,yLoc+(2*yOffset)) || tmp.checkXYLocations(xLoc-i,yLoc+yOffset) || tmp.checkXYLocations(xLoc-i,yLoc);");
-			writer.write(NEWLINE);
-			writer.write("if ( clash && tmp.isActivated() )");
-			writer.write(NEWLINE);
-			//writer.write("if (tmp.checkXYLocations(xLoc-i,yLoc+yOffset) && tmp.isActivated() )");
+			writer.write("if (tmp.checkXYLocations(xLoc-i,yLoc+yOffset) && tmp.isActivated() )");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -767,7 +756,7 @@ public class WorldGenerator
 			writer.write(NEWLINE);
 			writer.write("// testing top left / bottom left");
 			writer.write(NEWLINE);
-			writer.write("for (int i = 4; i > 0 && !lconflict; i--)");
+			writer.write("for (int i = 3; i >=0 && !lconflict; i--)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -777,11 +766,7 @@ public class WorldGenerator
 			writer.write(NEWLINE);
 			writer.write("DisplayedEmployee tmp = (DisplayedEmployee)sopUsers.get(j);");
 			writer.write(NEWLINE);
-			writer.write("boolean clash = tmp.checkXYLocations(xLoc-i,yLoc+(2*yOffset)) || tmp.checkXYLocations(xLoc-i,yLoc+yOffset) || tmp.checkXYLocations(xLoc-i,yLoc);");
-			writer.write(NEWLINE);
-			writer.write("if ( clash && tmp.isActivated() )");
-			writer.write(NEWLINE);
-			//writer.write("if (tmp.checkXYLocations(xLoc-i,yLoc+yOffset) && tmp.isActivated() )");
+			writer.write("if (tmp.checkXYLocations(xLoc-i,yLoc+yOffset) && tmp.isActivated() )");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -815,7 +800,7 @@ public class WorldGenerator
 			writer.write(NEWLINE);
 			writer.write("// testing top left / bottom left");
 			writer.write(NEWLINE);
-			writer.write("for (int i = 3; i > 0 && !rconflict; i--)");
+			writer.write("for (int i = 3; i >=0 && !rconflict; i--)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -825,11 +810,7 @@ public class WorldGenerator
 			writer.write(NEWLINE);
 			writer.write("DisplayedEmployee tmp = (DisplayedEmployee)sopUsers.get(j);");
 			writer.write(NEWLINE);
-			writer.write("boolean clash = tmp.checkXYLocations(xLoc+i,yLoc+(2*yOffset)) || tmp.checkXYLocations(xLoc+i,yLoc+yOffset) || tmp.checkXYLocations(xLoc+i,yLoc);");
-			writer.write(NEWLINE);
-			writer.write("if ( clash && tmp.isActivated() )");
-			writer.write(NEWLINE);
-			//writer.write("if (tmp.checkXYLocations(xLoc+i,yLoc+yOffset) && tmp.isActivated() )");
+			writer.write("if (tmp.checkXYLocations(xLoc+i,yLoc+yOffset) && tmp.isActivated() )");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -863,7 +844,7 @@ public class WorldGenerator
 			writer.write(NEWLINE);
 			writer.write("// testing top left / bottom left");
 			writer.write(NEWLINE);
-			writer.write("for (int i = 3; i > 0 && !rconflict; i--)");
+			writer.write("for (int i = 3; i >=0 && !rconflict; i--)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -873,11 +854,7 @@ public class WorldGenerator
 			writer.write(NEWLINE);
 			writer.write("DisplayedEmployee tmp = (DisplayedEmployee)sopUsers.get(j);");
 			writer.write(NEWLINE);
-			writer.write("boolean clash = tmp.checkXYLocations(xLoc+i,yLoc+(2*yOffset)) || tmp.checkXYLocations(xLoc+i,yLoc+yOffset) || tmp.checkXYLocations(xLoc+i,yLoc);");
-			writer.write(NEWLINE);
-			writer.write("if ( clash && tmp.isActivated() )");
-			writer.write(NEWLINE);
-			//writer.write("if (tmp.checkXYLocations(xLoc+i,yLoc+yOffset) && tmp.isActivated() )");
+			writer.write("if (tmp.checkXYLocations(xLoc+i,yLoc+yOffset) && tmp.isActivated() )");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);

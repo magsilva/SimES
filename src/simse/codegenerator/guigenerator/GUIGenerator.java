@@ -7,20 +7,17 @@ import simse.modelbuilder.startstatebuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.modelbuilder.graphicsbuilder.*;
 import simse.modelbuilder.mapeditor.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class GUIGenerator implements CodeGeneratorConstants
+public class GUIGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private ImageLoaderGenerator imageLoaderGen; // generates the image loader
 	private ClockPanelGenerator clockPanelGen; // generates the clock panel
@@ -69,7 +66,7 @@ public class GUIGenerator implements CodeGeneratorConstants
 	public void generate() // causes all of this component's sub-components to generate code
 	{
 		copyDir(panelsImageDir, (directory.getPath() + "\\simse\\gui\\" + (new File(panelsImageDir)).getName()));
-		copyDir(worldImageDir, (directory.getPath() + "\\simse\\gui\\" + (new File(worldImageDir)).getName()));
+		copyDir(worldImageDir, (directory.getPath() + "\\simse\\gui\\" + (new File(panelsImageDir)).getName()));
 		imageLoaderGen.generate();
 		clockPanelGen.generate();
 		tabPanelGen.generate();
@@ -165,9 +162,9 @@ public class GUIGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("attribPanel = new AttributePanel(this, state, engine);");
 			writer.write(NEWLINE);
-			writer.write("tabPanel = new TabPanel(this, state, logic, attribPanel);");
+			writer.write("tabPanel = new TabPanel(state, attribPanel);");
 			writer.write(NEWLINE);
-			writer.write("actionPanel = new ActionPanel(this, state, logic);");
+			writer.write("actionPanel = new ActionPanel(state, logic, this);");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("// Set window title:");
@@ -261,23 +258,6 @@ public class GUIGenerator implements CodeGeneratorConstants
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
 			writer.write("return tabPanel;");
-			writer.write(NEWLINE);
-			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
-			writer.write(NEWLINE);
-
-			// force gui update function
-			writer.write("//forces gui to update, used when the game ends");
-			writer.write(NEWLINE);
-			writer.write("public void forceGUIUpdate()");
-			writer.write(NEWLINE);
-			writer.write(OPEN_BRACK);
-			writer.write(NEWLINE);
-			writer.write("tabPanel.setGUIChanged();");
-			writer.write(NEWLINE);
-			writer.write("attribPanel.setGUIChanged();");
-			writer.write(NEWLINE);
-			writer.write("update();");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);

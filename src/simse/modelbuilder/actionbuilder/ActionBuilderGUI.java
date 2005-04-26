@@ -18,7 +18,7 @@ import java.text.*;
 import java.awt.Color;
 import java.io.*;
 
-public class ActionBuilderGUI extends JPanel implements ActionListener, ListSelectionListener
+public class ActionBuilderGUI extends JPanel implements ActionListener
 {
 	private JFrame mainGUI;
 	private DefinedActionTypes actions; // data structure for holding all of the created action types
@@ -112,7 +112,6 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 		definedActionsList.setVisibleRowCount(7); // make 7 items visible at a time
 		definedActionsList.setFixedCellWidth(500);
 		definedActionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only allow the user to select one item at a time
-		definedActionsList.addListSelectionListener(this);
 		JScrollPane definedActionsListPane = new JScrollPane(definedActionsList);
 		definedActionsPane.add(definedActionsListPane);
 		updateDefinedActionsList();
@@ -129,9 +128,9 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 		removeActionButton.addActionListener(this);
 		removeActionButton.setEnabled(false);
 		definedActionsPane.add(definedActionsButtonPane);
-
+		
 		// Warning list pane:
-		warningPane = new WarningListPane();
+		warningPane = new WarningListPane();		
 
 		// Add panes and separators to main pane:
 		mainPane.add(createActionPane);
@@ -149,7 +148,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 		JSeparator separator3 = new JSeparator();
 		separator3.setMaximumSize(new Dimension(2900, 1));
 		mainPane.add(separator3);
-		mainPane.add(warningPane);
+		mainPane.add(warningPane);		
 		add(mainPane);
 
 		// make it so no file is open to begin with:
@@ -159,29 +158,20 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 		validate();
 		repaint();
 	}
-
-	public void valueChanged(ListSelectionEvent e)
-	{
-		if(definedActionsList.getSelectedIndex() >= 0) // an item (action) is selected
-		{
-			ActionType tempAct = (ActionType)(actions.getAllActionTypes().elementAt(definedActionsList.getSelectedIndex()));
-			// get the selected action type
-			setActionInFocus(tempAct);
-		}
-	}
-
+	
+	
 	public DefinedActionTypes getDefinedActionTypes()
 	{
 		return actions;
 	}
-
-
+	
+	
 	public void reload(File tempFile) // reloads the action types from a temporary file
-	{
+	{		
 		// reload:
 		Vector warnings = actFileManip.loadFile(tempFile);
 		generateWarnings(warnings);
-
+		
 		// reset UI stuff:
 		updateDefinedActionsList();
 		clearActionInFocus();
@@ -196,7 +186,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 				// check if it has at least one attribute:
 				if(type.getAllAttributes().size() > 0)
 				{
-					createNewActionButton.setEnabled(true);
+					createNewActionButton.setEnabled(true);		
 					break;
 				}
 			}
@@ -204,17 +194,17 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 		else
 		{
 			createNewActionButton.setEnabled(false);
-		}
+		}		
 	}
-
-
+	
+	
 	private void generateWarnings(Vector warnings) // displays warnings of errors found during checking for inconsistencies
 	{
 		if(warnings.size() > 0) // there is at least 1 warning
 		{
 			warningPane.setWarnings(warnings);
 		}
-	}
+	}		
 
 
 	public void actionPerformed(ActionEvent evt) // handles user actions
@@ -285,7 +275,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 			ActionTypeDestroyerManagementForm destForm = new ActionTypeDestroyerManagementForm(mainGUI, actTblMod.getActionTypeInFocus(), actions);
 			((ModelBuilderGUI)mainGUI).setFileModSinceLastSave();
 		}
-
+		
 		else if(source == visibilityButton) // visibility button selected
 		{
 			ActionTypeVisibilityInfoForm form = new ActionTypeVisibilityInfoForm(mainGUI, actTblMod.getActionTypeInFocus());
@@ -407,7 +397,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 				{
 					visibilityButton.setEnabled(false);
 					visibilityButton.setText("View/Edit Visibility");
-				}
+				}				
 			}
 			public void windowGainedFocus(WindowEvent ev)
 			{}
@@ -437,7 +427,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 			{
 				visibilityButton.setEnabled(false);
 				visibilityButton.setText("View/Edit Visibility");
-			}
+			}			
 			((ModelBuilderGUI)mainGUI).setFileModSinceLastSave();
 		}
 		else // choice == JOptionPane.NO_OPTION
@@ -560,7 +550,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 		visibilityButton.setEnabled(false);
 	}
 
-
+	
 	public void setNewOpenFile(File f)
 	{
 		clearActionInFocus();
@@ -594,8 +584,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 		removeActionButton.setEnabled(false);
 		warningPane.clearWarnings();
 	}
-
-
+	
+	
 	private boolean hasEmployeeParticipant(ActionType act) // returns true if there is at least one participant in this action that is of
 		// type Employee
 	{

@@ -6,15 +6,12 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
-import simse.codegenerator.*;
 
-public class ImageLoaderGenerator implements CodeGeneratorConstants
+public class ImageLoaderGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private File directory; // directory to save generated code into
 
@@ -50,9 +47,9 @@ public class ImageLoaderGenerator implements CodeGeneratorConstants
 			writer.write("public class ImageLoader");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
+			writer.write(NEWLINE);				
 			writer.write(NEWLINE);
-			writer.write(NEWLINE);
-
+			
 			// getImageFromURL function:
 			writer.write("public static Image getImageFromURL(String url)");
 			writer.write(NEWLINE);
@@ -66,8 +63,8 @@ public class ImageLoaderGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
-			writer.write(CLOSED_BRACK);
+			
+			writer.write(CLOSED_BRACK);			
 			writer.close();
 		}
 		catch (IOException e)

@@ -6,17 +6,14 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
-import simse.codegenerator.*;
 
-public class MapDataGenerator implements CodeGeneratorConstants
+public class MapDataGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-
+	
 	private String imageDir; // location of image directory
-	*/
 
 	private File directory; // directory to save generated code into
 
@@ -51,7 +48,7 @@ public class MapDataGenerator implements CodeGeneratorConstants
 			writer.write("public class MapData");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);				
 
 			// member variables:
 			writer.write("static int TILE_SIZE = 50;		// size of 1 tile");
@@ -87,8 +84,6 @@ public class MapDataGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("static final int TILE_COMPUTER = 4;");
-			writer.write(NEWLINE);
-			writer.write("static final int TILE_PAPERS = 5;");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("static final int TILE_STABLE_TL = 401; // square table");
@@ -152,7 +147,7 @@ public class MapDataGenerator implements CodeGeneratorConstants
 			writer.write("static final int TILE_DOOR_TO = 611;");
 			writer.write(NEWLINE);
 			writer.write("static final int TILE_DOOR_TC = 612;");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);	
 			writer.write("static final int TILE_DOOR_LO = 613;");
 			writer.write(NEWLINE);
 			writer.write("static final int TILE_DOOR_LC = 614;");
@@ -162,7 +157,7 @@ public class MapDataGenerator implements CodeGeneratorConstants
 			writer.write("static final int TILE_DOOR_RC = 616;");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-			writer.write("static String dir = \""+imagesDirectory+"\";");
+			writer.write("static String dir = \"/simse/gui/icons/\";");
 			writer.write(NEWLINE);
 			writer.write("static Image transparent = ImageLoader.getImageFromURL(dir + \"transparent.gif\");");
 			writer.write(NEWLINE);
@@ -187,8 +182,6 @@ public class MapDataGenerator implements CodeGeneratorConstants
 			writer.write("static Image trashcanE = ImageLoader.getImageFromURL(dir + \"trashcan_e.gif\");");
 			writer.write(NEWLINE);
 			writer.write("static Image trashcanF = ImageLoader.getImageFromURL(dir + \"trashcan_f.gif\");");
-			writer.write(NEWLINE);
-			writer.write("static Image papers = ImageLoader.getImageFromURL(dir + \"papers.gif\");");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("static Image wallT = ImageLoader.getImageFromURL(dir + \"wall/wall_t.gif\");");
@@ -246,7 +239,7 @@ public class MapDataGenerator implements CodeGeneratorConstants
 			writer.write("static Image error = ImageLoader.getImageFromURL(dir + \"error.gif\");");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			// getImage(String) function:
 			writer.write("public static Image getImage(String file)");
 			writer.write(NEWLINE);
@@ -257,7 +250,7 @@ public class MapDataGenerator implements CodeGeneratorConstants
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			// getImage(int) function:
 			writer.write("public static Image getImage(int key)");
 			writer.write(NEWLINE);
@@ -308,10 +301,6 @@ public class MapDataGenerator implements CodeGeneratorConstants
 			writer.write("case TILE_TRASHCANF:");
 			writer.write(NEWLINE);
 			writer.write("return trashcanF;");
-			writer.write(NEWLINE);
-			writer.write("case TILE_PAPERS:");
-			writer.write(NEWLINE);
-			writer.write("return papers;");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("case TILE_DOOR_TO:");
@@ -408,7 +397,7 @@ public class MapDataGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			writer.write(CLOSED_BRACK);
 			writer.close();
 		}
@@ -418,8 +407,8 @@ public class MapDataGenerator implements CodeGeneratorConstants
 				JOptionPane.WARNING_MESSAGE);
 		}
 	}
-
-
+	
+	
 	private String replaceAll(String s, char replaced, String replacer)
 	{
 		char[] cArray = s.toCharArray();
@@ -436,5 +425,5 @@ public class MapDataGenerator implements CodeGeneratorConstants
 			}
 		}
 		return newStr.toString();
-	}
+	}		
 }

@@ -6,16 +6,12 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
-import simse.codegenerator.*;
 
-
-public class PopupListenerGenerator implements CodeGeneratorConstants
+public class PopupListenerGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private File directory; // directory to save generated code into
 
@@ -46,32 +42,28 @@ public class PopupListenerGenerator implements CodeGeneratorConstants
 			writer.write("public class PopupListener extends MouseAdapter");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);				
 
 			// member variables:
 			writer.write("JPopupMenu popup;");
 			writer.write(NEWLINE);
 			writer.write("boolean enabled;");
 			writer.write(NEWLINE);
-			writer.write("SimSEGUI gui;");
 			writer.write(NEWLINE);
-			writer.write(NEWLINE);
-
+			
 			// constructor:
-			writer.write("public PopupListener(JPopupMenu popupMenu, SimSEGUI g)");
+			writer.write("public PopupListener(JPopupMenu popupMenu)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
 			writer.write("popup = popupMenu;");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.write("enabled = true;");
-			writer.write(NEWLINE);
-			writer.write("gui = g;");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-			writer.write(NEWLINE);
-
+			writer.write(NEWLINE);		
+			
 			// isEnabled function:
 			writer.write("public boolean isEnabled()");
 			writer.write(NEWLINE);
@@ -116,25 +108,12 @@ public class PopupListenerGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 
-// getPopupMenu function:
-writer.write("public JPopupMenu getPopupMenu()");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-
-writer.write(NEWLINE);
-writer.write("return popup;");
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-
 			// maybeShowPopup function:
 			writer.write("private void maybeShowPopup(MouseEvent e)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
-			writer.write("// disable the popup if the engine is running");
-			writer.write(NEWLINE);
-			writer.write("if(e.isPopupTrigger() && isEnabled() && !gui.getEngine().isRunning())");
+			writer.write("if(e.isPopupTrigger() && isEnabled())");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -144,8 +123,8 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
-			writer.write(CLOSED_BRACK);
+			
+			writer.write(CLOSED_BRACK);			
 			writer.close();
 		}
 		catch (IOException e)

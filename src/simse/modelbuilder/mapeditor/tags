@@ -1,0 +1,229 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.5.2	//
+accept	.\SMEFileFilter.java	12;"	method	language:Java	class:SMEFileFilter	access:public	signature:(File f)
+actionPerformed	.\MapEditorGUI.java	593;"	method	language:Java	class:MapEditorGUI	access:public	signature:(ActionEvent e)
+actionPerformed	.\SimSEMap.java	181;"	method	language:Java	class:SimSEMap	access:public	signature:(ActionEvent e)
+actionPerformed	.\World.java	575;"	method	language:Java	class:World	access:public	signature:(ActionEvent e)
+actions	.\World.java	45;"	field	language:Java	class:World	file:	access:private
+activated	.\UserData.java	21;"	field	language:Java	class:UserData	access:default
+baseKey	.\SimSEMap.java	186;"	field	language:Java	class:SimSEMap.TileData	access:default
+BOTTOM	.\World.java	36;"	field	language:Java	class:World	access:default
+canMoveTo	.\World.java	563;"	method	language:Java	class:World	access:public	signature:(int x, int y)
+chairL	.\MapData.java	78;"	field	language:Java	class:MapData	access:default
+chairR	.\MapData.java	79;"	field	language:Java	class:MapData	access:default
+chairT	.\MapData.java	77;"	field	language:Java	class:MapData	access:default
+checkXYLocations	.\UserData.java	72;"	method	language:Java	class:UserData	access:default	signature:(int x, int y)
+clickedHeightModifier	.\World.java	23;"	field	language:Java	class:World	access:default
+clickedX	.\MapEditorGUI.java	26;"	field	language:Java	class:MapEditorGUI	access:default
+clickedX	.\World.java	24;"	field	language:Java	class:World	access:default
+clickedY	.\MapEditorGUI.java	27;"	field	language:Java	class:MapEditorGUI	access:default
+clickedY	.\World.java	25;"	field	language:Java	class:World	access:default
+closeMap	.\MapEditorGUI.java	624;"	method	language:Java	class:MapEditorGUI	file:	access:private	signature:()
+computer	.\MapData.java	80;"	field	language:Java	class:MapData	access:default
+createPopupMenu	.\MapEditorGUI.java	98;"	method	language:Java	class:MapEditorGUI	file:	access:private	signature:()
+createPopupMenu	.\World.java	110;"	method	language:Java	class:World	access:public	signature:()
+dark	.\MapData.java	82;"	field	language:Java	class:MapData	access:default
+DEBUG	.\World.java	21;"	field	language:Java	class:World	access:default
+dir	.\MapData.java	73;"	field	language:Java	class:MapData	access:default
+doorLC	.\MapData.java	98;"	field	language:Java	class:MapData	access:default
+doorLO	.\MapData.java	97;"	field	language:Java	class:MapData	access:default
+doorRC	.\MapData.java	100;"	field	language:Java	class:MapData	access:default
+doorRO	.\MapData.java	99;"	field	language:Java	class:MapData	access:default
+doorTC	.\MapData.java	96;"	field	language:Java	class:MapData	access:default
+doorTO	.\MapData.java	95;"	field	language:Java	class:MapData	access:default
+drawText	.\World.java	179;"	method	language:Java	class:World	access:public	signature:(String s, int xLoc, int yLoc, Graphics g)
+enabled	.\PopupListener.java	10;"	field	language:Java	class:PopupListener	access:default
+error	.\MapData.java	116;"	field	language:Java	class:MapData	access:default
+ExitListener	.\MapEditorGUI.java	641;"	class	language:Java	class:MapEditorGUI	inherits:WindowAdapter	access:public
+fileChooser	.\MapEditorGUI.java	36;"	field	language:Java	class:MapEditorGUI	access:default
+fileChooser	.\World.java	52;"	field	language:Java	class:World	file:	access:private
+floor	.\MapData.java	76;"	field	language:Java	class:MapData	access:default
+frame	.\MapEditorGUI.java	22;"	field	language:Java	class:MapEditorGUI	file:	access:private
+frame	.\World.java	20;"	field	language:Java	class:World	file:	access:private
+FRAMEHEIGHT	.\World.java	39;"	field	language:Java	class:World	access:default
+FRAMEWIDTH	.\World.java	38;"	field	language:Java	class:World	access:default
+FREE	.\World.java	32;"	field	language:Java	class:World	access:default
+fringeKey	.\SimSEMap.java	187;"	field	language:Java	class:SimSEMap.TileData	access:default
+getBase	.\SimSEMap.java	206;"	method	language:Java	class:SimSEMap.TileData	access:public	signature:()
+getDescription	.\SMEFileFilter.java	42;"	method	language:Java	class:SMEFileFilter	access:public	signature:()
+getFringe	.\SimSEMap.java	211;"	method	language:Java	class:SimSEMap.TileData	access:public	signature:()
+getImage	.\MapData.java	118;"	method	language:Java	class:MapData	access:public	signature:(String file)
+getImage	.\MapData.java	123;"	method	language:Java	class:MapData	access:public	signature:(int key)
+getName	.\UserData.java	77;"	method	language:Java	class:UserData	access:default	signature:()
+grid	.\MapData.java	75;"	field	language:Java	class:MapData	access:default
+iconDirectory	.\SimSEMap.java	24;"	field	language:Java	class:SimSEMap	access:protected
+isActivated	.\UserData.java	44;"	method	language:Java	class:UserData	access:default	signature:()
+isDisplayed	.\UserData.java	49;"	method	language:Java	class:UserData	access:default	signature:()
+isEnabled	.\PopupListener.java	18;"	method	language:Java	class:PopupListener	access:public	signature:()
+isSMEFile	.\MapEditorGUI.java	611;"	method	language:Java	class:MapEditorGUI	file:	access:private	signature:(File f)
+keyPressed	.\World.java	431;"	method	language:Java	class:World	access:public	signature:(KeyEvent e)
+keyReleased	.\World.java	520;"	method	language:Java	class:World	access:public	signature:(KeyEvent e)
+keyTyped	.\World.java	525;"	method	language:Java	class:World	access:public	signature:(KeyEvent e)
+LEFT	.\World.java	33;"	field	language:Java	class:World	access:default
+loadDefaultSettings	.\World.java	76;"	method	language:Java	class:World	file:	access:private	signature:()
+loadFile	.\SimSEMap.java	43;"	method	language:Java	class:SimSEMap	access:public	signature:(File file)
+loadSOPFile	.\SimSEMap.java	114;"	method	language:Java	class:SimSEMap	access:public	signature:(File file)
+main	.\MapEditorGUI.java	650;"	method	language:Java	class:MapEditorGUI	access:public	signature:(String[[] args)
+main	.\World.java	601;"	method	language:Java	class:World	access:public	signature:(String[[] args)
+Map	.\Map.java	13;"	method	language:Java	class:Map	access:public	signature:(int ts, int x, int y)
+Map	.\Map.java	6;"	class	language:Java	inherits:JFrame
+MapData	.\MapData.java	11;"	class	language:Java
+MapEditorGUI	.\MapEditorGUI.java	20;"	class	language:Java	inherits:SimSEMap
+MapEditorGUI	.\MapEditorGUI.java	41;"	method	language:Java	class:MapEditorGUI	access:public	signature:()
+mapRep	.\SimSEMap.java	26;"	field	language:Java	class:SimSEMap	access:protected
+mapSaved	.\MapEditorGUI.java	38;"	field	language:Java	class:MapEditorGUI	access:default
+mapX	.\Map.java	10;"	field	language:Java	class:Map	access:default
+mapY	.\Map.java	11;"	field	language:Java	class:Map	access:default
+maybeShowPopup	.\PopupListener.java	38;"	method	language:Java	class:PopupListener	file:	access:private	signature:(MouseEvent e)
+menu	.\MapEditorGUI.java	35;"	field	language:Java	class:MapEditorGUI	access:default
+menu	.\World.java	51;"	field	language:Java	class:World	file:	access:private
+menuBar	.\MapEditorGUI.java	33;"	field	language:Java	class:MapEditorGUI	access:default
+menuBar	.\World.java	50;"	field	language:Java	class:World	file:	access:private
+menubarActions	.\MapEditorGUI.java	507;"	method	language:Java	class:MapEditorGUI	access:public	signature:(JMenuItem source)
+mouseClicked	.\SimSEMap.java	176;"	method	language:Java	class:SimSEMap	access:public	signature:(MouseEvent me)
+mouseEntered	.\SimSEMap.java	179;"	method	language:Java	class:SimSEMap	access:public	signature:(MouseEvent me)
+mouseExited	.\SimSEMap.java	180;"	method	language:Java	class:SimSEMap	access:public	signature:(MouseEvent me)
+mousePressed	.\MapEditorGUI.java	294;"	method	language:Java	class:MapEditorGUI	access:public	signature:(MouseEvent me)
+mousePressed	.\PopupListener.java	28;"	method	language:Java	class:PopupListener	access:public	signature:(MouseEvent e)
+mousePressed	.\SimSEMap.java	177;"	method	language:Java	class:SimSEMap	access:public	signature:(MouseEvent me)
+mousePressed	.\World.java	531;"	method	language:Java	class:World	access:public	signature:(MouseEvent me)
+mouseReleased	.\PopupListener.java	33;"	method	language:Java	class:PopupListener	access:public	signature:(MouseEvent e)
+mouseReleased	.\SimSEMap.java	178;"	method	language:Java	class:SimSEMap	access:public	signature:(MouseEvent me)
+myCurX	.\World.java	41;"	field	language:Java	class:World	file:	access:private
+myCurY	.\World.java	42;"	field	language:Java	class:World	file:	access:private
+objectSelected	.\World.java	48;"	field	language:Java	class:World	file:	access:private
+paintComponent	.\MapEditorGUI.java	260;"	method	language:Java	class:MapEditorGUI	access:public	signature:(Graphics g)
+paintComponent	.\World.java	133;"	method	language:Java	class:World	access:public	signature:(Graphics g)
+popup	.\MapEditorGUI.java	34;"	field	language:Java	class:MapEditorGUI	access:default
+popup	.\PopupListener.java	9;"	field	language:Java	class:PopupListener	access:default
+popup	.\World.java	54;"	field	language:Java	class:World	file:	access:private
+PopupListener	.\PopupListener.java	12;"	method	language:Java	class:PopupListener	access:public	signature:(JPopupMenu popupMenu)
+PopupListener	.\PopupListener.java	7;"	class	language:Java	inherits:MouseAdapter
+popupListener	.\World.java	55;"	field	language:Java	class:World	file:	access:private
+popupMenuActions	.\MapEditorGUI.java	302;"	method	language:Java	class:MapEditorGUI	access:public	signature:(JMenuItem source)
+popupMenuActions	.\World.java	571;"	method	language:Java	class:World	access:public	signature:(JMenuItem source)
+RIGHT	.\World.java	34;"	field	language:Java	class:World	access:default
+saveFilePath	.\MapEditorGUI.java	39;"	field	language:Java	class:MapEditorGUI	access:default
+saveMap	.\MapEditorGUI.java	432;"	method	language:Java	class:MapEditorGUI	access:public	signature:(boolean saveAs)
+screenX	.\MapEditorGUI.java	30;"	field	language:Java	class:MapEditorGUI	access:default
+screenY	.\MapEditorGUI.java	31;"	field	language:Java	class:MapEditorGUI	access:default
+selectedUser	.\World.java	57;"	field	language:Java	class:World	file:	access:private
+setActivated	.\UserData.java	54;"	method	language:Java	class:UserData	access:default	signature:(boolean a)
+setBase	.\SimSEMap.java	196;"	method	language:Java	class:SimSEMap.TileData	access:public	signature:(int b)
+setDisplayed	.\UserData.java	60;"	method	language:Java	class:UserData	access:default	signature:(boolean b)
+setEnabled	.\PopupListener.java	23;"	method	language:Java	class:PopupListener	access:public	signature:(boolean e)
+setFringe	.\SimSEMap.java	201;"	method	language:Java	class:SimSEMap.TileData	access:public	signature:(int f)
+setXYLocations	.\UserData.java	66;"	method	language:Java	class:UserData	access:default	signature:(int x, int y)
+simse.modelbuilder.mapeditor	.\Map.java	1;"	package	language:Java
+simse.modelbuilder.mapeditor	.\MapData.java	6;"	package	language:Java
+simse.modelbuilder.mapeditor	.\MapEditorGUI.java	9;"	package	language:Java
+simse.modelbuilder.mapeditor	.\PopupListener.java	1;"	package	language:Java
+simse.modelbuilder.mapeditor	.\SimSEMap.java	7;"	package	language:Java
+simse.modelbuilder.mapeditor	.\SMEFileFilter.java	3;"	package	language:Java
+simse.modelbuilder.mapeditor	.\UserData.java	1;"	package	language:Java
+simse.modelbuilder.mapeditor	.\World.java	8;"	package	language:Java
+SimSEMap	.\SimSEMap.java	21;"	class	language:Java	inherits:JPanel,MouseListener,ActionListener
+SimSEMap	.\SimSEMap.java	32;"	method	language:Java	class:SimSEMap	access:public	signature:()
+SMEFileFilter	.\SMEFileFilter.java	9;"	class	language:Java	inherits:FileFilter
+sopFile	.\SimSEMap.java	23;"	field	language:Java	class:SimSEMap	access:protected
+sopUsers	.\SimSEMap.java	27;"	field	language:Java	class:SimSEMap	access:protected
+speechBL	.\MapData.java	113;"	field	language:Java	class:MapData	access:default
+speechBR	.\MapData.java	114;"	field	language:Java	class:MapData	access:default
+speechTL	.\MapData.java	111;"	field	language:Java	class:MapData	access:default
+speechTR	.\MapData.java	112;"	field	language:Java	class:MapData	access:default
+ssObjCount	.\SimSEMap.java	28;"	field	language:Java	class:SimSEMap	access:protected
+sTableBL	.\MapData.java	106;"	field	language:Java	class:MapData	access:default
+sTableBM	.\MapData.java	107;"	field	language:Java	class:MapData	access:default
+sTableBR	.\MapData.java	108;"	field	language:Java	class:MapData	access:default
+sTableTL	.\MapData.java	103;"	field	language:Java	class:MapData	access:default
+sTableTM	.\MapData.java	104;"	field	language:Java	class:MapData	access:default
+sTableTR	.\MapData.java	105;"	field	language:Java	class:MapData	access:default
+startX	.\MapEditorGUI.java	24;"	field	language:Java	class:MapEditorGUI	access:default
+startX	.\World.java	26;"	field	language:Java	class:World	file:	access:private
+startY	.\MapEditorGUI.java	25;"	field	language:Java	class:MapEditorGUI	access:default
+startY	.\World.java	27;"	field	language:Java	class:World	file:	access:private
+table	.\MapData.java	81;"	field	language:Java	class:MapData	access:default
+TileData	.\SimSEMap.java	184;"	class	language:Java	class:SimSEMap	access:protected
+TileData	.\SimSEMap.java	190;"	method	language:Java	class:SimSEMap.TileData	access:public	signature:(int b, int f)
+tiles	.\Map.java	8;"	field	language:Java	class:Map	access:default
+tileSize	.\Map.java	9;"	field	language:Java	class:Map	access:default
+TILE_CHAIRB	.\MapData.java	24;"	field	language:Java	class:MapData	access:default
+TILE_CHAIRL	.\MapData.java	25;"	field	language:Java	class:MapData	access:default
+TILE_CHAIRR	.\MapData.java	26;"	field	language:Java	class:MapData	access:default
+TILE_CHAIRT	.\MapData.java	23;"	field	language:Java	class:MapData	access:default
+TILE_COMPUTER	.\MapData.java	31;"	field	language:Java	class:MapData	access:default
+TILE_DARK	.\MapData.java	19;"	field	language:Java	class:MapData	access:default
+TILE_DOOR	.\MapData.java	53;"	field	language:Java	class:MapData	access:default
+TILE_DOOR_LC	.\MapData.java	67;"	field	language:Java	class:MapData	access:default
+TILE_DOOR_LO	.\MapData.java	66;"	field	language:Java	class:MapData	access:default
+TILE_DOOR_RC	.\MapData.java	69;"	field	language:Java	class:MapData	access:default
+TILE_DOOR_RO	.\MapData.java	68;"	field	language:Java	class:MapData	access:default
+TILE_DOOR_TC	.\MapData.java	65;"	field	language:Java	class:MapData	access:default
+TILE_DOOR_TO	.\MapData.java	64;"	field	language:Java	class:MapData	access:default
+TILE_FLOOR	.\MapData.java	21;"	field	language:Java	class:MapData	access:default
+TILE_GRID	.\MapData.java	18;"	field	language:Java	class:MapData	access:default
+TILE_RTABLE1	.\MapData.java	43;"	field	language:Java	class:MapData	access:default
+TILE_RTABLE2	.\MapData.java	44;"	field	language:Java	class:MapData	access:default
+TILE_RTABLE3	.\MapData.java	45;"	field	language:Java	class:MapData	access:default
+TILE_RTABLE4	.\MapData.java	46;"	field	language:Java	class:MapData	access:default
+TILE_RTABLE5	.\MapData.java	47;"	field	language:Java	class:MapData	access:default
+TILE_RTABLE6	.\MapData.java	48;"	field	language:Java	class:MapData	access:default
+TILE_RTABLE7	.\MapData.java	49;"	field	language:Java	class:MapData	access:default
+TILE_RTABLE8	.\MapData.java	50;"	field	language:Java	class:MapData	access:default
+TILE_RTABLE9	.\MapData.java	51;"	field	language:Java	class:MapData	access:default
+TILE_SIZE	.\MapData.java	13;"	field	language:Java	class:MapData	access:default
+TILE_STABLE_BL	.\MapData.java	39;"	field	language:Java	class:MapData	access:default
+TILE_STABLE_BM	.\MapData.java	40;"	field	language:Java	class:MapData	access:default
+TILE_STABLE_BR	.\MapData.java	41;"	field	language:Java	class:MapData	access:default
+TILE_STABLE_ML	.\MapData.java	36;"	field	language:Java	class:MapData	access:default
+TILE_STABLE_MM	.\MapData.java	37;"	field	language:Java	class:MapData	access:default
+TILE_STABLE_MR	.\MapData.java	38;"	field	language:Java	class:MapData	access:default
+TILE_STABLE_TL	.\MapData.java	33;"	field	language:Java	class:MapData	access:default
+TILE_STABLE_TM	.\MapData.java	34;"	field	language:Java	class:MapData	access:default
+TILE_STABLE_TR	.\MapData.java	35;"	field	language:Java	class:MapData	access:default
+TILE_TRASHCANE	.\MapData.java	28;"	field	language:Java	class:MapData	access:default
+TILE_TRASHCANF	.\MapData.java	29;"	field	language:Java	class:MapData	access:default
+TILE_WALL_B	.\MapData.java	56;"	field	language:Java	class:MapData	access:default
+TILE_WALL_BL	.\MapData.java	61;"	field	language:Java	class:MapData	access:default
+TILE_WALL_BR	.\MapData.java	62;"	field	language:Java	class:MapData	access:default
+TILE_WALL_L	.\MapData.java	57;"	field	language:Java	class:MapData	access:default
+TILE_WALL_R	.\MapData.java	58;"	field	language:Java	class:MapData	access:default
+TILE_WALL_T	.\MapData.java	55;"	field	language:Java	class:MapData	access:default
+TILE_WALL_TL	.\MapData.java	59;"	field	language:Java	class:MapData	access:default
+TILE_WALL_TR	.\MapData.java	60;"	field	language:Java	class:MapData	access:default
+TOP	.\World.java	35;"	field	language:Java	class:World	access:default
+TRANSPARENT	.\MapData.java	17;"	field	language:Java	class:MapData	access:default
+transparent	.\MapData.java	74;"	field	language:Java	class:MapData	access:default
+trashcanE	.\MapData.java	83;"	field	language:Java	class:MapData	access:default
+trashcanF	.\MapData.java	84;"	field	language:Java	class:MapData	access:default
+UserData	.\UserData.java	14;"	class	language:Java
+UserData	.\UserData.java	29;"	method	language:Java	class:UserData	access:public	signature:(SimSEObject obj, String il, ActionListener a, boolean d, boolean ra, int x, int y)
+userDisplayed	.\UserData.java	20;"	field	language:Java	class:UserData	access:default
+userIcon	.\UserData.java	18;"	field	language:Java	class:UserData	access:default
+userIconLocation	.\UserData.java	17;"	field	language:Java	class:UserData	access:default
+userMenu	.\UserData.java	27;"	field	language:Java	class:UserData	access:default
+userObject	.\UserData.java	16;"	field	language:Java	class:UserData	access:default
+userSelected	.\World.java	47;"	field	language:Java	class:World	file:	access:private
+USER_SELECTED	.\MapData.java	20;"	field	language:Java	class:MapData	access:default
+wallB	.\MapData.java	87;"	field	language:Java	class:MapData	access:default
+wallBL	.\MapData.java	92;"	field	language:Java	class:MapData	access:default
+wallBR	.\MapData.java	93;"	field	language:Java	class:MapData	access:default
+wallL	.\MapData.java	88;"	field	language:Java	class:MapData	access:default
+wallR	.\MapData.java	89;"	field	language:Java	class:MapData	access:default
+wallT	.\MapData.java	86;"	field	language:Java	class:MapData	access:default
+wallTL	.\MapData.java	90;"	field	language:Java	class:MapData	access:default
+wallTR	.\MapData.java	91;"	field	language:Java	class:MapData	access:default
+windowClosing	.\MapEditorGUI.java	643;"	method	language:Java	class:MapEditorGUI.ExitListener	access:public	signature:(WindowEvent event)
+World	.\World.java	18;"	class	language:Java	inherits:SimSEMap,KeyListener,MouseListener,ActionListener
+World	.\World.java	59;"	method	language:Java	class:World	access:public	signature:()
+World	.\World.java	95;"	method	language:Java	class:World	access:public	signature:(String filename)
+xLocation	.\UserData.java	24;"	field	language:Java	class:UserData	access:default
+xViewable	.\World.java	28;"	field	language:Java	class:World	access:default
+X_MAPSIZE	.\MapData.java	14;"	field	language:Java	class:MapData	access:default
+yLocation	.\UserData.java	25;"	field	language:Java	class:UserData	access:default
+yViewable	.\World.java	29;"	field	language:Java	class:World	access:default
+Y_MAPSIZE	.\MapData.java	15;"	field	language:Java	class:MapData	access:default

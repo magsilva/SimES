@@ -17,26 +17,17 @@ public class ObjectFileManipulator
 	private final String END_OBJECT_TAG = new String("<endObjectType>");
 	private final String BEGIN_ATTRIBUTE_TAG = new String("<beginAttribute>");
 	private final String END_ATTRIBUTE_TAG = new String("<endAttribute>");
-
-
-private final String BEGIN_ALLOW_HIRE_FIRE_TAG = "<beginAllowHireFire>";
-private final String END_ALLOW_HIRE_FIRE_TAG = "<endAllowHireFire>";
-private boolean allowHireFire;
-
+	
+	
 	public ObjectFileManipulator(DefinedObjectTypes objs)
 	{
 		objects = objs;
 	}
-
-	public boolean isAllowHireFireChecked()
-	{
-		return allowHireFire;
-	}
-
-
+	
+	
 	public void loadFile(File inputFile) // loads the mdl file into memory, filling the "objects" data structure with the data from the file
 	{
-		objects.clearAll();
+		objects.clearAll();	
 		try
 		{
 			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
@@ -44,18 +35,12 @@ private boolean allowHireFire;
 			while(!foundBeginningOfObjectTypes)
 			{
 				String currentLine = reader.readLine(); // read in a line of text from the file
-				if(currentLine.equals(BEGIN_ALLOW_HIRE_FIRE_TAG))
-				{
-					allowHireFire = reader.readLine().equals("true");
-					reader.readLine();					// remove the end allowHireFire tag
-				}
-
 				if(currentLine.equals(BEGIN_OBJECT_TYPES_TAG)) // beginning of object types
 				{
 					foundBeginningOfObjectTypes = true;
 					boolean endOfObjectTypes = false;
 					while(!endOfObjectTypes)
-					{
+					{						
 						currentLine = reader.readLine();
 						if(currentLine.equals(END_OBJECT_TYPES_TAG)) // end of object types
 						{
@@ -65,7 +50,7 @@ private boolean allowHireFire;
 						{
 							if(currentLine.equals(BEGIN_OBJECT_TAG))
 							{
-								SimSEObjectType newObj = new SimSEObjectType(Integer.parseInt(reader.readLine()), reader.readLine()); // create a new object
+								SimSEObjectType newObj = new SimSEObjectType(Integer.parseInt(reader.readLine()), reader.readLine()); // create a new object 
 								// in memory with the type and name specified in the following 2 lines of the file
 								boolean endOfObj = false;
 								while(!endOfObj)
@@ -80,7 +65,7 @@ private boolean allowHireFire;
 									{
 										String attName = reader.readLine(); // get the attribute name
 										int type = Integer.parseInt(reader.readLine()); // get the attribute type
-
+										
 										String visString = reader.readLine(); // get attribute's visibility
 										boolean visible;
 										if(visString.equals("1"))
@@ -91,7 +76,7 @@ private boolean allowHireFire;
 										{
 											visible = false;
 										}
-
+										
 										String keyString = reader.readLine(); // get attribute's "key" variable
 										boolean key;
 										if(keyString.equals("1"))
@@ -102,7 +87,7 @@ private boolean allowHireFire;
 										{
 											key = false;
 										}
-
+										
 										String visAtEndString = reader.readLine(); // get attribute's visibility on completion
 										boolean visibleAtEnd;
 										if(visAtEndString.equals("1"))
@@ -112,8 +97,8 @@ private boolean allowHireFire;
 										else // visAtEndString equals 0
 										{
 											visibleAtEnd = false;
-										}
-
+										}								
+										
 										if(type == AttributeTypes.INTEGER) // integer attribute
 										{
 											String minValStr = reader.readLine(); // get the minimum value
@@ -128,7 +113,7 @@ private boolean allowHireFire;
 											{
 												maxVal = new Integer(maxValStr);
 											}
-											newObj.addAttribute(new NumericalAttribute(attName, type, visible, key, visibleAtEnd, minVal, maxVal, null, null));
+											newObj.addAttribute(new NumericalAttribute(attName, type, visible, key, visibleAtEnd, minVal, maxVal, null, null)); 
 												// add attribute to object
 										}
 										else if(type == AttributeTypes.DOUBLE) // double attribute
@@ -145,7 +130,7 @@ private boolean allowHireFire;
 											{
 												maxVal = new Double(maxValStr);
 											}
-
+											
 											String minDigStr = reader.readLine(); // get the minimum num digits
 											Integer minDig = null;
 											if(minDigStr.equals(BOUNDLESS) == false) // minimum num digits not boundless
@@ -157,7 +142,7 @@ private boolean allowHireFire;
 											if(maxDigStr.equals(BOUNDLESS) == false) // maximum num digits not boundless
 											{
 												maxDig = new Integer(maxDigStr);
-											}
+											}									
 											newObj.addAttribute(new NumericalAttribute(attName, type, visible, key, visibleAtEnd, minVal, maxVal, minDig, maxDig));
 												// add attribute to object
 										}

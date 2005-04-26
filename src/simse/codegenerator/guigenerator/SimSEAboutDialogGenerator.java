@@ -6,20 +6,15 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
-import simse.codegenerator.*;
 
-
-public class SimSEAboutDialogGenerator implements CodeGeneratorConstants
+public class SimSEAboutDialogGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	private String imageURL = "/simse/gui/icons/"; // location of images directory
-*/
 
 	private File directory; // directory to save generated code into
-
+	private String imageURL = "/simse/gui/icons/"; // location of images directory
 
 	public SimSEAboutDialogGenerator(File dir)
 	{
@@ -112,7 +107,7 @@ public class SimSEAboutDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("top.setBackground(new Color(102,102,102,255));");
 			writer.write(NEWLINE);
-			writer.write("JLabel lblLogo = new JLabel(new ImageIcon(ImageLoader.getImageFromURL(\""+imagesDirectory +"layout/simselogo-about.gif\")));");
+			writer.write("JLabel lblLogo = new JLabel(new ImageIcon(ImageLoader.getImageFromURL(\"/simse/gui/icons/layout/simselogo-about.gif\")));");
 			writer.write(NEWLINE);
 			writer.write("lblLogo.setBounds(0,0,100,200);");
 			writer.write(NEWLINE);
@@ -129,7 +124,7 @@ public class SimSEAboutDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("JLabel lblDesc = new JLabel(\"An Educational Software Engineering Simulation Environment\");");
 			writer.write(NEWLINE);
-			writer.write("JLabel lblUrl = new JLabel(\"http://www.ics.uci.edu/~emilyo/SimSE\");");
+			writer.write("JLabel lblUrl = new JLabel(\"http://www.ics.uci.edu/~emilyo/simse\");");
 			writer.write(NEWLINE);
 			writer.write("JLabel lblSpacer = new JLabel(\" \");");
 			writer.write(NEWLINE);

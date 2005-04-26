@@ -30,9 +30,6 @@ public class CodeGenerator
 	private File directory; // directory to generate code into
 
 
-public static boolean allowHireFire = true;
-
-
 	public CodeGenerator(DefinedObjectTypes objTypes, CreatedObjects objs, DefinedActionTypes actTypes, File iconDir,
 		Hashtable stsObjsToImages, Hashtable ruleObjsToImages, TileData[][] map, ArrayList userDatas, File imgDir, File dir)
 	{
@@ -41,11 +38,6 @@ public static boolean allowHireFire = true;
 		logicGen = new LogicGenerator(objTypes, actTypes, directory);
 		engineGen = new EngineGenerator(objs, directory);
 		guiGen = new GUIGenerator(objTypes, objs, actTypes, iconDir, stsObjsToImages, ruleObjsToImages, map, userDatas, imgDir, directory);
-	}
-
-	public void setAllowHireFire(boolean b)
-	{
-		allowHireFire = b;
 	}
 
 
@@ -199,8 +191,6 @@ public static boolean allowHireFire = true;
 			writer.write(NEWLINE);
 			writer.write("SimSEGUI gui = new SimSEGUI(e, s, l);");
 			writer.write(NEWLINE);
-writer.write("s.getClock().setGUI(gui);");
-writer.write(NEWLINE);
 			writer.write("gui.setBounds(0,0,1024,744);");
 			writer.write(NEWLINE);
 			writer.write("e.giveGUI(gui);");

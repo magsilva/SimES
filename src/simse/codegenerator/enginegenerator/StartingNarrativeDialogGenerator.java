@@ -1,4 +1,4 @@
-/* This class is responsible for generating all of the code for the StartingNarrativeDialog in the
+/* This class is responsible for generating all of the code for the StartingNarrativeDialog in the 
 engine component of the simulation */
 
 package simse.codegenerator.enginegenerator;
@@ -10,15 +10,12 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
-import simse.codegenerator.*;
 
-public class StartingNarrativeDialogGenerator implements CodeGeneratorConstants
+public class StartingNarrativeDialogGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private File directory; // directory to generate into
 	private CreatedObjects createdObjs; // start state objects
@@ -63,7 +60,7 @@ public class StartingNarrativeDialogGenerator implements CodeGeneratorConstants
 
 			// member variables:
 			writer.write("private JTextArea textArea;");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);		
 			writer.write("private JButton okButton;");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
@@ -159,7 +156,7 @@ public class StartingNarrativeDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 
-
+			
 			// methods:
 
 			// actionPerformed method:
@@ -190,5 +187,5 @@ public class StartingNarrativeDialogGenerator implements CodeGeneratorConstants
 			JOptionPane.showMessageDialog(null, ("Error writing file " + snFile.getPath() + ": " + e.toString()), "File IO Error",
 				JOptionPane.WARNING_MESSAGE);
 		}
-	}
+	}	
 }

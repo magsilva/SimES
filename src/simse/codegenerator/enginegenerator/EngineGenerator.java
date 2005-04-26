@@ -4,20 +4,17 @@ package simse.codegenerator.enginegenerator;
 
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.startstatebuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class EngineGenerator implements CodeGeneratorConstants
+public class EngineGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private File directory; // directory to generate into
 	private CreatedObjects createdObjs; // start state objects

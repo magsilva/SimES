@@ -5,20 +5,17 @@ package simse.codegenerator.logicgenerator;
 
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class MiscUpdaterGenerator implements CodeGeneratorConstants
+public class MiscUpdaterGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private File directory; // directory to generate into
 	private File muFile; // file to generate
@@ -103,7 +100,7 @@ public class MiscUpdaterGenerator implements CodeGeneratorConstants
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);		
 			writer.close();
 		}
 		catch (IOException e)
@@ -111,5 +108,5 @@ public class MiscUpdaterGenerator implements CodeGeneratorConstants
 			JOptionPane.showMessageDialog(null, ("Error writing file " + muFile.getPath() + ": " + e.toString()), "File IO Error",
 				JOptionPane.WARNING_MESSAGE);
 		}
-	}
+	}	
 }

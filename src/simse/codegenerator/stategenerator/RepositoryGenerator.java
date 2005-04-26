@@ -5,20 +5,17 @@ package simse.codegenerator.stategenerator;
 
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class RepositoryGenerator implements CodeGeneratorConstants
+public class RepositoryGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private File directory; // directory to save generated code into
 	private DefinedObjectTypes objTypes; // holds all of the defined object types from an sso file
@@ -158,7 +155,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// "getAllActiveActions(SSObject) method:
 			writer.write("public Vector getAllActiveActions(SSObject a)");
 			writer.write(NEWLINE);
@@ -198,7 +195,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// "getAllInactiveActions(SSObject) method:
 			writer.write("public Vector getAllInactiveActions(SSObject a)");
 			writer.write(NEWLINE);
@@ -237,14 +234,14 @@ public class RepositoryGenerator implements CodeGeneratorConstants
 			writer.write("return all;");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
-			writer.write(NEWLINE);
-
+			writer.write(NEWLINE);	
+			writer.write(NEWLINE);	
+			
 			// removeFromAllActions method:
 			writer.write("public void removeFromAllActions(SSObject a)");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);	
 			writer.write(OPEN_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);	
 			// go through all action types:
 			for(int i=0; i<acts.size(); i++)
 			{
@@ -275,11 +272,11 @@ public class RepositoryGenerator implements CodeGeneratorConstants
 				}
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
-			}
+			}		
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 
 			// "get[ActionType]ActionStateRepository" methods:
 			for(int i=0; i<acts.size(); i++)
@@ -355,7 +352,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants
 			writer.write(getUpperCaseLeading(objType.getName()) + " " + objType.getName().toLowerCase() + " = (" + getUpperCaseLeading(objType.getName())
 				+ ")" + objType.getName().toLowerCase() + "s.elementAt(i);");
 			writer.write(NEWLINE);
-			writer.write("if(" + objType.getName().toLowerCase() + ".get" + getUpperCaseLeading(objType.getKey().getName()) + "()");
+			writer.write("if(" + objType.getName().toLowerCase() + ".get" + objType.getKey().getName() + "()");
 			if(objType.getKey().getType() == AttributeTypes.STRING) // string key attribute
 			{
 				writer.write(".equals(");
@@ -364,7 +361,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants
 			{
 				writer.write(" == ");
 			}
-			writer.write("a.get" + getUpperCaseLeading(objType.getKey().getName()) + "())");
+			writer.write("a.get" + objType.getKey().getName() + "())");
 			if(objType.getKey().getType() == AttributeTypes.STRING)
 			{
 				// add the extra (
@@ -384,13 +381,13 @@ public class RepositoryGenerator implements CodeGeneratorConstants
 			writer.write("if(add)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);				
 			writer.write(objType.getName().toLowerCase() + "s.add(a);");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);		
 
 			// "get" method:
 			Attribute keyAtt = objType.getKey();
@@ -423,12 +420,12 @@ public class RepositoryGenerator implements CodeGeneratorConstants
 			if(keyAtt.getType() == AttributeTypes.STRING) // string key attribute
 			{
 				writer.write("if(((" + getUpperCaseLeading(objType.getName()) + ")"	+ objType.getName().toLowerCase()
-					+ "s.elementAt(i)).get" + getUpperCaseLeading(keyAtt.getName()) + "().equals(" + keyAtt.getName().toLowerCase() + "))");
+					+ "s.elementAt(i)).get" + keyAtt.getName() + "().equals(" + keyAtt.getName().toLowerCase() + "))");
 			}
 			else // int, double, or boolean key attribute
 			{
 				writer.write("if(((" + getUpperCaseLeading(objType.getName()) + ")"	+ objType.getName().toLowerCase()
-					+ "s.elementAt(i)).get" + getUpperCaseLeading(keyAtt.getName()) + "() == " + keyAtt.getName().toLowerCase() + ")");
+					+ "s.elementAt(i)).get" + keyAtt.getName() + "() == " + keyAtt.getName().toLowerCase() + ")");
 			}
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);

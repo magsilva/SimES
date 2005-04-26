@@ -5,20 +5,17 @@ package simse.codegenerator.logicgenerator;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.modelbuilder.rulebuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class TriggerCheckerGenerator implements CodeGeneratorConstants
+public class TriggerCheckerGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private File directory; // directory to save generated code into
 	private DefinedActionTypes actTypes; // holds all of the defined action types from an ssa file
@@ -54,7 +51,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 			writer.write("import simse.state.*;");
 			writer.write(NEWLINE);
 			writer.write("import simse.gui.*;");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.write("import simse.adts.objects.*;");
 			writer.write(NEWLINE);
 			writer.write("import simse.adts.actions.*;");
@@ -107,7 +104,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 			{
 				generateTriggerChecker((ActionTypeTrigger)nonPrioritizedTriggers.elementAt(i), counter);
 				counter++;
-			}
+			}						
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
@@ -150,7 +147,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 							+ getUpperCaseLeading(SimSEObjectTypeTypes.getText(constraint.getSimSEObjectType().getType()))
 							+ "StateRepository().get" + getUpperCaseLeading(objTypeName) + "StateRepository().getAll();");
 								// generate it
-						writer.write(NEWLINE);
+						writer.write(NEWLINE); 
 						if(outerTrig instanceof UserActionTypeTrigger) // user trigger -- can be used by others
 						{
 							vectors.add(objTypeName.toLowerCase() + "s"); // add it to the list
@@ -169,7 +166,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 					writer.write(NEWLINE);
 					writer.write("boolean alreadyInAction = false;");
 					writer.write(NEWLINE);
-
+					
 					if((trig.getParticipant().getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE)
 						|| (trig.getParticipant().getSimSEObjectTypeType() == SimSEObjectTypeTypes.ARTIFACT)) // employees and artifacts can
 							//only be in one of these actions in this role at a time
@@ -193,8 +190,8 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 						writer.write(NEWLINE);
 						writer.write(CLOSED_BRACK);
 						writer.write(NEWLINE);
-					}
-
+					}					
+					
 					writer.write("if((alreadyInAction == false) ");
 
 					ActionTypeParticipantAttributeConstraint[] attConstraints = constraint.getAllAttributeConstraints();
@@ -337,18 +334,18 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 					writer.write(CLOSED_BRACK);
 					writer.write(NEWLINE);
 				}
-
+				
 				// RANDOM TRIGGER:
 				if((outerTrig instanceof RandomActionTypeTrigger) &&
 					(((RandomActionTypeTrigger)outerTrig).getFrequency() < 100.0)) // have to put the < 100 here because
 						// otherwise it might not always be triggered (if ran num is 100 and frequency is 100)
 				{
-					writer.write("if((ranNumGen.nextDouble() * 100.0) < " + (((RandomActionTypeTrigger)outerTrig).getFrequency())
+					writer.write("if((ranNumGen.nextDouble() * 100.0) < " + (((RandomActionTypeTrigger)outerTrig).getFrequency()) 
 						+ ")");
 					writer.write(NEWLINE);
 					writer.write(OPEN_BRACK);
-					writer.write(NEWLINE);
-				}
+					writer.write(NEWLINE);					
+				}	
 				writer.write("// set all overhead texts:");
 				writer.write(NEWLINE);
 				writer.write("Vector allPart = a.getAllParticipants();");
@@ -364,7 +361,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
 				if((outerTrig.getTriggerText() != null) && (outerTrig.getTriggerText().length() > 0)) // has trigger text
-				{
+				{					
 					writer.write("((Employee)tempObj).setOverheadText(\"" + outerTrig.getTriggerText() + "\");");
 					writer.write(NEWLINE);
 				}
@@ -390,14 +387,14 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 					Rule tRule = (Rule)trigRules.elementAt(i);
 					writer.write("ruleExec.update(gui, RuleExecutor.UPDATE_ONE, \"" + tRule.getName() + "\", a);");
 					writer.write(NEWLINE);
-				}
-
+				}		
+				
 				// game-ending:
 				if(outerTrig.isGameEndingTrigger())
 				{
 					writer.write("// stop game and give score:");
 					writer.write(NEWLINE);
-					writer.write(getUpperCaseLeading(action.getName()) + "Action t111 = (" + getUpperCaseLeading(action.getName())
+					writer.write(getUpperCaseLeading(action.getName()) + "Action t111 = (" + getUpperCaseLeading(action.getName()) 
 						+ "Action)a;");
 					writer.write(NEWLINE);
 					// find the scoring attribute:
@@ -430,15 +427,15 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 						writer.write("if(t111.getAll" + scoringPartTrig.getParticipant().getName() + "s().size() > 0)");
 						writer.write(NEWLINE);
 						writer.write(OPEN_BRACK);
-						writer.write(NEWLINE);
+						writer.write(NEWLINE);						
 						writer.write(getUpperCaseLeading(scoringPartConst.getSimSEObjectType().getName()) + " t = ("
-						+ getUpperCaseLeading(scoringPartConst.getSimSEObjectType().getName()) + ")(t111.getAll"
+						+ getUpperCaseLeading(scoringPartConst.getSimSEObjectType().getName()) + ")(t111.getAll" 
 						+ scoringPartTrig.getParticipant().getName() + "s().elementAt(0));");
 						writer.write(NEWLINE);
 						writer.write("if(t != null)");
 						writer.write(NEWLINE);
 						writer.write(OPEN_BRACK);
-						writer.write(NEWLINE);
+						writer.write(NEWLINE);							
 						if(scoringAttConst.getAttribute().getType() == AttributeTypes.INTEGER)
 						{
 							writer.write("int");
@@ -455,19 +452,19 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 						{
 							writer.write("boolean");
 						}
-						writer.write(" v = t.get" + scoringAttConst.getAttribute().getName() + "();");
+						writer.write(" v = t.get" + scoringAttConst.getAttribute().getName() + "();");						
 						writer.write(NEWLINE);
 						writer.write("state.getClock().stop();");
 						writer.write(NEWLINE);
 						writer.write("((SimSEGUI)gui).update();");
 						writer.write(NEWLINE);
 						writer.write("JOptionPane.showMessageDialog(null, (\"Your score is \" + v), \"Game over!\", JOptionPane.INFORMATION_MESSAGE);");
-						writer.write(NEWLINE);
+						writer.write(NEWLINE);						
 						writer.write(CLOSED_BRACK);
 						writer.write(NEWLINE);
 					}
-				}
-
+				}				
+				
 				// RANDOM TRIGGER:
 				if((outerTrig instanceof RandomActionTypeTrigger) &&
 					(((RandomActionTypeTrigger)outerTrig).getFrequency() < 100.0)) // have to put the < 100 here because
@@ -477,16 +474,16 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 					writer.write(NEWLINE);
 				}
 				writer.write(CLOSED_BRACK);
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);				
 			}
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// JOINING existing actions:
 			if(outerTrig instanceof UserActionTypeTrigger)
 			{
 				int cnt = counter + 2;
-				writer.write("Vector a" + cnt + "s = state.getActionStateRepository().get" + getUpperCaseLeading(action.getName())
+				writer.write("Vector a" + cnt + "s = state.getActionStateRepository().get" + getUpperCaseLeading(action.getName()) 
 					+ "ActionStateRepository().getAllActions();");
 				writer.write(NEWLINE);
 				writer.write("if(a" + cnt + "s.size() == 0)");
@@ -516,7 +513,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 				for(int j=0; j<parts.size(); j++)
 				{
 					ActionTypeParticipant part = (ActionTypeParticipant)parts.elementAt(j);
-					if(part.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) // employee participant, hence, a role this employee could
+					if(part.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) // employee participant, hence, a role this employee could 
 						// play
 					{
 						writer.write("if(a" + cnt + ".getAll" + part.getName() + "s().size() < ");
@@ -564,7 +561,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 							writer.write(NEWLINE);
 							writer.write(OPEN_BRACK);
 							writer.write(NEWLINE);
-							writer.write(getUpperCaseLeading(action.getName()) + "Action a" + cnt + "b = (" + getUpperCaseLeading(action.getName())
+							writer.write(getUpperCaseLeading(action.getName()) + "Action a" + cnt + "b = (" + getUpperCaseLeading(action.getName()) 
 								+ "Action)a" + cnt + "s.elementAt(k);");
 							writer.write(NEWLINE);
 							writer.write("if(a" + cnt + "b.getAll" + part.getName() + "s().contains(b" + cnt + "))");
@@ -594,14 +591,14 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 							}
 							writer.write("if((b" + cnt + " instanceof " + getUpperCaseLeading(tempType.getName()) + ")");
 							// go through all attribute constraints:
-							ActionTypeParticipantAttributeConstraint[] attConstraints =
+							ActionTypeParticipantAttributeConstraint[] attConstraints = 
 								outerTrig.getParticipantTrigger(part.getName()).getConstraint(tempType.getName()).getAllAttributeConstraints();
 							for(int m=0; m<attConstraints.length; m++)
 							{
 								ActionTypeParticipantAttributeConstraint attConst = attConstraints[m];
 								if(attConst.isConstrained())
 								{
-									writer.write(" && (((" + getUpperCaseLeading(tempType.getName()) + ")b" + cnt + ").get"
+									writer.write(" && (((" + getUpperCaseLeading(tempType.getName()) + ")b" + cnt + ").get" 
 										+ attConst.getAttribute().getName() + "() ");
 									if(attConst.getAttribute().getType() == AttributeTypes.STRING)
 									{
@@ -625,7 +622,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 							writer.write(")");
 							writer.write(NEWLINE);
 							writer.write(OPEN_BRACK);
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);				
 							writer.write("b" + cnt + ".addMenuItem(\"JOIN " + ((UserActionTypeTrigger)outerTrig).getMenuText() + "\");");
 							writer.write(NEWLINE);
 							writer.write(CLOSED_BRACK);
@@ -638,7 +635,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 						writer.write(CLOSED_BRACK);
 						writer.write(NEWLINE);
 						writer.write(CLOSED_BRACK);
-						writer.write(NEWLINE);
+						writer.write(NEWLINE);						
 					}
 				}
 				writer.write(CLOSED_BRACK);
@@ -657,8 +654,8 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 	{
 		return (s.substring(0, 1).toUpperCase() + s.substring(1));
 	}
-
-
+	
+	
 	private boolean vectorContainsString(Vector v, String s)
 	{
 		for(int i=0; i<v.size(); i++)
@@ -670,9 +667,9 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 			}
 		}
 		return false;
-	}
-
-
+	}	
+	
+	
 	private void initializeTriggerLists() // gets the triggers in prioritized order according to their priority
 	{
 		// initialize lists:
@@ -718,6 +715,6 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants
 					}
 				}
 			}
-		}
+		}	
 	}
 }

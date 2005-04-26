@@ -5,26 +5,22 @@ package simse.codegenerator.guigenerator;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.startstatebuilder.*;
 import simse.modelbuilder.graphicsbuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class TabPanelGenerator implements CodeGeneratorConstants
+public class TabPanelGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	private String imageDirURL = "/simse/gui/icons/"; // path of image directory
-	*/
 
 	private File directory; // directory to save generated code into
 	private DefinedObjectTypes objTypes; // holds all of the defined object types from an sso file
 	private Hashtable objsToImages; // maps SimSEObjects (keys) to pathname (String) of image file (values)
-
+	private String imageDirURL = "/simse/gui/icons/"; // path of image directory
 
 	public TabPanelGenerator(DefinedObjectTypes dots, Hashtable oToI, File dir)
 	{
@@ -44,17 +40,6 @@ public class TabPanelGenerator implements CodeGeneratorConstants
 		}
 		try
 		{
-			String dotEmpName = "";
-
-			Vector vEmp = objTypes.getAllObjectTypesOfType(SimSEObjectTypeTypes.EMPLOYEE);
-
-			for (int i = 0; i < vEmp.size();i++)
-			{
-				SimSEObjectType sso = (SimSEObjectType)vEmp.elementAt(i);
-				dotEmpName = sso.getName();
-			}
-
-
 			FileWriter writer = new FileWriter(tabPanelFile);
 			writer.write("package simse.gui;");
 			writer.write(NEWLINE);
@@ -88,7 +73,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants
 			writer.write("import java.io.*;");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-			writer.write("public class TabPanel extends JPanel implements ActionListener, MouseListener");
+			writer.write("public class TabPanel extends JPanel implements ActionListener");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -138,26 +123,8 @@ public class TabPanelGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("private JButton[] toolButton;");
 			writer.write(NEWLINE);
-
-if (CodeGenerator.allowHireFire)
-{
-writer.write(NEWLINE);
-writer.write("private JButton[] hireableEmployeeButton;			// list of hireable employees");
-writer.write(NEWLINE);
-writer.write("private JPanel hireableButtonsPane;");
-writer.write(NEWLINE);
-writer.write("private String selectedTabString;");
-writer.write(NEWLINE);
-}
-
-			writer.write("private Employee rightClickedEmployee;");
-			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("private State state;");
-			writer.write(NEWLINE);
-			writer.write("private Logic logic;");
-			writer.write(NEWLINE);
-			writer.write("private SimSEGUI gui;");
 			writer.write(NEWLINE);
 			writer.write("private Hashtable objsToImages; // maps Objects (keys) to ImageIcons (values)");
 			writer.write(NEWLINE);
@@ -183,22 +150,13 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 
 			// constructor:
-			writer.write("public TabPanel(SimSEGUI g, State s, Logic l, AttributePanel a)");
+			writer.write("public TabPanel(State s, AttributePanel a)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
-if (CodeGenerator.allowHireFire)
-{
-writer.write("selectedTabString = \"\";");
-writer.write(NEWLINE);
-}
-			writer.write("logic = l;");
-			writer.write(NEWLINE);
-			writer.write("gui = g;");
+			writer.write("guiChanged = true;");
 			writer.write(NEWLINE);
 			writer.write("state = s;");
-			writer.write(NEWLINE);
-			writer.write("guiChanged = true;");
 			writer.write(NEWLINE);
 			writer.write("attributePane = a;");
 			writer.write(NEWLINE);
@@ -208,11 +166,11 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			for(int i=0; i<types.length; i++)
 			{
-				writer.write(types[i].toLowerCase() + "Frame = new " + types[i] + "sAtAGlanceFrame(state,gui);");
+				writer.write(types[i].toLowerCase() + "Frame = new " + types[i] + "sAtAGlanceFrame(state);");
 				writer.write(NEWLINE);
 			}
 			writer.write(NEWLINE);;
-			writer.write("border = ImageLoader.getImageFromURL(\"" + imagesDirectory + "layout/border.gif\");");
+			writer.write("border = ImageLoader.getImageFromURL(\"" + imageDirURL + "layout/border.gif\");");
 			writer.write(NEWLINE);
 			writer.write("allIcon = new ImageIcon(ImageLoader.getImageFromURL(\"/simse/gui/icons/all.GIF\"));");
 			writer.write(NEWLINE);
@@ -233,7 +191,7 @@ writer.write(NEWLINE);
 			writer.write("setLayout(gbl);");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-//	writer.write("JPanel mainPane = new JPanel(gbl);");
+			writer.write("JPanel mainPane = new JPanel(gbl);");
 			writer.write(NEWLINE);
 			writer.write("logoPane = new LogoPanel();");
 			writer.write(NEWLINE);
@@ -252,27 +210,15 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("JScrollPane buttonsScrollPane = new JScrollPane(buttonsPane, JScrollPane.VERTICAL_SCROLLBAR_NEVER ,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);");
 			writer.write(NEWLINE);
-			writer.write("buttonsScrollPane.setPreferredSize(new Dimension(292, 75));");
+			writer.write("buttonsScrollPane.setPreferredSize(new Dimension(295, 80));");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
-if (CodeGenerator.allowHireFire)
-{
-writer.write("hireableButtonsPane = new JPanel(gbl);");
-writer.write(NEWLINE);
-writer.write("hireableButtonsPane.setBackground(new Color(69,135,156,255)); // dark green color");
-writer.write(NEWLINE);
-writer.write("JScrollPane hireableButtonsScrollPane = new JScrollPane(hireableButtonsPane, JScrollPane.VERTICAL_SCROLLBAR_NEVER ,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);");
-writer.write(NEWLINE);
-writer.write("hireableButtonsScrollPane.setPreferredSize(new Dimension(292, 75));");
-writer.write(NEWLINE);
-}
 			writer.write("generateButtons();");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("// Add panes and labels to main pane:");
-//writer.write(NEWLINE);
-//writer.write("mainPane.add(buttonsScrollPane);");
+			writer.write(NEWLINE);
+			writer.write("mainPane.add(buttonsScrollPane);");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("GridBagConstraints gbc;");
@@ -287,29 +233,6 @@ writer.write(NEWLINE);
 			writer.write("add(logoPane);");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
-writer.write("// Add panes and labels to main pane");
-writer.write(NEWLINE);
-writer.write("gbc = new GridBagConstraints(1,0,1,1,1,1, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(0,0,10,0), 0,0);");
-writer.write(NEWLINE);
-writer.write("gbl.setConstraints(buttonsScrollPane,gbc);");
-writer.write(NEWLINE);
-writer.write("add(buttonsScrollPane);");
-writer.write(NEWLINE);
-writer.write(NEWLINE);
-
-if (CodeGenerator.allowHireFire)
-{
-writer.write("// add the hireable buttons pane");
-writer.write(NEWLINE);
-writer.write("gbc = new GridBagConstraints(2,0,1,1,1,1, GridBagConstraints.SOUTHEAST, GridBagConstraints.NONE, new Insets(0,0,10,40), 0,0);");
-writer.write(NEWLINE);
-writer.write("gbl.setConstraints(hireableButtonsScrollPane,gbc);");
-writer.write(NEWLINE);
-writer.write("add(hireableButtonsScrollPane);");
-writer.write(NEWLINE);
-}
-/*
 			writer.write("// Add main pane to this pane:");
 			writer.write(NEWLINE);
 			writer.write("gbc = new GridBagConstraints(1,0,1,1,1,0,GridBagConstraints.WEST,GridBagConstraints.NONE, new Insets(5,0,0,0), 0,0);");
@@ -319,16 +242,12 @@ writer.write(NEWLINE);
 			writer.write("add(mainPane);");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-*/
 			writer.write("setPreferredSize(new Dimension(800, 100));");
 			writer.write(NEWLINE);
-			writer.write("updateImages(EMPLOYEE);");
+			writer.write("updateImages();");
 			writer.write(NEWLINE);
-if (CodeGenerator.allowHireFire)
-{
-			writer.write("setPotentialEmployees();");
+			writer.write("update();");
 			writer.write(NEWLINE);
-}
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
@@ -358,16 +277,6 @@ if (CodeGenerator.allowHireFire)
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
-if (CodeGenerator.allowHireFire)
-{
-writer.write("g.setColor(Color.WHITE);");
-writer.write(NEWLINE);
-writer.write("g.drawString(selectedTabString,460,10);");
-writer.write(NEWLINE);
-writer.write("g.drawString(\"Potential Employees\",800,10);");
-writer.write(NEWLINE);
-}
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
@@ -387,11 +296,6 @@ writer.write(NEWLINE);
 			writer.write("projectButton = new JButton[MAXBUTTONS];");
 			writer.write(NEWLINE);
 			writer.write("toolButton = new JButton[MAXBUTTONS];");
-if (CodeGenerator.allowHireFire)
-{
-writer.write(NEWLINE);
-writer.write("hireableEmployeeButton = new JButton[MAXBUTTONS];");
-}
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("// generate list of <maxbuttons>:");
@@ -420,61 +324,26 @@ writer.write("hireableEmployeeButton = new JButton[MAXBUTTONS];");
 			writer.write(NEWLINE);
 			writer.write("toolButton[i].addActionListener(this);");
 			writer.write(NEWLINE);
-			writer.write("JPopupMenu popup = new JPopupMenu();");
-			writer.write(NEWLINE);
-			writer.write("PopupListener popupListener = new PopupListener(popup,gui);");
-			writer.write(NEWLINE);
-			writer.write("popupListener.setEnabled(false);");
-			writer.write(NEWLINE);
-			writer.write("employeeButton[i].addMouseListener(popupListener);");
-			writer.write(NEWLINE);
-			writer.write("employeeButton[i].addMouseListener(this);");
-			writer.write(NEWLINE);
-
-if (CodeGenerator.allowHireFire)
-{
-writer.write("hireableEmployeeButton[i] = new JButton();");
-writer.write(NEWLINE);
-writer.write("hireableEmployeeButton[i].addActionListener(this);");
-writer.write(NEWLINE);
-
-writer.write("popup = new JPopupMenu();");
-writer.write(NEWLINE);
-writer.write("popupListener = new PopupListener(popup,gui);");
-writer.write(NEWLINE);
-writer.write("popupListener.setEnabled(false);");
-writer.write(NEWLINE);
-writer.write("hireableEmployeeButton[i].addMouseListener(popupListener);");
-writer.write(NEWLINE);
-writer.write("hireableEmployeeButton[i].addMouseListener(this);");
-writer.write(NEWLINE);
-
-}
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-			writer.write("setButtonConstraints(artifactButton, buttonsPane);");
+			writer.write("setButtonConstraints(artifactButton);");
 			writer.write(NEWLINE);
-			writer.write("setButtonConstraints(customerButton, buttonsPane);");
+			writer.write("setButtonConstraints(customerButton);");
 			writer.write(NEWLINE);
-			writer.write("setButtonConstraints(employeeButton, buttonsPane);");
+			writer.write("setButtonConstraints(employeeButton);");
 			writer.write(NEWLINE);
-			writer.write("setButtonConstraints(projectButton, buttonsPane);");
+			writer.write("setButtonConstraints(projectButton);");
 			writer.write(NEWLINE);
-			writer.write("setButtonConstraints(toolButton, buttonsPane);");
+			writer.write("setButtonConstraints(toolButton);");
 			writer.write(NEWLINE);
-if (CodeGenerator.allowHireFire)
-{
-writer.write("setButtonConstraints(hireableEmployeeButton, hireableButtonsPane);");
-writer.write(NEWLINE);
-}
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 
 			// setButtonConstraints function:
-			writer.write("public void setButtonConstraints(JButton[] button, JPanel pane)");
+			writer.write("public void setButtonConstraints(JButton[] button)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -499,30 +368,6 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("index = shift + i;");
 			writer.write(NEWLINE);
-
-
-
-if (CodeGenerator.allowHireFire)
-{
-
-	writer.write("if (button == hireableEmployeeButton || button == employeeButton)");
-}
-else
-{
-	writer.write("if (button == employeeButton)");
-}
-
-			writer.write(NEWLINE);
-			writer.write(OPEN_BRACK);
-			writer.write(NEWLINE);
-
-
-			writer.write("PopupListener pListener = ((PopupListener)button[index].getMouseListeners()[1]);");
-			writer.write(NEWLINE);
-			writer.write("pListener.setEnabled(false);");
-			writer.write(NEWLINE);
-			writer.write(CLOSED_BRACK);
-
 			writer.write(NEWLINE);
 			writer.write("button[index].setIcon(null);");
 			writer.write(NEWLINE);
@@ -536,7 +381,7 @@ else
 			writer.write(NEWLINE);
 			writer.write("gbl.setConstraints(button[index], gbc);");
 			writer.write(NEWLINE);
-			writer.write("pane.add(button[index]);");
+			writer.write("buttonsPane.add(button[index]);");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
@@ -546,59 +391,6 @@ else
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
-
-
-
-
-
-
-
-writer.write("public void mouseClicked(MouseEvent me){}");
-writer.write(NEWLINE);
-writer.write("public void mousePressed(MouseEvent me){}");
-writer.write(NEWLINE);
-writer.write("public void mouseEntered(MouseEvent me){}");
-writer.write(NEWLINE);
-writer.write("public void mouseExited(MouseEvent me){}");
-writer.write(NEWLINE);
-writer.write(NEWLINE);
-writer.write("public void mouseReleased(MouseEvent me)");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("if (me.getComponent() instanceof JButton)");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("JButton button = (JButton)me.getComponent();");
-writer.write(NEWLINE);
-writer.write("ImageIcon ico = (ImageIcon)button.getIcon();");
-writer.write(NEWLINE);
-writer.write("if (ico != null)");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("rightClickedEmployee = (Employee)buttonsToObjs.get(button);");
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-writer.write(NEWLINE);
-writer.write(NEWLINE);
-
-
-
-
-
-
-
-
-
-
 
 			// actionPerformed function:
 			writer.write("public void actionPerformed(ActionEvent evt)");
@@ -609,22 +401,6 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("Object source = evt.getSource();");
 			writer.write(NEWLINE);
-
-
-writer.write("if (source instanceof JMenuItem)");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("JMenuItem jm = (JMenuItem)source;");
-writer.write(NEWLINE);
-writer.write("logic.getMenuInputManager().menuItemSelected(rightClickedEmployee, jm.getText(), gui);");
-writer.write(NEWLINE);
-writer.write("gui.getWorld().update();");
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-
-
 			writer.write("if(source instanceof JButton)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
@@ -703,102 +479,6 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 
-if(CodeGenerator.allowHireFire)
-{
-//setPotentialEmployees button
-writer.write("public void setPotentialEmployees()");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("hireableButtonsPane.removeAll();");
-writer.write(NEWLINE);
-writer.write("Vector tmpEmps = state.getEmployeeStateRepository().getAll();");
-writer.write(NEWLINE);
-writer.write("setButtonConstraints(hireableEmployeeButton,hireableButtonsPane);");
-writer.write(NEWLINE);
-writer.write("int j = 0;");
-writer.write(NEWLINE);
-writer.write("for (int i = 0; i < tmpEmps.size();i++)");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("Employee e = (Employee)(tmpEmps.elementAt(i));");
-writer.write(NEWLINE);
-writer.write("boolean hired = e.getHired();");
-writer.write(NEWLINE);
-writer.write("if (!hired)");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("JButton button = hireableEmployeeButton[j++];");
-writer.write(NEWLINE);
-writer.write("button.setEnabled(true);");
-writer.write(NEWLINE);
-writer.write("button.setIcon((ImageIcon)(objsToImages.get(e)));");
-writer.write(NEWLINE);
-writer.write("if(e.equals(objInFocus))");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("button.setBackground(btnBlue);");
-writer.write(NEWLINE);
-writer.write("button.setBorder(selectedBorder);");
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-writer.write("else");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("button.setBackground(Color.WHITE);");
-writer.write(NEWLINE);
-writer.write("button.setBorder(defaultBorder);");
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-writer.write(NEWLINE);
-writer.write("PopupListener pListener = ((PopupListener)button.getMouseListeners()[1]);");
-writer.write(NEWLINE);
-writer.write("pListener.setEnabled(true);");
-writer.write(NEWLINE);
-writer.write("JPopupMenu p = pListener.getPopupMenu();");
-writer.write(NEWLINE);
-writer.write("p.removeAll();");
-writer.write(NEWLINE);
-
-writer.write("Vector v = e.getMenu();");
-writer.write(NEWLINE);
-writer.write("for (int k = 0; k < v.size();k++)");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("JMenuItem tempItem = new JMenuItem((String)v.elementAt(k));");
-writer.write(NEWLINE);
-writer.write("tempItem.addActionListener(this);");
-writer.write(NEWLINE);
-writer.write("p.add(tempItem);");
-writer.write(NEWLINE);
-writer.write("buttonsToObjs.put(button, e);");
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-
-//writer.write("JMenuItem tempItem = new JMenuItem(\"Hire Employee - \" + hw.getName());");
-
-
-
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-writer.write(NEWLINE);
-writer.write(NEWLINE);
-}
-
-
-
 			// setObjectInFocus function:
 			writer.write("public void setObjectInFocus(SSObject obj)");
 			writer.write(NEWLINE);
@@ -823,24 +503,10 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-			writer.write(NEWLINE);
-			writer.write(NEWLINE);
 
 
-// update function
-writer.write("public void update()");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("update(logoPane.getSelectedTabIndex());");
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-writer.write(NEWLINE);
-writer.write(NEWLINE);
-
-			// update(int index) function
-			writer.write("public void update(int index)");
+			// update function:
+			writer.write("public void update()");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -861,7 +527,7 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("// update images:");
 			writer.write(NEWLINE);
-writer.write("updateImages(index);");
+			writer.write("updateImages();");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("JButton[] buttonList;");
@@ -869,7 +535,7 @@ writer.write("updateImages(index);");
 			writer.write("Vector objs;");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-writer.write("switch (index)");
+			writer.write("switch (logoPane.getSelectedTabIndex())");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -879,11 +545,6 @@ writer.write("switch (index)");
 			writer.write(NEWLINE);
 			writer.write("objs = state.getArtifactStateRepository().getAll();");
 			writer.write(NEWLINE);
-if (CodeGenerator.allowHireFire)
-{
-writer.write("selectedTabString = \"Artifacts\";");
-writer.write(NEWLINE);
-}
 			writer.write("break;");
 			writer.write(NEWLINE);
 			writer.write("case CUSTOMER:");
@@ -892,11 +553,6 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("objs = state.getCustomerStateRepository().getAll();");
 			writer.write(NEWLINE);
-if (CodeGenerator.allowHireFire)
-{
-writer.write("selectedTabString = \"Customers\";");
-writer.write(NEWLINE);
-}
 			writer.write("break;");
 			writer.write(NEWLINE);
 			writer.write("case EMPLOYEE:");
@@ -905,11 +561,6 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("objs = state.getEmployeeStateRepository().getAll();");
 			writer.write(NEWLINE);
-if (CodeGenerator.allowHireFire)
-{
-writer.write("selectedTabString = \"Employees\";");
-writer.write(NEWLINE);
-}
 			writer.write("break;");
 			writer.write(NEWLINE);
 			writer.write("case PROJECT:");
@@ -918,11 +569,6 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("objs = state.getProjectStateRepository().getAll();");
 			writer.write(NEWLINE);
-if (CodeGenerator.allowHireFire)
-{
-writer.write("selectedTabString = \" Projects\";");
-writer.write(NEWLINE);
-}
 			writer.write("break;");
 			writer.write(NEWLINE);
 			writer.write("case TOOL:");
@@ -931,11 +577,6 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("objs = state.getToolStateRepository().getAll();");
 			writer.write(NEWLINE);
-if (CodeGenerator.allowHireFire)
-{
-writer.write("selectedTabString = \"  Tools\";");
-writer.write(NEWLINE);
-}
 			writer.write("break;");
 			writer.write(NEWLINE);
 			writer.write("default:");
@@ -946,10 +587,10 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-writer.write("setButtonConstraints(buttonList,buttonsPane);");
+			writer.write("setButtonConstraints(buttonList);");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-//writer.write("if(index != -1) // there is a type of object selected");
+			writer.write("if(logoPane.getSelectedTabIndex() != -1) // there is a type of object selected");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -972,15 +613,6 @@ writer.write("setButtonConstraints(buttonList,buttonsPane);");
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
-if (CodeGenerator.allowHireFire)
-{
-writer.write("setPotentialEmployees();");
-writer.write(NEWLINE);
-
-}
-writer.write("int j = 0;");
-writer.write(NEWLINE);
 			writer.write("// go through all objects:");
 			writer.write(NEWLINE);
 			writer.write("for(int i=0; i<objs.size(); i++)");
@@ -991,30 +623,11 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write("JButton button = null;");
 			writer.write(NEWLINE);
-
-
-if (CodeGenerator.allowHireFire)
-{
-writer.write("if (selectedTabString.equalsIgnoreCase(\"Employees\") )");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("Employee e = (Employee)obj;");
-writer.write(NEWLINE);
-writer.write("boolean hired = e.getHired();");
-writer.write(NEWLINE);
-writer.write("if (!hired)");
-writer.write(NEWLINE);
-writer.write("continue;");
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-}
 			writer.write("if(atLeastOneObj)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
-			writer.write("button = buttonList[++j];");
+			writer.write("button = buttonList[i + 1];");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
@@ -1022,49 +635,10 @@ writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
-			writer.write("button = buttonList[j++];");
+			writer.write("button = buttonList[i];");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
-
-
-
-//writer.write("if (selectedTabString.equalsIgnoreCase(\"Employees\") )");
-writer.write("if (index == EMPLOYEE)");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("Employee e = (Employee)obj;");
-writer.write(NEWLINE);
-writer.write("PopupListener pListener = ((PopupListener)button.getMouseListeners()[1]);");
-writer.write(NEWLINE);
-writer.write("pListener.setEnabled(true);");
-writer.write(NEWLINE);
-writer.write("JPopupMenu p = pListener.getPopupMenu();");
-writer.write(NEWLINE);
-writer.write("p.removeAll();");
-writer.write(NEWLINE);
-
-writer.write("Vector v = e.getMenu();");
-writer.write(NEWLINE);
-writer.write("for (int k = 0; k < v.size();k++)");
-writer.write(NEWLINE);
-writer.write(OPEN_BRACK);
-writer.write(NEWLINE);
-writer.write("JMenuItem tempItem = new JMenuItem((String)v.elementAt(k));");
-writer.write(NEWLINE);
-writer.write("tempItem.addActionListener(this);");
-writer.write(NEWLINE);
-writer.write("p.add(tempItem);");
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-writer.write(CLOSED_BRACK);
-writer.write(NEWLINE);
-
-
-
 			writer.write("button.setEnabled(true);");
 			writer.write(NEWLINE);
 			writer.write("button.setIcon((ImageIcon)(objsToImages.get(obj)));");
@@ -1126,13 +700,13 @@ writer.write(NEWLINE);
 
 
 			// updateImages function:
-writer.write("private void updateImages(int index)");
+			writer.write("private void updateImages()");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
 			writer.write("Vector objs;");
 			writer.write(NEWLINE);
-writer.write("switch(index)");
+			writer.write("switch(logoPane.getSelectedTabIndex())");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -1258,7 +832,7 @@ writer.write("switch(index)");
 							{
 								putElse = true;
 							}
-							writer.write("if(p.get" + getUpperCaseLeading(obj.getKey().getAttribute().getName()) + "()");
+							writer.write("if(p.get" + obj.getKey().getAttribute().getName() + "()");
 							if(obj.getKey().getAttribute().getType() == AttributeTypes.STRING) // string att
 							{
 								writer.write(".equals(\"" + obj.getKey().getValue().toString() + "\"))");
@@ -1272,7 +846,7 @@ writer.write("switch(index)");
 							writer.write(NEWLINE);
 							if(((objsToImages.get(obj)) != null) && (((String)objsToImages.get(obj)).length() > 0))
 							{
-								String imagePath = (iconsDirectory + ((String)objsToImages.get(obj)));
+								String imagePath = (imageDirURL + ((String)objsToImages.get(obj)));
 								writer.write("url = \"" + imagePath + "\";");
 								writer.write(NEWLINE);
 							}

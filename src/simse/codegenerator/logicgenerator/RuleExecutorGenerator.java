@@ -6,21 +6,18 @@ import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.modelbuilder.rulebuilder.*;
 import simse.modelbuilder.startstatebuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class RuleExecutorGenerator implements CodeGeneratorConstants
+public class RuleExecutorGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
-
+	
 	private File directory; // directory to save generated code into
 	private DefinedActionTypes actTypes; // holds all of the defined action types from an ssa file
 	private FileWriter writer;
@@ -29,7 +26,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 	private Vector prioritizedRules;
 	private Vector outerVariables; // for keeping track of which variables have been generated
 	private Vector warnings; // holds warning messages about any errors that are run into during generation
-
+	
 	public RuleExecutorGenerator(DefinedActionTypes dats, File dir)
 	{
 		actTypes = dats;
@@ -38,8 +35,8 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 		warnings = new Vector();
 		initializeRuleLists();
 	}
-
-
+	
+	
 	public void generate()
 	{
 		try
@@ -68,18 +65,18 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// member variables:
 			writer.write("public static final int UPDATE_ALL_CONTINUOUS = 0;");
 			writer.write(NEWLINE);
 			writer.write("public static final int UPDATE_ONE = 1;");
 			writer.write(NEWLINE);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.write("private State state;");
 			writer.write(NEWLINE);
 			writer.write("private Random ranNumGen;");
-			writer.write(NEWLINE);
-
+			writer.write(NEWLINE);			
+			
 			// constructor:
 			writer.write("public RuleExecutor(State s)");
 			writer.write(NEWLINE);
@@ -91,7 +88,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// update function:
 			writer.write("public void update(JFrame gui, int updateInstructions, String ruleName, simse.adts.actions.Action action)");
 			writer.write(NEWLINE);
@@ -111,8 +108,8 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
-
+			
+			
 			// checkAllMins method:
 			writer.write("private void checkAllMins(JFrame parent)");
 			writer.write(NEWLINE);
@@ -166,7 +163,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
-
+				
 				// get the destroyer text from the highest priority destroyer:
 				String destText = new String();
 				if(act.getAllDestroyers().size() > 0) // has at least one destroyer
@@ -183,7 +180,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 					}
 					destText = highestPriDest.getDestroyerText();
 					if((destText.equals(null) == false) && (destText.length() > 0)) // has destroyer text
-					{
+					{				
 						writer.write("Vector c = b.getAllParticipants();");
 						writer.write(NEWLINE);
 						writer.write("for(int j=0; j<c.size(); j++)");
@@ -212,7 +209,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 						writer.write(NEWLINE);
 					}
 				}
-
+							
 				// get any destroyer rules:
 				Vector destRules = act.getAllDestroyerRules();
 				for(int j=0; j<destRules.size(); j++)
@@ -223,7 +220,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 				}
 				writer.write("state.getActionStateRepository().get" + getUpperCaseLeading(act.getName()) + "ActionStateRepository().remove(b);");
 				writer.write(NEWLINE);
-
+				
 				// game-ending?:
 				// get the highest priority destroyer:
 				if(act.getAllDestroyers().size() > 0) // has at least one destroyer
@@ -238,12 +235,12 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 							highestPriDest = tempDest;
 						}
 					}
-
+				
 					if(highestPriDest.isGameEndingDestroyer())
 					{
 						writer.write("// stop game and give score:");
 						writer.write(NEWLINE);
-						writer.write(getUpperCaseLeading(act.getName()) + "Action t111 = (" + getUpperCaseLeading(act.getName())
+						writer.write(getUpperCaseLeading(act.getName()) + "Action t111 = (" + getUpperCaseLeading(act.getName()) 
 							+ "Action)b;");
 						writer.write(NEWLINE);
 						// find the scoring attribute:
@@ -276,15 +273,15 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 							writer.write("if(t111.getAll" + scoringPartDest.getParticipant().getName() + "s().size() > 0)");
 							writer.write(NEWLINE);
 							writer.write(OPEN_BRACK);
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);						
 							writer.write(getUpperCaseLeading(scoringPartConst.getSimSEObjectType().getName()) + " t = ("
-							+ getUpperCaseLeading(scoringPartConst.getSimSEObjectType().getName()) + ")(t111.getAll"
+							+ getUpperCaseLeading(scoringPartConst.getSimSEObjectType().getName()) + ")(t111.getAll" 
 							+ scoringPartDest.getParticipant().getName() + "s().elementAt(0));");
 							writer.write(NEWLINE);
 							writer.write("if(t != null)");
 							writer.write(NEWLINE);
 							writer.write(OPEN_BRACK);
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);							
 							if(scoringAttConst.getAttribute().getType() == AttributeTypes.INTEGER)
 							{
 								writer.write("int");
@@ -301,22 +298,22 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 							{
 								writer.write("boolean");
 							}
-							writer.write(" v = t.get" + scoringAttConst.getAttribute().getName() + "();");
+							writer.write(" v = t.get" + scoringAttConst.getAttribute().getName() + "();");						
 							writer.write(NEWLINE);
 							writer.write("state.getClock().stop();");
 							writer.write(NEWLINE);
 							writer.write("((SimSEGUI)parent).update();");
 							writer.write(NEWLINE);
 							writer.write("JOptionPane.showMessageDialog(null, (\"Your score is \" + v), \"Game over!\", JOptionPane.INFORMATION_MESSAGE);");
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);							
 							writer.write(CLOSED_BRACK);
 							writer.write(NEWLINE);
 							writer.write(CLOSED_BRACK);
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);							
 						}
-					}
+					}				
 				}
-
+				
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
 				writer.write(CLOSED_BRACK);
@@ -328,7 +325,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.close();
-
+			
 			// generate warnings, if any:
 			if(warnings.size() > 0)
 			{
@@ -342,8 +339,8 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 				JOptionPane.WARNING_MESSAGE);
 		}
 	}
-
-
+	
+	
 	private void generateRuleExecutor(Rule rule)
 	{
 		try
@@ -359,20 +356,20 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 					outerVariables.add(new String(action.getName().toLowerCase() + "Acts")); // add the variable name to the record-keeping Vector
 					writer.write("Vector " + action.getName().toLowerCase() + "Acts = state.getActionStateRepository().get"
 						+ getUpperCaseLeading(action.getName()) + "ActionStateRepository().getAllActions();");
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);					
 				}
 				writer.write("if((updateInstructions ==");
 				if(rule.getTiming() == RuleTiming.CONTINUOUS) // continuous rule
 				{
 					writer.write("UPDATE_ALL_CONTINUOUS))");
-				}
+				}				
 				else if((rule.getTiming() == RuleTiming.TRIGGER) || (rule.getTiming() == RuleTiming.DESTROYER)) // trigger/destroyer rule
 				{
 					writer.write("UPDATE_ONE) && (ruleName.equals(\"" + rule.getName() + "\")))");
 				}
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);					
 				writer.write("for(int i=0; i<" + action.getName().toLowerCase() + "Acts.size(); i++)");
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
@@ -412,18 +409,18 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
-
+				
 				// get rule input(s), if any:
 				Vector rInputs = effRule.getAllRuleInputs();
 				for(int j=0; j<rInputs.size(); j++)
 				{
 					RuleInput input = (RuleInput)rInputs.elementAt(j);
 					String inputName = input.getName();
-
+					
 					if((input.getType().equals(InputType.DOUBLE)) || (input.getType().equals(InputType.INTEGER))) // numerical rule input type
 					{
 						writer.write("double input" + inputName + " = 0;"); // have to initialize it to something or else it doesn't work!
-						writer.write(NEWLINE);
+						writer.write(NEWLINE);													
 						writer.write("boolean gotValidInput" + j + " = false;");
 						writer.write(NEWLINE);
 						if(j == 0) // on first rule input
@@ -434,7 +431,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 						writer.write("if(!cancel)");
 						writer.write(NEWLINE);
 						writer.write(OPEN_BRACK);
-						writer.write(NEWLINE);
+						writer.write(NEWLINE);						
 						writer.write("while(!gotValidInput" + j + ")");
 						writer.write(NEWLINE);
 						writer.write(OPEN_BRACK);
@@ -468,8 +465,8 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 						}
 						if(input.getCondition().isConstrained()) // input has a condition
 						{
-							writer.write("if(temp." + tempTypeStr + "Value() " + input.getCondition().getGuard() + " "
-								+ input.getCondition().getValue() + ")");
+							writer.write("if(temp." + tempTypeStr + "Value() " + input.getCondition().getGuard() + " " 
+								+ input.getCondition().getValue() + ")");												
 							writer.write(NEWLINE);
 							writer.write(OPEN_BRACK);
 							writer.write(NEWLINE);
@@ -502,19 +499,19 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 						writer.write(CLOSED_BRACK);
 						writer.write(NEWLINE);
 						writer.write(CLOSED_BRACK);
-						writer.write(NEWLINE);
+						writer.write(NEWLINE);												
 						writer.write("else // action cancelled");
 						writer.write(NEWLINE);
 						writer.write(OPEN_BRACK);
 						writer.write(NEWLINE);
 						if(input.isCancelable())
 						{
-							writer.write("state.getActionStateRepository().get" + getUpperCaseLeading(action.getName())
+							writer.write("state.getActionStateRepository().get" + getUpperCaseLeading(action.getName()) 
 								+ "ActionStateRepository().remove(" + action.getName().toLowerCase() + "Act);");
 							writer.write(NEWLINE);
 							writer.write("cancel = true;");
 							writer.write(NEWLINE);
-							writer.write("break;");
+							writer.write("break;");							
 						}
 						else // not cancelable
 						{
@@ -524,7 +521,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 						writer.write(CLOSED_BRACK);
 						writer.write(NEWLINE);
 						writer.write(CLOSED_BRACK);
-						writer.write(NEWLINE);
+						writer.write(NEWLINE);	
 						writer.write(CLOSED_BRACK);
 						writer.write(NEWLINE);
 					}
@@ -533,7 +530,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 						if(input.getType().equals(InputType.STRING)) // string rule input type
 						{
 							writer.write("String input" + inputName + " = new String();");
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);												
 							writer.write("boolean gotValidInput" + j + " = false;");
 							writer.write(NEWLINE);
 							if(j == 0) // on first rule input
@@ -544,7 +541,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 							writer.write("if(!cancel)");
 							writer.write(NEWLINE);
 							writer.write(OPEN_BRACK);
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);							
 							writer.write("while(!gotValidInput" + j + ")");
 							writer.write(NEWLINE);
 							writer.write(OPEN_BRACK);
@@ -567,10 +564,10 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 							writer.write(NEWLINE);
 							if(input.isCancelable())
 							{
-								writer.write("state.getActionStateRepository().get" + getUpperCaseLeading(action.getName())
+								writer.write("state.getActionStateRepository().get" + getUpperCaseLeading(action.getName()) 
 									+ "ActionStateRepository().remove(" + action.getName().toLowerCase() + "Act);");
 								writer.write(NEWLINE);
-								writer.write("break;");
+								writer.write("break;");							
 							}
 							else // not cancelable
 							{
@@ -582,12 +579,12 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 							writer.write(CLOSED_BRACK);
 							writer.write(NEWLINE);
 							writer.write(CLOSED_BRACK);
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);							
 						}
 						else if(input.getType().equals(InputType.BOOLEAN)) // boolean rule input type
 						{
 							writer.write("boolean input" + inputName + " = false;");
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);												
 							writer.write("boolean gotValidInput" + j + " = false;");
 							writer.write(NEWLINE);
 							if(j == 0) // on first rule input
@@ -598,7 +595,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 							writer.write("if(!cancel)");
 							writer.write(NEWLINE);
 							writer.write(OPEN_BRACK);
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);							
 							writer.write("while(!gotValidInput" + j + ")");
 							writer.write(NEWLINE);
 							writer.write(OPEN_BRACK);
@@ -643,26 +640,26 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 							writer.write(NEWLINE);
 							if(input.isCancelable())
 							{
-								writer.write("state.getActionStateRepository().get" + getUpperCaseLeading(action.getName())
+								writer.write("state.getActionStateRepository().get" + getUpperCaseLeading(action.getName()) 
 									+ "ActionStateRepository().remove(" + action.getName().toLowerCase() + "Act);");
 								writer.write(NEWLINE);
-								writer.write("break;");
+								writer.write("break;");							
 							}
 							else // not cancelable
 							{
 								writer.write("JOptionPane.showMessageDialog(null, \"You must enter input -- Please try again!\", \"Invalid Input\", JOptionPane.WARNING_MESSAGE);");
-							}
+							}							
 							writer.write(NEWLINE);
 							writer.write(CLOSED_BRACK);
 							writer.write(NEWLINE);
 							writer.write(CLOSED_BRACK);
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);	
 							writer.write(CLOSED_BRACK);
-							writer.write(NEWLINE);
-						}
+							writer.write(NEWLINE);								
+						}	
 					}
-				}
-
+				}					
+				
 				for(int j=0; j<rInputs.size(); j++)
 				{
 					if(j == 0) // first element
@@ -690,7 +687,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 					if(vectorContainsString(ruleVariables, (partRuleEff.getParticipant().getName().toLowerCase() + "s")) == false) // this variable
 						// has not been generated yet
 					{
-						ruleVariables.add(new String(partRuleEff.getParticipant().getName().toLowerCase() + "s")); // add the variable name to the
+						ruleVariables.add(new String(partRuleEff.getParticipant().getName().toLowerCase() + "s")); // add the variable name to the 
 						//record-keeping Vector
 						writer.write("Vector " + partRuleEff.getParticipant().getName().toLowerCase() + "s = " + action.getName().toLowerCase()
 							+ "Act.getAllActive" + partRuleEff.getParticipant().getName() + "s();");
@@ -714,17 +711,17 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 							writer.write("else ");
 						}
 						ParticipantTypeRuleEffect partTypeRuleEff = (ParticipantTypeRuleEffect)partTypeEffects.elementAt(k);
-						writer.write("if(" + partRuleEff.getParticipant().getName().toLowerCase() + "2 instanceof "
+						writer.write("if(" + partRuleEff.getParticipant().getName().toLowerCase() + "2 instanceof " 
 							+ getUpperCaseLeading(partTypeRuleEff.getSimSEObjectType().getName()) + ")");
 						writer.write(NEWLINE);
 						writer.write(OPEN_BRACK);
 						writer.write(NEWLINE);
 						writer.write(getUpperCaseLeading(partTypeRuleEff.getSimSEObjectType().getName()) + " "
 							+ partTypeRuleEff.getSimSEObjectType().getName().toLowerCase() + " = ("
-							+ getUpperCaseLeading(partTypeRuleEff.getSimSEObjectType().getName()) + ")"
+							+ getUpperCaseLeading(partTypeRuleEff.getSimSEObjectType().getName()) + ")" 
 							+ partRuleEff.getParticipant().getName().toLowerCase() + "2;");
 						writer.write(NEWLINE);
-
+						
 						// effect on participants' other actions:
 						if(partTypeRuleEff.getOtherActionsEffect().equals(OtherActionsEffect.NONE) == false) // has an effect on participant's other actions
 						{
@@ -792,14 +789,14 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 								{
 									writer.write(CLOSED_BRACK);
 									writer.write(NEWLINE);
-								}
+								}	
 								writer.write(CLOSED_BRACK);
-								writer.write(NEWLINE);
-							}
+								writer.write(NEWLINE);								
+							}	
 							writer.write(CLOSED_BRACK);
 							writer.write(NEWLINE);
 						}
-
+						
 						// go through all participant attribute rule effects:
 						Vector partAttRuleEffects = partTypeRuleEff.getAllAttributeEffects();
 						for(int m=0; m<partAttRuleEffects.size(); m++)
@@ -818,7 +815,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 									{
 										counter++;
 										String nextToken = getNextToken(effect);
-
+										
 										// attributes other participants:
 										if(nextToken.startsWith("all") || nextToken.startsWith("-all"))
 										{
@@ -829,19 +826,19 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 											else // not on last token
 											{
 												effect = effect.trim().substring(nextToken.length()).trim();
-											}
+											}										
 											if(nextToken.startsWith("-"))
 											{
 												nextToken = nextToken.substring(1); // remove the minus sign for now
 											}
-											String activeInactiveToken = nextToken.substring(0, nextToken.indexOf('-')); // get whether it's all, allActive,
+											String activeInactiveToken = nextToken.substring(0, nextToken.indexOf('-')); // get whether it's all, allActive, 
 											// or allInactive
 											nextToken = nextToken.substring(activeInactiveToken.length() + 1).trim();
 											String partName = nextToken.substring(0, nextToken.indexOf('-')); // get the participant name
 											// check for validity of participant name:
 											if(action.getParticipant(partName) == null) // invalid participant name
 											{
-												warnings.add("Invalid participant name: \"" + partName + "\" in effect rule " + effRule.getName() + " for "
+												warnings.add("Invalid participant name: \"" + partName + "\" in effect rule " + effRule.getName() + " for " 
 													+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 													+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
 													+ " attribute effect");
@@ -853,15 +850,15 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 												// check for validity of object type name:
 												if(action.getParticipant(partName).getSimSEObjectType(ssObjType) == null) // invalid SimSEObjectType
 												{
-													warnings.add("Invalid object type: \"" + ssObjType + "\" in effect rule " + effRule.getName() + " for "
+													warnings.add("Invalid object type: \"" + ssObjType + "\" in effect rule " + effRule.getName() + " for " 
 														+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 														+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
 														+ " attribute effect");
-												}
+												}		
 											}
 											nextToken = nextToken.substring(ssObjType.length() + 1).trim();
 											String attName = nextToken.substring(nextToken.indexOf(':') + 1).trim();
-											if((action.getParticipant(partName) != null)
+											if((action.getParticipant(partName) != null) 
 												&& (action.getParticipant(partName).getSimSEObjectType(ssObjType) != null)) // valid participant name
 													// and SimSEObjectType
 											{
@@ -877,14 +874,14 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 												{
 													// check for validity of attribute type:
 													if((action.getParticipant(partName).getSimSEObjectType(ssObjType).getAttribute(attName).getType() != AttributeTypes.INTEGER) &&
-														(action.getParticipant(partName).getSimSEObjectType(ssObjType).getAttribute(attName).getType() != AttributeTypes.DOUBLE))
+														(action.getParticipant(partName).getSimSEObjectType(ssObjType).getAttribute(attName).getType() != AttributeTypes.DOUBLE)) 
 															// non-numerical attribute -- invalid
 													{
 														warnings.add("Invalid (non-numerical) attribute type: \"" + attName + "\" in effect rule " + effRule.getName() + " for "
 															+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 															+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
-															+ " attribute effect");
-													}
+															+ " attribute effect");							
+													}														
 												}
 											}
 											if(vectorContainsString(variables, (activeInactiveToken + partName + ssObjType + attName)) == false) // this variable
@@ -921,7 +918,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 												writer.write(OPEN_BRACK);
 												writer.write(NEWLINE);
 												writer.write(activeInactiveToken + partName + ssObjType + attName + " += (double)(((" + ssObjType + ")" + partName.toLowerCase()
-													+ "3).get" + attName + "());");
+													+ "3).get" + attName + "());");											
 												writer.write(NEWLINE);
 												writer.write(CLOSED_BRACK);
 												writer.write(NEWLINE);
@@ -929,7 +926,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 												writer.write(NEWLINE);
 											}
 										}
-
+										
 										// num actions or num participants:
 										else if(nextToken.startsWith("num") || nextToken.startsWith("-num"))
 										{
@@ -940,13 +937,13 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 											else // not on last token
 											{
 												effect = effect.trim().substring(nextToken.length()).trim();
-											}
+											}										
 											if(nextToken.startsWith("-"))
 											{
 												nextToken = nextToken.substring(1); // remove the minus sign for now
-											}
+											}										
 											String firstWord = nextToken.substring(0, nextToken.indexOf('-'));
-
+											
 											if(firstWord.endsWith("This")) // num actions this participant
 											{
 												ActionTypeParticipant part = partRuleEff.getParticipant();
@@ -998,7 +995,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 													writer.write(NEWLINE);
 												}
 											}
-
+											
 											else if(firstWord.indexOf("All") >= 0) // num actions other participants
 											{
 												StringBuffer variableName = new StringBuffer("numActionsAll");
@@ -1023,7 +1020,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 															+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 															+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
 															+ " attribute effect");
-													}
+													}													
 													variableName.append(partName);
 													tempStr = tempStr.substring(tempStr.indexOf('-') + 1); // take off the participant name
 													objTypeName = tempStr.substring(0, tempStr.indexOf('-')); // get the SimSEObjectType name
@@ -1036,7 +1033,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 																+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 																+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
 																+ " attribute effect");
-														}
+														}																
 													}
 													variableName.append(objTypeName);
 												}
@@ -1050,7 +1047,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 															+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 															+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
 															+ " attribute effect");
-													}
+													}														
 													variableName.append(partName);
 												}
 												String actionName = nextToken.substring(nextToken.indexOf(':') + 1).trim(); // get the action name
@@ -1061,7 +1058,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 														+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 														+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
 														+ " attribute effect");
-												}
+												}												
 												if(actionName.equals("*")) // wildcard character -- any action
 												{
 													variableName.append("A");
@@ -1175,9 +1172,9 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 													writer.write(NEWLINE);
 												}
 												writer.write(CLOSED_BRACK);
-												writer.write(NEWLINE);
+												writer.write(NEWLINE);												
 											}
-
+											
 											else // num participants
 											{
 												StringBuffer variableName = new StringBuffer("num");
@@ -1188,7 +1185,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 												else if(firstWord.indexOf("Inactive") >= 0)
 												{
 													variableName.append("Inactive");
-												}
+												}											
 												String tempStr = nextToken.substring(nextToken.indexOf('-') + 1); // take off the first word
 												String partName = new String();
 												String ssObjType = new String();
@@ -1202,7 +1199,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 															+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 															+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
 															+ " attribute effect");
-													}
+													}													
 													variableName.append(partName);
 													String tempStr2 = tempStr.substring(tempStr.indexOf('-') + 1); // take off the part name
 													ssObjType = tempStr2.substring(0, tempStr2.indexOf('-'));
@@ -1215,8 +1212,8 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 																+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 																+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
 																+ " attribute effect");
-														}
-													}
+														}																
+													}													
 													variableName.append(ssObjType);
 													if(vectorContainsString(variables, variableName.toString()) == false) // variable has not been generated yet
 													{
@@ -1236,7 +1233,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 														{
 															variableName2 = (partName.toLowerCase() + "s");
 														}
-														if((vectorContainsString(ruleVariables, variableName2) == false) &&
+														if((vectorContainsString(ruleVariables, variableName2) == false) && 
 															(vectorContainsString(variables, variableName2) == false)) // variable has not been generated yet
 														{
 															// dont' add it to the outer vector because if it's needed in the outer loop later, it won't be able
@@ -1282,7 +1279,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 															+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 															+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
 															+ " attribute effect");
-													}
+													}														
 													variableName.append(partName);
 													if(vectorContainsString(variables, variableName.toString()) == false) // variable has not been generated yet
 													{
@@ -1298,8 +1295,8 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 														}
 														writer.write(partName + "s().size());");
 														writer.write(NEWLINE);
-													}
-												}
+													}																							
+												}									
 											}
 										}
 										else if((nextToken.startsWith("input")) || (nextToken.startsWith("-input"))) // rule input
@@ -1311,7 +1308,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 											else // not on last token
 											{
 												effect = effect.trim().substring(nextToken.length()).trim();
-											}
+											}										
 											if(nextToken.startsWith("-"))
 											{
 												nextToken = nextToken.substring(1); // remove the minus sign for now
@@ -1323,22 +1320,22 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 												warnings.add("Invalid rule input name: \"" + inputName + "\" in effect rule " + effRule.getName() + " for "
 													+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 													+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
-													+ " attribute effect");
+													+ " attribute effect");	
 											}
 											else // valid rule input name
 											{
 												// check for validity of rule input type:
-												if((effRule.getRuleInput(inputName).getType().equals(InputType.INTEGER) == false)
+												if((effRule.getRuleInput(inputName).getType().equals(InputType.INTEGER) == false) 
 													&& (effRule.getRuleInput(inputName).getType().equals(InputType.DOUBLE) == false)) // non-numerical type -- invalid
 												{
 													warnings.add("Invalid (non-numerical) rule input type: \"" + inputName + "\" in effect rule " + effRule.getName() + " for "
 														+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 														+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
-														+ " attribute effect");
+														+ " attribute effect");	
 												}
 											}
 										}
-
+										
 										else if(effect.trim().length() == nextToken.trim().length()) // on last token
 										{
 											//System.out.println("effect = *" + effect + "*");
@@ -1352,23 +1349,23 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 											effect = effect.trim().substring(nextToken.length()).trim();
 											//System.out.println("effect is now *" + effect + "*");
 										}
-
+										
 										if((effect == null) || (effect.trim().length() == 0)) // that was the last token
 										{
 											finished = true;
 										}
 									}
-
+									
 									//*********************SECOND RUN-THROUGH***************************
 									// go through the effect again to write out the whole expression:
 									effect = partAttRuleEff.getEffect();
 									finished = false;
-									StringBuffer expression = new StringBuffer();
+									StringBuffer expression = new StringBuffer();		
 									while(!finished)
 									{
 										String nextToken = getNextToken(effect);
 										//System.out.println("nextToken = *" + nextToken + "*");
-
+										
 										// attributes other participants:
 										if(nextToken.startsWith("all") || nextToken.startsWith("-all"))
 										{
@@ -1380,7 +1377,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 												expression.append("(-1 * (");
 												token = token.substring(1); // remove the minus sign for now
 											}
-											String activeInactiveToken = token.substring(0, token.indexOf('-')); // get whether it's all, allActive,
+											String activeInactiveToken = token.substring(0, token.indexOf('-')); // get whether it's all, allActive, 
 											// or allInactive
 											token = token.substring(activeInactiveToken.length() + 1).trim();
 											String partName = token.substring(0, token.indexOf('-')); // get the participant name
@@ -1396,7 +1393,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 											}
 											expression.append(" ");
 										}
-
+										
 										// num actions or num participants:
 										else if(nextToken.startsWith("num") || nextToken.startsWith("-num"))
 										{
@@ -1407,9 +1404,9 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 												isNegative = true;
 												expression.append("(-1 * (");
 												token = token.substring(1); // remove the minus sign for now
-											}
+											}																				
 											String firstWord = token.substring(0, token.indexOf('-'));
-
+											
 											if(firstWord.endsWith("This")) // num actions this participant
 											{
 												ActionTypeParticipant part = partRuleEff.getParticipant();
@@ -1440,7 +1437,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 												}
 												expression.append(" ");
 											}
-
+											
 											else if(firstWord.indexOf("All") >= 0) // num actions other participants
 											{
 												StringBuffer variableName = new StringBuffer("numActionsAll");
@@ -1485,7 +1482,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 												}
 												expression.append(" ");
 											}
-
+											
 											else // num participants
 											{
 												StringBuffer variableName = new StringBuffer("num");
@@ -1496,7 +1493,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 												else if(firstWord.indexOf("Inactive") >= 0)
 												{
 													variableName.append("Inactive");
-												}
+												}											
 												String tempStr = token.substring(token.indexOf('-') + 1); // take off the first word
 												String partName = new String();
 												String ssObjType = new String();
@@ -1513,7 +1510,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 													{
 														expression.append("))");
 													}
-													expression.append(" ");
+													expression.append(" ");													
 												}
 												else // no SimSEObjectType and meta type specified
 												{
@@ -1525,11 +1522,11 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 													{
 														expression.append("))");
 													}
-													expression.append(" ");
-												}
+													expression.append(" ");													
+												}									
 											}
 										}
-
+										
 										// rule input:
 										else if((nextToken.startsWith("input")) || (nextToken.startsWith("-input")))
 										{
@@ -1548,9 +1545,9 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 											{
 												expression.append("))");
 											}
-											expression.append(" ");
+											expression.append(" ");											
 										}
-
+										
 										// attributes this participant:
 										else if((nextToken.startsWith("this")) || (nextToken.startsWith("-this")))
 										{
@@ -1561,9 +1558,9 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 												isNegative = true;
 												expression.append("(-1 * (");
 												token = token.substring(1); // remove the minus sign for now
-											}
+											}		
 											// append to expression:
-											expression.append("((double)(" + partTypeRuleEff.getSimSEObjectType().getName().toLowerCase() + ".get"
+											expression.append("((double)(" + partTypeRuleEff.getSimSEObjectType().getName().toLowerCase() + ".get" 
 												+ token.substring(token.indexOf(':') + 1) + "()))");
 											if(isNegative)
 											{
@@ -1571,7 +1568,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 											}
 											expression.append(" ");
 										}
-
+										
 										// total time elapsed:
 										else if((nextToken.startsWith("totalTimeElapsed")) || (nextToken.startsWith("-totalTimeElapsed")))
 										{
@@ -1580,7 +1577,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 											{
 												isNegative = true;
 												expression.append("(-1 * (");
-											}
+											}	
 											// append to expression:
 											expression.append("((double)(state.getClock().getTime()))");
 											if(isNegative)
@@ -1589,7 +1586,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 											}
 											expression.append(" ");
 										}
-
+										
 										// action time elapsed:
 										else if((nextToken.startsWith("actionTimeElapsed")) || (nextToken.startsWith("-actionTimeElapsed")))
 										{
@@ -1598,7 +1595,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 											{
 												isNegative = true;
 												expression.append("(-1 * (");
-											}
+											}	
 											// append to expression:
 											expression.append("((double)(" + action.getName().toLowerCase() + "Act.getTimeElapsed()))");
 											if(isNegative)
@@ -1606,19 +1603,19 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 												expression.append("))");
 											}
 											expression.append(" ");
-										}
-
+										}		
+										
 										// random:
 										else if((nextToken.startsWith("random")) || (nextToken.startsWith("-random")))
 										{
 											String token = nextToken;
-											boolean isNegative = false;
+											boolean isNegative = false;									
 											if(token.startsWith("-"))
 											{
 												isNegative = true;
 												expression.append("(-1 * (");
 												token = token.substring(1); // remove the minus sign for now
-											}
+											}	
 											// get min & max vals:
 											try
 											{
@@ -1630,21 +1627,21 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 												{
 													expression.append("))");
 												}
-												expression.append(" ");
+												expression.append(" ");												
 											}
 											catch(NumberFormatException e)
 											{
-												JOptionPane.showMessageDialog(null, ("Error reading random value in expression for  " + effRule.getName() + " effect rule: " + e.toString()),
-													"Malformed Effect Rule Expression", JOptionPane.WARNING_MESSAGE);
+												JOptionPane.showMessageDialog(null, ("Error reading random value in expression for  " + effRule.getName() + " effect rule: " + e.toString()), 
+													"Malformed Effect Rule Expression", JOptionPane.WARNING_MESSAGE);												
 											}
-										}
-
+										}		
+										
 										// other token:
 										else
 										{
 											expression.append(nextToken + " ");
 										}
-
+										
 										if(effect.trim().length() == nextToken.trim().length()) // on last token
 										{
 											effect = null;
@@ -1652,13 +1649,13 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 										else // not on last token
 										{
 											effect = effect.trim().substring(nextToken.length());
-										}
-
+										}											
+										
 										if((effect == null) || (effect.trim().length() == 0)) // that was the last token
 										{
 											finished = true;
 										}
-									}
+									}		
 									String attType = new String();
 									if(partAttRuleEff.getAttribute().getType() == AttributeTypes.INTEGER)
 									{
@@ -1668,20 +1665,20 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 									{
 										attType = "double";
 									}
-									writer.write(partTypeRuleEff.getSimSEObjectType().getName().toLowerCase() + ".set"
+									writer.write(partTypeRuleEff.getSimSEObjectType().getName().toLowerCase() + ".set" 
 										+ partAttRuleEff.getAttribute().getName() + "((" + attType + ")(" + expression.toString().trim() + "));");
-									writer.write(NEWLINE);
+									writer.write(NEWLINE);									
 								}
 								else // string or boolean attribute
 								{
 									int counter = 0;
 									String effect = partAttRuleEff.getEffect();
-									StringBuffer expression = new StringBuffer();
+									StringBuffer expression = new StringBuffer();									
 									String nextToken = getNextToken(effect);
-
+									
 									// attribute this participant:
 									if(nextToken.startsWith("this"))
-									{
+									{									
 										// get the attribute name:
 										String attName = nextToken.substring(nextToken.indexOf(':') + 1);
 										// check for validity of attribute name:
@@ -1690,25 +1687,25 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 											warnings.add("Invalid attribute name: \"" + attName + "\" in effect rule " + effRule.getName() + " for "
 												+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 												+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
-												+ " attribute effect");
+												+ " attribute effect");												
 										}
 										else // valid attribute name
 										{
 											// check for validity of attribute type:
 											if(partTypeRuleEff.getSimSEObjectType().getAttribute(attName).getType() != partAttRuleEff.getAttribute().getType()) // invalid attribute type
 											{
-												warnings.add("Invalid attribute type (" + AttributeTypes.getText(partTypeRuleEff.getSimSEObjectType().getAttribute(attName).getType())
+												warnings.add("Invalid attribute type (" + AttributeTypes.getText(partTypeRuleEff.getSimSEObjectType().getAttribute(attName).getType()) 
 													+ "): \"" + attName + "\" in effect rule " + effRule.getName() + " for "
 													+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 													+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
-													+ " attribute effect");
+													+ " attribute effect");													
 											}
 										}
 										writer.write(partTypeRuleEff.getSimSEObjectType().getName().toLowerCase() + ".set" + partAttRuleEff.getAttribute().getName()
 											+ "(" + partTypeRuleEff.getSimSEObjectType().getName().toLowerCase() + ".get" + attName + "());");
 										writer.write(NEWLINE);
 									}
-
+									
 									// rule input:
 									else if(nextToken.startsWith("input"))
 									{
@@ -1719,7 +1716,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 											warnings.add("Invalid rule input name: \"" + inputName + "\" in effect rule " + effRule.getName() + " for "
 												+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 												+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
-												+ " attribute effect");
+												+ " attribute effect");	
 										}
 										else // valid rule input name
 										{
@@ -1731,7 +1728,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 													warnings.add("Invalid rule input type (non-String): \"" + inputName + "\" in effect rule " + effRule.getName() + " for "
 														+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 														+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
-														+ " attribute effect");
+														+ " attribute effect");													
 												}
 											}
 											else if(partAttRuleEff.getAttribute().getType() == AttributeTypes.BOOLEAN) // boolean attribute
@@ -1741,33 +1738,33 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 													warnings.add("Invalid rule input type (non-Boolean): \"" + inputName + "\" in effect rule " + effRule.getName() + " for "
 														+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 														+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
-														+ " attribute effect");
+														+ " attribute effect");														
 												}
 											}
-
+											
 											// write the expression:
 											writer.write(partTypeRuleEff.getSimSEObjectType().getName().toLowerCase() + ".set" + partAttRuleEff.getAttribute().getName()
 												+ "(input" + inputName + ");");
 											writer.write(NEWLINE);
 										}
 									}
-
+									
 									// literal string:
 									else if(nextToken.startsWith("\""))
 									{
-										if(partAttRuleEff.getAttribute().getType() != AttributeTypes.STRING) // invalid
+										if(partAttRuleEff.getAttribute().getType() != AttributeTypes.STRING) // invalid 
 										{
 											warnings.add("Invalid expression (wrong type) in effect rule " + effRule.getName() + " for "
 												+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 												+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
-												+ " attribute effect");
+												+ " attribute effect");					
 										}
 										// write the expression:
 										writer.write(partTypeRuleEff.getSimSEObjectType().getName().toLowerCase() + ".set" + partAttRuleEff.getAttribute().getName()
 											+ "(" + effect.trim() + ");");
 										writer.write(NEWLINE);
 									}
-
+									
 									// boolean val:
 									else if(nextToken.startsWith("true"))
 									{
@@ -1776,12 +1773,12 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 											warnings.add("Invalid expression (wrong type) in effect rule " + effRule.getName() + " for "
 												+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 												+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
-												+ " attribute effect");
-										}
+												+ " attribute effect");					
+										}		
 										// write the expression:
 										writer.write(partTypeRuleEff.getSimSEObjectType().getName().toLowerCase() + ".set" + partAttRuleEff.getAttribute().getName()
 											+ "(true);");
-										writer.write(NEWLINE);
+										writer.write(NEWLINE);											
 									}
 									else if(nextToken.startsWith("false"))
 									{
@@ -1790,15 +1787,15 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 											warnings.add("Invalid expression (wrong type) in effect rule " + effRule.getName() + " for "
 												+ partRuleEff.getParticipant().getName() + " " + partTypeRuleEff.getSimSEObjectType().getName() + " "
 												+ SimSEObjectTypeTypes.getText(partTypeRuleEff.getSimSEObjectType().getType()) + " " + partAttRuleEff.getAttribute().getName()
-												+ " attribute effect");
-										}
+												+ " attribute effect");					
+										}		
 										// write the expression:
 										writer.write(partTypeRuleEff.getSimSEObjectType().getName().toLowerCase() + ".set" + partAttRuleEff.getAttribute().getName()
 											+ "(false);");
 										writer.write(NEWLINE);
 									}
 								}
-							}
+							}							
 						}
 						writer.write(CLOSED_BRACK);
 						writer.write(NEWLINE);
@@ -1816,14 +1813,14 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 				if((rule.getTiming() == RuleTiming.TRIGGER) || (rule.getTiming() == RuleTiming.DESTROYER))
 				{
 					writer.write(CLOSED_BRACK);
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);				
 				}
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
 				writer.write(CLOSED_BRACK);
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);				
 			}
-
+			
 			else if(rule instanceof CreateObjectsRule) // CREATE OBJECTS RULE
 			{
 				CreateObjectsRule coRule = (CreateObjectsRule)rule;
@@ -1835,13 +1832,13 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 					outerVariables.add(new String(action.getName().toLowerCase() + "Acts")); // add the variable name to the record-keeping Vector
 					writer.write("Vector " + action.getName().toLowerCase() + "Acts = state.getActionStateRepository().get"
 						+ getUpperCaseLeading(action.getName()) + "ActionStateRepository().getAllActions();");
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);					
 				}
 				writer.write("if((updateInstructions ==");
 				if(rule.getTiming() == RuleTiming.CONTINUOUS) // continuous rule
 				{
 					writer.write("UPDATE_ALL_CONTINUOUS))");
-				}
+				}				
 				else if((rule.getTiming() == RuleTiming.TRIGGER) || (rule.getTiming() == RuleTiming.DESTROYER)) // trigger/destroyer rule
 				{
 					writer.write("UPDATE_ONE) && (ruleName.equals(\"" + rule.getName() + "\")))");
@@ -1849,7 +1846,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);				
 				writer.write("for(int i=0; i<" + action.getName().toLowerCase() + "Acts.size(); i++)");
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
@@ -1858,7 +1855,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 					+ getUpperCaseLeading(action.getName()) + "Action)" + action.getName().toLowerCase() + "Acts.elementAt(i);");
 				writer.write(NEWLINE);
 				if((rule.getTiming() == RuleTiming.TRIGGER) || (rule.getTiming() == RuleTiming.DESTROYER))
-				{
+				{				
 					writer.write("if(" + action.getName().toLowerCase() + "Act == action)");
 					writer.write(NEWLINE);
 					writer.write(OPEN_BRACK);
@@ -1888,9 +1885,9 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 				writer.write(")");
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);	
 				writer.write("if((" + action.getName().toLowerCase() + "Act.getTimeElapsed() == 0) || (" + action.getName().toLowerCase() + "Act.getTimeElapsed() == 1))");
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);	
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
 				// go through all of the objects to create:
@@ -1912,8 +1909,8 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 							if(att.isInstantiated() == false) // not instantiated
 							{
 								warnings.add("Not all attributes have been assigned starting values for the " + obj.getSimSEObjectType().getName() + " "
-									+ SimSEObjectTypeTypes.getText(obj.getSimSEObjectType().getType()) + " created in the " + coRule.getName()
-									+ " Create Objects Rule");
+									+ SimSEObjectTypeTypes.getText(obj.getSimSEObjectType().getType()) + " created in the " + coRule.getName() 
+									+ " Create Objects Rule");													
 								createObj = false;
 								break;
 							}
@@ -1938,7 +1935,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 					else // not all atts are instantiated
 					{
 						warnings.add("Not all attributes have been assigned starting values for the " + obj.getSimSEObjectType().getName() + " "
-							+ SimSEObjectTypeTypes.getText(obj.getSimSEObjectType().getType()) + " created in the " + coRule.getName() + " Create Objects Rule");
+							+ SimSEObjectTypeTypes.getText(obj.getSimSEObjectType().getType()) + " created in the " + coRule.getName() + " Create Objects Rule");							
 						createObj = false;
 					}
 					if(createObj)
@@ -1955,18 +1952,18 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
 				if((rule.getTiming() == RuleTiming.TRIGGER) || (rule.getTiming() == RuleTiming.DESTROYER))
-				{
+				{				
 					writer.write(CLOSED_BRACK);
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);				
 				}
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
 				writer.write(CLOSED_BRACK);
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);	
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
 			}
-
+			
 			else if(rule instanceof DestroyObjectsRule) // DESTROY OBJECTS RULE
 			{
 				DestroyObjectsRule doRule = (DestroyObjectsRule)rule;
@@ -1978,20 +1975,20 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 					outerVariables.add(new String(action.getName().toLowerCase() + "Acts")); // add the variable name to the record-keeping Vector
 					writer.write("Vector " + action.getName().toLowerCase() + "Acts = state.getActionStateRepository().get"
 						+ getUpperCaseLeading(action.getName()) + "ActionStateRepository().getAllActions();");
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);					
 				}
 				writer.write("if((updateInstructions ==");
 				if(rule.getTiming() == RuleTiming.CONTINUOUS) // continuous rule
 				{
 					writer.write("UPDATE_ALL_CONTINUOUS))");
-				}
+				}				
 				else if((rule.getTiming() == RuleTiming.TRIGGER) || (rule.getTiming() == RuleTiming.DESTROYER)) // trigger/destroyer rule
 				{
 					writer.write("UPDATE_ONE) && (ruleName.equals(\"" + rule.getName() + "\")))");
 				}
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);				
 				writer.write("for(int i=0; i<" + action.getName().toLowerCase() + "Acts.size(); i++)");
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
@@ -2000,7 +1997,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 					+ getUpperCaseLeading(action.getName()) + "Action)" + action.getName().toLowerCase() + "Acts.elementAt(i);");
 				writer.write(NEWLINE);
 				if((rule.getTiming() == RuleTiming.TRIGGER) || (rule.getTiming() == RuleTiming.DESTROYER))
-				{
+				{				
 					writer.write("if(" + action.getName().toLowerCase() + "Act == action)");
 					writer.write(NEWLINE);
 					writer.write(OPEN_BRACK);
@@ -2030,35 +2027,35 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 				writer.write(")");
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);	
 				writer.write("if((" + action.getName().toLowerCase() + "Act.getTimeElapsed() == 0) || (" + action.getName().toLowerCase() + "Act.getTimeElapsed() == 1))");
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);	
 				writer.write(OPEN_BRACK);
-				writer.write(NEWLINE);
-
+				writer.write(NEWLINE);			
+			
 				// go through each participant condition:
 				Vector partConditions = doRule.getAllParticipantConditions();
 				for(int j=0; j<partConditions.size(); j++)
 				{
 					DestroyObjectsRuleParticipantCondition cond = (DestroyObjectsRuleParticipantCondition)partConditions.elementAt(j);
 					ActionTypeParticipant part = cond.getParticipant();
-
-					writer.write("Vector " + part.getName().toLowerCase() + "s = ((" + getUpperCaseLeading(action.getName())
+					
+					writer.write("Vector " + part.getName().toLowerCase() + "s = ((" + getUpperCaseLeading(action.getName()) 
 						+ "Action)" + action.getName().toLowerCase() + "Act).getAll" + part.getName() + "s();");
 					writer.write(NEWLINE);
 					writer.write("for(int j=0; j<" + part.getName().toLowerCase() + "s.size(); j++)");
 					writer.write(NEWLINE);
 					writer.write(OPEN_BRACK);
 					writer.write(NEWLINE);
-					writer.write(SimSEObjectTypeTypes.getText(part.getSimSEObjectTypeType()) + " a = ("
+					writer.write(SimSEObjectTypeTypes.getText(part.getSimSEObjectTypeType()) + " a = (" 
 						+ SimSEObjectTypeTypes.getText(part.getSimSEObjectTypeType()) + ")" + part.getName().toLowerCase() + "s.elementAt(j);");
 					writer.write(NEWLINE);
 					// go through all participant constraints:
 					Vector constraints = cond.getAllConstraints();
 					for(int k=0; k<constraints.size(); k++)
 					{
-						ActionTypeParticipantConstraint constraint = (ActionTypeParticipantConstraint)constraints.elementAt(k);
-						String objTypeName = constraint.getSimSEObjectType().getName();
+						ActionTypeParticipantConstraint constraint = (ActionTypeParticipantConstraint)constraints.elementAt(k);				
+						String objTypeName = constraint.getSimSEObjectType().getName();					
 						if(k > 0) // not on first element
 						{
 							writer.write("else ");
@@ -2102,7 +2099,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 								}
 								writer.write(")");
 								numAttConsts++;
-							}
+							}								
 						}
 						if(numAttConsts > 0) // there is at least one constraint
 						{
@@ -2110,48 +2107,48 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 							writer.write(NEWLINE);
 							writer.write(OPEN_BRACK);
 							writer.write(NEWLINE);
-							writer.write("state.get" + SimSEObjectTypeTypes.getText(constraint.getSimSEObjectType().getType()) + "StateRepository().get"
-								+ getUpperCaseLeading(constraint.getSimSEObjectType().getName()) + "StateRepository().remove(("
+							writer.write("state.get" + SimSEObjectTypeTypes.getText(constraint.getSimSEObjectType().getType()) + "StateRepository().get" 
+								+ getUpperCaseLeading(constraint.getSimSEObjectType().getName()) + "StateRepository().remove((" 
 								+ getUpperCaseLeading(constraint.getSimSEObjectType().getName()) + ")a);");
 							writer.write(NEWLINE);
 							writer.write("state.getActionStateRepository().removeFromAllActions(a);");
 							writer.write(NEWLINE);
 							writer.write("checkAllMins(gui);");
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);							
 							writer.write(CLOSED_BRACK);
 							writer.write(NEWLINE);
 						}
 						else // no constraints -- destroy object
 						{
-							writer.write("state.get" + SimSEObjectTypeTypes.getText(constraint.getSimSEObjectType().getType()) + "StateRepository().get"
-								+ getUpperCaseLeading(constraint.getSimSEObjectType().getName()) + "StateRepository().remove(("
+							writer.write("state.get" + SimSEObjectTypeTypes.getText(constraint.getSimSEObjectType().getType()) + "StateRepository().get" 
+								+ getUpperCaseLeading(constraint.getSimSEObjectType().getName()) + "StateRepository().remove((" 
 								+ getUpperCaseLeading(constraint.getSimSEObjectType().getName()) + ")a);");
 							writer.write(NEWLINE);
 							writer.write("state.getActionStateRepository().removeFromAllActions(a);");
 							writer.write(NEWLINE);
 							writer.write("checkAllMins(gui);");
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);							
 						}
 						writer.write(CLOSED_BRACK);
 						writer.write(NEWLINE);
 					}
 					writer.write(CLOSED_BRACK);
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);						
 				}
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
 				if((rule.getTiming() == RuleTiming.TRIGGER) || (rule.getTiming() == RuleTiming.DESTROYER))
-				{
+				{				
 					writer.write(CLOSED_BRACK);
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);				
 				}
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
 				writer.write(CLOSED_BRACK);
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);	
 				writer.write(CLOSED_BRACK);
-				writer.write(NEWLINE);
-			}
+				writer.write(NEWLINE);					
+			}				
 		}
 		catch (IOException e)
 		{
@@ -2159,14 +2156,14 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 				JOptionPane.WARNING_MESSAGE);
 		}
 	}
-
-
+	
+	
 	private String getUpperCaseLeading(String s)
 	{
 		return (s.substring(0, 1).toUpperCase() + s.substring(1));
 	}
-
-
+	
+	
 	private boolean vectorContainsString(Vector v, String s)
 	{
 		for(int i=0; i<v.size(); i++)
@@ -2179,8 +2176,8 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 		}
 		return false;
 	}
-
-
+	
+	
 	private String getNextToken(String tokenString) // returns the next token in the token string
 	{
 		//System.out.println("********** At the beginning of getLastToken for tokenString = *" + tokenString + "*");
@@ -2233,7 +2230,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 			else if(tokenString.trim().startsWith(")"))
 			{
 				return ")";
-			}
+			}			
 			//System.out.println("Multiple tokens!");
 			//System.out.println("tokenString here = *" + tokenString + "*");
 			String firstBlock = new String();
@@ -2245,7 +2242,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 			{
 				firstBlock = tokenString.trim().substring(0, tokenString.trim().indexOf(')'));
 			}
-
+			
 			if(firstBlock.endsWith(")"))
 			{
 				return getNextToken(firstBlock.substring(0, (firstBlock.length() -1)));
@@ -2269,8 +2266,8 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants
 			}
 		}
 	}
-
-
+	
+	
 	private void initializeRuleLists() // gets the rules in prioritized order
 	{
 		// initialize lists:

@@ -389,6 +389,7 @@ public class ActionTypeParticipantDestroyerConstraintsInfoForm extends JDialog i
 					{
 						//System.out.println(e.getMessage()); // note: validateInput() should have already been called immediately
 							// before calling this method, so a NumberFormatException should never be thrown here.
+						attConst.setValue(null); // ACTUALLY, it can be thrown here, IF the value is set to nothing!
 					}
 				}
 				else if(tempAtt.getType() == AttributeTypes.DOUBLE) // double attribute
@@ -402,6 +403,7 @@ public class ActionTypeParticipantDestroyerConstraintsInfoForm extends JDialog i
 					{
 						//System.out.println(e.getMessage()); // note: validateInput() should have already been called immediately
 							// before calling this method, so a NumberFormatException should never be thrown here.
+						attConst.setValue(null); // ACTUALLY, it can be thrown here, IF the value is set to nothing!
 					}
 				}
 			}

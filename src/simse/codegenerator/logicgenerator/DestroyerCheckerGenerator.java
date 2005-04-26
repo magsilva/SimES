@@ -5,37 +5,34 @@ package simse.codegenerator.logicgenerator;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.modelbuilder.rulebuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class DestroyerCheckerGenerator implements CodeGeneratorConstants
+public class DestroyerCheckerGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
-
+	
 	private File directory; // directory to save generated code into
 	private DefinedActionTypes actTypes; // holds all of the defined action types from an ssa file
 	private FileWriter writer;
 	private File destFile;
 	private Vector nonPrioritizedDestroyers;
-	private Vector prioritizedDestroyers;
+	private Vector prioritizedDestroyers;	
 	private Vector allDestroyers;
-
+	
 	public DestroyerCheckerGenerator(DefinedActionTypes dats, File dir)
 	{
 		actTypes = dats;
 		directory = dir;
 		initializeDestroyerLists();
 	}
-
-
+	
+	
 	public void generate()
 	{
 		try
@@ -64,7 +61,7 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// member variables:
 			writer.write("private State state;");
 			writer.write(NEWLINE);
@@ -74,7 +71,7 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("private Random ranNumGen;");
 			writer.write(NEWLINE);
-
+			
 			// constructor:
 			writer.write("public DestroyerChecker(State s, RuleExecutor r, TriggerChecker t)");
 			writer.write(NEWLINE);
@@ -90,7 +87,7 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// update function:
 			writer.write("public void update(boolean updateUserDestsOnly, JFrame gui)");
 			writer.write(NEWLINE);
@@ -117,13 +114,13 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
-
+				
 				if(tempDest instanceof TimedActionTypeDestroyer) // timed destroyer
 				{
 					writer.write("if(!updateUserDestsOnly)");
 					writer.write(NEWLINE);
 					writer.write(OPEN_BRACK);
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);					
 					writer.write("if(((" + getUpperCaseLeading(tempAct.getName()) + "Action)tempAct).getTimeToLive() == 0)");
 					writer.write(NEWLINE);
 					writer.write(OPEN_BRACK);
@@ -152,7 +149,7 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 					writer.write(OPEN_BRACK);
 					writer.write(NEWLINE);
 					if((tempDest.getDestroyerText() != null) && (tempDest.getDestroyerText().length() > 0))
-					{
+					{					
 						writer.write("((Customer)c).setOverheadText(\"" + tempDest.getDestroyerText() + "\");");
 					}
 					writer.write(NEWLINE);
@@ -168,19 +165,19 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 						Rule dRule = (Rule)destRules.elementAt(k);
 						writer.write("ruleExec.update(gui, RuleExecutor.UPDATE_ONE, \"" + dRule.getName() + "\", tempAct);");
 						writer.write(NEWLINE);
-					}
+					}					
 					writer.write("state.getActionStateRepository().get" + getUpperCaseLeading(tempAct.getName()) + "ActionStateRepository().remove(("
 						+ getUpperCaseLeading(tempAct.getName()) + "Action)tempAct);");
 					writer.write(NEWLINE);
-
+					
 					// game-ending:
 					if(tempDest.isGameEndingDestroyer())
 					{
 						writer.write("// stop game and give score:");
 						writer.write(NEWLINE);
-						writer.write(getUpperCaseLeading(tempAct.getName()) + "Action t111 = (" + getUpperCaseLeading(tempAct.getName())
+						writer.write(getUpperCaseLeading(tempAct.getName()) + "Action t111 = (" + getUpperCaseLeading(tempAct.getName()) 
 							+ "Action)tempAct;");
-						writer.write(NEWLINE);
+						writer.write(NEWLINE);					
 						// find the scoring attribute:
 						ActionTypeParticipantDestroyer scoringPartDest = null;
 						ActionTypeParticipantConstraint scoringPartConst = null;
@@ -211,9 +208,9 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 							writer.write("if(t111.getAll" + scoringPartDest.getParticipant().getName() + "s().size() > 0)");
 							writer.write(NEWLINE);
 							writer.write(OPEN_BRACK);
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);								
 							writer.write(getUpperCaseLeading(scoringPartConst.getSimSEObjectType().getName()) + " t = ("
-								+ getUpperCaseLeading(scoringPartConst.getSimSEObjectType().getName()) + ")(t111.getAll"
+								+ getUpperCaseLeading(scoringPartConst.getSimSEObjectType().getName()) + ")(t111.getAll" 
 								+ scoringPartDest.getParticipant().getName() + "s().elementAt(0));");
 							writer.write(NEWLINE);
 							if(scoringAttConst.getAttribute().getType() == AttributeTypes.INTEGER)
@@ -232,19 +229,19 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 							{
 								writer.write("boolean");
 							}
-							writer.write(" v = t.get" + scoringAttConst.getAttribute().getName() + "();");
+							writer.write(" v = t.get" + scoringAttConst.getAttribute().getName() + "();");						
 							writer.write(NEWLINE);
 							writer.write("state.getClock().stop();");
 							writer.write(NEWLINE);
 							writer.write("((SimSEGUI)gui).update();");
 							writer.write(NEWLINE);
 							writer.write("JOptionPane.showMessageDialog(null, (\"Your score is \" + v), \"Game over!\", JOptionPane.INFORMATION_MESSAGE);");
-							writer.write(NEWLINE);
+							writer.write(NEWLINE);							
 							writer.write(CLOSED_BRACK);
 							writer.write(NEWLINE);
 						}
 					}
-
+					
 					writer.write(CLOSED_BRACK);
 					writer.write(NEWLINE);
 					writer.write("else");
@@ -258,11 +255,11 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 					writer.write(CLOSED_BRACK);
 					writer.write(NEWLINE);
 					writer.write(CLOSED_BRACK);
-					writer.write(NEWLINE);
+					writer.write(NEWLINE);					
 				}
 				else // random, user, or autonomous destroyer
-				{
-					if((tempDest instanceof RandomActionTypeDestroyer)
+				{	
+					if((tempDest instanceof RandomActionTypeDestroyer) 
 						|| (tempDest instanceof AutonomousActionTypeDestroyer)) // random
 							// or autonomous destroyer
 					{
@@ -273,30 +270,30 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 					}
 					writer.write("boolean destroy = true;");
 					writer.write(NEWLINE);
-
+					
 					Vector destroyers = tempDest.getAllParticipantDestroyers();
 					// go through each participant destroyer:
 					for(int j=0; j<destroyers.size(); j++)
 					{
 						ActionTypeParticipantDestroyer dest = (ActionTypeParticipantDestroyer)destroyers.elementAt(j);
 						ActionTypeParticipant part = dest.getParticipant();
-
-						writer.write("Vector " + part.getName().toLowerCase() + "s = ((" + getUpperCaseLeading(tempAct.getName())
+						
+						writer.write("Vector " + part.getName().toLowerCase() + "s = ((" + getUpperCaseLeading(tempAct.getName()) 
 							+ "Action)tempAct).getAll" + part.getName() + "s();");
 						writer.write(NEWLINE);
 						writer.write("for(int j=0; j<" + part.getName().toLowerCase() + "s.size(); j++)");
 						writer.write(NEWLINE);
 						writer.write(OPEN_BRACK);
 						writer.write(NEWLINE);
-						writer.write(SimSEObjectTypeTypes.getText(part.getSimSEObjectTypeType()) + " a = ("
+						writer.write(SimSEObjectTypeTypes.getText(part.getSimSEObjectTypeType()) + " a = (" 
 							+ SimSEObjectTypeTypes.getText(part.getSimSEObjectTypeType()) + ")" + part.getName().toLowerCase() + "s.elementAt(j);");
 						writer.write(NEWLINE);
 						// go through all participant constraints:
 						Vector constraints = dest.getAllConstraints();
 						for(int k=0; k<constraints.size(); k++)
 						{
-							ActionTypeParticipantConstraint constraint = (ActionTypeParticipantConstraint)constraints.elementAt(k);
-							String objTypeName = constraint.getSimSEObjectType().getName();
+							ActionTypeParticipantConstraint constraint = (ActionTypeParticipantConstraint)constraints.elementAt(k);				
+							String objTypeName = constraint.getSimSEObjectType().getName();					
 							if(k > 0) // not on first element
 							{
 								writer.write("else ");
@@ -340,7 +337,7 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 									}
 									writer.write("))");
 									numAttConsts++;
-								}
+								}								
 							}
 							if(numAttConsts > 0) // there is at least one constraint
 							{
@@ -359,7 +356,7 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 							writer.write(NEWLINE);
 						}
 						writer.write(CLOSED_BRACK);
-						writer.write(NEWLINE);
+						writer.write(NEWLINE);						
 					}
 					writer.write("if(");
 					if(tempDest instanceof RandomActionTypeDestroyer)
@@ -388,7 +385,7 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 					if((tempDest instanceof AutonomousActionTypeDestroyer) || (tempDest instanceof RandomActionTypeDestroyer))
 					{
 						if((tempDest.getDestroyerText() != null) && (tempDest.getDestroyerText().length() > 0))
-						{
+						{						
 							writer.write("((Employee)c).setOverheadText(\"" + tempDest.getDestroyerText() + "\");");
 						}
 						writer.write(NEWLINE);
@@ -399,7 +396,7 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 						writer.write(OPEN_BRACK);
 						writer.write(NEWLINE);
 						if((tempDest.getDestroyerText() != null) && (tempDest.getDestroyerText().length() > 0))
-						{
+						{						
 							writer.write("((Customer)c).setOverheadText(\"" + tempDest.getDestroyerText() + "\");");
 						}
 						writer.write(NEWLINE);
@@ -415,17 +412,17 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 							Rule dRule = (Rule)destRules.elementAt(k);
 							writer.write("ruleExec.update(gui, RuleExecutor.UPDATE_ONE, \"" + dRule.getName() + "\", tempAct);");
 							writer.write(NEWLINE);
-						}
+						}						
 						writer.write("state.getActionStateRepository().get" + getUpperCaseLeading(tempAct.getName()) + "ActionStateRepository().remove(("
 							+ getUpperCaseLeading(tempAct.getName()) + "Action)tempAct);");
 						writer.write(NEWLINE);
-
+						
 						// game-ending:
 						if(tempDest.isGameEndingDestroyer())
 						{
 							writer.write("// stop game and give score:");
 							writer.write(NEWLINE);
-							writer.write(getUpperCaseLeading(tempAct.getName()) + "Action t111 = (" + getUpperCaseLeading(tempAct.getName())
+							writer.write(getUpperCaseLeading(tempAct.getName()) + "Action t111 = (" + getUpperCaseLeading(tempAct.getName()) 
 								+ "Action)tempAct;");
 							writer.write(NEWLINE);
 							// find the scoring attribute:
@@ -458,15 +455,15 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 								writer.write("if(t111.getAll" + scoringPartDest.getParticipant().getName() + "s().size() > 0)");
 								writer.write(NEWLINE);
 								writer.write(OPEN_BRACK);
-								writer.write(NEWLINE);
+								writer.write(NEWLINE);								
 								writer.write(getUpperCaseLeading(scoringPartConst.getSimSEObjectType().getName()) + " t = ("
-									+ getUpperCaseLeading(scoringPartConst.getSimSEObjectType().getName()) + ")(t111.getAll"
+									+ getUpperCaseLeading(scoringPartConst.getSimSEObjectType().getName()) + ")(t111.getAll" 
 									+ scoringPartDest.getParticipant().getName() + "s().elementAt(0));");
 								writer.write(NEWLINE);
 								writer.write("if(t != null)");
 								writer.write(NEWLINE);
 								writer.write(OPEN_BRACK);
-								writer.write(NEWLINE);
+								writer.write(NEWLINE);								
 								if(scoringAttConst.getAttribute().getType() == AttributeTypes.INTEGER)
 								{
 									writer.write("int");
@@ -483,25 +480,25 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 								{
 									writer.write("boolean");
 								}
-								writer.write(" v = t.get" + scoringAttConst.getAttribute().getName() + "();");
+								writer.write(" v = t.get" + scoringAttConst.getAttribute().getName() + "();");						
 								writer.write(NEWLINE);
 								writer.write("state.getClock().stop();");
 								writer.write(NEWLINE);
 								writer.write("((SimSEGUI)gui).update();");
 								writer.write(NEWLINE);
 								writer.write("JOptionPane.showMessageDialog(null, (\"Your score is \" + v), \"Game over!\", JOptionPane.INFORMATION_MESSAGE);");
-								writer.write(NEWLINE);
+								writer.write(NEWLINE);								
 								writer.write(CLOSED_BRACK);
 								writer.write(NEWLINE);
 								writer.write(CLOSED_BRACK);
 								writer.write(NEWLINE);
 							}
 						}
-
+						
 						writer.write(CLOSED_BRACK);
 						writer.write(NEWLINE);
 						writer.write(CLOSED_BRACK);
-						writer.write(NEWLINE);
+						writer.write(NEWLINE);						
 					}
 					else // user destroyer
 					{
@@ -512,22 +509,22 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 						writer.write(CLOSED_BRACK);
 						writer.write(NEWLINE);
 						writer.write(CLOSED_BRACK);
-						writer.write(NEWLINE);
-					}
+						writer.write(NEWLINE);						
+					}					
 					writer.write(CLOSED_BRACK);
-					writer.write(NEWLINE);
-				}
+					writer.write(NEWLINE);					
+				}			
 			}
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write("// update trigger checker:");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.write("trigCheck.update(true, gui);");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.close();
 		}
 		catch (IOException e)
@@ -536,14 +533,14 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 				JOptionPane.WARNING_MESSAGE);
 		}
 	}
-
+	
 	private String getUpperCaseLeading(String s)
 	{
 		return (s.substring(0, 1).toUpperCase() + s.substring(1));
 	}
 
 
-
+	
 	private void initializeDestroyerLists() // gets the destroyers in prioritized order according to their priority
 	{
 		// initialize lists:
@@ -589,7 +586,7 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants
 					}
 				}
 			}
-		}
+		}	
 		// make it all into one:
 		allDestroyers = new Vector();
 		for(int i=0; i<prioritizedDestroyers.size(); i++)

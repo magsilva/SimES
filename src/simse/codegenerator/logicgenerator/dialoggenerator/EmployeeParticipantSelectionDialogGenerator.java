@@ -4,20 +4,17 @@ package simse.codegenerator.logicgenerator.dialoggenerator;
 
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class EmployeeParticipantSelectionDialogGenerator implements CodeGeneratorConstants
+public class EmployeeParticipantSelectionDialogGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private File directory; // directory to generate into
 	private File psdFile; // file to generate
@@ -190,8 +187,8 @@ public class EmployeeParticipantSelectionDialogGenerator implements CodeGenerato
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
-				writer.write("label = (\"" + getUpperCaseLeading(tempType.getName()) + " (\" + ((" + getUpperCaseLeading(tempType.getName())
-					+ ")tempObj).get" + getUpperCaseLeading(tempType.getKey().getName()) + "() + \")\");");
+				writer.write("label = (\"" + getUpperCaseLeading(tempType.getName()) + " (\" + ((" + getUpperCaseLeading(tempType.getName()) 
+					+ ")tempObj).get" + tempType.getKey().getName() + "() + \")\");");
 				writer.write(NEWLINE);
 				writer.write(CLOSED_BRACK);
 				writer.write(NEWLINE);
@@ -208,7 +205,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements CodeGenerato
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// bottom pane:
 			writer.write("JPanel bottomPane = new JPanel();");
 			writer.write(NEWLINE);
@@ -224,7 +221,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements CodeGenerato
 			writer.write(NEWLINE);
 			writer.write("bottomPane.add(cancelButton);");
 			writer.write(NEWLINE);
-
+			
 			// add panes to main pane:
 			writer.write("mainPane.add(topPane);");
 			writer.write(NEWLINE);
@@ -232,7 +229,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements CodeGenerato
 			writer.write(NEWLINE);
 			writer.write("mainPane.add(bottomPane);");
 			writer.write(NEWLINE);
-
+			
 			// Set main window frame properties:
 			writer.write("setContentPane(mainPane);");
 			writer.write(NEWLINE);
@@ -272,7 +269,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements CodeGenerato
 				{
 					ActionTypeTrigger tempTrig = (ActionTypeTrigger)trigs.elementAt(k);
 					if(tempTrig instanceof UserActionTypeTrigger)
-					{
+					{			
 						if(putElse) // not on first element
 						{
 							writer.write("else ");
@@ -316,7 +313,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements CodeGenerato
 			}
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			writer.write("if(participants.size() == 1)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
@@ -375,13 +372,13 @@ public class EmployeeParticipantSelectionDialogGenerator implements CodeGenerato
 						break;
 					}
 				}
-			}
+			}				
+			writer.write(CLOSED_BRACK);
+			writer.write(NEWLINE);			
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
-			writer.write(NEWLINE);
-
+			writer.write(NEWLINE);			
+			
 			// actionPerformed function:
 			writer.write("public void actionPerformed(ActionEvent evt)");
 			writer.write(NEWLINE);
@@ -469,14 +466,14 @@ public class EmployeeParticipantSelectionDialogGenerator implements CodeGenerato
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
+			writer.write(NEWLINE);	
 			writer.write(NEWLINE);
-			writer.write(NEWLINE);
-
+			
 			// addParticipant function:
 			writer.write("private void addParticipant(String objTypeName, String keyValStr)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);	
 			boolean putElse9 = false;
 			// go through each object type:
 			for(int i=0; i<objs.size(); i++)
@@ -537,7 +534,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements CodeGenerato
 						{
 							ActionTypeTrigger tempTrig = (ActionTypeTrigger)trigs.elementAt(k);
 							if(tempTrig instanceof UserActionTypeTrigger)
-							{
+							{					
 								if(putElse88) // not on first element
 								{
 									writer.write("else ");
@@ -597,11 +594,11 @@ public class EmployeeParticipantSelectionDialogGenerator implements CodeGenerato
 					writer.write(CLOSED_BRACK);
 					writer.write(NEWLINE);
 				}
-			}
+			}	
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-			writer.write(NEWLINE);
-
+			writer.write(NEWLINE);			
+			
 			// setMinandMax function:
 			writer.write("private void setMinAndMax()");
 			writer.write(NEWLINE);
@@ -698,7 +695,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements CodeGenerato
 			}
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// actionCancelled function:
 			writer.write("public boolean actionCancelled()");
 			writer.write(NEWLINE);
@@ -708,9 +705,9 @@ public class EmployeeParticipantSelectionDialogGenerator implements CodeGenerato
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);		
 			writer.close();
 		}
 		catch (IOException e)

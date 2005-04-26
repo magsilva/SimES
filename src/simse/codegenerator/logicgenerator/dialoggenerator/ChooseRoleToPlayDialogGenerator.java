@@ -4,20 +4,17 @@ package simse.codegenerator.logicgenerator.dialoggenerator;
 
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
+public class ChooseRoleToPlayDialogGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private File directory; // directory to generate into
 	private File crtpdFile; // file to generate
@@ -108,7 +105,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("middlePane.add(partNameList);");
 			writer.write(NEWLINE);
-
+			
 			// bottom pane:
 			writer.write("JPanel bottomPane = new JPanel();");
 			writer.write(NEWLINE);
@@ -124,7 +121,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("bottomPane.add(cancelButton);");
 			writer.write(NEWLINE);
-
+			
 			// add panes to main pane:
 			writer.write("mainPane.add(topPane);");
 			writer.write(NEWLINE);
@@ -132,7 +129,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("mainPane.add(bottomPane);");
 			writer.write(NEWLINE);
-
+			
 			// Set main window frame properties:
 			writer.write("setContentPane(mainPane);");
 			writer.write(NEWLINE);
@@ -170,7 +167,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// other constructor:
 			writer.write("public ChooseRoleToPlayDialog(JFrame owner, Vector partNames, Employee e, simse.adts.actions.Action act, String menText)");
 			writer.write(NEWLINE);
@@ -200,7 +197,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("middlePane.add(partNameList);");
 			writer.write(NEWLINE);
-
+			
 			// bottom pane:
 			writer.write("JPanel bottomPane = new JPanel();");
 			writer.write(NEWLINE);
@@ -216,7 +213,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("bottomPane.add(cancelButton);");
 			writer.write(NEWLINE);
-
+			
 			// add panes to main pane:
 			writer.write("mainPane.add(topPane);");
 			writer.write(NEWLINE);
@@ -224,7 +221,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("mainPane.add(bottomPane);");
 			writer.write(NEWLINE);
-
+			
 			// Set main window frame properties:
 			writer.write("setContentPane(mainPane);");
 			writer.write(NEWLINE);
@@ -261,8 +258,8 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
-
+			writer.write(NEWLINE);			
+			
 			// actionPerformed function:
 			writer.write("public void actionPerformed(ActionEvent evt)");
 			writer.write(NEWLINE);
@@ -286,7 +283,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("String partName = (String)(partNameList.getSelectedItem());");
 			writer.write(NEWLINE);
-
+			
 			// make a Vector of all the action types with user triggers:
 			Vector userTrigActs = new Vector();
 			Vector allActs = actTypes.getAllActionTypes();
@@ -303,8 +300,8 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 						break;
 					}
 				}
-			}
-
+			}			
+			
 			// go through all the actions with user triggers:
 			for(int i=0; i<userTrigActs.size(); i++)
 			{
@@ -313,14 +310,14 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
-
+				
 				// go through all the action's user triggers:
 				boolean putElse = false;
 				Vector allTrigs = tempAct.getAllTriggers();
 				for(int j=0; j<allTrigs.size(); j++)
 				{
 					ActionTypeTrigger outerTrig = (ActionTypeTrigger)allTrigs.elementAt(j);
-					if((outerTrig instanceof UserActionTypeTrigger) && (outerTrig.getTriggerText() != null)
+					if((outerTrig instanceof UserActionTypeTrigger) && (outerTrig.getTriggerText() != null) 
 						&& (outerTrig.getTriggerText().length() > 0))
 					{
 						if(putElse)
@@ -330,7 +327,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 						else
 						{
 							putElse = true;
-						}
+						}				
 						writer.write("if(menuText.equals(\"" + ((UserActionTypeTrigger)outerTrig).getMenuText() + "\"))");
 						writer.write(NEWLINE);
 						writer.write(OPEN_BRACK);
@@ -341,7 +338,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 						writer.write(NEWLINE);
 					}
 				}
-
+				
 				// go through all employee participants:
 				Vector allParts = tempAct.getAllParticipants();
 				int numEmpParts = 0;
@@ -376,15 +373,15 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// onlyOneRole function:
 			writer.write("private void onlyOneRole()");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
 			writer.write("String partName = (String)(partNameList.getItemAt(0));");
-			writer.write(NEWLINE);
-
+			writer.write(NEWLINE);			
+			
 			// go through all action types w/ user triggers:
 			for(int i=0; i<userTrigActs.size(); i++)
 			{
@@ -397,7 +394,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 				writer.write(NEWLINE);
 				writer.write(OPEN_BRACK);
 				writer.write(NEWLINE);
-
+				
 				// go through all the actions user triggers:
 				boolean putElse = false;
 				Vector allTrigs = tempAct.getAllTriggers();
@@ -425,7 +422,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 						writer.write(NEWLINE);
 					}
 				}
-
+				
 				// go through all employee participants:
 				Vector allParts = tempAct.getAllParticipants();
 				int numEmpParts = 0;
@@ -460,7 +457,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			writer.close();
 		}
 		catch (IOException e)

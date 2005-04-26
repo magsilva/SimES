@@ -3,20 +3,17 @@
 package simse.codegenerator.guigenerator;
 
 import simse.modelbuilder.objectbuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 
-public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
+public class AtAGlanceFramesGenerator
 {
-	/*
 	private final char NEWLINE = '\n';
 	private final char OPEN_BRACK = '{';
 	private final char CLOSED_BRACK = '}';
-	*/
 
 	private File directory; // directory to save generated code into
 	private DefinedObjectTypes objTypes; // holds all of the defined object types from an sso file
@@ -36,7 +33,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 			generateFrameFile(types[i]);
 		}
 	}
-
+	
 	private void generateFrameFile(String type)
 	{
 		// generate file:
@@ -86,7 +83,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("private PopupListener popupListener;");
 			writer.write(NEWLINE);
-
+			
 			// get all types:
 			Vector types = objTypes.getAllObjectTypesOfType(SimSEObjectTypeTypes.getIntRepresentation(type));
 			for(int i=0; i<types.size(); i++)
@@ -101,16 +98,16 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 				writer.write(NEWLINE);
 			}
 			writer.write("private JPanel mainPane;");
-			writer.write(NEWLINE);
+			writer.write(NEWLINE);			
 			writer.write(NEWLINE);
 			writer.write("private int realColumnIndex; // index of selected column");
 			writer.write(NEWLINE);
 			writer.write("private JTable selectedTable; // selected table");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+	
 			// constructor:
-			writer.write("public " + type + "sAtAGlanceFrame(State s,SimSEGUI gui)");
+			writer.write("public " + type + "sAtAGlanceFrame(State s)");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
@@ -124,7 +121,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 			writer.write("int numCols;");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			for(int i=0; i<types.size(); i++)
 			{
 				SimSEObjectType tempType = (SimSEObjectType)types.elementAt(i);
@@ -139,7 +136,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 				writer.write(tempType.getName().toLowerCase() + "Table.addMouseListener(this);");
 				writer.write(NEWLINE);
 				writer.write(tempType.getName().toLowerCase() + "Table.getTableHeader().setReorderingAllowed(false);");
-				writer.write(NEWLINE);
+				writer.write(NEWLINE);				
 				writer.write("// make it so that the user can make each column disappear if they want:");
 				writer.write(NEWLINE);
 				writer.write("numCols = " + tempType.getName().toLowerCase() + "Table.getColumnCount();");
@@ -158,34 +155,34 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("popup = new JPopupMenu();");
 			writer.write(NEWLINE);
-			writer.write("popupListener = new PopupListener(popup,gui);");
+			writer.write("popupListener = new PopupListener(popup);");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			writer.write("// Create panes:");
 			writer.write(NEWLINE);
-
+			
 			for(int i=0; i<types.size(); i++)
 			{
-				SimSEObjectType tempType = (SimSEObjectType)types.elementAt(i);
+				SimSEObjectType tempType = (SimSEObjectType)types.elementAt(i);			
 				writer.write("JScrollPane " + tempType.getName().toLowerCase() + "Pane = new JScrollPane(" + tempType.getName().toLowerCase()
 					+ "Table);");
 				writer.write(NEWLINE);
 			}
-
+			
 			writer.write(NEWLINE);
 			writer.write("// Table headers:");
 			writer.write(NEWLINE);
-
+			
 			for(int i=0; i<types.size(); i++)
 			{
-				SimSEObjectType tempType = (SimSEObjectType)types.elementAt(i);
+				SimSEObjectType tempType = (SimSEObjectType)types.elementAt(i);			
 				writer.write(tempType.getName().toLowerCase() + "TitlePane = new JPanel();");
 				writer.write(NEWLINE);
 				writer.write(tempType.getName().toLowerCase() + "TitlePane.add(new JLabel(\"" + getUpperCaseLeading(tempType.getName()) + "s:\"));");
 				writer.write(NEWLINE);
 			}
-
+			
 			writer.write(NEWLINE);
 			writer.write("// Create main pane:");
 			writer.write(NEWLINE);
@@ -196,16 +193,16 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("// Add panes to main pane:");
 			writer.write(NEWLINE);
-
+			
 			for(int i=0; i<types.size(); i++)
 			{
-				SimSEObjectType tempType = (SimSEObjectType)types.elementAt(i);
+				SimSEObjectType tempType = (SimSEObjectType)types.elementAt(i);			
 				writer.write("mainPane.add(" + tempType.getName().toLowerCase() + "TitlePane);");
 				writer.write(NEWLINE);
 				writer.write("mainPane.add(" + tempType.getName().toLowerCase() + "Pane);");
 				writer.write(NEWLINE);
 			}
-
+			
 			writer.write(NEWLINE);
 			writer.write("// Set main window frame properties:");
 			writer.write(NEWLINE);
@@ -226,7 +223,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			// mouse listener functions:
 			writer.write("public void mousePressed(MouseEvent me){}");
 			writer.write(NEWLINE);
@@ -237,7 +234,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 			writer.write("public void mouseExited(MouseEvent me){}");
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			// mouseReleased function:
 			writer.write("public void mouseReleased(MouseEvent me)");
 			writer.write(NEWLINE);
@@ -252,7 +249,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			for(int i=0; i<types.size(); i++)
 			{
-				SimSEObjectType tempType = (SimSEObjectType)types.elementAt(i);
+				SimSEObjectType tempType = (SimSEObjectType)types.elementAt(i);	
 				if(i > 0)
 				{
 					writer.write("else ");
@@ -272,7 +269,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			// actionPerformed function:
 			writer.write("public void actionPerformed(ActionEvent e)	// dealing with actions generated by popup menus");
 			writer.write(NEWLINE);
@@ -312,7 +309,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write("TableColumn column = null;");
 			writer.write(NEWLINE);
-
+			
 			for(int i=0; i<types.size(); i++)
 			{
 				SimSEObjectType tempType = (SimSEObjectType)types.elementAt(i);
@@ -352,7 +349,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			// createPopupMenu function:
 			writer.write("public void createPopupMenu(JTable table, Point p)");
 			writer.write(NEWLINE);
@@ -435,16 +432,16 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			// update function:
 			writer.write("public void update()");
 			writer.write(NEWLINE);
 			writer.write(OPEN_BRACK);
 			writer.write(NEWLINE);
-
+			
 			for(int i=0; i<types.size(); i++)
 			{
-				SimSEObjectType tempType = (SimSEObjectType)types.elementAt(i);
+				SimSEObjectType tempType = (SimSEObjectType)types.elementAt(i);			
 				writer.write(tempType.getName().toLowerCase() + "Model.update();");
 				writer.write(NEWLINE);
 				writer.write(tempType.getName().toLowerCase() + "Table.update(" + tempType.getName().toLowerCase() + "Table.getGraphics());");
@@ -454,7 +451,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
-
+			
 			// resetHeight function:
 			writer.write("private void resetHeight()");
 			writer.write(NEWLINE);
@@ -466,7 +463,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			for(int i=0; i<types.size(); i++)
 			{
-				SimSEObjectType tempType = (SimSEObjectType)types.elementAt(i);
+				SimSEObjectType tempType = (SimSEObjectType)types.elementAt(i);	
 				writer.write("height += ((" + tempType.getName().toLowerCase() + "Table.getRowHeight() + (" + tempType.getName().toLowerCase()
 					+ "Table.getRowMargin() * 2)) * (" + tempType.getName().toLowerCase() + "Table.getRowCount() + 1));");
 				writer.write(NEWLINE);
@@ -486,7 +483,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
 			writer.write(NEWLINE);
-
+			
 			writer.write("// getAllHiddenColumnIndices function:");
 			writer.write(NEWLINE);
 			writer.write("private Vector getAllHiddenColumnIndices(JTable table)");

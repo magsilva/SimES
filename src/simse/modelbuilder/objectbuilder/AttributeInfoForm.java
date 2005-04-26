@@ -10,14 +10,12 @@ import java.awt.Point;
 import javax.swing.border.*;
 import java.util.*;
 
-import simse.modelbuilder.ModelBuilderGUI;
-
 
 public class AttributeInfoForm extends JDialog implements ActionListener
 {
 	private SimSEObjectType objectInFocus; // object type whose attributes are being edited
 	private Attribute attribute; // attribute whose values are being edited
-
+	
 	private JTextField nameTextField; // for entering the name of the attribute
 	private JComboBox typeList; // for choosing a type for the attribute
 	private JComboBox visibleList; // for choosing whether an attribute is visible
@@ -30,37 +28,33 @@ public class AttributeInfoForm extends JDialog implements ActionListener
 	private JLabel minNumDigitsLabel; // label for minNumDigits field
 	private JTextField minNumDigitsTextField; // for entering min number of digits after decimal to show
 	private JLabel maxNumDigitsLabel; // label for maxNumDigits field
-	private JTextField maxNumDigitsTextField; // for entering max number of digits after decimal to show
+	private JTextField maxNumDigitsTextField; // for entering max number of digits after decimal to show	
 	private JButton okButton; // for ok'ing the creating/editing of a new attribute
 	private JButton cancelButton; // for canceling the creating/editing of a new attribute
-
-	private ObjectBuilderGUI objectBuilder;
-
+	
+	
 	public AttributeInfoForm(JFrame owner, SimSEObjectType object, Attribute attr)
 	{
 		super(owner, true);
 		objectInFocus = object;
 		attribute = attr;
-
-ModelBuilderGUI mb = (ModelBuilderGUI)owner;
-objectBuilder = mb.getObjectBuilderGUI();
-
+		
 		// Set window title:
 		setTitle("Attribute Information - SimSE");
-
+		
 		// Create main panel (box):
 		Box mainPane = Box.createVerticalBox();
-
+		
 		// Create main label pane:
 		JPanel mainLabelPane = new JPanel();
 		mainLabelPane.add(new JLabel("Enter Attribute Information:"));
-
+		
 		// Create "name" pane, label, and text field:
 		JPanel namePane = new JPanel();
 		namePane.add(new JLabel("Name:"));
 		nameTextField = new JTextField(18);
 		namePane.add(nameTextField);
-
+		
 		// Create type/visible/key pane, labels, and combo boxes:
 		// Types:
 		JLabel typeLabel = new JLabel("Type:");
@@ -85,7 +79,7 @@ objectBuilder = mb.getObjectBuilderGUI();
 		visibleAtEndList = new JComboBox();
 		visibleAtEndList.addItem("Yes");
 		visibleAtEndList.addItem("No");
-		namePane.add(visibleAtEndList);
+		namePane.add(visibleAtEndList);		
 		// Key:
 		namePane.add(new JLabel("Key:"));
 		keyList = new JComboBox();
@@ -100,10 +94,10 @@ objectBuilder = mb.getObjectBuilderGUI();
 			keyList.setSelectedItem("No");
 		}
 		namePane.add(keyList);
-
+		
 		// Create min/max digits pane, labels, and text fields:
 		JPanel minMaxDigitsPane = new JPanel();
-
+		
 		// minNumDigits:
 		minNumDigitsLabel = new JLabel("Min Num Fraction Digits to Display:");
 		minMaxDigitsPane.add(minNumDigitsLabel);
@@ -111,34 +105,34 @@ objectBuilder = mb.getObjectBuilderGUI();
 		minMaxDigitsPane.add(minNumDigitsTextField);
 		minNumDigitsLabel.setEnabled(false);
 		minNumDigitsTextField.setEnabled(false);
-
+		
 		// maxNumDigits:
 		maxNumDigitsLabel = new JLabel("Max Num Fraction Digits to Display:");
 		minMaxDigitsPane.add(maxNumDigitsLabel);
 		maxNumDigitsTextField = new JTextField(3);
 		minMaxDigitsPane.add(maxNumDigitsTextField);
-		minMaxDigitsPane.add(new JLabel("(Leave blank if boundless)"));
+		minMaxDigitsPane.add(new JLabel("(Leave blank if boundless)"));			
 		maxNumDigitsLabel.setEnabled(false);
-		maxNumDigitsTextField.setEnabled(false);
-
-
+		maxNumDigitsTextField.setEnabled(false);		
+		
+		
 		// Create min/max pane, labels, and text fields:
 		JPanel minMaxPane = new JPanel();
-
+		
 		// min value:
 		minValLabel = new JLabel("Minimum Value:");
 		minMaxPane.add(minValLabel);
 		minValTextField = new JTextField(6);
 		minMaxPane.add(minValTextField);
-
+		
 		// max value:
 		maxValLabel = new JLabel("Maximum Value:");
 		minMaxPane.add(maxValLabel);
 		maxValTextField = new JTextField(6);
 		minMaxPane.add(maxValTextField);
 		minMaxPane.add(new JLabel("(Leave blank if boundless)"));
-
-
+		
+		
 		// Create okCancelButton pane and buttons:
 		JPanel okCancelButtonPane = new JPanel();
 		okButton = new JButton("OK");
@@ -147,19 +141,19 @@ objectBuilder = mb.getObjectBuilderGUI();
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(this);
 		okCancelButtonPane.add(cancelButton);
-
+		
 		// Add panes to main pane:
 		mainPane.add(mainLabelPane);
 		mainPane.add(namePane);
 		mainPane.add(minMaxDigitsPane);
 		mainPane.add(minMaxPane);
 		mainPane.add(okCancelButtonPane);
-
+		
 		if(attribute != null) // editing an existing attribute
 		{
 			initializeForm(); // initialize values to reflect attribute being edited
 		}
-
+		
 		// Set main window frame properties:
 		setBackground(Color.black);
 		setContentPane(mainPane);
@@ -175,8 +169,8 @@ objectBuilder = mb.getObjectBuilderGUI();
 		setLocation(thisLoc);
 		setVisible(true);
 	}
-
-
+	
+	
 	public void actionPerformed(ActionEvent evt) // handles user actions
 	{
 		Object source = evt.getSource(); // get which component the action came from
@@ -191,7 +185,7 @@ objectBuilder = mb.getObjectBuilderGUI();
 				minNumDigitsTextField.setEnabled(false);
 				maxNumDigitsLabel.setEnabled(false);
 				maxNumDigitsTextField.setText(null);
-				maxNumDigitsTextField.setEnabled(false);
+				maxNumDigitsTextField.setEnabled(false);				
 				minValLabel.setEnabled(false);
 				minValTextField.setText(null);
 				minValTextField.setEnabled(false);
@@ -201,7 +195,7 @@ objectBuilder = mb.getObjectBuilderGUI();
 			}
 			else // numerical type chosen
 			{
-				// enable min/max val fields and labels:
+				// enable min/max val fields and labels:				
 				minValLabel.setEnabled(true);
 				minValTextField.setEnabled(true);
 				maxValLabel.setEnabled(true);
@@ -212,7 +206,7 @@ objectBuilder = mb.getObjectBuilderGUI();
 					minNumDigitsLabel.setEnabled(true);
 					minNumDigitsTextField.setEnabled(true);
 					maxNumDigitsLabel.setEnabled(true);
-					maxNumDigitsTextField.setEnabled(true);
+					maxNumDigitsTextField.setEnabled(true);	
 				}
 				else // int attribute
 				{
@@ -222,18 +216,18 @@ objectBuilder = mb.getObjectBuilderGUI();
 					minNumDigitsLabel.setEnabled(false);
 					minNumDigitsTextField.setEnabled(false);
 					maxNumDigitsLabel.setEnabled(false);
-					maxNumDigitsTextField.setEnabled(false);
+					maxNumDigitsTextField.setEnabled(false);						
 				}
 			}
 		}
-
+		
 		else if(source == cancelButton) // cancel button has been pressed
 		{
 			// Close window:
 			setVisible(false);
 			dispose();
 		}
-
+		
 		else if(source == okButton) // okButton has been pressed
 		{
 			Vector errors = inputValid(); // check validity of input
@@ -270,8 +264,8 @@ objectBuilder = mb.getObjectBuilderGUI();
 			}
 		}
 	}
-
-
+	
+	
 	private void initializeForm() // initializes the text in the text fields (if any) and greys-out the min/max value fields if necessary
 	{
 		// fill in values:
@@ -287,12 +281,12 @@ objectBuilder = mb.getObjectBuilderGUI();
 		}
 		if(attribute.isVisibleOnCompletion())
 		{
-			visibleAtEndList.setSelectedItem("Yes");
+			visibleAtEndList.setSelectedItem("Yes");			
 		}
 		else
 		{
 			visibleAtEndList.setSelectedItem("No");
-		}
+		}		
 		if(attribute.isKey())
 		{
 			keyList.setSelectedItem("Yes");
@@ -300,15 +294,15 @@ objectBuilder = mb.getObjectBuilderGUI();
 		else
 		{
 			keyList.setSelectedItem("No");
-		}
-
+		}	
+		
 		if((attribute == null) || (attribute instanceof NonNumericalAttribute)) // min/max val fields do not apply
 		{
 			// disable min/max val fields and labels:
 			minNumDigitsLabel.setEnabled(false);
 			minNumDigitsTextField.setEnabled(false);
 			maxNumDigitsLabel.setEnabled(false);
-			maxNumDigitsTextField.setEnabled(false);
+			maxNumDigitsTextField.setEnabled(false);				
 			minValLabel.setEnabled(false);
 			minValTextField.setEnabled(false);
 			maxValLabel.setEnabled(false);
@@ -330,7 +324,7 @@ objectBuilder = mb.getObjectBuilderGUI();
 				minNumDigitsLabel.setEnabled(false);
 				minNumDigitsTextField.setEnabled(false);
 				maxNumDigitsLabel.setEnabled(false);
-				maxNumDigitsTextField.setEnabled(false);
+				maxNumDigitsTextField.setEnabled(false);					
 			}
 			else // double attribute
 			{
@@ -341,17 +335,17 @@ objectBuilder = mb.getObjectBuilderGUI();
 				if(((NumericalAttribute)attribute).getMaxNumFractionDigits() != null) // has max num fraction digits
 				{
 					maxNumDigitsTextField.setText(((NumericalAttribute)attribute).getMaxNumFractionDigits().toString());
-				}
+				}				
 			}
 		}
 	}
-
-
+	
+	
 	private Vector inputValid() // validates the input from the text fields; returns null if input is valid,
 		// or a Vector of String messages explaining the error(s)
 	{
 		Vector messages = new Vector(); // holds any String messages about invalid input to display to the user
-
+		
 		// Check name input:
 		String nameInput = nameTextField.getText();
 		char[] cArray = nameInput.toCharArray();
@@ -369,7 +363,7 @@ objectBuilder = mb.getObjectBuilderGUI();
 				break;
 			}
 		}
-
+		
 		// Check key input:
 		if((attribute != null) && (attribute.isKey() == true) && (((String)keyList.getSelectedItem()) == "No")) // this is an attribute
 			// being edited, not a new one, it was the key, but the user has just changed it to not be the key, hence there
@@ -389,21 +383,14 @@ objectBuilder = mb.getObjectBuilderGUI();
 		{
 			messages.add(new String("You must have exactly one attribute per object type defined as the key."));
 		}
-
+		
 		// Check min/max fraction digits and value inputs:
 		int selectedType = AttributeTypes.getIntRepresentation((String)typeList.getSelectedItem());
 		String minValInput = minValTextField.getText();
 		String maxValInput = maxValTextField.getText();
 		String minDigitsInput = minNumDigitsTextField.getText();
 		String maxDigitsInput = maxNumDigitsTextField.getText();
-
-
-
-if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEAN)
-{
-	messages.add("Hired is a reserved word and can only be of type BOOLEAN");
-}
-
+		
 		if(selectedType == AttributeTypes.DOUBLE) // type = double
 		{
 			// Check min value input:
@@ -418,7 +405,7 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 					messages.add(new String("Minimum value must be a valid double number"));
 				}
 			}
-
+			
 			// Check max value input:
 			if((maxValInput != null) && (maxValInput.length() > 0)) // field is not blank
 			{
@@ -431,7 +418,7 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 					messages.add(new String("Maximum value must be a valid double number"));
 				}
 			}
-
+			
 			// Check minDigits input:
 			if((minDigitsInput != null) && (minDigitsInput.length() > 0)) // field is not blank
 			{
@@ -447,8 +434,8 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 				{
 					messages.add(new String("Minimum number of fraction digits must be a valid integer number between 0 and 16"));
 				}
-			}
-
+			}	
+			
 			// Check maxDigits input:
 			if((maxDigitsInput != null) && (maxDigitsInput.length() > 0)) // field is not blank
 			{
@@ -464,9 +451,9 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 				{
 					messages.add(new String("Maximum number of fraction digits must be a valid integer number between 0 and 16"));
 				}
-			}
+			}				
 		}
-
+		
 		else if(selectedType == AttributeTypes.INTEGER) // type = integer
 		{
 			// Check min value input:
@@ -496,8 +483,8 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 		}
 		return messages;
 	}
-
-
+	
+	
 	private String maxGreaterThanOrEqualToMin() // returns a string with the error message if this condition is not met, null otherwise
 	{
 		String minValInput = minValTextField.getText();
@@ -542,9 +529,9 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 		}
 		return null;
 	}
-
-
-	private String maxDigitsGreaterThanOrEqualToMinDigits() // returns a string with the error message if this condition is not met, null
+	
+	
+	private String maxDigitsGreaterThanOrEqualToMinDigits() // returns a string with the error message if this condition is not met, null 
 		// otherwise
 	{
 		String minDigitsInput = minNumDigitsTextField.getText();
@@ -572,9 +559,9 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 			}
 		}
 		return null;
-	}
-
-
+	}	
+	
+	
 	private boolean attributeNameIsUnique() // returns true if it is unique, false otherwise, and also takes care of asking the user
 		// if they want to overwrite it (and overwriting it, if desired)
 	{
@@ -590,7 +577,7 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 				if(tempAttr.isKey())
 				{
 					keyAttName = tempAttr.getName();
-				}
+				}				
 				if(tempAttr.getName().equalsIgnoreCase(nameInput)) // name entered is not unique (there is already another attribute of
 					// this object defined with the same name)
 				{
@@ -630,7 +617,7 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 									}
 								}
 								addAttribute();
-
+								
 								if(objectInFocus.getAllAttributes().size() == 1) // only one attribute
 								{
 									((Attribute)(objectInFocus.getAllAttributes().elementAt(0))).setKey(true); // make sure the one attribute is the key
@@ -670,25 +657,25 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 		}
 		return true;
 	}
-
-
+	
+	
 	private void addAttribute() // creates a new attribute from the existing info in the form and adds it to the object in focus.
 		// Note: inputValid(), maxGreaterThanOrEqualToMin(), and attributeNameIsUnique() should all be called before calling this
 		// function to ensure that you're adding a valid attribute
 	{
 		int selectedType = AttributeTypes.getIntRepresentation((String)typeList.getSelectedItem()); // get type
-
+		
 		// get "visible" selection:
 		boolean visible;
 		if(((String)visibleList.getSelectedItem()) == "Yes")
 		{
-			visible = true;
+			visible = true;		
 		}
 		else // "No" selected
 		{
 			visible = false;
 		}
-
+		
 		// get "visibleAtEnd" selection:
 		boolean visibleAtEnd;
 		if(((String)visibleAtEndList.getSelectedItem()) == "Yes")
@@ -698,8 +685,8 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 		else // "No" selected
 		{
 			visibleAtEnd = false;
-		}
-
+		}		
+		
 		// get "key" selection:
 		boolean key;
 		if(((String)keyList.getSelectedItem()) == "Yes")
@@ -717,24 +704,24 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 		else // "No" selected
 		{
 			key = false;
-		}
-
+		}			
+		
 		if((selectedType == AttributeTypes.DOUBLE) || (selectedType == AttributeTypes.INTEGER)) // numerical attribute
 		{
 			String minValInput = minValTextField.getText(); // get min val
 			String maxValInput = maxValTextField.getText(); // get max val
 			String minDigitsInput = minNumDigitsTextField.getText();
 			String maxDigitsInput = maxNumDigitsTextField.getText();
-
+			
 			if(selectedType == AttributeTypes.DOUBLE)
 			{
 				try
 				{
 					Double min = null;
 					Double max = null;
-
+					
 					// min/max values:
-					if((minValInput != null) && (minValInput.length() > 0) && (maxValInput != null) && (maxValInput.length() > 0)) // neither min
+					if((minValInput != null) && (minValInput.length() > 0) && (maxValInput != null) && (maxValInput.length() > 0)) // neither min 
 						// val nor max val field is blank
 					{
 						double minVal = Double.parseDouble(minValInput);
@@ -756,7 +743,7 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 					{
 						// do nothing
 					}
-
+					
 					// min/max num digits:
 					if((minDigitsInput != null) && (minDigitsInput.length() > 0) && (maxDigitsInput != null) && (maxDigitsInput.length() > 0))
 						// neither min nor max field is blank
@@ -764,29 +751,29 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 						int minVal = Integer.parseInt(minDigitsInput);
 						int maxVal = Integer.parseInt(maxDigitsInput);
 						// Add new attribute to object in focus:
-						objectInFocus.addAttribute(new NumericalAttribute(nameTextField.getText(), selectedType, visible, key, visibleAtEnd, min,
+						objectInFocus.addAttribute(new NumericalAttribute(nameTextField.getText(), selectedType, visible, key, visibleAtEnd, min, 
 							max, (new Integer(minVal)), (new Integer(maxVal))));
 					}
 					else if((minDigitsInput != null) && (minDigitsInput.length() > 0)) // only max field is blank
 					{
 						int minVal = Integer.parseInt(minDigitsInput);
 						// Add new attribute to object in focus:
-						objectInFocus.addAttribute(new NumericalAttribute(nameTextField.getText(), selectedType, visible, key, visibleAtEnd, min,
+						objectInFocus.addAttribute(new NumericalAttribute(nameTextField.getText(), selectedType, visible, key, visibleAtEnd, min, 
 							max, (new Integer(minVal)), null));
 					}
 					else if((maxDigitsInput != null) && (maxDigitsInput.length() > 0)) // only min field is blank
 					{
 						int maxVal = Integer.parseInt(maxDigitsInput);
 						// Add new attribute to object in focus:
-						objectInFocus.addAttribute(new NumericalAttribute(nameTextField.getText(), selectedType, visible, key, visibleAtEnd, min,
+						objectInFocus.addAttribute(new NumericalAttribute(nameTextField.getText(), selectedType, visible, key, visibleAtEnd, min, 
 							max, null, (new Integer(maxVal))));
 					}
 					else // both min and max val field are blank
 					{
 						// Add new attribute to object in focus:
-						objectInFocus.addAttribute(new NumericalAttribute(nameTextField.getText(), selectedType, visible, key, visibleAtEnd, min,
+						objectInFocus.addAttribute(new NumericalAttribute(nameTextField.getText(), selectedType, visible, key, visibleAtEnd, min, 
 							max, null, null));
-					}
+					}					
 				}
 				catch(NumberFormatException e)
 				{
@@ -816,13 +803,13 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 					{
 						int maxVal = Integer.parseInt(maxValInput);
 						// Add new attribute to object in focus:
-						objectInFocus.addAttribute(new NumericalAttribute(nameTextField.getText(), selectedType, visible, key, visibleAtEnd, null,
+						objectInFocus.addAttribute(new NumericalAttribute(nameTextField.getText(), selectedType, visible, key, visibleAtEnd, null, 
 							(new Integer(maxVal)), null, null));
 					}
 					else // both min and max val field are blank
 					{
 						// Add new attribute to object in focus:
-						objectInFocus.addAttribute(new NumericalAttribute(nameTextField.getText(), selectedType, visible, key, visibleAtEnd, null,
+						objectInFocus.addAttribute(new NumericalAttribute(nameTextField.getText(), selectedType, visible, key, visibleAtEnd, null, 
 							null, null, null));
 					}
 				}
@@ -840,25 +827,25 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 		setVisible(false);
 		dispose();
 	}
-
-
+	
+	
 	private void editAttribute() // changes the attribute being edited to reflect the changes made in this form.
 		// Note: inputValid(), maxGreaterThanOrEqualToMin(), and attributeNameIsUnique() should all be called before calling this
 		// function to ensure that you're editing the attribute with valid values
 	{
 		attribute.setName(nameTextField.getText()); // set name to new val
 		int selectedType = AttributeTypes.getIntRepresentation((String)typeList.getSelectedItem()); // get type
-
+		
 		// get "visible" selection:
 		if(((String)visibleList.getSelectedItem()) == "Yes")
 		{
-			attribute.setVisible(true); // set to new visible status
+			attribute.setVisible(true); // set to new visible status	
 		}
 		else // "No" selected
 		{
 			attribute.setVisible(false); // set to new visible status
 		}
-
+		
 		// get "visibleAtEnd" selection:
 		if(((String)visibleAtEndList.getSelectedItem()) == "Yes")
 		{
@@ -867,8 +854,8 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 		else // "No" selected
 		{
 			attribute.setVisibleOnCompletion(false); // set to new visible on completion status
-		}
-
+		}		
+		
 		// get "key" selection:
 		if(((String)keyList.getSelectedItem()) == "Yes")
 		{
@@ -881,15 +868,15 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 		else // "No" selected
 		{
 			attribute.setKey(false); // set to new key status
-		}
-
+		}			
+		
 		if((selectedType == AttributeTypes.DOUBLE) || (selectedType == AttributeTypes.INTEGER)) // numerical attribute
 		{
-			if((attribute.getType() == AttributeTypes.STRING) || (attribute.getType() == AttributeTypes.BOOLEAN)) // attribute is changing from
+			if((attribute.getType() == AttributeTypes.STRING) || (attribute.getType() == AttributeTypes.BOOLEAN)) // attribute is changing from 
 				// a non-numerical attribute to a numerical one, so needs to be created new
 			{
 				int position = objectInFocus.removeAttribute(attribute.getName()); // remove old non-numerical attribute
-				objectInFocus.addAttribute(new NumericalAttribute((NonNumericalAttribute)attribute, selectedType), position); // add a new numerical
+				objectInFocus.addAttribute(new NumericalAttribute((NonNumericalAttribute)attribute, selectedType), position); // add a new numerical 
 				// attribute
 				attribute = objectInFocus.getAttribute(nameTextField.getText()); // re-focus attribute to this newly created one
 			}
@@ -897,13 +884,13 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 			String maxValInput = maxValTextField.getText(); // get max val
 			String minDigitsInput = minNumDigitsTextField.getText();
 			String maxDigitsInput = maxNumDigitsTextField.getText();
-
+			
 			if(selectedType == AttributeTypes.DOUBLE)
 			{
 				try
 				{
 					// min/max vals:
-					if((minValInput != null) && (minValInput.length() > 0) && (maxValInput != null) && (maxValInput.length() > 0)) // neither min
+					if((minValInput != null) && (minValInput.length() > 0) && (maxValInput != null) && (maxValInput.length() > 0)) // neither min 
 						// val nor max val field is blank
 					{
 						// Set min and max vals to new vals:
@@ -930,9 +917,9 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 						((NumericalAttribute)attribute).setMinBoundless();
 						((NumericalAttribute)attribute).setMaxBoundless();
 					}
-
+					
 					// min/max num digits:
-					if((minDigitsInput != null) && (minDigitsInput.length() > 0) && (maxDigitsInput != null) && (maxDigitsInput.length() > 0))
+					if((minDigitsInput != null) && (minDigitsInput.length() > 0) && (maxDigitsInput != null) && (maxDigitsInput.length() > 0)) 
 						// neither min nor max field is blank
 					{
 						// Set min and max to new vals:
@@ -958,7 +945,7 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 						// Set both vals to null:
 						((NumericalAttribute)attribute).setMinNumFractionDigits(null);
 						((NumericalAttribute)attribute).setMaxNumFractionDigits(null);
-					}
+					}					
 				}
 				catch(NumberFormatException e)
 				{
@@ -1008,7 +995,7 @@ if (nameInput.equalsIgnoreCase("Hired") && selectedType != AttributeTypes.BOOLEA
 				// to a non-numerical one, so needs to be created new
 			{
 				int position = objectInFocus.removeAttribute(attribute.getName()); // remove old non-numerical attribute
-				objectInFocus.addAttribute(new NonNumericalAttribute((NumericalAttribute)attribute, selectedType), position); // add a new non-numerical
+				objectInFocus.addAttribute(new NonNumericalAttribute((NumericalAttribute)attribute, selectedType), position); // add a new non-numerical 
 				// attribute
 				attribute = objectInFocus.getAttribute(nameTextField.getText()); // re-focus attribute to this newly created one
 			}
