@@ -52,7 +52,7 @@ public class WarningListDialog extends JFrame implements ActionListener
 		// Make it show up in the center of the screen:
 		setLocationRelativeTo(null);
 		setVisible(true);
-		show();
+		//show();
 		toFront();
 		requestFocus();		
 	}

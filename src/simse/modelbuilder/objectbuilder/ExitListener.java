@@ -1,3 +1,5 @@
+package simse.modelbuilder.objectbuilder;
+
 import java.awt.*;
 import java.awt.event.*;
 
