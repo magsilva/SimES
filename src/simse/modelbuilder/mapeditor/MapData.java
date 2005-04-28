@@ -72,61 +72,63 @@ public class MapData
 	
 	
 	
-	static String dir = "/data/images/";
-	static Image transparent = ImageLoader.getImageFromURL(dir + "transparent.gif");
-	static Image grid = ImageLoader.getImageFromURL(dir + "grid.gif");
-	static Image floor = ImageLoader.getImageFromURL(dir + "floor.gif");
-	static Image chairT = ImageLoader.getImageFromURL(dir + "chairT.gif");
-	static Image chairB = ImageLoader.getImageFromURL(dir + "chairB.gif");
-	static Image chairL = ImageLoader.getImageFromURL(dir + "chairL.gif");
-	static Image chairR = ImageLoader.getImageFromURL(dir + "chairR.gif");
-	static Image computer = ImageLoader.getImageFromURL(dir + "computer.gif");
-	static Image table = ImageLoader.getImageFromURL(dir + "table.gif");
-	static Image dark = ImageLoader.getImageFromURL(dir + "dark.gif");
-	static Image trashcanE = ImageLoader.getImageFromURL(dir + "trashcan_e.gif");
-	static Image trashcanF = ImageLoader.getImageFromURL(dir + "trashcan_f.gif");
+	static String zipURL = "res/images.zip";
 	
-	static Image wallT = ImageLoader.getImageFromURL(dir + "wall/wall_t.gif");
-	static Image wallB = ImageLoader.getImageFromURL(dir + "wall/wall_b.gif");
-	static Image wallL = ImageLoader.getImageFromURL(dir + "wall/wall_l.gif");
-	static Image wallR = ImageLoader.getImageFromURL(dir + "wall/wall_r.gif");
-	static Image wallTL = ImageLoader.getImageFromURL(dir + "wall/wall_tl.gif");
-	static Image wallTR = ImageLoader.getImageFromURL(dir + "wall/wall_tr.gif");
-	static Image wallBL = ImageLoader.getImageFromURL(dir + "wall/wall_bl.gif");
-	static Image wallBR = ImageLoader.getImageFromURL(dir + "wall/wall_br.gif");
+	static Image transparent = ImageLoader.getImageFromZippedURL(zipURL, "transparent.gif");
+	static Image grid = ImageLoader.getImageFromZippedURL(zipURL, "grid.gif");
+	static Image floor = ImageLoader.getImageFromZippedURL(zipURL, "floor.gif");
+	static Image chairT = ImageLoader.getImageFromZippedURL(zipURL, "chairT.gif");
+	static Image chairB = ImageLoader.getImageFromZippedURL(zipURL, "chairB.gif");
+	static Image chairL = ImageLoader.getImageFromZippedURL(zipURL, "chairL.gif");
+	static Image chairR = ImageLoader.getImageFromZippedURL(zipURL, "chairR.gif");
+	static Image computer = ImageLoader.getImageFromZippedURL(zipURL, "computer.gif");
+	static Image table = ImageLoader.getImageFromZippedURL(zipURL, "table.gif");
+	static Image dark = ImageLoader.getImageFromZippedURL(zipURL, "dark.gif");
+	static Image trashcanE = ImageLoader.getImageFromZippedURL(zipURL, "trashcan_e.gif");
+	static Image trashcanF = ImageLoader.getImageFromZippedURL(zipURL, "trashcan_f.gif");
 	
-	static Image doorTO = ImageLoader.getImageFromURL(dir + "wall/door_to.gif");
-	static Image doorTC = ImageLoader.getImageFromURL(dir + "wall/door_tc.gif");
-	static Image doorLO = ImageLoader.getImageFromURL(dir + "wall/door_lo.gif");
-	static Image doorLC = ImageLoader.getImageFromURL(dir + "wall/door_lc.gif");
-	static Image doorRO = ImageLoader.getImageFromURL(dir + "wall/door_ro.gif");
-	static Image doorRC = ImageLoader.getImageFromURL(dir + "wall/door_rc.gif");
+	static Image wallT = ImageLoader.getImageFromZippedURL(zipURL, "wall/wall_t.gif");
+	static Image wallB = ImageLoader.getImageFromZippedURL(zipURL, "wall/wall_b.gif");
+	static Image wallL = ImageLoader.getImageFromZippedURL(zipURL, "wall/wall_l.gif");
+	static Image wallR = ImageLoader.getImageFromZippedURL(zipURL, "wall/wall_r.gif");
+	static Image wallTL = ImageLoader.getImageFromZippedURL(zipURL, "wall/wall_tl.gif");
+	static Image wallTR = ImageLoader.getImageFromZippedURL(zipURL, "wall/wall_tr.gif");
+	static Image wallBL = ImageLoader.getImageFromZippedURL(zipURL, "wall/wall_bl.gif");
+	static Image wallBR = ImageLoader.getImageFromZippedURL(zipURL, "wall/wall_br.gif");
 	
-	
-	static Image sTableTL = ImageLoader.getImageFromURL(dir + "table/sTable_tl.gif");
-	static Image sTableTM = ImageLoader.getImageFromURL(dir + "table/sTable_tm.gif");
-	static Image sTableTR = ImageLoader.getImageFromURL(dir + "table/sTable_tr.gif");
-	static Image sTableBL = ImageLoader.getImageFromURL(dir + "table/sTable_bl.gif");
-	static Image sTableBM = ImageLoader.getImageFromURL(dir + "table/sTable_bm.gif");
-	static Image sTableBR = ImageLoader.getImageFromURL(dir + "table/sTable_br.gif");
+	static Image doorTO = ImageLoader.getImageFromZippedURL(zipURL, "wall/door_to.gif");
+	static Image doorTC = ImageLoader.getImageFromZippedURL(zipURL, "wall/door_tc.gif");
+	static Image doorLO = ImageLoader.getImageFromZippedURL(zipURL, "wall/door_lo.gif");
+	static Image doorLC = ImageLoader.getImageFromZippedURL(zipURL, "wall/door_lc.gif");
+	static Image doorRO = ImageLoader.getImageFromZippedURL(zipURL, "wall/door_ro.gif");
+	static Image doorRC = ImageLoader.getImageFromZippedURL(zipURL, "wall/door_rc.gif");
 	
 	
-	static Image speechTL = ImageLoader.getImageFromURL(dir + "speechTL.gif");
-	static Image speechTR = ImageLoader.getImageFromURL(dir + "speechTR.gif");
-	static Image speechBL = ImageLoader.getImageFromURL(dir + "speechBL.gif");
-	static Image speechBR = ImageLoader.getImageFromURL(dir + "speechBR.gif");
+	static Image sTableTL = ImageLoader.getImageFromZippedURL(zipURL, "table/sTable_tl.gif");
+	static Image sTableTM = ImageLoader.getImageFromZippedURL(zipURL, "table/sTable_tm.gif");
+	static Image sTableTR = ImageLoader.getImageFromZippedURL(zipURL, "table/sTable_tr.gif");
+	static Image sTableBL = ImageLoader.getImageFromZippedURL(zipURL, "table/sTable_bl.gif");
+	static Image sTableBM = ImageLoader.getImageFromZippedURL(zipURL, "table/sTable_bm.gif");
+	static Image sTableBR = ImageLoader.getImageFromZippedURL(zipURL, "table/sTable_br.gif");
 	
-	static Image error = ImageLoader.getImageFromURL(dir + "error.gif");
+	
+	static Image speechTL = ImageLoader.getImageFromZippedURL(zipURL, "speechTL.gif");
+	static Image speechTR = ImageLoader.getImageFromZippedURL(zipURL, "speechTR.gif");
+	static Image speechBL = ImageLoader.getImageFromZippedURL(zipURL, "speechBL.gif");
+	static Image speechBR = ImageLoader.getImageFromZippedURL(zipURL, "speechBR.gif");
+	
+	static Image error = ImageLoader.getImageFromZippedURL(zipURL, "error.gif");
 
 	
-	public static String getImageDirectoryURL()
+	public static String getZippedImagesURL()
 	{
-		return dir;
+		return zipURL;
 	}
 
 	
 	public static Image getImage(String file)
 	{
+		// TODO: is this method still valid?
 		return Toolkit.getDefaultToolkit().getImage(file);
 	}
 	
