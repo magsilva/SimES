@@ -5,8 +5,6 @@ package simse.modelbuilder.actionbuilder;
 import simse.modelbuilder.objectbuilder.*;
 import javax.swing.table.*;
 import java.util.*;
-import java.lang.*;
-import java.text.*;
 
 public class ActionTableModel extends AbstractTableModel
 {

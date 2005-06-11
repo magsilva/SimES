@@ -5,7 +5,6 @@ package simse.modelbuilder.startstatebuilder;
 import simse.modelbuilder.objectbuilder.*;
 import javax.swing.table.*;
 import java.util.*;
-import java.lang.*;
 import java.text.*;
 
 public class StartStateAttributeTableModel extends AbstractTableModel

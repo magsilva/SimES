@@ -2,9 +2,6 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import java.util.*;
-import simse.modelbuilder.actionbuilder.*;
-
 public class RuleInput implements Cloneable
 {
 	private String name; // name of this rule

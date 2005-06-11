@@ -7,8 +7,6 @@ import java.awt.event.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
-import javax.swing.border.*;
-import java.util.*;
 
 
 public class NarrativeDialog extends JDialog implements ActionListener

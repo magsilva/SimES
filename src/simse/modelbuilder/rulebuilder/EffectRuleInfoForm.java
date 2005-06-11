@@ -9,16 +9,11 @@ import java.awt.event.*;
 import java.awt.*;
 import java.awt.Dimension;
 import javax.swing.*;
-import javax.swing.text.*;
 import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.border.*;
 import java.util.*;
-import java.text.*;
 import java.awt.Color;
-import java.io.*;
 
-public class EffectRuleInfoForm extends JDialog implements ActionListener
+public class EffectRuleInfoForm extends JDialog implements ActionListener, KeyListener, MouseListener
 {
 	private EffectRule ruleInFocus; // copy of rule being edited
 	private EffectRule actualRule; // actual rule being edited
@@ -84,6 +79,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener
 	private JRadioButton continuousButton; // for denoting a continuous rule
 	private JRadioButton triggerButton; // for denoting a trigger rule
 	private JRadioButton destroyerButton; // for denoting a destroyer rule	
+	private JCheckBox joinCheckBox; // for denoting this rule's relation to joining/un-joining
 	private JButton okButton; // for ok'ing the changes made in this form
 	private JButton cancelButton; // for cancelling the changes made in this form
 
@@ -148,103 +144,115 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener
 		// button pad:
 		inputButton = new JButton("Rule Input");
 		inputButton.addActionListener(this);
+		inputButton.addKeyListener(this);
 		attributeThisPartButton = new JButton("Attributes - this participant");
 		attributeThisPartButton.addActionListener(this);
+		attributeThisPartButton.addKeyListener(this);
 		attributeOtherPartButton = new JButton("Attributes - other participants");
 		attributeOtherPartButton.addActionListener(this);
+		attributeOtherPartButton.addKeyListener(this);
 		numObjectsButton = new JButton("Num participants in action");
 		numObjectsButton.addActionListener(this);
+		numObjectsButton.addKeyListener(this);
 		numActionsThisPartButton = new JButton("Num actions - this participant");
 		numActionsThisPartButton.addActionListener(this);
+		numActionsThisPartButton.addKeyListener(this);
 		numActionsOtherPartButton = new JButton("Num actions - other participants");
 		numActionsOtherPartButton.addActionListener(this);
+		numActionsOtherPartButton.addKeyListener(this);
 		// initialize time buttons:
 		timeButtons = new Vector();
 		timeElapsedButton = new JButton("totalTimeElapsed");
 		timeElapsedButton.addActionListener(this);
+		timeElapsedButton.addKeyListener(this);
 		timeButtons.add(timeElapsedButton);
 		actTimeElapsedButton = new JButton("actionTimeElapsed");
 		actTimeElapsedButton.addActionListener(this);
+		actTimeElapsedButton.addKeyListener(this);
 		timeButtons.add(actTimeElapsedButton);
 
 		// initialize digit buttons:
 		digitButtons = new Vector();
 		JButton button0 = new JButton("0");
-		button0.addActionListener(this);
 		digitButtons.add(button0);
 		JButton button1 = new JButton("1");
-		button1.addActionListener(this);
 		digitButtons.add(button1);
 		JButton button2 = new JButton("2");
-		button2.addActionListener(this);
 		digitButtons.add(button2);
 		JButton button3 = new JButton("3");
-		button3.addActionListener(this);
 		digitButtons.add(button3);
 		JButton button4 = new JButton("4");
-		button4.addActionListener(this);
 		digitButtons.add(button4);
 		JButton button5 = new JButton("5");
-		button5.addActionListener(this);
 		digitButtons.add(button5);
 		JButton button6 = new JButton("6");
-		button6.addActionListener(this);
 		digitButtons.add(button6);
 		JButton button7 = new JButton("7");
-		button7.addActionListener(this);
 		digitButtons.add(button7);
 		JButton button8 = new JButton("8");
-		button8.addActionListener(this);
 		digitButtons.add(button8);
 		JButton button9 = new JButton("9");
-		button9.addActionListener(this);
 		digitButtons.add(button9);
 		buttonDot = new JButton(".");
-		buttonDot.addActionListener(this);
 		digitButtons.add(buttonDot);
+		
+		for (int i = 0; i < digitButtons.size();i++)
+		{
+		    JButton b = (JButton)digitButtons.get(i);
+		    b.addActionListener(this);
+		    b.addKeyListener(this);		    
+		}
 
 		// initialize operator buttons:
 		operatorButtons = new Vector();
 		JButton buttonPlus = new JButton("+");
-		buttonPlus.addActionListener(this);
 		operatorButtons.add(buttonPlus);
 		buttonMinus = new JButton("-");
-		buttonMinus.addActionListener(this);
 		operatorButtons.add(buttonMinus);
 		JButton buttonMultiply = new JButton("*");
-		buttonMultiply.addActionListener(this);
 		operatorButtons.add(buttonMultiply);
 		JButton buttonDivide = new JButton("/");
-		buttonDivide.addActionListener(this);
 		operatorButtons.add(buttonDivide);
 		buttonOpenParen = new JButton("(");
-		buttonOpenParen.addActionListener(this);
 		operatorButtons.add(buttonOpenParen);
 		buttonCloseParen = new JButton(")");
-		buttonCloseParen.addActionListener(this);
 		operatorButtons.add(buttonCloseParen);
 
+		for (int i = 0; i < operatorButtons.size();i++)
+		{
+		    JButton b = (JButton)operatorButtons.get(i);
+		    b.addActionListener(this);
+		    b.addKeyListener(this);		    
+		}
+		
 		// initialize other buttons:
 		otherButtons = new Vector();
 		randomButton = new JButton("Random(min, max)");
-		randomButton.addActionListener(this);
+		randomButton.setMnemonic('R');
 		otherButtons.add(randomButton);
 		stringButton = new JButton("String");
-		stringButton.addActionListener(this);
+		stringButton.setMnemonic('S');
 		otherButtons.add(stringButton);
 		booleanButton = new JButton("Boolean");
-		booleanButton.addActionListener(this);
+		booleanButton.setMnemonic('B');
 		otherButtons.add(booleanButton);
 		backspaceButton = new JButton("Backspace");
-		backspaceButton.addActionListener(this);
 		otherButtons.add(backspaceButton);
 
+		for (int i = 0; i < otherButtons.size();i++)
+		{
+		    JButton b = (JButton)otherButtons.get(i);
+		    b.addActionListener(this);
+		    b.addKeyListener(this);		    
+		}
+		
 		// Create effectsBottomPane:
 		JPanel effectsBottomPane = new JPanel();
 		// label:
 		effectsBottomPane.add(new JLabel("Participants:"));
 		// list of participants:
 		participantList = new JList();
+		participantList.addMouseListener(this);
 		participantList.setVisibleRowCount(5); // make 5 items visible at a time
 		participantList.setFixedCellWidth(250);
 		participantList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only allow the user to select one item at a time
@@ -278,6 +286,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener
 		ruleInputList.setVisibleRowCount(5); // make 5 items visible at a time
 		ruleInputList.setFixedCellWidth(250);
 		ruleInputList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only allow the user to select one item at a time
+		ruleInputList.addMouseListener(this);
 		JScrollPane inputListPane = new JScrollPane(ruleInputList);
 		refreshRuleInputList();
 		setupRuleInputListSelectionListenerStuff();
@@ -305,15 +314,26 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener
 		timingButtonGroup = new ButtonGroup();
 		continuousButton = new JRadioButton("Continuous Rule");
 		continuousButton.setSelected(true);
+		continuousButton.addActionListener(this);
 		timingPane.add(continuousButton);
 		triggerButton = new JRadioButton("Trigger Rule");
+		triggerButton.addActionListener(this);
 		timingPane.add(triggerButton);
 		destroyerButton = new JRadioButton("Destroyer Rule");
+		destroyerButton.addActionListener(this);
 		timingPane.add(destroyerButton);
 		timingButtonGroup.add(continuousButton);
 		timingButtonGroup.add(triggerButton);		
-		timingButtonGroup.add(destroyerButton);	
+		timingButtonGroup.add(destroyerButton);
+		
+		// Create join pane:
+		JPanel joinPane = new JPanel();
+		joinCheckBox = new JCheckBox("Re-execute rule with each joining/un-joining participant");
+		joinCheckBox.setToolTipText("Re-execute this rule for all participants whenever any participant joins (for a trigger rule) or un-joins (for a destroyer rule)");
+		joinPane.add(joinCheckBox);
+		
 		refreshTimingButtons();
+		refreshJoinCheckBox();
 
 		// Create bottom pane:
 		JPanel bottomPane = new JPanel();
@@ -336,12 +356,14 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener
 		separator2.setMaximumSize(new Dimension(1000, 1));
 		mainPane.add(separator2);
 		mainPane.add(timingPane);
+		mainPane.add(joinPane);
 		JSeparator separator3 = new JSeparator();
 		separator3.setMaximumSize(new Dimension(1000, 1));
 		mainPane.add(separator3);		
 		mainPane.add(bottomPane);
 
 		// Set main window frame properties:
+		addKeyListener(this);
 		setBackground(Color.black);
 		setContentPane(mainPane);
 		validate();
@@ -356,10 +378,161 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener
 		setLocation(thisLoc);
 		setVisible(true);
 	}
+	
+	public void mouseClicked(MouseEvent me)
+	{
+	    int clicks = me.getClickCount();
+	    Object o = me.getSource();
 
+	    if (clicks >= 2)
+	    {
+	        boolean handled = false;
+	        if (o == participantList && viewEditEffectsButton.isEnabled()  )
+	        {
+	            viewEditEffects();
+	            handled = true;
+	        }
+			else if(o == ruleInputList )//&& ruleInputList.getSelectedIndex() >= 0 )
+			{
+				editRuleInput(ruleInFocus.getRuleInput((String)ruleInputList.getSelectedValue()));
+				handled = true;
+			}	        	        
+	        else if (!handled)
+	            newButtonPad();
+	    }
+	    
+	}
+	
+	public void mousePressed(MouseEvent me) {}
+	public void mouseReleased(MouseEvent me) {}
+	public void mouseEntered(MouseEvent me) {}
+	public void mouseExited(MouseEvent me) {}
+
+	public void keyPressed(KeyEvent ke)
+	{
+	    int key = ke.getKeyCode();
+	    JButton btn = new JButton(ke.getKeyChar()+"");
+	    boolean enabled = false;
+	   
+	    switch(key)
+	    {
+	    	case KeyEvent.VK_BACK_SPACE:
+	    	   backspaceButtonChosen(); 
+	    	break;
+	    	
+	       	case KeyEvent.VK_R:
+	    	    if (randomButton.isEnabled())
+	    	        randomButtonChosen();
+	    	break;
+	    	
+	    	case KeyEvent.VK_S:
+	    	    if (stringButton.isEnabled())
+	    	        stringButtonChosen();
+	    	break;
+	    	
+	    	case KeyEvent.VK_B:
+	    	    if (booleanButton.isEnabled())
+	    	        booleanButtonChosen();
+	    	break;
+	    	
+	    	case KeyEvent.VK_0:
+	    	case KeyEvent.VK_1:
+	    	case KeyEvent.VK_2:
+	    	case KeyEvent.VK_3:
+	    	case KeyEvent.VK_4:
+	    	case KeyEvent.VK_5:
+	    	case KeyEvent.VK_6:
+	    	case KeyEvent.VK_7:
+	    	case KeyEvent.VK_8:
+	    	case KeyEvent.VK_9:
+	    	case KeyEvent.VK_DECIMAL:
+	    	case KeyEvent.VK_PERIOD:
+	    	case KeyEvent.VK_NUMPAD0:
+	    	case KeyEvent.VK_NUMPAD1:
+	    	case KeyEvent.VK_NUMPAD2:
+	    	case KeyEvent.VK_NUMPAD3:
+	    	case KeyEvent.VK_NUMPAD4:
+	    	case KeyEvent.VK_NUMPAD5:
+	    	case KeyEvent.VK_NUMPAD6:
+	    	case KeyEvent.VK_NUMPAD7:
+	    	case KeyEvent.VK_NUMPAD8:
+	    	case KeyEvent.VK_NUMPAD9:
+	    	    for (int i = 0; i < digitButtons.size();i++)
+	    	    {
+	    	        JButton b= (JButton)digitButtons.get(i);
+	    	        if (b.getText().trim().equalsIgnoreCase(ke.getKeyChar()+""))
+	    	            enabled = b.isEnabled();	    	            
+	    	    }
+	    	    if (enabled)
+	    	        digitButtonChosen(btn);
+	    	break;
+	    	
+	    	case KeyEvent.VK_ADD:
+	    	case KeyEvent.VK_SUBTRACT:	    	
+	    	case KeyEvent.VK_MULTIPLY:
+	    	case KeyEvent.VK_DIVIDE:
+	    	case KeyEvent.VK_ASTERISK:
+	    	case KeyEvent.VK_SLASH:
+	    	case KeyEvent.VK_MINUS:
+	    	case KeyEvent.VK_LEFT_PARENTHESIS:
+	    	case KeyEvent.VK_RIGHT_PARENTHESIS:
+	    	    for (int i = 0; i < operatorButtons.size();i++)
+	    	    {
+	    	        JButton b= (JButton)operatorButtons.get(i);
+	    	        
+	    	        if (b.getText().trim().equalsIgnoreCase(ke.getKeyChar()+""))
+	    	            enabled = b.isEnabled();	    	            
+	    	    }
+	    	    if (enabled)	    	    
+	    	        operatorButtonChosen(btn);
+	    	break;
+	    	
+	    }
+	    
+	    
+	    boolean found = false;
+	    for (int i = 0; !found && i < operatorButtons.size();i++)
+	    {
+	        JButton abtn = (JButton)operatorButtons.get(i);	        
+	        if (abtn.isEnabled())
+	        {
+	            abtn.requestFocus();
+	            found = true;
+	        }
+	    }
+	    for (int i = 0; !found && i < digitButtons.size();i++)
+	    {
+	        JButton abtn = (JButton)digitButtons.get(i);	        
+	        if (abtn.isEnabled())
+	        {
+	            abtn.requestFocus();
+	            found = true;
+	        }
+	    }	        
+	    for (int i = 0; !found && i < otherButtons.size();i++)
+	    {
+	        JButton abtn = (JButton)otherButtons.get(i);	        
+	        if (abtn.isEnabled())
+	        {
+	            abtn.requestFocus();
+	            found = true;
+	        }
+	    }		    
+	    
+	}
+	
+	public void keyReleased(KeyEvent ke) {}
+	public void keyTyped(KeyEvent ke) {}
+	
+	
 
 	public void actionPerformed(ActionEvent evt) // handles user actions
 	{
+
+	    if (buttGUI != null)
+	        buttGUI.requestFocus();
+	    
+	    
 		Object source = evt.getSource();
 		if(source == viewEditEffectsButton)
 		{
@@ -447,6 +620,21 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener
 				removeRuleInput((String)ruleInputList.getSelectedValue());
 			}
 		}
+		
+		else if(source == triggerButton) // trigger button has been clicked
+		{
+			joinCheckBox.setEnabled(true);
+		}
+		
+		else if(source == destroyerButton) // destroyer button has been clicked
+		{
+			joinCheckBox.setEnabled(true);
+		}
+		
+		else if(source == continuousButton) // continuous button has been clicked
+		{
+			joinCheckBox.setEnabled(false);
+		}		
 
 		else if(source == cancelButton) // cancel button has been pressed
 		{
@@ -467,6 +655,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener
 					actualRule.setParticipantRuleEffects(ruleInFocus.getAllParticipantRuleEffects());
 					actualRule.setRuleInputs(ruleInFocus.getAllRuleInputs());
 					actualRule.setTiming(ruleInFocus.getTiming());
+					actualRule.setExecuteOnJoins(ruleInFocus.getExecuteOnJoins());
 				}
 				else // new rule
 				{
@@ -604,20 +793,37 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener
 			continuousButton.setSelected(true);
 			triggerButton.setSelected(false);
 			destroyerButton.setSelected(false);
+			joinCheckBox.setEnabled(false);
 		}
 		else if(timing == RuleTiming.TRIGGER)
 		{
 			triggerButton.setSelected(true);
 			continuousButton.setSelected(false);
 			destroyerButton.setSelected(false);
+			joinCheckBox.setEnabled(true);
 		}
 		else if(timing == RuleTiming.DESTROYER)
 		{
 			destroyerButton.setSelected(true);
 			continuousButton.setSelected(false);
 			triggerButton.setSelected(false);
+			joinCheckBox.setEnabled(true);
 		}
 	}
+	
+	
+	private void refreshJoinCheckBox()
+	{
+		boolean joinStatus = ruleInFocus.getExecuteOnJoins();
+		if(joinStatus == true)
+		{
+			joinCheckBox.setSelected(true);
+		}
+		else // joinStatus == false
+		{
+			joinCheckBox.setSelected(false);
+		}
+	}	
 
 
 	private void setupRuleInputListSelectionListenerStuff() // enables view/edit and remove buttons whenever a list item (rule input) is
@@ -773,6 +979,16 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener
 			ruleInFocus.setTiming(RuleTiming.DESTROYER);
 		}
 		
+		// executeOnJoins status:
+		if(joinCheckBox.isSelected() && joinCheckBox.isEnabled())
+		{
+			ruleInFocus.setExecuteOnJoins(true);
+		}
+		else
+		{
+			ruleInFocus.setExecuteOnJoins(false);
+		}
+		
 		if(objectTypeInFocus != null)
 		{
 			Vector attributes = objectTypeInFocus.getAllAttributes();
@@ -852,6 +1068,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener
 
 			// text field:
 			JTextField expTextField = new JTextField(500);
+			expTextField.addMouseListener(this);
 			// set the text field to the correct value:
 			ParticipantRuleEffect a = ruleInFocus.getParticipantRuleEffect(participantInFocus.getName());
 			ParticipantTypeRuleEffect b = a.getParticipantTypeEffect(objectTypeInFocus);

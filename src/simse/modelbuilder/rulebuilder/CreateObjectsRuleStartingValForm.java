@@ -9,7 +9,6 @@ import simse.modelbuilder.actionbuilder.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
-import javax.swing.border.*;
 import java.util.*;
 
 

@@ -3,13 +3,14 @@
 package simse.modelbuilder.rulebuilder;
 
 import simse.modelbuilder.actionbuilder.*;
-import java.util.*;
 
 public abstract class Rule implements Cloneable
 {
 	private String name; // name of the rule
 	private int timing; // timing of the rule (defined by RuleTiming class)
 	private int priority; // priority of this rule for execution
+	private boolean executeOnJoins; // whether or not this rule is to be executed for each joining
+		// participant; only for rules with trigger or destroyer timings
 	private ActionType actType; // POINTER TO action type that this rule is attached to
 
 	// rule type constants:
@@ -22,6 +23,7 @@ public abstract class Rule implements Cloneable
 		name = n;
 		timing = RuleTiming.CONTINUOUS;
 		priority = -1;
+		executeOnJoins = false;
 		actType = act;
 	}
 
@@ -34,6 +36,7 @@ public abstract class Rule implements Cloneable
 			cl.name = name;
 			cl.timing = timing;
 			cl.priority = priority;
+			cl.executeOnJoins = executeOnJoins;
 			cl.actType = actType; // NOTE: since this is a pointer to the action type, it must remain a pointer to the
 				// action type, even in the clone.  So BE CAREFUL!!
 			return cl;
@@ -45,6 +48,10 @@ public abstract class Rule implements Cloneable
 		return null;
 	}
 
+	public void setName(String n)
+	{
+	    name = n;
+	}
 
 	public String getName()
 	{
@@ -64,6 +71,12 @@ public abstract class Rule implements Cloneable
 	}
 	
 	
+	public boolean getExecuteOnJoins()
+	{
+		return executeOnJoins;
+	}
+	
+	
 	public void setTiming(int newTiming)
 	{
 		timing = newTiming;
@@ -73,6 +86,12 @@ public abstract class Rule implements Cloneable
 	public void setPriority(int newPri)
 	{
 		priority = newPri;
+	}
+	
+	
+	public void setExecuteOnJoins(boolean newJoin)
+	{
+		executeOnJoins = newJoin;
 	}
 	
 	

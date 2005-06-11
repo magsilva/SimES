@@ -8,19 +8,13 @@ import simse.modelbuilder.startstatebuilder.*;
 import simse.modelbuilder.*;
 
 import java.awt.event.*;
-import java.awt.*;
 import java.awt.Dimension;
 import javax.swing.*;
-import javax.swing.text.*;
 import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.border.*;
 import java.util.*;
-import java.text.*;
-import java.awt.Color;
 import java.io.*;
 
-public class RuleBuilderGUI extends JPanel implements ActionListener
+public class RuleBuilderGUI extends JPanel implements ActionListener, ListSelectionListener, MouseListener
 {
 	private ModelBuilderGUI mainGUI;
 	private DefinedActionTypes actions; // data structure for holding all of the created action types
@@ -35,11 +29,12 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 	private RuleTableModel ruleTblMod; // model for above table
 	private JButton editRuleButton; // button for editing an existing rule
 	private JButton removeRuleButton; // button for removing a rule
+	private JButton renameRuleButton; // button for renaming a rule
 	private JButton addEffectRuleButton; // button for adding a new effect rule
 	private JButton addCreateObjectsRuleButton; // button for adding a new create objects rule
 	private JButton addDestroyObjectsRuleButton; // button for adding a new destroy objects rule
 	private JList definedActionsList; // JList of defined actions
-	private JButton viewEditRulesButton; // button for viewing/editing the rules of an action
+	//private JButton viewEditRulesButton; // button for viewing/editing the rules of an action
 
 	public RuleBuilderGUI(ModelBuilderGUI owner, DefinedObjectTypes objTypes, DefinedActionTypes acts)
 	{
@@ -64,6 +59,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 		// Create rule table pane and table:
 		ruleTblMod = new RuleTableModel();
 		ruleTable = new JTable(ruleTblMod);
+		ruleTable.addMouseListener(this);
 		ruleTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ruleTablePane = new JScrollPane(ruleTable);
 		ruleTablePane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -80,6 +76,12 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 		editRuleButton.setEnabled(false);
 		editRuleButtonPane.add(editRuleButton);
 		topRightPane.add(editRuleButtonPane);
+		JPanel renameRuleButtonPane = new JPanel();
+		renameRuleButton = new JButton("Rename Rule");
+		renameRuleButton.addActionListener(this);
+		renameRuleButton.setEnabled(false);
+		renameRuleButtonPane.add(renameRuleButton);
+		topRightPane.add(renameRuleButtonPane);		
 		JPanel removeRuleButtonPane = new JPanel();
 		removeRuleButton = new JButton("Remove Rule");
 		removeRuleButton.addActionListener(this);
@@ -101,7 +103,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 		addDestroyObjectsRuleButton = new JButton("Add New Destroy Objects Rule");
 		addDestroyObjectsRuleButton.addActionListener(this);
 		addDestroyObjectsRuleButton.setEnabled(false);
-		middlePane.add(addDestroyObjectsRuleButton);		
+		middlePane.add(addDestroyObjectsRuleButton);
 
 		// Create bottom pane:
 		JPanel bottomPane = new JPanel();
@@ -112,17 +114,12 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 		definedActionsList.setVisibleRowCount(7); // make 7 items visible at a time
 		definedActionsList.setFixedCellWidth(250);
 		definedActionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only allow the user to select one item at a time
+		definedActionsList.addListSelectionListener(this);
 		JScrollPane definedActionsListPane = new JScrollPane(definedActionsList);
 		bottomPane.add(definedActionsListPane);
 		refreshDefinedActionsList();
 		setupDefinedActionsListSelectionListenerStuff();
 
-		// Create view/edit rules button:
-		viewEditRulesButton = new JButton("View/Edit Rules");
-		bottomPane.add(viewEditRulesButton);
-		viewEditRulesButton.addActionListener(this);
-		viewEditRulesButton.setEnabled(false);
-		
 		// Warning pane:
 		warningPane = new WarningListPane();
 
@@ -136,7 +133,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 		JSeparator separator2 = new JSeparator();
 		separator2.setMaximumSize(new Dimension(2900, 1));
 		mainPane.add(separator2);
-		mainPane.add(warningPane);		
+		mainPane.add(warningPane);
 		add(mainPane);
 
 		// make it so no file is open to begin with:
@@ -146,33 +143,64 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 		repaint();
 	}
 
+	public void mousePressed(MouseEvent me) {}
+	public void mouseReleased(MouseEvent me) {}
+	public void mouseEntered(MouseEvent me) {}
+	public void mouseExited(MouseEvent me) {}
+	public void mouseClicked(MouseEvent me)
+	{	    
+	    int clicks = me.getClickCount();	  
+	       
+	    if (me.getButton() == MouseEvent.BUTTON1 && clicks >= 2)
+	    {
+			if(ruleTable.getSelectedRow() >= 0) // a row is selected
+			{
+				Rule tempRule =
+					ruleTblMod.getActionTypeInFocus().getRule((String)(ruleTblMod.getValueAt(ruleTable.getSelectedRow(), 0)));
+				editRule(tempRule);
+				editRuleButton.setEnabled(false);
+				removeRuleButton.setEnabled(false);
+				renameRuleButton.setEnabled(false);
+			}
+	    }
+	}
 	
+	public void valueChanged(ListSelectionEvent e)
+	{
+		if(definedActionsList.getSelectedIndex() >= 0) // an action is selected
+		{
+			ActionType tempAct = (ActionType)(actions.getAllActionTypes().elementAt(definedActionsList.getSelectedIndex()));
+			// get the selected action type
+			setActionInFocus(tempAct);
+		}
+	}
+
 	public void reload(File tempFile) // reloads the action types from a temporary file
-	{		
+	{
 		// reload:
 		Vector warnings = ruleFileManip.loadFile(tempFile);
 		generateWarnings(warnings);
-		
+
 		// reset UI stuff:
 		clearActionInFocus();
 		refreshDefinedActionsList();
-		
+
 		addCreateObjectsRuleButton.setEnabled(false);
 		addDestroyObjectsRuleButton.setEnabled(false);
 		addEffectRuleButton.setEnabled(false);
 		editRuleButton.setEnabled(false);
 		removeRuleButton.setEnabled(false);
-		viewEditRulesButton.setEnabled(false);		
+		renameRuleButton.setEnabled(false);
 	}
-	
-	
+
+
 	private void generateWarnings(Vector warnings) // displays warnings of errors found during checking for inconsistencies
 	{
 		if(warnings.size() > 0) // there is at least 1 warning
 		{
 			warningPane.setWarnings(warnings);
 		}
-	}	
+	}
 
 
 	public void actionPerformed(ActionEvent evt) // handles user actions
@@ -182,7 +210,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 		{
 			newCreateObjectsRule();
 		}
-		
+
 		else if(source == addDestroyObjectsRuleButton)
 		{
 			newDestroyObjectsRule();
@@ -191,16 +219,6 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 		else if(source == addEffectRuleButton)
 		{
 			newEffectRule();
-		}
-
-		else if(source == viewEditRulesButton)
-		{
-			if(definedActionsList.getSelectedIndex() >= 0) // an action is selected
-			{
-				ActionType tempAct = (ActionType)(actions.getAllActionTypes().elementAt(definedActionsList.getSelectedIndex()));
-				// get the selected action type
-				setActionInFocus(tempAct);
-			}
 		}
 
 		else if(source == editRuleButton)
@@ -212,6 +230,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 				editRule(tempRule);
 				editRuleButton.setEnabled(false);
 				removeRuleButton.setEnabled(false);
+				renameRuleButton.setEnabled(false);
 			}
 		}
 
@@ -222,6 +241,14 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 				Rule tempRule =	ruleTblMod.getActionTypeInFocus().getRule((String)(ruleTblMod.getValueAt(ruleTable.getSelectedRow(), 0)));
 				removeRule(tempRule);
 			}
+		}
+		else if (source == renameRuleButton)
+		{
+			if(ruleTable.getSelectedRow() >= 0) // a row is selected
+			{
+				Rule tempRule =	ruleTblMod.getActionTypeInFocus().getRule((String)(ruleTblMod.getValueAt(ruleTable.getSelectedRow(), 0)));
+				renameRule(tempRule);
+			}		    
 		}
 	}
 
@@ -252,6 +279,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 						ruleTblMod.refreshData();
 						editRuleButton.setEnabled(false);
 						removeRuleButton.setEnabled(false);
+						renameRuleButton.setEnabled(false);
 						mainGUI.setFileModSinceLastSave();
 					}
 					public void windowGainedFocus(WindowEvent ev)
@@ -261,8 +289,8 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 			}
 		}
 	}
-	
-	
+
+
 	private void newDestroyObjectsRule() // creates a new destroy objects rule and adds it to the action in focus
 	{
 		String response = JOptionPane.showInputDialog(null, "Enter a name for this Destroy Objects Rule:", "Enter Rule Name",
@@ -289,6 +317,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 						ruleTblMod.refreshData();
 						editRuleButton.setEnabled(false);
 						removeRuleButton.setEnabled(false);
+						renameRuleButton.setEnabled(false);
 						mainGUI.setFileModSinceLastSave();
 					}
 					public void windowGainedFocus(WindowEvent ev)
@@ -297,9 +326,9 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 				dInfoForm.addWindowFocusListener(l);
 			}
 		}
-	}				
+	}
 
-	
+
 	private void newEffectRule() // creates a new effect rule and adds it to the action in focus
 	{
 		String response = JOptionPane.showInputDialog(null, "Enter a name for this Effect Rule:", "Enter Rule Name",
@@ -332,6 +361,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 						ruleTblMod.refreshData();
 						editRuleButton.setEnabled(false);
 						removeRuleButton.setEnabled(false);
+						renameRuleButton.setEnabled(false);
 						mainGUI.setFileModSinceLastSave();
 					}
 					public void windowGainedFocus(WindowEvent ev)
@@ -358,6 +388,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 					ruleTblMod.refreshData();
 					editRuleButton.setEnabled(false);
 					removeRuleButton.setEnabled(false);
+					renameRuleButton.setEnabled(false);
 					mainGUI.setFileModSinceLastSave();
 				}
 				public void windowGainedFocus(WindowEvent ev)
@@ -365,7 +396,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 			};
 			rInfoForm.addWindowFocusListener(l);
 		}
-		
+
 		else if(rule instanceof DestroyObjectsRule)
 		{
 			DestroyObjectsRuleInfoForm rInfoForm = new DestroyObjectsRuleInfoForm(mainGUI, (DestroyObjectsRule)rule,
@@ -379,13 +410,14 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 					ruleTblMod.refreshData();
 					editRuleButton.setEnabled(false);
 					removeRuleButton.setEnabled(false);
+					renameRuleButton.setEnabled(false);
 					mainGUI.setFileModSinceLastSave();
 				}
 				public void windowGainedFocus(WindowEvent ev)
 				{}
 			};
 			rInfoForm.addWindowFocusListener(l);
-		}		
+		}
 
 		else if(rule instanceof EffectRule)
 		{
@@ -400,6 +432,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 					ruleTblMod.refreshData();
 					editRuleButton.setEnabled(false);
 					removeRuleButton.setEnabled(false);
+					renameRuleButton.setEnabled(false);
 					mainGUI.setFileModSinceLastSave();
 				}
 				public void windowGainedFocus(WindowEvent ev)
@@ -409,6 +442,30 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 		}
 	}
 
+	private void renameRule(Rule rule) // removes the action with the specified name from the data structure
+	{
+	    
+		String response = JOptionPane.showInputDialog(null, "Enter new name for " + rule.getName(),
+				"Rename Rule Type", JOptionPane.QUESTION_MESSAGE); // Show input dialog
+		if(response != null)
+		{
+			if(ruleNameInputValid(response) == false) // input is invalid
+			{
+				JOptionPane.showMessageDialog(null, "Please enter a unique name, between 2 and 40 alphabetic characters, and no spaces", "Invalid Input",
+					JOptionPane.WARNING_MESSAGE); // warn user to enter a valid number
+				renameRule(rule); // try again
+			}
+			else // user has entered valid input
+			{
+			    rule.setName(response);
+			    ruleTblMod.refreshData();
+			    //setActionInFocus(act); // set newly created object to be the focus of the GUI
+			    ((ModelBuilderGUI)mainGUI).setFileModSinceLastSave();
+			    //updateDefinedActionsList();
+			}
+		}	 	
+	}	
+	
 
 	private void removeRule(Rule rule)
 	{
@@ -420,6 +477,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 			ruleTblMod.getActionTypeInFocus().removeRule(rule.getName());
 			ruleTblMod.refreshData();
 			removeRuleButton.setEnabled(false);
+			renameRuleButton.setEnabled(false);
 			editRuleButton.setEnabled(false);
 			mainGUI.setFileModSinceLastSave();
 		}
@@ -482,6 +540,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 				{
 					editRuleButton.setEnabled(true);
 					removeRuleButton.setEnabled(true);
+					renameRuleButton.setEnabled(true);
 				}
 	        }
 	    });
@@ -498,10 +557,6 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 	            if (e.getValueIsAdjusting()) return;
 
 	            ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-	            if (lsm.isSelectionEmpty() == false)
-				{
-					viewEditRulesButton.setEnabled(true);
-				}
 	        }
 	    });
 	}
@@ -529,6 +584,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 		addEffectRuleButton.setEnabled(true);
 		editRuleButton.setEnabled(false);
 		removeRuleButton.setEnabled(false);
+		renameRuleButton.setEnabled(false);
 	}
 
 
@@ -542,9 +598,10 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 		addEffectRuleButton.setEnabled(false);
 		editRuleButton.setEnabled(false);
 		removeRuleButton.setEnabled(false);
+		renameRuleButton.setEnabled(false);
 	}
-	
-	
+
+
 	public void setNewOpenFile(File f)
 	{
 		clearActionInFocus();
@@ -555,7 +612,8 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 		addEffectRuleButton.setEnabled(false);
 		editRuleButton.setEnabled(false);
 		removeRuleButton.setEnabled(false);
-		viewEditRulesButton.setEnabled(false);
+		renameRuleButton.setEnabled(false);
+
 		warningPane.clearWarnings();
 		if(f.exists()) // file has been saved before
 		{
@@ -574,7 +632,8 @@ public class RuleBuilderGUI extends JPanel implements ActionListener
 		addEffectRuleButton.setEnabled(false);
 		editRuleButton.setEnabled(false);
 		removeRuleButton.setEnabled(false);
-		viewEditRulesButton.setEnabled(false);
+		renameRuleButton.setEnabled(false);
+
 		warningPane.clearWarnings();
 	}
 }

@@ -3,7 +3,6 @@
 package simse.modelbuilder.actionbuilder;
 
 import java.util.*;
-import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.rulebuilder.*;
 
 public class ActionType implements Cloneable
@@ -70,7 +69,11 @@ public class ActionType implements Cloneable
 		return null;
 	}
 
-
+	public void setName(String n)
+	{
+	    name = n;
+	}
+	
 	public String getName()
 	{
 		return name;

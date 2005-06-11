@@ -6,14 +6,9 @@ import java.awt.event.*;
 import java.awt.*;
 import java.awt.Dimension;
 import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.border.*;
 import java.util.*;
-import java.text.*;
 import java.awt.Color;
-import java.io.*;
+
 
 public class ButtonPadGUI extends JDialog implements ActionListener
 {	
@@ -132,14 +127,20 @@ public class ButtonPadGUI extends JDialog implements ActionListener
 		setVisible(true);
 	}
 	
+	public void okButtonPressed()
+	{
+		setVisible(false);
+		dispose();
+	}
 	
 	public void actionPerformed(ActionEvent evt) // handles user actions
 	{
 		Object source = evt.getSource();	
 		if(source == okButton)
 		{
-			setVisible(false);
-			dispose();
+		    	okButtonPressed();
 		}
 	}
+	
+	
 }

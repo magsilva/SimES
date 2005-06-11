@@ -2,21 +2,10 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-
 import java.awt.event.*;
 import java.awt.*;
-import java.awt.Dimension;
 import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.border.*;
-import java.util.*;
-import java.text.*;
 import java.awt.Color;
-import java.io.*;
 
 public class RandomFunctionDialog extends JDialog implements ActionListener
 {

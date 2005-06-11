@@ -1,7 +1,6 @@
 package simse.modelbuilder.mapeditor;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Map extends JFrame
 {

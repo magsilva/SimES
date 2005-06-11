@@ -108,6 +108,19 @@ public class RuleFileManipulator
 									{
 										getNextLine = false;
 									}
+									if(getNextLine)
+									{					
+										currentLine = reader.readLine();
+										if(currentLine.equals("true") || currentLine.equals("false")) // new format 06/03/05 that includes executeOnJoin
+											// status
+										{
+											newRule.setExecuteOnJoins(Boolean.parseBoolean(currentLine)); // set executeOnJoin status
+										}
+										else
+										{
+											getNextLine = false;
+										}
+									}
 										
 									boolean endOfRule = false;
 									while(!endOfRule)

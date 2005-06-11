@@ -1,7 +1,6 @@
 package simse.modelbuilder.mapeditor;
 
 import java.awt.event.*;
-import java.awt.*;
 import javax.swing.*;
 
 public class PopupListener extends MouseAdapter

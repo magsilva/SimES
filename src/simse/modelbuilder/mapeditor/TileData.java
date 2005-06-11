@@ -5,7 +5,6 @@ This class represents one individual tile of the map
 package simse.modelbuilder.mapeditor;
 
 import java.awt.Image;
-import java.util.*;
 
 public class TileData
 {

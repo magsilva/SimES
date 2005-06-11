@@ -2,7 +2,6 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import java.util.*;
 import simse.modelbuilder.objectbuilder.*;
 
 public class ParticipantAttributeRuleEffect implements Cloneable

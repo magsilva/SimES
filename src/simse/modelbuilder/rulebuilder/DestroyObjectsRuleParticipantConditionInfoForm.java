@@ -8,13 +8,9 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.event.*;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import javax.swing.border.*;
 import java.util.*;
-import java.lang.Math;
 
 public class DestroyObjectsRuleParticipantConditionInfoForm extends JDialog implements ActionListener
 {

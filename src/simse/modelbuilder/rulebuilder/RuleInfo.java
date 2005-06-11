@@ -2,8 +2,6 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.actionbuilder.*;
-import java.util.*;
 
 public abstract class RuleInfo
 {

@@ -3,7 +3,6 @@
 package simse.modelbuilder.actionbuilder;
 
 import java.io.File;
-import javax.swing.*;
 import javax.swing.filechooser.*;
 
 public class SSAFileFilter extends FileFilter 

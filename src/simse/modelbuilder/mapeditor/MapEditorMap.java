@@ -14,11 +14,8 @@ import simse.modelbuilder.*;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.startstatebuilder.*;
 import simse.modelbuilder.actionbuilder.*;
-import simse.modelbuilder.rulebuilder.*;
-import simse.modelbuilder.graphicsbuilder.*;
 
 import javax.swing.*;
-import javax.swing.JFileChooser.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -27,22 +24,22 @@ import java.io.*;
 public class MapEditorMap extends SimSEMap
 {
 	private ModelBuilderGUI mainGUI;
-	
+
 	private int startX = 0;
 	private int startY = 0;
 	private int clickedX;			// x tile which was clicked
 	private int clickedY;			// y tile which was clicked
-	
+
 	// exactly 12 tiles visible at once
 	private int screenX = MapData.X_MAPSIZE * MapData.TILE_SIZE + 5; //608;		// x width of the screen
 	private int screenY = MapData.Y_MAPSIZE * MapData.TILE_SIZE + 54; //659;		// y width of the screen
-	
+
 	private JPopupMenu popup;
 	private PopupListener popupListener;
-	
+
 	//private boolean mapSaved;
 	private String saveFilePath;
-	
+
 	JMenuItem drawComputer;
 	JMenuItem drawChairT;
 	JMenuItem drawChairB;
@@ -51,6 +48,7 @@ public class MapEditorMap extends SimSEMap
 	JMenuItem drawFloor;
 	JMenuItem drawTrashCanE;
 	JMenuItem drawTrashCanF;
+	JMenuItem drawPapers;
 	JMenuItem delete;
 
 	/* Doors submenu*/
@@ -61,7 +59,7 @@ public class MapEditorMap extends SimSEMap
 	JMenuItem drawDoorLC;
 	JMenuItem drawDoorRO;
 	JMenuItem drawDoorRC;
-	
+
 	/* walls submenu */
 	JMenu walls;
 	JMenuItem drawWallsT;
@@ -71,8 +69,8 @@ public class MapEditorMap extends SimSEMap
 	JMenuItem drawWallsTL;
 	JMenuItem drawWallsTR;
 	JMenuItem drawWallsBL;
-	JMenuItem drawWallsBR;	
-	
+	JMenuItem drawWallsBR;
+
 	/* tables submenu */
 	JMenu tables;
 	JMenuItem drawTableTL;
@@ -82,14 +80,14 @@ public class MapEditorMap extends SimSEMap
 	JMenuItem drawTableBM;
 	JMenuItem drawTableBR;
 
-	
-	public MapEditorMap(ModelBuilderGUI owner, DefinedObjectTypes objTypes, CreatedObjects objs, DefinedActionTypes acts, File iconDir, 
+
+	public MapEditorMap(ModelBuilderGUI owner, DefinedObjectTypes objTypes, CreatedObjects objs, DefinedActionTypes acts, File iconDir,
 		Hashtable startStateObjs, Hashtable ruleObjs)
 	{
 		super(objTypes, objs, acts, iconDir, startStateObjs, ruleObjs);
 		mainGUI = owner;
 		saveFilePath = "";
-		
+
 		drawComputer = new JMenuItem("- Computer");
 		drawComputer.setForeground(new Color(0,150,0,255));
 		drawChairT = new JMenuItem("- Chair Front");
@@ -106,8 +104,10 @@ public class MapEditorMap extends SimSEMap
 		drawTrashCanE.setForeground(new Color(0,150,0,255));
 		drawTrashCanF = new JMenuItem("- Trash Can Full");
 		drawTrashCanF.setForeground(new Color(0,150,0,255));
+		drawPapers = new JMenuItem("- Papers");
+		drawPapers.setForeground(new Color(0,150,0,255));
 		delete = new JMenuItem("- Delete");
-		
+
 		drawComputer.addActionListener(this);
 		drawChairT.addActionListener(this);
 		drawChairB.addActionListener(this);
@@ -116,6 +116,7 @@ public class MapEditorMap extends SimSEMap
 		drawFloor.addActionListener(this);
 		drawTrashCanE.addActionListener(this);
 		drawTrashCanF.addActionListener(this);
+		drawPapers.addActionListener(this);
 		delete.addActionListener(this);
 
 		/* Doors submenu*/
@@ -126,29 +127,29 @@ public class MapEditorMap extends SimSEMap
 		drawDoorLC = new JMenuItem("- Door Left Close");
 		drawDoorRO = new JMenuItem("- Door Right Open");
 		drawDoorRC = new JMenuItem("- Door Right Close");
-		
+
 		doors.add(drawDoorTO);
 		doors.add(drawDoorTC);
 		doors.add(drawDoorLO);
 		doors.add(drawDoorLC);
 		doors.add(drawDoorRO);
 		doors.add(drawDoorRC);
-		
+
 		drawDoorTO.addActionListener(this);
 		drawDoorTC.addActionListener(this);
 		drawDoorLO.addActionListener(this);
 		drawDoorLC.addActionListener(this);
 		drawDoorRO.addActionListener(this);
 		drawDoorRC.addActionListener(this);
-		
+
 		doors.setForeground(new Color(0,0,200,255));
 		Component[] dsub = doors.getMenuComponents();
 		for (int i = 0; i < dsub.length; i++)
 			dsub[i].setForeground(new Color(0,0,200,255));
-		
+
 		/* walls submenu */
 		walls = new JMenu("- Walls");
-		
+
 		drawWallsT = new JMenuItem("- Wall Top");
 		drawWallsB = new JMenuItem("- Wall Bottom");
 		drawWallsL = new JMenuItem("- Wall Left");
@@ -157,7 +158,7 @@ public class MapEditorMap extends SimSEMap
 		drawWallsTR = new JMenuItem("- Wall Top Right");
 		drawWallsBL = new JMenuItem("- Wall Bottom Left");
 		drawWallsBR = new JMenuItem("- Wall Bottom Right");
-		
+
 		walls.add(drawWallsTL);
 		walls.add(drawWallsT);
 		walls.add(drawWallsTR);
@@ -168,7 +169,7 @@ public class MapEditorMap extends SimSEMap
 		walls.add(drawWallsBL);
 		walls.add(drawWallsB);
 		walls.add(drawWallsBR);
-		
+
 		drawWallsT.addActionListener(this);
 		drawWallsB.addActionListener(this);
 		drawWallsL.addActionListener(this);
@@ -177,44 +178,44 @@ public class MapEditorMap extends SimSEMap
 		drawWallsTR.addActionListener(this);
 		drawWallsBL.addActionListener(this);
 		drawWallsBR.addActionListener(this);
-		
+
 		walls.setForeground(new Color(0,0,200,255));
 		Component[] wsub = walls.getMenuComponents();
 		for (int i = 0; i < wsub.length; i++)
 			wsub[i].setForeground(new Color(0,0,200,255));
-		
-		
+
+
 		/* tables submenu */
 		tables = new JMenu("- Tables");
-		
+
 		drawTableTL = new JMenuItem("- Table Top Left");
 		drawTableTM = new JMenuItem("- Table Top Middle");
 		drawTableTR = new JMenuItem("- Table Top Right");
 		drawTableBL = new JMenuItem("- Table Bottom Left");
 		drawTableBM = new JMenuItem("- Table Bottom Middle");
 		drawTableBR = new JMenuItem("- Table Bottom Right");
-		
+
 		tables.add(drawTableTL);
 		tables.add(drawTableTM);
 		tables.add(drawTableTR);
-		
+
 		tables.addSeparator();
 		tables.add(drawTableBL);
 		tables.add(drawTableBM);
 		tables.add(drawTableBR);
-		
+
 		drawTableTL.addActionListener(this);
 		drawTableTM.addActionListener(this);
 		drawTableTR.addActionListener(this);
 		drawTableBL.addActionListener(this);
 		drawTableBM.addActionListener(this);
 		drawTableBR.addActionListener(this);
-		
+
 		tables.setForeground(new Color(0,0,200,255));
 		Component[] tsub = tables.getMenuComponents();
 		for (int i = 0; i < tsub.length; i++)
-			tsub[i].setForeground(new Color(0,0,200,255));		
-		
+			tsub[i].setForeground(new Color(0,0,200,255));
+
 		popup = new JPopupMenu();
 		popupListener = new PopupListener(popup);
 		addMouseListener(popupListener);
@@ -225,32 +226,32 @@ public class MapEditorMap extends SimSEMap
 		setNoOpenFile();
 		setPreferredSize(new Dimension(screenX, screenY));
 	}
-	
-	
+
+
 	public ArrayList getUserDatas()
 	{
 		return sopUsers;
 	}
-	
-	
+
+
 	public TileData[][] getMap()
 	{
 		return mapRep;
 	}
-	
-	
+
+
 	public void resetObjectTypes()
 	{
-	}		
-	
-	
+	}
+
+
 	public void setNoOpenFile()
 	{
 		// reset the SOP Objects and remove it from the popup menu
 		sopUsers.clear();
 		createPopupMenu();
 		popupListener.setEnabled(false);
-		
+
 		for(int i = 0; i < MapData.Y_MAPSIZE; i++)
 		{
 			for(int j = 0; j < MapData.X_MAPSIZE; j++)
@@ -258,17 +259,25 @@ public class MapEditorMap extends SimSEMap
 				mapRep[j][i].setBase(MapData.TILE_GRID);
 				mapRep[j][i].setFringe(MapData.TRANSPARENT);
 			}
-		}	
+		}
 	}
-	
-	
+
+	public Vector loadFile(File inputFile, File iconDir)
+	{
+		Vector v = super.loadFile(inputFile,iconDir);
+		createPopupMenu();
+
+		return v;
+	}
+
+
 	public void setNewOpenFile()
 	{
 		// reset the SOP Objects and remove it from the popup menu
 		sopUsers.clear();
 		createPopupMenu();
 		popupListener.setEnabled(true);
-		
+
 		for(int i = 0; i < MapData.Y_MAPSIZE; i++)
 		{
 			for(int j = 0; j < MapData.X_MAPSIZE; j++)
@@ -276,14 +285,14 @@ public class MapEditorMap extends SimSEMap
 				mapRep[j][i].setBase(MapData.TILE_GRID);
 				mapRep[j][i].setFringe(MapData.TRANSPARENT);
 			}
-		}	
-	}	
-	
-	
+		}
+	}
+
+
 	private void createPopupMenu()
 	{
 		popup.removeAll();
-		
+
 		popup.add(walls);
 		popup.add(doors);
 		popup.add(tables);
@@ -296,13 +305,14 @@ public class MapEditorMap extends SimSEMap
 		popup.add(drawChairR);
 		popup.add(drawTrashCanE);
 		popup.add(drawTrashCanF);
+		popup.add(drawPapers);
 		popup.addSeparator();
-		
+
     // add any existing sop objects to menu
 		for (int i = 0; i < sopUsers.size(); i++)
 		{
 			UserData tmp = (UserData)sopUsers.get(i);
-			
+
 			if (i == ssObjCount )//&& i < sopUsers.size()) // now on rule objects
 			{
 				tmp.getUserMenu().setForeground(new Color(200,0,0,255));
@@ -310,15 +320,15 @@ public class MapEditorMap extends SimSEMap
 			}
 			popup.add(tmp.getUserMenu());
 		}
-		
+
 		popup.addSeparator();
 		popup.add(delete);
 		popup.repaint();
 		validate();
 		repaint();
 	}
-	
-	
+
+
 	public void paintComponent(Graphics g)
 	{
 		for (int i = 0; i < MapData.Y_MAPSIZE; i++)
@@ -329,7 +339,7 @@ public class MapEditorMap extends SimSEMap
 				g.drawImage(mapRep[j][i].getFringe(), j * MapData.TILE_SIZE, i * MapData.TILE_SIZE, this);
 			}
 		}
-		
+
     // draw employees
 		for (int i = 0; i < sopUsers.size(); i++)
 		{
@@ -337,10 +347,12 @@ public class MapEditorMap extends SimSEMap
 			if (tmp.isDisplayed())
 			{
 				g.drawImage(tmp.getUserIcon(), tmp.getXLocation() * MapData.TILE_SIZE, tmp.getYLocation() * MapData.TILE_SIZE, this);
-				
+
 				// if is a rule object, shade it blue to differentiate it
 				if (!tmp.isActivated())
 				{
+
+//System.out.println("MEMAP" + i);
 					g.setColor(new Color(0,100,200,60));
 					g.fillRect(tmp.getXLocation() * MapData.TILE_SIZE+1, tmp.getYLocation() * MapData.TILE_SIZE+1,MapData.TILE_SIZE-1,MapData.TILE_SIZE-1);
 					g.setColor(new Color(250,0,250,255));
@@ -350,27 +362,27 @@ public class MapEditorMap extends SimSEMap
 			}
 		}
 	}
-	
-	
-	
+
+
+
 	public void mouseReleased(MouseEvent me)
 	{
 		clickedX = (me.getX())/MapData.TILE_SIZE; //(me.getX()-5)/MapData.TILE_SIZE;
 		clickedY = (me.getY())/MapData.TILE_SIZE; //(me.getY()-48)/MapData.TILE_SIZE;
 	}
-	
-	
+
+
 	public void mousePressed(MouseEvent me)
 	{
 		createPopupMenu(); // refresh menu
 	}
-	
-	
+
+
 	// all actions for the mapeditor tiles
 	public void popupMenuActions(JMenuItem source)
 	{
 		boolean validOption = true;
-		
+
 		// clicked out of boundaries, ignore
 		if (clickedX > (MapData.X_MAPSIZE - 1) || clickedY > (MapData.Y_MAPSIZE - 1))
 			return;
@@ -390,15 +402,16 @@ public class MapEditorMap extends SimSEMap
 			mapRep[clickedX][clickedY].setFringe(MapData.TILE_TRASHCANE);
 		else if (source == drawTrashCanF)
 			mapRep[clickedX][clickedY].setFringe(MapData.TILE_TRASHCANF);
-		
-		
+		else if (source == drawPapers)
+			mapRep[clickedX][clickedY].setFringe(MapData.TILE_PAPERS);
+
 		else if (source == delete)
 		{
 			// deletes employee if on tile
 			for (int i = 0; i < sopUsers.size(); i++)
 			{
 				UserData tmp = (UserData)sopUsers.get(i);
-				
+
 				if (tmp.checkXYLocations(clickedX,clickedY))
 					tmp.setDisplayed(false);
 			}
@@ -417,8 +430,8 @@ public class MapEditorMap extends SimSEMap
 			mapRep[clickedX][clickedY].setBase(MapData.TILE_DOOR_RO);
 		else if (source == drawDoorRC)
 			mapRep[clickedX][clickedY].setBase(MapData.TILE_DOOR_RC);
-		
-		
+
+
 		else if (source == drawWallsT)
 			mapRep[clickedX][clickedY].setBase(MapData.TILE_WALL_T);
 		else if (source == drawWallsB)
@@ -427,7 +440,7 @@ public class MapEditorMap extends SimSEMap
 			mapRep[clickedX][clickedY].setBase(MapData.TILE_WALL_L);
 		else if (source == drawWallsR)
 			mapRep[clickedX][clickedY].setBase(MapData.TILE_WALL_R);
-		
+
 		else if (source == drawWallsTL)
 			mapRep[clickedX][clickedY].setBase(MapData.TILE_WALL_TL);
 		else if (source == drawWallsTR)
@@ -436,33 +449,33 @@ public class MapEditorMap extends SimSEMap
 			mapRep[clickedX][clickedY].setBase(MapData.TILE_WALL_BL);
 		else if (source == drawWallsBR)
 			mapRep[clickedX][clickedY].setBase(MapData.TILE_WALL_BR);
-		
+
 		else if (source == drawTableTL)
 			mapRep[clickedX][clickedY].setBase(MapData.TILE_STABLE_TL);
 		else if (source == drawTableTM)
 			mapRep[clickedX][clickedY].setBase(MapData.TILE_STABLE_TM);
 		else if (source == drawTableTR)
 			mapRep[clickedX][clickedY].setBase(MapData.TILE_STABLE_TR);
-		
+
 		else if (source == drawTableBL)
 			mapRep[clickedX][clickedY].setBase(MapData.TILE_STABLE_BL);
 		else if (source == drawTableBM)
 			mapRep[clickedX][clickedY].setBase(MapData.TILE_STABLE_BM);
 		else if (source == drawTableBR)
 			mapRep[clickedX][clickedY].setBase(MapData.TILE_STABLE_BR);
-		
-		
+
+
 		// enables the employee to be drawn on map
 		else if (source.getText().startsWith("- Employee"))
 		{
 			boolean userMatched = false;
 			boolean tileIsOccupied = false;
 			UserData user = null;
-			
+
 			for (int i = 0; i < sopUsers.size(); i++)
 			{
 				UserData tmp = (UserData)sopUsers.get(i);
-				
+
 				// a employee exists on the current tile so prevent it from being placed there
 				if ( tmp.isDisplayed() && tmp.checkXYLocations(clickedX,clickedY) )
 				{
@@ -476,7 +489,7 @@ public class MapEditorMap extends SimSEMap
 					user = tmp;
 				}
 			}
-			
+
 			// user to be placed exists and is not on an occupied tile, place him
 			if (userMatched && !tileIsOccupied)
 			{
@@ -488,35 +501,35 @@ public class MapEditorMap extends SimSEMap
 		{
 			validOption = false;
 		}
-		
+
 		if (validOption)
-			mainGUI.setFileModSinceLastSave();		
+			mainGUI.setFileModSinceLastSave();
 	}
 
-	
+
 	// dealing with actions generated by menu bar or popup menu
 	public void actionPerformed(ActionEvent e)
 	{
 		JMenuItem source = (JMenuItem)(e.getSource());
-		
+
 		// all popupmenu options start with a '-' to differentiate betw menubar and popup actions
 		if (source.getText().startsWith("-"))
 		{
 			popupMenuActions(source);
-		}		
+		}
 		repaint();
 	}
-	
+
 	// checks to see if file has right extension
 	private boolean isSMEFile(File f)
 	{
 		String name = f.getName();
-		
+
 		if ( name.length() < 5)
 			return false;
-		
+
 		String extension = name.substring(name.length() - 4);
-		
+
 		return extension.equalsIgnoreCase(".sme");
-	}	
+	}
 }

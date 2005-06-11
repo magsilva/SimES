@@ -4,7 +4,6 @@ package simse.modelbuilder.rulebuilder;
 
 import java.util.*;
 import simse.modelbuilder.actionbuilder.*;
-import simse.modelbuilder.objectbuilder.*;
 
 public class EffectRule extends Rule implements Cloneable
 {

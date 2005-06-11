@@ -9,11 +9,8 @@ import java.awt.event.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import javax.swing.border.*;
 import java.util.*;
-import java.lang.Math;
 
 public class ActionTypeParticipantTriggerConstraintsInfoForm extends JDialog implements ActionListener
 {
@@ -379,7 +376,6 @@ public class ActionTypeParticipantTriggerConstraintsInfoForm extends JDialog imp
 					{
 						//System.out.println(e.getMessage()); // note: validateInput() should have already been called immediately
 							// before calling this method, so a NumberFormatException should never be thrown here.
-						attConst.setValue(null); // ACTUALLY, it can be thrown here, IF the value is set to nothing!
 					}
 				}
 				else if(tempAtt.getType() == AttributeTypes.DOUBLE) // double attribute
@@ -393,7 +389,6 @@ public class ActionTypeParticipantTriggerConstraintsInfoForm extends JDialog imp
 					{
 						//System.out.println(e.getMessage()); // note: validateInput() should have already been called immediately
 							// before calling this method, so a NumberFormatException should never be thrown here.
-						attConst.setValue(null); // ACTUALLY, it can be thrown here, IF the value is set to nothing!
 					}
 				}
 			}

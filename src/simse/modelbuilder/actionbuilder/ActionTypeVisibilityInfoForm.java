@@ -5,11 +5,7 @@ package simse.modelbuilder.actionbuilder;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Point;
-import javax.swing.border.*;
-import java.util.*;
-
 
 public class ActionTypeVisibilityInfoForm extends JDialog implements ActionListener
 {

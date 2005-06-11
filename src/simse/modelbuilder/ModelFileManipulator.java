@@ -6,7 +6,6 @@ import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.startstatebuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.modelbuilder.rulebuilder.*;
-import simse.modelbuilder.graphicsbuilder.*;
 import simse.modelbuilder.mapeditor.*;
 
 import java.io.*;
@@ -20,20 +19,20 @@ public class ModelFileManipulator
 	private DefinedActionTypes actionTypes;
 	private TileData[][] mapRep;
 	private ArrayList sopUsers;
-	
+
 	// general constants
 	private final char NEWLINE = '\n';
 	private final String EMPTY_VALUE = new String("<>");
 	private final String BOUNDLESS = new String("boundless");
-	
+
 	// object types constants:
 	private final String BEGIN_OBJECT_TYPES_TAG = new String ("<beginDefinedObjectTypes>");
 	private final String END_OBJECT_TYPES_TAG = new String ("<endDefinedObjectTypes>");
 	private final String BEGIN_OBJECT_TYPE_TAG = new String("<beginObjectType>");
 	private final String END_OBJECT_TYPE_TAG = new String("<endObjectType>");
 	private final String BEGIN_ATTRIBUTE_TAG = new String("<beginAttribute>");
-	private final String END_ATTRIBUTE_TAG = new String("<endAttribute>");	
-	
+	private final String END_ATTRIBUTE_TAG = new String("<endAttribute>");
+
 	// start state constants:
 	private final String BEGIN_CREATED_OBJECTS_TAG = new String("<beginCreatedObjects>");
 	private final String END_CREATED_OBJECTS_TAG = new String("<endCreatedObjects>");
@@ -42,8 +41,8 @@ public class ModelFileManipulator
 	private final String BEGIN_INSTANTIATED_ATTRIBUTE_TAG = new String("<beginInstantiatedAttribute>");
 	private final String END_INSTANTIATED_ATTRIBUTE_TAG = new String("<endInstantiatedAttribute>");
 	private final String BEGIN_STARTING_NARRATIVE_TAG = new String("<beginStartingNarrative>");
-	private final String END_STARTING_NARRATIVE_TAG = new String("<endStartingNarrative>");	
-	
+	private final String END_STARTING_NARRATIVE_TAG = new String("<endStartingNarrative>");
+
 	// action types constants:
 	private final String BEGIN_DEFINED_ACTIONS_TAG = "<beginDefinedActionTypes>";
 	private final String END_DEFINED_ACTIONS_TAG = new String("<endDefinedActionTypes>");
@@ -66,8 +65,8 @@ public class ModelFileManipulator
 	private final String BEGIN_DESTROYER_TAG = new String("<beginActionTypeDestroyer>");
 	private final String END_DESTROYER_TAG = new String("<endActionTypeDestroyer>");
 	private final String BEGIN_PARTICIPANT_DESTROYER_TAG = new String("<beginActionTypeParticipantDestroyer>");
-	private final String END_PARTICIPANT_DESTROYER_TAG = new String("<endActionTypeParticipantDestroyer>");	
-	
+	private final String END_PARTICIPANT_DESTROYER_TAG = new String("<endActionTypeParticipantDestroyer>");
+
 	// rule constants:
 	private final String BEGIN_RULES_TAG = "<beginRules>";
 	private final String END_RULES_TAG = "<endRules>";
@@ -89,21 +88,26 @@ public class ModelFileManipulator
 	private final String END_DESTROY_OBJECTS_RULE_TAG = "<endDestroyObjectsRule>";
 	private final String BEGIN_PARTICIPANT_CONDITION_TAG = "<beginDestroyObjectsRuleParticipantCondition>";
 	private final String END_PARTICIPANT_CONDITION_TAG = "<endDestroyObjectsRuleParticipantCondition>";
-	
+
 	// graphics constants:
 	private final String BEGIN_GRAPHICS_TAG = "<beginGraphics>";
 	private final String END_GRAPHICS_TAG = "<endGraphics>";
 	private final String BEGIN_ICONS_DIR_TAG = "<beginIconDirectoryPath>";
 	private final String END_ICONS_DIR_TAG = "<endIconDirectoryPath>";
-	
+
 	// map constants:
 	private final String BEGIN_MAP_TAG = "<beginMap>";
 	private final String END_MAP_TAG = "<endMap>";
 	private final String BEGIN_SOP_USERS_TAG = "<beginSOPUsers>";
 	private final String END_SOP_USERS_TAG = "<endSOPUsers>";
-	
-	
-	public ModelFileManipulator(DefinedObjectTypes objTypes, DefinedActionTypes defActs, CreatedObjects createdObjs, ArrayList sops, 
+
+
+
+	// allow hire and fire constants
+private final String BEGIN_ALLOW_HIRE_FIRE_TAG = "<beginAllowHireFire>";
+private final String END_ALLOW_HIRE_FIRE_TAG = "<endAllowHireFire>";
+
+	public ModelFileManipulator(DefinedObjectTypes objTypes, DefinedActionTypes defActs, CreatedObjects createdObjs, ArrayList sops,
 		TileData[][] map)
 	{
 		objectTypes = objTypes;
@@ -112,9 +116,9 @@ public class ModelFileManipulator
 		sopUsers = sops;
 		mapRep = map;
 	}
-	
-	
-	public void generateFile(File outputFile, File iconDirectory, Hashtable startStateObjsToImages, Hashtable ruleObjsToImages) // generates 
+
+
+	public void generateFile(File outputFile, File iconDirectory, Hashtable startStateObjsToImages, Hashtable ruleObjsToImages, boolean allowHireFire) // generates
 		// a file with the name of the given file parameter that contains the model data structures in memory
 	{
 		if(outputFile.exists())
@@ -124,7 +128,16 @@ public class ModelFileManipulator
 		try
 		{
 			FileWriter writer = new FileWriter(outputFile);
-			
+
+
+			//*******ALLOW HIRE AND FIRE TAG*******
+			writer.write(BEGIN_ALLOW_HIRE_FIRE_TAG);
+			writer.write(NEWLINE);
+			writer.write(""+allowHireFire);
+			writer.write(NEWLINE);
+			writer.write(END_ALLOW_HIRE_FIRE_TAG);
+			writer.write(NEWLINE);
+
 			//*******OBJECT TYPES**********
 			writer.write(BEGIN_OBJECT_TYPES_TAG);
 			writer.write(NEWLINE);
@@ -150,7 +163,7 @@ public class ModelFileManipulator
 					writer.write(NEWLINE);
 					writer.write((new Integer(tempAtt.getType())).toString());
 					writer.write(NEWLINE);
-					
+
 					// visible:
 					if(tempAtt.isVisible())
 					{
@@ -161,7 +174,7 @@ public class ModelFileManipulator
 						writer.write('0');
 					}
 					writer.write(NEWLINE);
-					
+
 					// key:
 					if(tempAtt.isKey())
 					{
@@ -172,7 +185,7 @@ public class ModelFileManipulator
 						writer.write('0');
 					}
 					writer.write(NEWLINE);
-					
+
 					// visibleOnCompletion:
 					if(tempAtt.isVisibleOnCompletion())
 					{
@@ -182,8 +195,8 @@ public class ModelFileManipulator
 					{
 						writer.write('0');
 					}
-					writer.write(NEWLINE);				
-					
+					writer.write(NEWLINE);
+
 					if(tempAtt instanceof NumericalAttribute)
 					{
 						// min value:
@@ -196,7 +209,7 @@ public class ModelFileManipulator
 							writer.write(((NumericalAttribute)tempAtt).getMinValue().toString());
 						}
 						writer.write(NEWLINE);
-						
+
 						// max value:
 						if(((NumericalAttribute)tempAtt).isMaxBoundless())
 						{
@@ -207,7 +220,7 @@ public class ModelFileManipulator
 							writer.write(((NumericalAttribute)tempAtt).getMaxValue().toString());
 						}
 						writer.write(NEWLINE);
-						
+
 						if(tempAtt.getType() == AttributeTypes.DOUBLE) // double attribute
 						{
 							// min/max num digits:
@@ -221,7 +234,7 @@ public class ModelFileManipulator
 								writer.write(((NumericalAttribute)tempAtt).getMinNumFractionDigits().toString());
 							}
 							writer.write(NEWLINE);
-							
+
 							// max:
 							if(((NumericalAttribute)tempAtt).getMaxNumFractionDigits() == null)
 							{
@@ -231,7 +244,7 @@ public class ModelFileManipulator
 							{
 								writer.write(((NumericalAttribute)tempAtt).getMaxNumFractionDigits().toString());
 							}
-							writer.write(NEWLINE);	
+							writer.write(NEWLINE);
 						}
 					}
 					writer.write(END_ATTRIBUTE_TAG);
@@ -242,8 +255,8 @@ public class ModelFileManipulator
 			}
 			writer.write(END_OBJECT_TYPES_TAG);
 			writer.write(NEWLINE);
-			
-			
+
+
 			//***********START STATE OBJECTS*************
 			writer.write(BEGIN_CREATED_OBJECTS_TAG);
 			writer.write(NEWLINE);
@@ -262,7 +275,7 @@ public class ModelFileManipulator
 			writer.write(NEWLINE);
 			writer.write(END_STARTING_NARRATIVE_TAG);
 			writer.write(NEWLINE);
-			
+
 			// go through each object and write it to the file:
 			Vector objs = objects.getAllObjects();
 			for(int i=0; i<objs.size(); i++)
@@ -298,10 +311,10 @@ public class ModelFileManipulator
 				writer.write(END_OBJECT_TAG);
 				writer.write(NEWLINE);
 			}
-			writer.write(END_CREATED_OBJECTS_TAG);			
+			writer.write(END_CREATED_OBJECTS_TAG);
 			writer.write(NEWLINE);
-			
-			
+
+
 			//************ACTION TYPES*************
 			writer.write(BEGIN_DEFINED_ACTIONS_TAG);
 			writer.write(NEWLINE);
@@ -526,10 +539,10 @@ public class ModelFileManipulator
 					writer.write(NEWLINE);
 					// priority:
 					writer.write((new Integer(tempDest.getPriority())).toString());
-					writer.write(NEWLINE);				
+					writer.write(NEWLINE);
 					// is game-ending destroyer:
 					writer.write((new Boolean(tempDest.isGameEndingDestroyer())).toString());
-					writer.write(NEWLINE);				
+					writer.write(NEWLINE);
 					// participant destroyers:
 					Vector partDestroyers = tempDest.getAllParticipantDestroyers();
 					// go through each ActionTypeParticipantDestroyer and write it to the file:
@@ -572,7 +585,7 @@ public class ModelFileManipulator
 								}
 								writer.write(NEWLINE);
 								writer.write((new Boolean(tempAttConst.isScoringAttribute())).toString());
-								writer.write(NEWLINE);							
+								writer.write(NEWLINE);
 								writer.write(END_ATTRIBUTE_CONSTRAINT_TAG);
 								writer.write(NEWLINE);
 							}
@@ -588,10 +601,10 @@ public class ModelFileManipulator
 				writer.write(END_ACTION_TYPE_TAG);
 				writer.write(NEWLINE);
 			}
-			writer.write(END_DEFINED_ACTIONS_TAG);			
+			writer.write(END_DEFINED_ACTIONS_TAG);
 			writer.write(NEWLINE);
-			
-			
+
+
 			//**************RULES***************
 			writer.write(BEGIN_RULES_TAG);
 			writer.write(NEWLINE);
@@ -615,6 +628,8 @@ public class ModelFileManipulator
 						writer.write(tempAct.getName()); // action name
 						writer.write(NEWLINE);
 						writer.write((new Integer(tempRule.getTiming())).toString()); // rule timing
+						writer.write(NEWLINE);
+						writer.write((new Boolean(tempRule.getExecuteOnJoins())).toString()); // rule execute on join status
 						writer.write(NEWLINE);
 						Vector partEffects = ((EffectRule)tempRule).getAllParticipantRuleEffects();
 						// go through each ParticipantRuleEffect and write it to the file:
@@ -660,7 +675,7 @@ public class ModelFileManipulator
 							writer.write(END_PARTICIPANT_EFFECT_TAG);
 							writer.write(NEWLINE);
 						}
-						
+
 						//  rule input:
 						Vector inputs = ((EffectRule)tempRule).getAllRuleInputs();
 						// go through each rule input and write it to the file:
@@ -711,7 +726,7 @@ public class ModelFileManipulator
 						writer.write(tempAct.getName()); // action name
 						writer.write(NEWLINE);
 						writer.write((new Integer(tempRule.getTiming())).toString()); // rule timing
-						writer.write(NEWLINE);						
+						writer.write(NEWLINE);
 						Vector ruleObjs = ((CreateObjectsRule)tempRule).getAllSimSEObjects();
 						// go through each object that this rule creates and write it to the file:
 						for(int k=0; k<ruleObjs.size(); k++)
@@ -762,7 +777,7 @@ public class ModelFileManipulator
 						writer.write(tempAct.getName()); // action name
 						writer.write(NEWLINE);
 						writer.write((new Integer(tempRule.getTiming())).toString()); // rule timing
-						writer.write(NEWLINE);						
+						writer.write(NEWLINE);
 
 						// participant conditions:
 						Vector partConds = ((DestroyObjectsRule)tempRule).getAllParticipantConditions();
@@ -811,21 +826,21 @@ public class ModelFileManipulator
 								writer.write(NEWLINE);
 							}
 							writer.write(END_PARTICIPANT_CONDITION_TAG);
-							writer.write(NEWLINE);	
+							writer.write(NEWLINE);
 						}
 						writer.write(END_DESTROY_OBJECTS_RULE_TAG);
 						writer.write(NEWLINE);
 					}
 				}
 			}
-			writer.write(END_RULES_TAG);	
+			writer.write(END_RULES_TAG);
 			writer.write(NEWLINE);
-			
-			
+
+
 			//***************GRAPHICS******************
 			writer.write(BEGIN_GRAPHICS_TAG);
 			writer.write(NEWLINE);
-			
+
 			// icons directory:
 			writer.write(BEGIN_ICONS_DIR_TAG);
 			writer.write(NEWLINE);
@@ -840,7 +855,7 @@ public class ModelFileManipulator
 			writer.write(NEWLINE);
 			writer.write(END_ICONS_DIR_TAG);
 			writer.write(NEWLINE);
-			
+
 			// start state objects:
 			for(int i=0; i<objs.size(); i++)
 			{
@@ -855,14 +870,14 @@ public class ModelFileManipulator
 				if(obj.getSimSEObjectType().hasKey() == false) // doesn't have a key attribute
 				{
 					writer.write("");
-					writer.write(NEWLINE);						
+					writer.write(NEWLINE);
 				}
 				else // has a key attribute
 				{
 					if(obj.getKey().isInstantiated() == false) // doesn't have a key attribute value
 					{
 						writer.write("");
-						writer.write(NEWLINE);							
+						writer.write(NEWLINE);
 					}
 					else // has a key attribute value
 					{
@@ -882,7 +897,7 @@ public class ModelFileManipulator
 				}
 				writer.write(NEWLINE);
 			}
-			
+
 			// create objects rules objects:
 			for(int i=0; i<actions.size(); i++)
 			{
@@ -905,14 +920,14 @@ public class ModelFileManipulator
 						if(obj.getSimSEObjectType().hasKey() == false) // doesn't have a key attribute
 						{
 							writer.write("");
-							writer.write(NEWLINE);								
+							writer.write(NEWLINE);
 						}
 						else // has a key attribute
 						{
 							if(obj.getKey().isInstantiated() == false) // doesn't have a key attribute value
 							{
 								writer.write("");
-								writer.write(NEWLINE);									
+								writer.write(NEWLINE);
 							}
 							else // has a key attribute value
 							{
@@ -930,15 +945,15 @@ public class ModelFileManipulator
 							writer.write("");
 							writer.write(NEWLINE);
 						}
-						writer.write(NEWLINE);						
+						writer.write(NEWLINE);
 					}
 				}
 			}
 
 			writer.write(END_GRAPHICS_TAG);
 			writer.write(NEWLINE);
-			
-			
+
+
 			//***************MAP************************
 			writer.write(BEGIN_MAP_TAG);
 			writer.write(NEWLINE);
@@ -948,7 +963,6 @@ public class ModelFileManipulator
 			for (int i = 0; i < sopUsers.size(); i++)
 			{
 				UserData tmp = (UserData)sopUsers.get(i);
-				
 				writer.write(tmp.getName());
 				writer.write(NEWLINE);
 				writer.write("" + tmp.isDisplayed());
@@ -975,7 +989,7 @@ public class ModelFileManipulator
 					writer.write("" + mapRep[j][i].getFringeKey());
 					writer.write(NEWLINE);
 				}
-			}	
+			}
 			writer.write(END_MAP_TAG);
 			writer.close();
 		}

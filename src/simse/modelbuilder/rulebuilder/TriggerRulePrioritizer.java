@@ -2,14 +2,11 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.startstatebuilder.*;
-import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import javax.swing.*;
 import java.awt.event.*;
 import javax.swing.event.*;
 import java.awt.*;
-import javax.swing.border.*;
 import java.util.*;
 
 

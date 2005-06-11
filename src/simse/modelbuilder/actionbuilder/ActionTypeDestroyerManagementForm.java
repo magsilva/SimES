@@ -4,18 +4,12 @@ package simse.modelbuilder.actionbuilder;
 
 import simse.modelbuilder.objectbuilder.*;
 import java.awt.event.*;
-import java.awt.*;
 import java.awt.Dimension;
 import java.awt.Point;
 import javax.swing.*;
-import javax.swing.text.*;
 import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.border.*;
 import java.util.*;
-import java.text.*;
 import java.awt.Color;
-import java.io.*;
 
 public class ActionTypeDestroyerManagementForm extends JDialog implements ActionListener
 {
