@@ -49,7 +49,7 @@ public class ImageLoader
     {
         try
         {
-            ZipInputStream zis = new ZipInputStream(ImageLoader.class.getResourceAsStream("/res/images.zip"));
+            ZipInputStream zis = new ZipInputStream(ImageLoader.class.getResourceAsStream("res/images.zip"));
             //ZipFile zf = new ZipFile(new File(url.getPath()));
             //Enumeration en = zf.entries();
 
