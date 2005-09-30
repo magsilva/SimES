@@ -30,7 +30,6 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 	private JButton destroyerButton; // button for viewing/editing action destroyers
 	private JButton visibilityButton; // button for viewing/editing action visibility
 	private JList definedActionsList; // JList of already defined actions
-	//private JButton viewEditButton; // button for viewing/editing an already defined action
 	private JButton renameActionButton; // button for renaming actions
 	private JButton removeActionButton; // button for removing an already defined action
 	private ActionTypeParticipantInfoForm apInfoForm; // form for entering/editing info about a participant
@@ -302,12 +301,12 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 
 		else if(source == visibilityButton) // visibility button selected
 		{
-			ActionTypeVisibilityInfoForm form = new ActionTypeVisibilityInfoForm(mainGUI, actTblMod.getActionTypeInFocus());
-			visibilityButton.setText("View/Edit Visibility (" + actTblMod.getActionTypeInFocus().isVisible() + ")");
+			ActionTypeVisibilityInfoForm form = 
+			    new ActionTypeVisibilityInfoForm(mainGUI, 
+			            actTblMod.getActionTypeInFocus());
 			((ModelBuilderGUI)mainGUI).setFileModSinceLastSave();
 		}
 	}
-
 
 	private void createNewAction() // creates a new action and adds it to the data structure
 	{
@@ -383,15 +382,18 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 				actTblMod.refreshData();
 				editParticipantButton.setEnabled(false);
 				removeParticipantButton.setEnabled(false);
+				
+				/* 
+				 * enable the visibility button if the action has an employee
+				 * participant
+				 */
 				if(hasEmployeeParticipant(actTblMod.getActionTypeInFocus()))
 				{
 					visibilityButton.setEnabled(true);
-					visibilityButton.setText("View/Edit Visibility (" + actTblMod.getActionTypeInFocus().isVisible() + ")");
 				}
 				else
 				{
 					visibilityButton.setEnabled(false);
-					visibilityButton.setText("View/Edit Visibility");
 				}
 			}
 			public void windowGainedFocus(WindowEvent ev)
@@ -412,15 +414,17 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 			public void windowLostFocus (WindowEvent ev)
 			{
 				actTblMod.refreshData();
+				/* 
+				 * enable the visibility button if the action has an employee
+				 * participant
+				 */
 				if(hasEmployeeParticipant(actTblMod.getActionTypeInFocus()))
 				{
 					visibilityButton.setEnabled(true);
-					visibilityButton.setText("View/Edit Visibility (" + actTblMod.getActionTypeInFocus().isVisible() + ")");
 				}
 				else
 				{
 					visibilityButton.setEnabled(false);
-					visibilityButton.setText("View/Edit Visibility");
 				}
 			}
 			public void windowGainedFocus(WindowEvent ev)
@@ -444,15 +448,18 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 			actTblMod.refreshData();
 			removeParticipantButton.setEnabled(false);
 			editParticipantButton.setEnabled(false);
+			
+			/* 
+			 * enable the visibility button if the action has an employee
+			 * participant
+			 */
 			if(hasEmployeeParticipant(actTblMod.getActionTypeInFocus()))
 			{
 				visibilityButton.setEnabled(true);
-				visibilityButton.setText("View/Edit Visibility (" + actTblMod.getActionTypeInFocus().isVisible() + ")");
 			}
 			else
 			{
 				visibilityButton.setEnabled(false);
-				visibilityButton.setText("View/Edit Visibility");
 			}
 			((ModelBuilderGUI)mainGUI).setFileModSinceLastSave();
 		}
@@ -525,14 +532,17 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 		removeParticipantButton.setEnabled(false);
 		triggerButton.setEnabled(true);
 		destroyerButton.setEnabled(true);
+		
+		/* 
+		 * enable the visibility button if the action has an employee
+		 * participant
+		 */
 		if(hasEmployeeParticipant(newAct))
 		{
-			visibilityButton.setText("View/Edit Visibility (" + actTblMod.getActionTypeInFocus().isVisible() + ")");
 			visibilityButton.setEnabled(true);
 		}
 		else
 		{
-			visibilityButton.setText("View/Edit Visibility");
 			visibilityButton.setEnabled(false);
 		}
 	}
@@ -574,7 +584,6 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 			}
 			removeActionButton.setEnabled(false);
 			renameActionButton.setEnabled(false);
-			visibilityButton.setText("View/Edit Visibility");
 			updateDefinedActionsList();
 			((ModelBuilderGUI)mainGUI).setFileModSinceLastSave();
 		}
@@ -594,7 +603,6 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 		removeParticipantButton.setEnabled(false);
 		triggerButton.setEnabled(false);
 		destroyerButton.setEnabled(false);
-		visibilityButton.setText("View/Edit Visibility");
 		visibilityButton.setEnabled(false);
 	}
 
@@ -604,7 +612,6 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 		clearActionInFocus();
 		actions.clearAll();
 		updateDefinedActionsList();
-		visibilityButton.setText("View/Edit Visibility");
 		createNewActionButton.setEnabled(false);
 		warningPane.clearWarnings();
 		if(f.exists()) // file has been saved before
@@ -626,7 +633,6 @@ public class ActionBuilderGUI extends JPanel implements ActionListener, ListSele
 		removeParticipantButton.setEnabled(false);
 		triggerButton.setEnabled(false);
 		destroyerButton.setEnabled(false);
-		visibilityButton.setText("View/Edit Visibility");
 		visibilityButton.setEnabled(false);
 		removeActionButton.setEnabled(false);
 		renameActionButton.setEnabled(false);

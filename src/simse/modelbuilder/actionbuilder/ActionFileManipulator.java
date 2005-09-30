@@ -23,6 +23,8 @@ public class ActionFileManipulator
 	private final String END_DEFINED_ACTIONS_TAG = new String("<endDefinedActionTypes>");
 	private final String BEGIN_ACTION_TYPE_TAG = new String("<beginActionType>");
 	private final String END_ACTION_TYPE_TAG = new String("<endActionType>");
+	private final String BEGIN_ACTION_TYPE_ANNOTATION_TAG = new String("<beginActionTypeAnnotation>");
+	private final String END_ACTION_TYPE_ANNOTATION_TAG = new String("<endActionTypeAnnotation>");
 	private final String BEGIN_PARTICIPANT_TAG = new String("<beginActionTypeParticipant>");
 	private final String END_PARTICIPANT_TAG = new String("<endActionTypeParticipant>");
 	private final String BEGIN_QUANTITY_TAG = new String("<beginActionTypeParticipantQuantity>");
@@ -77,10 +79,9 @@ public class ActionFileManipulator
 						{			
 							if(currentLine.equals(BEGIN_ACTION_TYPE_TAG))
 							{
-								ActionType newAct = new ActionType(reader.readLine()); // get the action type name and create a new action type with
-									// it
-								newAct.setVisibility((new Boolean(reader.readLine())).booleanValue()); // set visibility
-								if(newAct.isVisible())
+								ActionType newAct = new ActionType(reader.readLine()); 
+								newAct.setVisibilityInSimulation(Boolean.valueOf(reader.readLine()).booleanValue()); // set visibility
+								if(newAct.isVisibleInSimulation())
 								{
 									newAct.setDescription(reader.readLine()); // set description
 								}
@@ -88,6 +89,34 @@ public class ActionFileManipulator
 								{
 									newAct.setDescription(null);
 								}
+								
+								// visibility in explanatory tool / annotation
+								reader.mark(newAct.getAnnotation().length() + 10);
+								currentLine = reader.readLine(); // get the next line
+								
+								// new format 9/28/05 that includes annotation and visibility in explanatory tool
+								if (currentLine.equals("true") || currentLine.equals("false"))
+								{
+								    newAct.setVisibilityInExplanatoryTool(Boolean.valueOf(currentLine).booleanValue());
+									StringBuffer annotation = new StringBuffer();
+									String tempInLine = reader.readLine(); // get the begin annotation tag
+									tempInLine = reader.readLine();
+									while(tempInLine.equals(END_ACTION_TYPE_ANNOTATION_TAG) == false) // not done yet
+									{
+										annotation.append(tempInLine);
+										tempInLine = reader.readLine();
+										if(tempInLine.equals(END_ACTION_TYPE_ANNOTATION_TAG) == false) // not done yet
+										{
+											annotation.append('\n');
+										}
+									}
+									newAct.setAnnotation(annotation.toString());
+								}
+								else // has no visibility in exp tool / annotation (older version)
+								{
+								    reader.reset();
+								}
+								
 								int ssObjTypeType = 0; // SimSEObjectTypeType of this ActionType
 		
 								boolean endOfAct = false;

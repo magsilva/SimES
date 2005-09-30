@@ -8,8 +8,11 @@ import simse.modelbuilder.rulebuilder.*;
 public class ActionType implements Cloneable
 {
 	private String name;
-	private boolean visible; // whether or not the existence of this action should be visible in the user interface of the simulation
+	private boolean visibleInSimulation; // whether or not the existence of this action should be visible in the user interface of the simulation
+	private boolean visibleInExplanatoryTool; // whether or not this action should be visible in the user interface of the explanatory tool
 	private String description; // description of this action, to be shown in the user interface of the simulation (if visible)
+	private String annotation; // a textual description of this action
+	private boolean showAnnotation; // whether or not to show the annotation in the explanatory tool
 	private Vector participants; // all of the ActionTypeParticipants involved in this action
 	private Vector triggers; // a Vector of ActionTypeTriggers for this ActionType
 	private Vector destroyers; // a Vector ActionTypeDestroyers for this ActionType
@@ -18,8 +21,10 @@ public class ActionType implements Cloneable
 	public ActionType(String n)
 	{
 		name = n;
-		visible = false;
+		visibleInSimulation = false;
+		visibleInExplanatoryTool = false;
 		description = null;
+		annotation = "";
 		participants = new Vector();
 		triggers = new Vector();
 		destroyers = new Vector();
@@ -33,8 +38,10 @@ public class ActionType implements Cloneable
 		{
 			ActionType cl = (ActionType)(super.clone());
 			cl.name = name;
-			cl.visible = visible;
+			cl.visibleInSimulation = visibleInSimulation;
+			cl.visibleInExplanatoryTool = visibleInExplanatoryTool;
 			cl.description = description;
+			cl.annotation = annotation;
 			Vector clonedTrigs = new Vector();
 			for(int i=0; i<triggers.size(); i++)
 			{
@@ -80,15 +87,27 @@ public class ActionType implements Cloneable
 	}
 	
 	
-	public boolean isVisible()
+	public boolean isVisibleInSimulation()
 	{
-		return visible;
+		return visibleInSimulation;
 	}
 	
 	
-	public void setVisibility(boolean newVis)
+	public void setVisibilityInSimulation(boolean newVis)
 	{
-		visible = newVis;
+		visibleInSimulation = newVis;
+	}
+	
+	
+	public boolean isVisibleInExplanatoryTool()
+	{
+		return visibleInExplanatoryTool;
+	}
+	
+	
+	public void setVisibilityInExplanatoryTool(boolean newVis)
+	{
+		visibleInExplanatoryTool = newVis;
 	}
 	
 	
@@ -101,6 +120,17 @@ public class ActionType implements Cloneable
 	public void setDescription(String s)
 	{
 		description = s;
+	}
+	
+	public String getAnnotation()
+	{
+		return annotation;
+	}
+	
+	
+	public void setAnnotation(String s)
+	{
+		annotation = s;
 	}
 
 

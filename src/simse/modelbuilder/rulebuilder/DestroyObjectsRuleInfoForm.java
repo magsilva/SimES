@@ -27,6 +27,9 @@ public class DestroyObjectsRuleInfoForm extends JDialog implements ActionListene
 	private JRadioButton continuousButton; // for denoting a continuous rule
 	private JRadioButton triggerButton; // for denoting a trigger rule
 	private JRadioButton destroyerButton; // for denoting a destroyer rule
+	
+	private JCheckBox visibilityCheckBox; // for denoting whether this rule is visible in the explanatory tool
+	private JButton annotationButton; // for viewing/editing the rule's annotation
 	private JButton okButton; // for ok'ing the changes made in this form
 	private JButton cancelButton; // for cancelling the changes made in this form	
 	
@@ -96,6 +99,19 @@ public class DestroyObjectsRuleInfoForm extends JDialog implements ActionListene
 		timingButtonGroup.add(destroyerButton);		
 		refreshTimingButtons();
 		
+		// Create annotation pane:
+		JPanel annotationPane = new JPanel();
+		visibilityCheckBox = new JCheckBox("Rule visible in explanatory tool");
+		visibilityCheckBox.setToolTipText("Make this rule visible to the " +
+				"player in the user interface of the explanatory tool");
+		refreshVisibilityCheckBox();
+		annotationPane.add(visibilityCheckBox);
+		annotationButton = new JButton("View/Edit Annotation");
+		annotationButton.setToolTipText("View/edit an annotation for this " +
+			"rule");
+		annotationButton.addActionListener(this);
+		annotationPane.add(annotationButton);
+		
 		// Create okCancel pane and buttons:
 		JPanel okCancelPane = new JPanel();
 		okButton = new JButton("OK");
@@ -109,13 +125,17 @@ public class DestroyObjectsRuleInfoForm extends JDialog implements ActionListene
 		mainPane.add(choosePartPane);
 		mainPane.add(partListPane);
 		mainPane.add(viewEditPane);
-		JSeparator separator3 = new JSeparator();
-		separator3.setMaximumSize(new Dimension(450, 1));
-		mainPane.add(separator3);
+		JSeparator separator1 = new JSeparator();
+		separator1.setMaximumSize(new Dimension(450, 1));
+		mainPane.add(separator1);
 		mainPane.add(timingPane);
 		JSeparator separator2 = new JSeparator();
 		separator2.setMaximumSize(new Dimension(450, 1));		
 		mainPane.add(separator2);
+		mainPane.add(annotationPane);
+		JSeparator separator3 = new JSeparator();
+		separator3.setMaximumSize(new Dimension(450, 1));		
+		mainPane.add(separator3);
 		mainPane.add(okCancelPane);
 		
 		// Set main window frame properties:
@@ -150,6 +170,12 @@ public class DestroyObjectsRuleInfoForm extends JDialog implements ActionListene
 			}
 		}
 		
+		else if(source == annotationButton) // annotation button selected
+		{
+		    RuleAnnotationForm form = 
+		        new RuleAnnotationForm(this, ruleInFocus);
+		}
+		
 		else if(source == okButton)
 		{
 			// set timing:
@@ -165,6 +191,10 @@ public class DestroyObjectsRuleInfoForm extends JDialog implements ActionListene
 			{
 				ruleInFocus.setTiming(RuleTiming.DESTROYER);
 			}
+			
+			// set visibility:
+			ruleInFocus.setVisibilityInExplanatoryTool(
+			        visibilityCheckBox.isSelected());
 			
 			if(!newRule) // existing rule being edited
 			{
@@ -234,6 +264,13 @@ public class DestroyObjectsRuleInfoForm extends JDialog implements ActionListene
 			triggerButton.setSelected(false);
 		}
 	}	
+	
+	
+	private void refreshVisibilityCheckBox()
+	{
+		visibilityCheckBox.setSelected(
+		        ruleInFocus.isVisibleInExplanatoryTool());
+	}
 	
 	
 	public class ExitListener extends WindowAdapter

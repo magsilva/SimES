@@ -1,4 +1,6 @@
-/* This class is for generating the SimSE model data structures into a file and reading that file into memory*/
+/* 
+ * This class is for generating the SimSE model data structures into a file
+ */
 
 package simse.modelbuilder;
 
@@ -48,6 +50,8 @@ public class ModelFileManipulator
 	private final String END_DEFINED_ACTIONS_TAG = new String("<endDefinedActionTypes>");
 	private final String BEGIN_ACTION_TYPE_TAG = new String("<beginActionType>");
 	private final String END_ACTION_TYPE_TAG = new String("<endActionType>");
+	private final String BEGIN_ACTION_TYPE_ANNOTATION_TAG = new String("<beginActionTypeAnnotation>");
+	private final String END_ACTION_TYPE_ANNOTATION_TAG = new String("<endActionTypeAnnotation>");
 	private final String BEGIN_PARTICIPANT_TAG = new String("<beginActionTypeParticipant>");
 	private final String END_PARTICIPANT_TAG = new String("<endActionTypeParticipant>");
 	private final String BEGIN_QUANTITY_TAG = new String("<beginActionTypeParticipantQuantity>");
@@ -88,6 +92,8 @@ public class ModelFileManipulator
 	private final String END_DESTROY_OBJECTS_RULE_TAG = "<endDestroyObjectsRule>";
 	private final String BEGIN_PARTICIPANT_CONDITION_TAG = "<beginDestroyObjectsRuleParticipantCondition>";
 	private final String END_PARTICIPANT_CONDITION_TAG = "<endDestroyObjectsRuleParticipantCondition>";
+	private final String BEGIN_RULE_ANNOTATION_TAG = "<beginRuleAnnotation>";
+	private final String END_RULE_ANNOTATION_TAG = "<endRuleAnnotation>";
 
 	// graphics constants:
 	private final String BEGIN_GRAPHICS_TAG = "<beginGraphics>";
@@ -101,11 +107,9 @@ public class ModelFileManipulator
 	private final String BEGIN_SOP_USERS_TAG = "<beginSOPUsers>";
 	private final String END_SOP_USERS_TAG = "<endSOPUsers>";
 
-
-
 	// allow hire and fire constants
-private final String BEGIN_ALLOW_HIRE_FIRE_TAG = "<beginAllowHireFire>";
-private final String END_ALLOW_HIRE_FIRE_TAG = "<endAllowHireFire>";
+	private final String BEGIN_ALLOW_HIRE_FIRE_TAG = "<beginAllowHireFire>";
+	private final String END_ALLOW_HIRE_FIRE_TAG = "<endAllowHireFire>";
 
 	public ModelFileManipulator(DefinedObjectTypes objTypes, DefinedActionTypes defActs, CreatedObjects createdObjs, ArrayList sops,
 		TileData[][] map)
@@ -118,8 +122,11 @@ private final String END_ALLOW_HIRE_FIRE_TAG = "<endAllowHireFire>";
 	}
 
 
-	public void generateFile(File outputFile, File iconDirectory, Hashtable startStateObjsToImages, Hashtable ruleObjsToImages, boolean allowHireFire) // generates
-		// a file with the name of the given file parameter that contains the model data structures in memory
+	public void generateFile(File outputFile, File iconDirectory, 
+	        Hashtable startStateObjsToImages, Hashtable ruleObjsToImages, 
+	        boolean allowHireFire) // generates a file with the name of the 
+								   // given file parameter that contains the 
+								   // model data structures in memory
 	{
 		if(outputFile.exists())
 		{
@@ -260,6 +267,7 @@ private final String END_ALLOW_HIRE_FIRE_TAG = "<endAllowHireFire>";
 			//***********START STATE OBJECTS*************
 			writer.write(BEGIN_CREATED_OBJECTS_TAG);
 			writer.write(NEWLINE);
+			
 			// starting narrative:
 			writer.write(BEGIN_STARTING_NARRATIVE_TAG);
 			writer.write(NEWLINE);
@@ -327,13 +335,35 @@ private final String END_ALLOW_HIRE_FIRE_TAG = "<endAllowHireFire>";
 				writer.write(NEWLINE);
 				writer.write(tempAct.getName()); // action type name
 				writer.write(NEWLINE);
-				writer.write("" + tempAct.isVisible()); // visibility
+				
+				// visibility in simulation
+				writer.write("" + tempAct.isVisibleInSimulation());
 				writer.write(NEWLINE);
-				if(tempAct.isVisible())
+				if(tempAct.isVisibleInSimulation())
 				{
 					writer.write(tempAct.getDescription()); // description
 					writer.write(NEWLINE);
 				}
+				
+				// visibility in explanatory tool
+				writer.write("" + tempAct.isVisibleInExplanatoryTool());
+				writer.write(NEWLINE);
+				
+				// annotation
+				writer.write(BEGIN_ACTION_TYPE_ANNOTATION_TAG);
+				writer.write(NEWLINE);
+				String ann = tempAct.getAnnotation();
+				if((ann != null) && (ann.length() > 0))
+				{
+					writer.write(ann);
+				}
+				else
+				{
+					writer.write("");
+				}
+				writer.write(NEWLINE);
+				writer.write(END_ACTION_TYPE_ANNOTATION_TAG);
+				writer.write(NEWLINE);
 
 				Vector participants = tempAct.getAllParticipants();
 				// go through each participant and write it to the file:
@@ -631,6 +661,28 @@ private final String END_ALLOW_HIRE_FIRE_TAG = "<endAllowHireFire>";
 						writer.write(NEWLINE);
 						writer.write((new Boolean(tempRule.getExecuteOnJoins())).toString()); // rule execute on join status
 						writer.write(NEWLINE);
+						
+						// explanatory tool visibility
+						writer.write(Boolean.toString(
+						        tempRule.isVisibleInExplanatoryTool()));
+						writer.write(NEWLINE);
+						
+						// annotation
+						writer.write(BEGIN_RULE_ANNOTATION_TAG);
+						writer.write(NEWLINE);
+						String ann = tempRule.getAnnotation();
+						if((ann != null) && (ann.length() > 0))
+						{
+							writer.write(ann);
+						}
+						else
+						{
+							writer.write("");
+						}
+						writer.write(NEWLINE);
+						writer.write(END_RULE_ANNOTATION_TAG);
+						writer.write(NEWLINE);
+						
 						Vector partEffects = ((EffectRule)tempRule).getAllParticipantRuleEffects();
 						// go through each ParticipantRuleEffect and write it to the file:
 						for(int k=0; k<partEffects.size(); k++)
@@ -727,6 +779,28 @@ private final String END_ALLOW_HIRE_FIRE_TAG = "<endAllowHireFire>";
 						writer.write(NEWLINE);
 						writer.write((new Integer(tempRule.getTiming())).toString()); // rule timing
 						writer.write(NEWLINE);
+						
+						// explanatory tool visibility
+						writer.write(Boolean.toString(
+						        tempRule.isVisibleInExplanatoryTool()));
+						writer.write(NEWLINE);
+						
+						// annotation
+						writer.write(BEGIN_RULE_ANNOTATION_TAG);
+						writer.write(NEWLINE);
+						String ann = tempRule.getAnnotation();
+						if((ann != null) && (ann.length() > 0))
+						{
+							writer.write(ann);
+						}
+						else
+						{
+							writer.write("");
+						}
+						writer.write(NEWLINE);
+						writer.write(END_RULE_ANNOTATION_TAG);
+						writer.write(NEWLINE);
+						
 						Vector ruleObjs = ((CreateObjectsRule)tempRule).getAllSimSEObjects();
 						// go through each object that this rule creates and write it to the file:
 						for(int k=0; k<ruleObjs.size(); k++)
@@ -777,6 +851,27 @@ private final String END_ALLOW_HIRE_FIRE_TAG = "<endAllowHireFire>";
 						writer.write(tempAct.getName()); // action name
 						writer.write(NEWLINE);
 						writer.write((new Integer(tempRule.getTiming())).toString()); // rule timing
+						writer.write(NEWLINE);
+						
+						// explanatory tool visibility
+						writer.write(Boolean.toString(
+						        tempRule.isVisibleInExplanatoryTool()));
+						writer.write(NEWLINE);
+						
+						// annotation
+						writer.write(BEGIN_RULE_ANNOTATION_TAG);
+						writer.write(NEWLINE);
+						String ann = tempRule.getAnnotation();
+						if((ann != null) && (ann.length() > 0))
+						{
+							writer.write(ann);
+						}
+						else
+						{
+							writer.write("");
+						}
+						writer.write(NEWLINE);
+						writer.write(END_RULE_ANNOTATION_TAG);
 						writer.write(NEWLINE);
 
 						// participant conditions:

@@ -6,6 +6,7 @@ import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.startstatebuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import javax.swing.*;
+
 import java.awt.event.*;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,6 +33,8 @@ public class CreateObjectsRuleInfoForm extends JDialog implements ActionListener
 	private JRadioButton continuousButton; // for denoting a continuous rule
 	private JRadioButton triggerButton; // for denoting a trigger rule
 	private JRadioButton destroyerButton; // for denoting a destroyer rule
+	private JCheckBox visibilityCheckBox; // for denoting whether this rule should be visible in the explaanatory tool
+	private JButton annotationButton; // for viewing/editing this rule's annotation
 	private JButton okButton; // for ok'ing the changes made in this form
 	private JButton cancelButton; // for cancelling the changes made in this form
 	
@@ -117,6 +120,19 @@ public class CreateObjectsRuleInfoForm extends JDialog implements ActionListener
 		timingButtonGroup.add(destroyerButton);
 		refreshTimingButtons();
 		
+		// Create annotation pane:
+		JPanel annotationPane = new JPanel();
+		visibilityCheckBox = new JCheckBox("Rule visible in explanatory tool");
+		visibilityCheckBox.setToolTipText("Make this rule visible to the " +
+				"player in the user interface of the explanatory tool");
+		refreshVisibilityCheckBox();
+		annotationPane.add(visibilityCheckBox);
+		annotationButton = new JButton("View/Edit Annotation");
+		annotationButton.setToolTipText("View/edit an annotation for this " +
+			"rule");
+		annotationButton.addActionListener(this);
+		annotationPane.add(annotationButton);
+		
 		// Create bottom pane:
 		JPanel bottomPane = new JPanel();
 		okButton = new JButton("OK");
@@ -136,6 +152,10 @@ public class CreateObjectsRuleInfoForm extends JDialog implements ActionListener
 		JSeparator separator2 = new JSeparator();
 		separator2.setMaximumSize(new Dimension(900, 1));		
 		mainPane.add(separator2);
+		mainPane.add(annotationPane);
+		JSeparator separator3 = new JSeparator();
+		separator3.setMaximumSize(new Dimension(900, 1));		
+		mainPane.add(separator3);
 		mainPane.add(bottomPane);
 		
 		// Set main window frame properties:
@@ -181,6 +201,12 @@ public class CreateObjectsRuleInfoForm extends JDialog implements ActionListener
 			removeObject();
 		}
 		
+		else if(source == annotationButton) // annotation button selected
+		{
+		    RuleAnnotationForm form = 
+		        new RuleAnnotationForm(this, ruleInFocus);
+		}
+		
 		else if(source == okButton) // okButton has been pressed
 		{
 			// set timing:
@@ -196,6 +222,10 @@ public class CreateObjectsRuleInfoForm extends JDialog implements ActionListener
 			{
 				ruleInFocus.setTiming(RuleTiming.DESTROYER);
 			}
+			
+			// set visibility:
+			ruleInFocus.setVisibilityInExplanatoryTool(
+			        visibilityCheckBox.isSelected());
 			
 			if(!newRule) // existing rule being edited
 			{
@@ -260,6 +290,12 @@ public class CreateObjectsRuleInfoForm extends JDialog implements ActionListener
 			triggerButton.setSelected(false);
 		}
 	}	
+	
+	
+	private void refreshVisibilityCheckBox()
+	{
+		visibilityCheckBox.setSelected(ruleInFocus.isVisibleInExplanatoryTool());
+	}
 	
 	
 	private void setupCreateObjsListSelectionListenerStuff() // enables view/edit and remove object buttons whenever a list item (object)

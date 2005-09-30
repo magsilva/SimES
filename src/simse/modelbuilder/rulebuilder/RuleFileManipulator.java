@@ -49,6 +49,8 @@ public class RuleFileManipulator
 	private final String END_OBJECT_TAG = "<endObject>";
 	private final String BEGIN_INSTANTIATED_ATTRIBUTE_TAG = "<beginInstantiatedAttribute>";
 	private final String END_INSTANTIATED_ATTRIBUTE_TAG = "<endInstantiatedAttribute>";
+	private final String BEGIN_RULE_ANNOTATION_TAG = "<beginRuleAnnotation>";
+	private final String END_RULE_ANNOTATION_TAG = "<endRuleAnnotation>";
 	
 	
 	public RuleFileManipulator(DefinedObjectTypes defObjs, DefinedActionTypes defActs)
@@ -115,6 +117,34 @@ public class RuleFileManipulator
 											// status
 										{
 											newRule.setExecuteOnJoins(Boolean.parseBoolean(currentLine)); // set executeOnJoin status
+											
+											// visibility
+											currentLine = reader.readLine(); // get the next line
+											if (currentLine.equals("true") || currentLine.equals("false")) // new format 9/28/05 that includes visibiltiy
+											{
+											    newRule.setVisibilityInExplanatoryTool(Boolean.valueOf(currentLine).booleanValue());
+												StringBuffer annotation = new StringBuffer();
+												
+												// get begin annotation tag
+												String tempInLine = reader.readLine();
+												
+												tempInLine = reader.readLine();
+												while(tempInLine.equals(END_RULE_ANNOTATION_TAG) == false) // not done yet
+												{
+													annotation.append(tempInLine);
+													tempInLine = reader.readLine();
+													if(tempInLine.equals(END_RULE_ANNOTATION_TAG) == false) // not done yet
+													{
+														annotation.append('\n');
+													}
+												}
+												newRule.setAnnotation(annotation.toString());
+												getNextLine = true;
+											}
+											else // has no annotation (older version)
+											{
+											    getNextLine = false;
+											}
 										}
 										else
 										{
@@ -345,6 +375,34 @@ public class RuleFileManipulator
 									if(currentLine2.startsWith("<") == false) // new format 4/26/04 that includes rule timing
 									{
 										newRule.setTiming(Integer.parseInt(currentLine2)); // set timing
+										
+										// visibility
+										currentLine2 = reader.readLine(); // get the next line
+										if (currentLine2.equals("true") || currentLine2.equals("false")) // new format 9/28/05 that includes visibiltiy
+										{
+										    newRule.setVisibilityInExplanatoryTool(Boolean.valueOf(currentLine2).booleanValue());
+											StringBuffer annotation = new StringBuffer();
+											
+											// get begin annotation tag
+											String tempInLine = reader.readLine();
+											
+											tempInLine = reader.readLine();
+											while(tempInLine.equals(END_RULE_ANNOTATION_TAG) == false) // not done yet
+											{
+												annotation.append(tempInLine);
+												tempInLine = reader.readLine();
+												if(tempInLine.equals(END_RULE_ANNOTATION_TAG) == false) // not done yet
+												{
+													annotation.append('\n');
+												}
+											}
+											newRule.setAnnotation(annotation.toString());
+											getNextLine = true;
+										}
+										else // has no annotation (older version)
+										{
+										    getNextLine = false;
+										}
 									}
 									else
 									{
@@ -497,6 +555,34 @@ public class RuleFileManipulator
 									if(currentLine2.startsWith("<") == false) // new format 4/26/04 that includes rule timing
 									{
 										newRule.setTiming(Integer.parseInt(currentLine2)); // set timing
+										
+										// visibility
+										currentLine2 = reader.readLine(); // get the next line
+										if (currentLine2.equals("true") || currentLine2.equals("false")) // new format 9/28/05 that includes visibiltiy
+										{
+										    newRule.setVisibilityInExplanatoryTool(Boolean.valueOf(currentLine2).booleanValue());
+											StringBuffer annotation = new StringBuffer();
+											
+											// get begin annotation tag
+											String tempInLine = reader.readLine();
+											
+											tempInLine = reader.readLine();
+											while(tempInLine.equals(END_RULE_ANNOTATION_TAG) == false) // not done yet
+											{
+												annotation.append(tempInLine);
+												tempInLine = reader.readLine();
+												if(tempInLine.equals(END_RULE_ANNOTATION_TAG) == false) // not done yet
+												{
+													annotation.append('\n');
+												}
+											}
+											newRule.setAnnotation(annotation.toString());
+											getNextLine = true;
+										}
+										else // has no annotation (older version)
+										{
+										    getNextLine = false;
+										}
 									}
 									else
 									{

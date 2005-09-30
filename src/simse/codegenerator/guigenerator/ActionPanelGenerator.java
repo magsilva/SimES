@@ -480,7 +480,7 @@ for (int j = 0; j < v.size(); j++)
 			for(int i=0; i<allActs.size(); i++)
 			{
 				ActionType tempActType = (ActionType)allActs.elementAt(i);
-				if((tempActType.isVisible()) && (tempActType.getDescription() != null) && (tempActType.getDescription().length() > 0))
+				if((tempActType.isVisibleInSimulation()) && (tempActType.getDescription() != null) && (tempActType.getDescription().length() > 0))
 				{
 					if(putElse)
 					{

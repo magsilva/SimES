@@ -80,6 +80,8 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener, KeyLi
 	private JRadioButton triggerButton; // for denoting a trigger rule
 	private JRadioButton destroyerButton; // for denoting a destroyer rule	
 	private JCheckBox joinCheckBox; // for denoting this rule's relation to joining/un-joining
+	private JCheckBox visibilityCheckBox; // for denoting this rule's visibility in the explanatory tool
+	private JButton annotationButton; // for viewing/editing this rule's annotation
 	private JButton okButton; // for ok'ing the changes made in this form
 	private JButton cancelButton; // for cancelling the changes made in this form
 
@@ -334,6 +336,19 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener, KeyLi
 		
 		refreshTimingButtons();
 		refreshJoinCheckBox();
+		
+		// Create annotation pane:
+		JPanel annotationPane = new JPanel();
+		visibilityCheckBox = new JCheckBox("Rule visible in explanatory tool");
+		visibilityCheckBox.setToolTipText("Make this rule visible to the " +
+				"player in the user interface of the explanatory tool");
+		refreshVisibilityCheckBox();
+		annotationPane.add(visibilityCheckBox);
+		annotationButton = new JButton("View/Edit Annotation");
+		annotationButton.setToolTipText("View/edit an annotation for this " +
+			"rule");
+		annotationButton.addActionListener(this);
+		annotationPane.add(annotationButton);
 
 		// Create bottom pane:
 		JPanel bottomPane = new JPanel();
@@ -359,7 +374,11 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener, KeyLi
 		mainPane.add(joinPane);
 		JSeparator separator3 = new JSeparator();
 		separator3.setMaximumSize(new Dimension(1000, 1));
-		mainPane.add(separator3);		
+		mainPane.add(separator3);
+		mainPane.add(annotationPane);
+		JSeparator separator4 = new JSeparator();
+		separator4.setMaximumSize(new Dimension(1000, 1));
+		mainPane.add(separator4);
 		mainPane.add(bottomPane);
 
 		// Set main window frame properties:
@@ -634,7 +653,13 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener, KeyLi
 		else if(source == continuousButton) // continuous button has been clicked
 		{
 			joinCheckBox.setEnabled(false);
-		}		
+		}	
+		
+		else if(source == annotationButton) // annotation button selected
+		{
+		    RuleAnnotationForm form = 
+		        new RuleAnnotationForm(this, ruleInFocus);
+		}
 
 		else if(source == cancelButton) // cancel button has been pressed
 		{
@@ -655,6 +680,8 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener, KeyLi
 					actualRule.setParticipantRuleEffects(ruleInFocus.getAllParticipantRuleEffects());
 					actualRule.setRuleInputs(ruleInFocus.getAllRuleInputs());
 					actualRule.setTiming(ruleInFocus.getTiming());
+					actualRule.setVisibilityInExplanatoryTool(ruleInFocus.isVisibleInExplanatoryTool());
+					actualRule.setAnnotation(ruleInFocus.getAnnotation());
 					actualRule.setExecuteOnJoins(ruleInFocus.getExecuteOnJoins());
 				}
 				else // new rule
@@ -814,16 +841,14 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener, KeyLi
 	
 	private void refreshJoinCheckBox()
 	{
-		boolean joinStatus = ruleInFocus.getExecuteOnJoins();
-		if(joinStatus == true)
-		{
-			joinCheckBox.setSelected(true);
-		}
-		else // joinStatus == false
-		{
-			joinCheckBox.setSelected(false);
-		}
-	}	
+		joinCheckBox.setSelected(ruleInFocus.getExecuteOnJoins());
+	}
+	
+	
+	private void refreshVisibilityCheckBox()
+	{
+		visibilityCheckBox.setSelected(ruleInFocus.isVisibleInExplanatoryTool());
+	}
 
 
 	private void setupRuleInputListSelectionListenerStuff() // enables view/edit and remove buttons whenever a list item (rule input) is
@@ -962,8 +987,12 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener, KeyLi
 	}
 
 
-	private void setParticipantInFocusDataFromForm() // takes what's currently in the form for the participant in focus and sets the
-		// current temporary copy of that participant with those values for the object type in focus
+	/*
+	 * Takes what's currently in the form for the participant in focus and 
+	 * sets the current temporary copy of that participant with those values 
+	 * for the object type in focus
+	 */
+	private void setParticipantInFocusDataFromForm() 
 	{
 		// timing:
 		if(continuousButton.isSelected())
@@ -980,14 +1009,12 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener, KeyLi
 		}
 		
 		// executeOnJoins status:
-		if(joinCheckBox.isSelected() && joinCheckBox.isEnabled())
-		{
-			ruleInFocus.setExecuteOnJoins(true);
-		}
-		else
-		{
-			ruleInFocus.setExecuteOnJoins(false);
-		}
+		ruleInFocus.setExecuteOnJoins(joinCheckBox.isSelected() && 
+		        joinCheckBox.isEnabled());
+		
+		// explanatory tool visibility:
+		ruleInFocus.setVisibilityInExplanatoryTool(
+		        visibilityCheckBox.isSelected());
 		
 		if(objectTypeInFocus != null)
 		{
@@ -1281,7 +1308,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener, KeyLi
 		// get the attInFocus:
 		Attribute attInFocus = getAttributeInFocus();
 
-		if((attInFocus.getType() == AttributeTypes.STRING) || (attInFocus.getType() == AttributeTypes.BOOLEAN)) // string or boolean
+		if((attInFocus != null) && ((attInFocus.getType() == AttributeTypes.STRING) || (attInFocus.getType() == AttributeTypes.BOOLEAN))) // string or boolean
 			// attribute
 		{
 			Vector inputs = ruleInFocus.getAllRuleInputs();
@@ -1340,7 +1367,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener, KeyLi
 			}
 			randomButton.setEnabled(false);
 		}
-		else if((attInFocus.getType() == AttributeTypes.INTEGER) || (attInFocus.getType() == AttributeTypes.DOUBLE)) // integer or double
+		else if((attInFocus != null) && ((attInFocus.getType() == AttributeTypes.INTEGER) || (attInFocus.getType() == AttributeTypes.DOUBLE))) // integer or double
 			// attribute
 		{
 			// enable or disable input button, depending on the types of inputs that currently exist:

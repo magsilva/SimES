@@ -1,22 +1,27 @@
-/* This class defines the window through which information about an action's visibility can be edited */
+/* This class defines the window through which information about an action's 
+ * visibility can be edited 
+ */
 
 package simse.modelbuilder.actionbuilder;
 
 import javax.swing.*;
+
 import java.awt.event.*;
 import java.awt.Color;
 import java.awt.Point;
 
-public class ActionTypeVisibilityInfoForm extends JDialog implements ActionListener
+public class ActionTypeVisibilityInfoForm extends JDialog implements 
+	ActionListener
 {
 	private ActionType actionInFocus; // action type whose attributes are being edited
 
-	private JComboBox visibleList; // for choosing whether the action is visible
+	private JComboBox simVisibleList; // for choosing whether the action is visible in the simulation
+	private JComboBox expVisibleList; // for choosing whether the action is visible in the explanatory tool
 	private JLabel descriptionLabel; // label for description field
 	private JTextField descriptionTextField; // for entering the description of the action
+	private JTextArea annotationTextArea; // for entering an annotation for the action
 	private JButton okButton; // for ok'ing the creating/editing of a new attribute
 	private JButton cancelButton; // for canceling the creating/editing of a new attribute
-
 
 	public ActionTypeVisibilityInfoForm(JFrame owner, ActionType action)
 	{
@@ -24,28 +29,49 @@ public class ActionTypeVisibilityInfoForm extends JDialog implements ActionListe
 		actionInFocus = action;
 
 		// Set window title:
-		setTitle("Action Visibility");
+		setTitle(actionInFocus.getName() + " Action Visibility");
 
 		// Create main panel (box):
 		Box mainPane = Box.createVerticalBox();
 
-		// Create top pane:
-		JPanel topPane = new JPanel();
-		topPane.add(new JLabel("Visibility:"));
-		visibleList = new JComboBox();
-		visibleList.addItem("true");
-		visibleList.addItem("false");
-		visibleList.setToolTipText("Whether or not this action type is visible in the simulation's user interface");
-		visibleList.addActionListener(this);
-		topPane.add(visibleList);
+		// Create simVis pane:
+		JPanel simVisPane = new JPanel();
+		simVisPane.add(new JLabel("Visibile in simulation:"));
+		simVisibleList = new JComboBox();
+		simVisibleList.addItem("true");
+		simVisibleList.addItem("false");
+		simVisibleList.setToolTipText("Whether or not this action type is visible in the simulation's user interface");
+		simVisibleList.addActionListener(this);
+		simVisPane.add(simVisibleList);
 		
-		// Create middle pane:
-		JPanel middlePane = new JPanel();
+		// Create description pane:
+		JPanel descriptionPane = new JPanel();
 		descriptionLabel = new JLabel("Description:");
-		middlePane.add(descriptionLabel);
-		descriptionTextField = new JTextField(10);
+		descriptionPane.add(descriptionLabel);
+		descriptionTextField = new JTextField(15);
 		descriptionTextField.setToolTipText("Description of this action type to appear in the simulation's user interface");
-		middlePane.add(descriptionTextField);
+		descriptionPane.add(descriptionTextField);
+		
+		// Create expVis pane:
+		JPanel expVisPane = new JPanel();
+		expVisPane.add(new JLabel("Visibile in explanatory tool:"));
+		expVisibleList = new JComboBox();
+		expVisibleList.addItem("true");
+		expVisibleList.addItem("false");
+		expVisibleList.setToolTipText("Whether or not this action type is " +
+				"visible in the explanatory tool's user interface");
+		expVisibleList.addActionListener(this);
+		expVisPane.add(expVisibleList);
+		
+		// Create annotation panes:
+		JPanel annLabelPane = new JPanel();
+		annLabelPane.add(new JLabel("Annotation:"));
+		annotationTextArea = new JTextArea(15, 30);
+		annotationTextArea.setLineWrap(true);
+		annotationTextArea.setWrapStyleWord(true);
+		JScrollPane annotationPane = new JScrollPane(annotationTextArea, 
+		        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
+		        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		// Create bottom pane and buttons:
 		JPanel bottomPane = new JPanel();
@@ -57,8 +83,11 @@ public class ActionTypeVisibilityInfoForm extends JDialog implements ActionListe
 		bottomPane.add(cancelButton);
 
 		// Add panes to main pane:
-		mainPane.add(topPane);
-		mainPane.add(middlePane);
+		mainPane.add(simVisPane);
+		mainPane.add(descriptionPane);
+		mainPane.add(expVisPane);
+		mainPane.add(annLabelPane);
+		mainPane.add(annotationPane);
 		mainPane.add(bottomPane);
 
 		initializeForm(); // initialize values to reflect action being edited
@@ -84,9 +113,9 @@ public class ActionTypeVisibilityInfoForm extends JDialog implements ActionListe
 	{
 		Object source = evt.getSource(); // get which component the action came from
 		
-		if(source == visibleList)
+		if(source == simVisibleList)
 		{
-			if(((String)visibleList.getSelectedItem()).equals("true"))
+			if(((String)simVisibleList.getSelectedItem()).equals("true"))
 			{
 				descriptionLabel.setEnabled(true);
 				descriptionTextField.setEnabled(true);
@@ -107,7 +136,8 @@ public class ActionTypeVisibilityInfoForm extends JDialog implements ActionListe
 
 		else if(source == okButton) // okButton has been pressed
 		{
-			if(((String)visibleList.getSelectedItem()).equals("true"))
+		    // simulation visibility
+			if(((String)simVisibleList.getSelectedItem()).equals("true"))
 			{
 				// check if description is valid:
 				String des = descriptionTextField.getText();
@@ -117,7 +147,7 @@ public class ActionTypeVisibilityInfoForm extends JDialog implements ActionListe
 				}
 				else // valid input
 				{
-					actionInFocus.setVisibility(true);
+					actionInFocus.setVisibilityInSimulation(true);
 					actionInFocus.setDescription(des);
 					setVisible(false);
 					dispose();					
@@ -125,28 +155,60 @@ public class ActionTypeVisibilityInfoForm extends JDialog implements ActionListe
 			}
 			else // false
 			{
-				actionInFocus.setVisibility(false);
+				actionInFocus.setVisibilityInSimulation(false);
 				actionInFocus.setDescription(null);
 				setVisible(false);
 				dispose();				
 			}
+			
+			// explanatory tool visibility
+			if(((String)expVisibleList.getSelectedItem()).equals("true"))
+			{
+			    actionInFocus.setVisibilityInExplanatoryTool(true);
+			}
+			else // false
+			{
+			    actionInFocus.setVisibilityInExplanatoryTool(false);
+			}
+		    String ann = annotationTextArea.getText();
+		    if((ann != null) && (ann.length() > 0))
+		    {
+		        actionInFocus.setAnnotation(ann);
+		        setVisible(false);
+		        dispose();
+		    }
 		}
 	}
 
 
 	private void initializeForm() // initializes the form to reflect the action being edited
 	{
-		if(actionInFocus.isVisible())
+	    // simulation visibility
+		if(actionInFocus.isVisibleInSimulation())
 		{
-			visibleList.setSelectedIndex(0);
+			simVisibleList.setSelectedIndex(0);
 		}
 		else // not visible
 		{
-			visibleList.setSelectedIndex(1);
+			simVisibleList.setSelectedIndex(1);
 		}
 		if((actionInFocus.getDescription() != null) && (actionInFocus.getDescription().length() > 0)) // has a description
 		{
 			descriptionTextField.setText(actionInFocus.getDescription());
+		}
+		
+		// explanatory tool visibility
+		if(actionInFocus.isVisibleInExplanatoryTool())
+		{
+		    expVisibleList.setSelectedIndex(0);
+		}
+		else // not visible
+		{
+		    expVisibleList.setSelectedIndex(1);
+		}
+		if((actionInFocus.getAnnotation() != null) && (actionInFocus.getAnnotation().length() > 0)) // has annotation
+		{
+		    annotationTextArea.setText(actionInFocus.getAnnotation());
 		}
 	}
 }
