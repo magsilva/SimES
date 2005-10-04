@@ -2,39 +2,31 @@
 
 package simse.modelbuilder.actionbuilder;
 
-public class TimedActionTypeDestroyer extends ActionTypeDestroyer implements Cloneable
-{
-	private int time; // the number of clock ticks that the action remains until it is automatically destroyed
+public class TimedActionTypeDestroyer extends ActionTypeDestroyer implements
+    Cloneable {
+  private int time; // the number of clock ticks that the action remains until
+                    // it is automatically destroyed
 
-	public TimedActionTypeDestroyer(String name, ActionType action, int t)
-	{
-		super(name, action);
-		time = t;
-	}
+  public TimedActionTypeDestroyer(String name, ActionType action, int t) {
+    super(name, action);
+    time = t;
+  }
 
+  public TimedActionTypeDestroyer(String name, ActionType action) {
+    super(name, action);
+  }
 
-	public TimedActionTypeDestroyer(String name, ActionType action)
-	{
-		super(name, action);
-	}
+  public Object clone() {
+    TimedActionTypeDestroyer cl = (TimedActionTypeDestroyer) (super.clone());
+    cl.time = time;
+    return cl;
+  }
 
+  public int getTime() {
+    return time;
+  }
 
-	public Object clone()
-	{
-		TimedActionTypeDestroyer cl = (TimedActionTypeDestroyer)(super.clone());
-		cl.time = time;
-		return cl;
-	}
-
-
-	public int getTime()
-	{
-		return time;
-	}
-
-
-	public void setTime(int newTime)
-	{
-		time = newTime;
-	}
+  public void setTime(int newTime) {
+    time = newTime;
+  }
 }
