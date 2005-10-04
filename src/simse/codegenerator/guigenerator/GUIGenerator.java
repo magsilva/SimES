@@ -247,6 +247,17 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      
+      // getSimSEState function:
+      writer.write("public State getSimSEState()");
+      writer.write(NEWLINE);
+      writer.write(OPEN_BRACK);
+      writer.write(NEWLINE);
+      writer.write("return state;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // getWorld function:
       writer.write("public World getWorld()");

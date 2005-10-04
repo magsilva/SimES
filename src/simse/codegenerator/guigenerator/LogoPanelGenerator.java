@@ -445,6 +445,8 @@ public class LogoPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
+      writer.write("gui.getSimSEState().getClock().stop();");
+      writer.write(NEWLINE);
       writer.write("State s = new State();");
       writer.write(NEWLINE);
       writer.write("Logic l = new Logic(s);");

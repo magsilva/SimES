@@ -12,6 +12,7 @@ import javax.swing.*;
 
 import simse.codegenerator.*;
 import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
 import simse.modelbuilder.actionbuilder.DefinedActionTypes;
 import simse.modelbuilder.objectbuilder.Attribute;
 import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
@@ -22,9 +23,10 @@ public class LoggerGenerator implements CodeGeneratorConstants {
   private File directory; // directory to generate into
 
   private DefinedObjectTypes objTypes; // holds all of the defined object types
-                                       // from an sso file
+  // from an sso file
   private DefinedActionTypes actTypes; // holds all of the defined action types
-                                       // from an ssa file
+
+  // from an ssa file
 
   public LoggerGenerator(DefinedObjectTypes dots, DefinedActionTypes dats,
       File dir) {
@@ -86,6 +88,10 @@ public class LoggerGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private final String END_OBJECT_TAG = \"<endObject>\";");
       writer.write(NEWLINE);
+      writer.write("private final String BEGIN_ACTION_TAG = \"<beginAction>\";");
+      writer.write(NEWLINE);
+      writer.write("private final String END_ACTION_TAG = \"<endAction>\";");
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("private State state;");
       writer.write(NEWLINE);
@@ -140,6 +146,8 @@ public class LoggerGenerator implements CodeGeneratorConstants {
       writer.write("writer.write(NEWLINE);");
       writer.write(NEWLINE);
       writer.write("logAllObjectStates();");
+      writer.write(NEWLINE);
+      writer.write("logAllActionStates();");
       writer.write(NEWLINE);
       writer.write("} catch (IOException e) {");
       writer.write(NEWLINE);
@@ -218,20 +226,128 @@ public class LoggerGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
-
-      // logActionTrigger method:
-      writer.write("public void logActionTrigger(Action act) {");
       writer.write(NEWLINE);
-      writer.write("// write action to file");
+
+      // logAllActionStates method:
+      writer.write("// writes state of all actions to file");
+      writer.write(NEWLINE);
+      writer.write("private void logAllActionStates() {");
+      writer.write(NEWLINE);
+      writer.write("try {");
+      writer.write(NEWLINE);
+
+      // go through all action types and generate code for them:
+      Vector actionTypes = actTypes.getAllActionTypes();
+      for (int i = 0; i < actionTypes.size(); i++) {
+        ActionType act = (ActionType) actionTypes.get(i);
+        String actUCaseName = getUpperCaseLeading(act.getName());
+        writer.write("// " + actUCaseName + " actions:");
+        writer.write(NEWLINE);
+        writer.write("Vector all" + actUCaseName + "Actions = "
+            + "state.getActionStateRepository().get" + actUCaseName
+            + "ActionStateRepository().getAllActions();");
+        writer.write(NEWLINE);
+        writer.write("for (int i = 0; i < all" + actUCaseName
+            + "Actions.size(); i++) {");
+        writer.write(NEWLINE);
+        writer.write(actUCaseName + "Action " + actUCaseName.toLowerCase()
+            + "Action = (" + actUCaseName + "Action)all" + actUCaseName
+            + "Actions.get(i);");
+        writer.write(NEWLINE);
+        writer.write("writer.write(BEGIN_ACTION_TAG);");
+        writer.write(NEWLINE);
+        writer.write("writer.write(NEWLINE);");
+        writer.write(NEWLINE);
+        writer.write("writer.write(\"" + actUCaseName + "\");");
+        writer.write(NEWLINE);
+        writer.write("writer.write(NEWLINE);");
+        writer.write(NEWLINE);
+        writer.write("writer.write(\"\" + " + actUCaseName.toLowerCase()
+            + "Action.getId());");
+        writer.write("writer.write(NEWLINE);");
+        writer.write(NEWLINE);
+        writer.write(NEWLINE);
+
+        // go through all participants and generate code for them:
+        Vector parts = act.getAllParticipants();
+        for (int j = 0; j < parts.size(); j++) {
+          ActionTypeParticipant part = (ActionTypeParticipant) parts.get(j);
+          String partUCaseName = getUpperCaseLeading(part.getName());
+          String partLCaseName = part.getName().toLowerCase();
+          writer.write("// " + partLCaseName + " participants:");
+          writer.write(NEWLINE);
+          writer.write("Vector " + partLCaseName + "s = " +
+              actUCaseName.toLowerCase() + "Action.getAll"
+              + partUCaseName + "s();");
+          writer.write(NEWLINE);
+          writer.write("for (int j = 0; j < " + partLCaseName
+              + "s.size(); j++) {");
+          writer.write(NEWLINE);
+          writer.write(getUpperCaseLeading(SimSEObjectTypeTypes.getText(part
+              .getSimSEObjectTypeType()))
+              + " "
+              + partLCaseName
+              + " = ("
+              + getUpperCaseLeading(SimSEObjectTypeTypes.getText(part
+                  .getSimSEObjectTypeType()))
+              + ")"
+              + partLCaseName
+              + "s.get(j);");
+          writer.write(NEWLINE);
+          writer.write("writer.write(\"<begin" + partUCaseName
+              + "Participant>\");");
+          writer.write(NEWLINE);
+          writer.write("writer.write(NEWLINE);");
+          writer.write(NEWLINE);
+
+          // go through all allowable SimSEObjectTypes and generate code for
+          // them:
+          Vector allowableTypes = part.getAllSimSEObjectTypes();
+          for (int k = 0; k < allowableTypes.size(); k++) {
+            SimSEObjectType type = (SimSEObjectType) allowableTypes.get(k);
+            String typeUCaseName = getUpperCaseLeading(type.getName());
+            if (k > 0) {
+              writer.write("else ");
+            }
+            writer.write("if (" + partLCaseName + " instanceof "
+                + typeUCaseName + ") {");
+            writer.write(NEWLINE);
+            writer.write("writer.write(\"" + typeUCaseName + "\");");
+            writer.write(NEWLINE);
+            writer.write("writer.write(NEWLINE);");
+            writer.write(NEWLINE);
+            writer.write("writer.write(((" + typeUCaseName + ")"
+                + partLCaseName + ").get"
+                + getUpperCaseLeading(type.getKey().getName()) + "());");
+            writer.write(NEWLINE);
+            writer.write("writer.write(NEWLINE);");
+            writer.write(NEWLINE);
+            writer.write(CLOSED_BRACK);
+            writer.write(NEWLINE);
+          }
+          writer.write("writer.write(\"<end" + partUCaseName
+              + "Participant>\");");
+          writer.write(NEWLINE);
+          writer.write("writer.write(NEWLINE);");
+          writer.write(NEWLINE);
+          writer.write(CLOSED_BRACK);
+          writer.write(NEWLINE);
+          writer.write(NEWLINE);
+        }
+        writer.write("writer.write(END_ACTION_TAG);");
+        writer.write(NEWLINE);
+        writer.write("writer.write(NEWLINE);");
+        writer.write(NEWLINE);
+        writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
+      }
+      writer.write("} catch (IOException e) {");
+      writer.write(NEWLINE);
+      writer.write("JOptionPane.showMessageDialog(null, "
+          + "(\"Error writing log file\"), \"File IO Error\","
+          + " JOptionPane.WARNING_MESSAGE);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write(NEWLINE);
-
-      // logActionDestroyer method:
-      writer.write("public void logActionDestroyer(Action act) {");
-      writer.write(NEWLINE);
-      writer.write("// write action to file");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
