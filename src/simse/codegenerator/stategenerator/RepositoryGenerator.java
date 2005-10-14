@@ -71,7 +71,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import java.util.*;");
       writer.write(NEWLINE);
-      writer.write("public class ActionStateRepository");
+      writer.write("public class ActionStateRepository implements Cloneable");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -84,6 +84,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
             + tempAct.getName().substring(0, 1).toLowerCase() + i + ";");
         writer.write(NEWLINE);
       }
+      writer.write(NEWLINE);
 
       // constructor:
       writer.write("public ActionStateRepository()");
@@ -98,6 +99,35 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
       }
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // "clone" method:
+      writer.write("public Object clone() {");
+      writer.write(NEWLINE);
+      writer.write("try {");
+      writer.write(NEWLINE);
+      writer.write("ActionStateRepository cl = (ActionStateRepository) (super.clone());");
+      writer.write(NEWLINE);
+      for (int i = 0; i < acts.size(); i++) {
+        ActionType tempAct = (ActionType)acts.elementAt(i);
+        writer.write("cl." + tempAct.getName().substring(0, 1).toLowerCase() + i
+            + " = (" + getUpperCaseLeading(tempAct.getName()) + "ActionStateRepository)(" +
+            tempAct.getName().substring(0, 1).toLowerCase() + i + ".clone());");
+        writer.write(NEWLINE);
+      }
+      writer.write("return cl;");
+      writer.write(NEWLINE);
+      writer.write("} catch (CloneNotSupportedException c) {");
+      writer.write(NEWLINE);
+      writer.write("System.out.println(c.getMessage());");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("return null;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "getAllActions" method:
@@ -117,6 +147,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write("return all;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "getAllActions(SSObject) method:
@@ -158,6 +189,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // "getAllActiveActions(SSObject) method:
       writer.write("public Vector getAllActiveActions(SSObject a)");
@@ -197,6 +229,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write("return all;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "getAllInactiveActions(SSObject) method:
@@ -312,8 +345,10 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
   }
 
   private void generateObjectRepository(SimSEObjectType objType) {
-    File repFile = new File(directory, ("simse\\state\\"
-        + getUpperCaseLeading(objType.getName()) + "StateRepository.java"));
+    String uCaseName = getUpperCaseLeading(objType.getName());
+    String lCaseName = objType.getName().toLowerCase();
+    File repFile = new File(directory, ("simse\\state\\" + uCaseName + 
+        "StateRepository.java"));
     if (repFile.exists()) {
       repFile.delete(); // delete old version of file
     }
@@ -328,25 +363,60 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import java.util.*;");
       writer.write(NEWLINE);
-      writer.write("public class " + getUpperCaseLeading(objType.getName())
-          + "StateRepository");
+      writer.write("public class " + uCaseName + 
+          "StateRepository implements Cloneable");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
 
       // member variables:
-      writer.write("private Vector " + objType.getName().toLowerCase() + "s;");
+      writer.write("private Vector " + lCaseName + "s;");
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // constructor:
-      writer.write("public " + getUpperCaseLeading(objType.getName())
-          + "StateRepository()");
+      writer.write("public " + uCaseName + "StateRepository()");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write(objType.getName().toLowerCase() + "s = new Vector();");
+      writer.write(lCaseName + "s = new Vector();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // "clone" method:
+      writer.write("public Object clone() {");
+      writer.write(NEWLINE);
+      writer.write("try {");
+      writer.write(NEWLINE);
+      writer.write(uCaseName + "StateRepository cl = (" + uCaseName + 
+          "StateRepository) super.clone();");
+      writer.write(NEWLINE);
+      writer.write("Vector cloned" + lCaseName + "s = new Vector();");
+      writer.write(NEWLINE);
+      writer.write("for (int i = 0; i < " + lCaseName + "s.size(); i++) {");
+      writer.write(NEWLINE);
+      writer.write("cloned" + lCaseName + "s.addElement((" + uCaseName + 
+          ")(((" + uCaseName + ")(" + lCaseName + 
+          "s.elementAt(i))).clone()));");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("cl." + lCaseName + "s = cloned" + lCaseName + "s;");
+      writer.write(NEWLINE);
+      writer.write("return cl;");
+      writer.write(NEWLINE);
+      writer.write("} catch (CloneNotSupportedException c) {");
+      writer.write(NEWLINE);
+      writer.write("System.out.println(c.getMessage());");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("return null;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "add" method:
@@ -404,6 +474,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // "get" method:
       Attribute keyAtt = objType.getKey();
@@ -455,6 +526,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // "getAll" method:
       writer.write("public Vector getAll()");
@@ -464,6 +536,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write("return " + objType.getName().toLowerCase() + "s;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "remove" method:
@@ -504,7 +577,8 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import java.util.*;");
       writer.write(NEWLINE);
-      writer.write("public class " + typeName + "StateRepository");
+      writer.write(NEWLINE);
+      writer.write("public class " + typeName + "StateRepository implements Cloneable");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -519,6 +593,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
             + tempType.getName().substring(0, 1).toLowerCase() + i + ";");
         writer.write(NEWLINE);
       }
+      writer.write(NEWLINE);
 
       // constructor:
       writer.write("public " + typeName + "StateRepository()");
@@ -533,6 +608,37 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
       }
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // "clone" method:
+      writer.write("public Object clone() {");
+      writer.write(NEWLINE);
+      writer.write("try {");
+      writer.write(NEWLINE);
+      writer.write(typeName + "StateRepository cl = (" + typeName + 
+          "StateRepository) (super.clone());");
+      writer.write(NEWLINE);
+      for (int i = 0; i < objs.size(); i++) {
+        SimSEObjectType tempType = (SimSEObjectType)objs.get(i);
+        writer.write("cl." + tempType.getName().substring(0, 1).toLowerCase() 
+            + i + " = (" + getUpperCaseLeading(tempType.getName()) + 
+            "StateRepository)(" + tempType.getName().substring(0, 1).toLowerCase()
+            + i + ".clone());");
+        writer.write(NEWLINE);
+      }
+      writer.write("return cl;");
+      writer.write(NEWLINE);
+      writer.write("} catch (CloneNotSupportedException c) {");
+      writer.write(NEWLINE);
+      writer.write("System.out.println(c.getMessage());");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("return null;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "getAll" method:
@@ -552,6 +658,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write("return all;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "get[SimSEObjectType]StateRepository" methods:
@@ -579,9 +686,10 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
   }
 
   private void generateActionRepository(ActionType actType) {
+    String uCaseName = getUpperCaseLeading(actType.getName());
     File repFile = new File(
         directory,
-        ("simse\\state\\" + getUpperCaseLeading(actType.getName()) + "ActionStateRepository.java"));
+        ("simse\\state\\" + uCaseName + "ActionStateRepository.java"));
     if (repFile.exists()) {
       repFile.delete(); // delete old version of file
     }
@@ -598,8 +706,8 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import java.util.*;");
       writer.write(NEWLINE);
-      writer.write("public class " + getUpperCaseLeading(actType.getName())
-          + "ActionStateRepository");
+      writer.write("public class " + uCaseName
+          + "ActionStateRepository implements Cloneable");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -607,16 +715,50 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       // member variables:
       writer.write("private Vector actions;");
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // constructor:
-      writer.write("public " + getUpperCaseLeading(actType.getName())
-          + "ActionStateRepository()");
+      writer.write("public " + uCaseName + "ActionStateRepository()");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer.write("actions = new Vector();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // "clone" method:
+      writer.write("public Object clone() {");
+      writer.write(NEWLINE);
+      writer.write("try {");
+      writer.write(NEWLINE);
+      writer.write(uCaseName + "ActionStateRepository cl = (" + uCaseName +
+          "ActionStateRepository) (super.clone());");
+      writer.write(NEWLINE);
+      writer.write("Vector clonedActions = new Vector();");
+      writer.write(NEWLINE);
+      writer.write("for (int i = 0; i < actions.size(); i++) {");
+      writer.write(NEWLINE);
+      writer.write("clonedActions.add((" + uCaseName + "Action)(((" + uCaseName
+          + "Action)(actions.elementAt(i))).clone()));");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("cl.actions = clonedActions;");
+      writer.write(NEWLINE);
+      writer.write("return cl;");
+      writer.write(NEWLINE);
+      writer.write("} catch (CloneNotSupportedException c) {");
+      writer.write(NEWLINE);
+      writer.write("System.out.println(c.getMessage());");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("return null;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "add" method:
@@ -639,6 +781,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // "remove" method:
       writer.write("public boolean remove("
@@ -660,6 +803,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // "getAllActions()" method:
       writer.write("public Vector getAllActions()");
@@ -669,6 +813,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write("return actions;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "getAllActions(object)" method:
@@ -710,6 +855,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // "getAllActiveActions(object)" method:
       writer.write("public Vector getAllActiveActions(SSObject a)");
@@ -749,6 +895,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write("return all;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "getAllInactiveActions(object)" method:

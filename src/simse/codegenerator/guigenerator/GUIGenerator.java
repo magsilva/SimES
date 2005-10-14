@@ -75,8 +75,6 @@ public class GUIGenerator implements CodeGeneratorConstants {
     copyDir(panelsImageDir,
         (directory.getPath() + "\\simse\\gui\\" + (new File(panelsImageDir))
             .getName()));
-    //copyDir(worldImageDir, (directory.getPath() + "\\simse\\gui\\" + (new
-    // File(worldImageDir)).getName()));
 
     ImageLoader.copyImagesToDir(directory.getPath() + "\\simse\\gui\\");
 
@@ -116,8 +114,8 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import simse.engine.*;");
       writer.write(NEWLINE);
+      writer.write("import simse.explanatorytool.ExplanatoryTool;");
       writer.write(NEWLINE);
-      writer.write("import java.util.*;");
       writer.write(NEWLINE);
       writer.write("import java.awt.event.*;");
       writer.write(NEWLINE);
@@ -127,20 +125,14 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import javax.swing.*;");
       writer.write(NEWLINE);
-      writer.write("import javax.swing.text.*;");
-      writer.write(NEWLINE);
-      writer.write("import javax.swing.event.*;");
-      writer.write(NEWLINE);
       writer.write("import java.awt.Color;");
       writer.write(NEWLINE);
-      writer.write("import java.io.*;");
       writer.write(NEWLINE);
-      writer.write(NEWLINE);
-      writer.write("public class SimSEGUI extends JFrame");
+      writer.write("public class SimSEGUI extends JFrame implements ActionListener");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-
+      
       // member variables:
       writer.write("private TabPanel tabPanel;");
       writer.write(NEWLINE);
@@ -149,6 +141,15 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write("private AttributePanel attribPanel;");
       writer.write(NEWLINE);
       writer.write("private ActionPanel actionPanel;");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// Analyze menu:");
+      writer.write(NEWLINE);
+      writer.write("private JMenuBar menuBar; // menu bar at top of window");
+      writer.write(NEWLINE);
+      writer.write("private JMenu analyzeMenu; // analyze menu");
+      writer.write(NEWLINE);
+      writer.write("private JMenuItem analyzeSimItem; // menu item in \"Analyze\" menu");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("private State state;");
@@ -195,6 +196,28 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write("setTitle(\"SimSE\");");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      writer.write("menuBar = new JMenuBar();");
+      writer.write(NEWLINE);
+      writer.write("// Analyze menu:");
+      writer.write(NEWLINE);
+      writer.write("analyzeMenu = new JMenu(\"Analyze\"); // \"Analyze\" menu");
+      writer.write(NEWLINE);
+      writer.write("analyzeMenu.setEnabled(false); // disable menu");
+      writer.write(NEWLINE);
+      writer.write("analyzeSimItem = new JMenuItem(\"Analyze Simulation\");");
+      writer.write(NEWLINE);
+      writer.write("analyzeMenu.add(analyzeSimItem);");
+      writer.write(NEWLINE);
+      writer.write("analyzeSimItem.addActionListener(this);");
+      writer.write(NEWLINE);
+      writer.write("menuBar.add(analyzeMenu);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// Add menu bar to this frame:");
+      writer.write(NEWLINE);
+      writer.write("this.setJMenuBar(menuBar);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
       writer.write("// Create main panel:");
       writer.write(NEWLINE);
       writer.write("JPanel mainPane = new JPanel(new BorderLayout());");
@@ -232,6 +255,21 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write("validate();");
       writer.write(NEWLINE);
       writer.write("repaint();");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // actionPerformed method:
+      writer.write("public void actionPerformed(ActionEvent evt) {");
+      writer.write(NEWLINE);
+      writer.write("Object source = evt.getSource(); // get which component the action came from");
+      writer.write(NEWLINE);
+      writer.write("if (source == analyzeSimItem) {");
+      writer.write(NEWLINE);
+      writer.write("ExplanatoryTool expTool = new ExplanatoryTool(this, state.getLogger().getLog());");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -323,6 +361,12 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write("world.update();");
       writer.write(NEWLINE);
       writer.write("actionPanel.update();");
+      writer.write(NEWLINE);
+      writer.write("if (state.getClock().isStopped()) {");
+      writer.write(NEWLINE);
+      writer.write("analyzeMenu.setEnabled(true);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);

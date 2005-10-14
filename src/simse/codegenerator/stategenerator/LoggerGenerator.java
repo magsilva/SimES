@@ -6,32 +6,15 @@
 package simse.codegenerator.stategenerator;
 
 import java.io.*;
-import java.util.Vector;
 
 import javax.swing.*;
 
 import simse.codegenerator.*;
-import simse.modelbuilder.actionbuilder.ActionType;
-import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
-import simse.modelbuilder.actionbuilder.DefinedActionTypes;
-import simse.modelbuilder.objectbuilder.Attribute;
-import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
-import simse.modelbuilder.objectbuilder.SimSEObjectType;
-import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
 
 public class LoggerGenerator implements CodeGeneratorConstants {
   private File directory; // directory to generate into
 
-  private DefinedObjectTypes objTypes; // holds all of the defined object types
-  // from an sso file
-  private DefinedActionTypes actTypes; // holds all of the defined action types
-
-  // from an ssa file
-
-  public LoggerGenerator(DefinedObjectTypes dots, DefinedActionTypes dats,
-      File dir) {
-    objTypes = dots;
-    actTypes = dats;
+  public LoggerGenerator(File dir) {
     directory = dir;
   }
 
@@ -48,56 +31,20 @@ public class LoggerGenerator implements CodeGeneratorConstants {
       writer.write("package simse.state.logger;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("import simse.adts.objects.*;");
-      writer.write(NEWLINE);
-      writer.write("import simse.adts.actions.*;");
-      writer.write(NEWLINE);
       writer.write("import simse.state.*;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("import java.io.File;");
-      writer.write(NEWLINE);
-      writer.write("import java.io.FileWriter;");
-      writer.write(NEWLINE);
-      writer.write("import java.io.IOException;");
-      writer.write(NEWLINE);
-      writer.write("import java.util.Vector;");
-      writer.write(NEWLINE);
-      writer.write(NEWLINE);
-      writer.write("import javax.swing.JOptionPane;");
+      writer.write("import java.util.ArrayList;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("public class Logger {");
       writer.write(NEWLINE);
 
       // member variables:
-      writer.write("private final char NEWLINE = '\\n';");
+      writer.write("private State state; // current state");
       writer.write(NEWLINE);
-      writer.write("private final char OPEN_BRACK = '{';");
+      writer.write("private ArrayList log; // an array list of states for the current simulation");
       writer.write(NEWLINE);
-      writer.write("private final char CLOSED_BRACK = '}';");
-      writer.write(NEWLINE);
-      writer
-          .write("private final String BEGIN_CLOCK_TICK_TAG = \"<beginClockTick>\";");
-      writer.write(NEWLINE);
-      writer
-          .write("private final String END_CLOCK_TICK_TAG = \"<endClockTick>\";");
-      writer.write(NEWLINE);
-      writer
-          .write("private final String BEGIN_OBJECT_TAG = \"<beginObject>\";");
-      writer.write(NEWLINE);
-      writer.write("private final String END_OBJECT_TAG = \"<endObject>\";");
-      writer.write(NEWLINE);
-      writer.write("private final String BEGIN_ACTION_TAG = \"<beginAction>\";");
-      writer.write(NEWLINE);
-      writer.write("private final String END_ACTION_TAG = \"<endAction>\";");
-      writer.write(NEWLINE);
-      writer.write(NEWLINE);
-      writer.write("private State state;");
-      writer.write(NEWLINE);
-      writer.write("private File logFile; // log file");
-      writer.write(NEWLINE);
-      writer.write("private FileWriter writer; // writer");
       writer.write(NEWLINE);
 
       // constructor:
@@ -105,21 +52,18 @@ public class LoggerGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("this.state = state;");
       writer.write(NEWLINE);
-      writer.write("try {");
-      writer.write(NEWLINE);
-      writer.write("// create a temporary file");
-      writer.write(NEWLINE);
-      writer.write("logFile = File.createTempFile(\"sim\", \".sim\");");
-      writer.write(NEWLINE);
-      writer.write(NEWLINE);
-      writer.write("writer = new FileWriter(logFile);");
-      writer.write(NEWLINE);
-      writer.write("} catch (IOException e) {");
-      writer.write(NEWLINE);
-      writer
-          .write("JOptionPane.showMessageDialog(null, (\"Error creating log file\"), \"File IO Error\", JOptionPane.WARNING_MESSAGE);");
+      writer.write("log = new ArrayList();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+
+      // "getLogFile" method:
+      writer.write("// returns the state log");
+      writer.write(NEWLINE);
+      writer.write("public ArrayList getLog() {");
+      writer.write(NEWLINE);
+      writer.write("return log;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -127,254 +71,14 @@ public class LoggerGenerator implements CodeGeneratorConstants {
 
       // "update" method:
       writer
-          .write("// updates the clock tick mark in the file and all object states");
+          .write("// updates the log with the current state");
       writer.write(NEWLINE);
       writer.write("public void update() {");
       writer.write(NEWLINE);
-      writer.write("try {");
-      writer.write(NEWLINE);
-      writer.write("writer.write(BEGIN_CLOCK_TICK_TAG);");
-      writer.write(NEWLINE);
-      writer.write("writer.write(NEWLINE);");
-      writer.write(NEWLINE);
-      writer.write("writer.write(\"\" + state.getClock().getTime());");
-      writer.write(NEWLINE);
-      writer.write("writer.write(NEWLINE);");
-      writer.write(NEWLINE);
-      writer.write("writer.write(END_CLOCK_TICK_TAG);");
-      writer.write(NEWLINE);
-      writer.write("writer.write(NEWLINE);");
-      writer.write(NEWLINE);
-      writer.write("logAllObjectStates();");
-      writer.write(NEWLINE);
-      writer.write("logAllActionStates();");
-      writer.write(NEWLINE);
-      writer.write("} catch (IOException e) {");
-      writer.write(NEWLINE);
-      writer
-          .write("JOptionPane.showMessageDialog(null, (\"Error writing log file\"), \"File IO Error\", JOptionPane.WARNING_MESSAGE);");
+      writer.write("log.add((State)state.clone());");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write(NEWLINE);
-
-      // "logAllObjectStates" method:
-      writer.write("// writes state of all objects to file");
-      writer.write(NEWLINE);
-      writer.write("private void logAllObjectStates() {");
-      writer.write(NEWLINE);
-      writer.write("try {");
-      writer.write(NEWLINE);
-
-      // go through each object type and generate code for updating it:
-      Vector types = objTypes.getAllObjectTypes();
-      for (int i = 0; i < types.size(); i++) {
-        SimSEObjectType objType = (SimSEObjectType) types.get(i);
-        String uCaseName = getUpperCaseLeading(objType.getName());
-        writer.write("Vector all" + uCaseName + " = " + "state.get"
-            + SimSEObjectTypeTypes.getText(objType.getType())
-            + "StateRepository().get" + uCaseName
-            + "StateRepository().getAll();");
-        writer.write(NEWLINE);
-        writer.write("for (int i = 0; i < all" + uCaseName + ".size(); i++) {");
-        writer.write(NEWLINE);
-        writer.write(uCaseName + " " + objType.getName().toLowerCase() + " = ("
-            + uCaseName + ")all" + uCaseName + ".get(i);");
-        writer.write(NEWLINE);
-        writer.write("writer.write(BEGIN_OBJECT_TAG);");
-        writer.write(NEWLINE);
-        writer.write("writer.write(NEWLINE);");
-        writer.write(NEWLINE);
-        writer.write("writer.write(\""
-            + SimSEObjectTypeTypes.getText(objType.getType()) + "\");");
-        writer.write(NEWLINE);
-        writer.write("writer.write(NEWLINE);");
-        writer.write(NEWLINE);
-        writer.write("writer.write(\"" + objType.getName() + "\");");
-        writer.write(NEWLINE);
-        writer.write("writer.write(NEWLINE);");
-        writer.write(NEWLINE);
-
-        // go through each attribute and write it
-        Vector atts = objType.getAllAttributes();
-        for (int j = 0; j < atts.size(); j++) {
-          Attribute att = (Attribute) atts.get(j);
-          writer.write("writer.write(" + "\"\" + "
-              + objType.getName().toLowerCase() + ".get"
-              + getUpperCaseLeading(att.getName()) + "());");
-          writer.write(NEWLINE);
-          writer.write("writer.write(NEWLINE);");
-          writer.write(NEWLINE);
-        }
-
-        writer.write("writer.write(END_OBJECT_TAG);");
-        writer.write(NEWLINE);
-        writer.write("writer.write(NEWLINE);");
-        writer.write(NEWLINE);
-        writer.write(CLOSED_BRACK);
-        writer.write(NEWLINE);
-      }
-      writer.write("} catch (IOException e) {");
-      writer.write(NEWLINE);
-      writer.write("JOptionPane.showMessageDialog(null, "
-          + "(\"Error writing log file\"), \"File IO Error\","
-          + "JOptionPane.WARNING_MESSAGE);");
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write(NEWLINE);
-
-      // logAllActionStates method:
-      writer.write("// writes state of all actions to file");
-      writer.write(NEWLINE);
-      writer.write("private void logAllActionStates() {");
-      writer.write(NEWLINE);
-      writer.write("try {");
-      writer.write(NEWLINE);
-
-      // go through all action types and generate code for them:
-      Vector actionTypes = actTypes.getAllActionTypes();
-      for (int i = 0; i < actionTypes.size(); i++) {
-        ActionType act = (ActionType) actionTypes.get(i);
-        String actUCaseName = getUpperCaseLeading(act.getName());
-        writer.write("// " + actUCaseName + " actions:");
-        writer.write(NEWLINE);
-        writer.write("Vector all" + actUCaseName + "Actions = "
-            + "state.getActionStateRepository().get" + actUCaseName
-            + "ActionStateRepository().getAllActions();");
-        writer.write(NEWLINE);
-        writer.write("for (int i = 0; i < all" + actUCaseName
-            + "Actions.size(); i++) {");
-        writer.write(NEWLINE);
-        writer.write(actUCaseName + "Action " + actUCaseName.toLowerCase()
-            + "Action = (" + actUCaseName + "Action)all" + actUCaseName
-            + "Actions.get(i);");
-        writer.write(NEWLINE);
-        writer.write("writer.write(BEGIN_ACTION_TAG);");
-        writer.write(NEWLINE);
-        writer.write("writer.write(NEWLINE);");
-        writer.write(NEWLINE);
-        writer.write("writer.write(\"" + actUCaseName + "\");");
-        writer.write(NEWLINE);
-        writer.write("writer.write(NEWLINE);");
-        writer.write(NEWLINE);
-        writer.write("writer.write(\"\" + " + actUCaseName.toLowerCase()
-            + "Action.getId());");
-        writer.write("writer.write(NEWLINE);");
-        writer.write(NEWLINE);
-        writer.write(NEWLINE);
-
-        // go through all participants and generate code for them:
-        Vector parts = act.getAllParticipants();
-        for (int j = 0; j < parts.size(); j++) {
-          ActionTypeParticipant part = (ActionTypeParticipant) parts.get(j);
-          String partUCaseName = getUpperCaseLeading(part.getName());
-          String partLCaseName = part.getName().toLowerCase();
-          writer.write("// " + partLCaseName + " participants:");
-          writer.write(NEWLINE);
-          writer.write("Vector " + partLCaseName + "s = " +
-              actUCaseName.toLowerCase() + "Action.getAll"
-              + partUCaseName + "s();");
-          writer.write(NEWLINE);
-          writer.write("for (int j = 0; j < " + partLCaseName
-              + "s.size(); j++) {");
-          writer.write(NEWLINE);
-          writer.write(getUpperCaseLeading(SimSEObjectTypeTypes.getText(part
-              .getSimSEObjectTypeType()))
-              + " "
-              + partLCaseName
-              + " = ("
-              + getUpperCaseLeading(SimSEObjectTypeTypes.getText(part
-                  .getSimSEObjectTypeType()))
-              + ")"
-              + partLCaseName
-              + "s.get(j);");
-          writer.write(NEWLINE);
-          writer.write("writer.write(\"<begin" + partUCaseName
-              + "Participant>\");");
-          writer.write(NEWLINE);
-          writer.write("writer.write(NEWLINE);");
-          writer.write(NEWLINE);
-
-          // go through all allowable SimSEObjectTypes and generate code for
-          // them:
-          Vector allowableTypes = part.getAllSimSEObjectTypes();
-          for (int k = 0; k < allowableTypes.size(); k++) {
-            SimSEObjectType type = (SimSEObjectType) allowableTypes.get(k);
-            String typeUCaseName = getUpperCaseLeading(type.getName());
-            if (k > 0) {
-              writer.write("else ");
-            }
-            writer.write("if (" + partLCaseName + " instanceof "
-                + typeUCaseName + ") {");
-            writer.write(NEWLINE);
-            writer.write("writer.write(\"" + typeUCaseName + "\");");
-            writer.write(NEWLINE);
-            writer.write("writer.write(NEWLINE);");
-            writer.write(NEWLINE);
-            writer.write("writer.write(((" + typeUCaseName + ")"
-                + partLCaseName + ").get"
-                + getUpperCaseLeading(type.getKey().getName()) + "());");
-            writer.write(NEWLINE);
-            writer.write("writer.write(NEWLINE);");
-            writer.write(NEWLINE);
-            writer.write(CLOSED_BRACK);
-            writer.write(NEWLINE);
-          }
-          writer.write("writer.write(\"<end" + partUCaseName
-              + "Participant>\");");
-          writer.write(NEWLINE);
-          writer.write("writer.write(NEWLINE);");
-          writer.write(NEWLINE);
-          writer.write(CLOSED_BRACK);
-          writer.write(NEWLINE);
-          writer.write(NEWLINE);
-        }
-        writer.write("writer.write(END_ACTION_TAG);");
-        writer.write(NEWLINE);
-        writer.write("writer.write(NEWLINE);");
-        writer.write(NEWLINE);
-        writer.write(CLOSED_BRACK);
-        writer.write(NEWLINE);
-      }
-      writer.write("} catch (IOException e) {");
-      writer.write(NEWLINE);
-      writer.write("JOptionPane.showMessageDialog(null, "
-          + "(\"Error writing log file\"), \"File IO Error\","
-          + " JOptionPane.WARNING_MESSAGE);");
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write(NEWLINE);
-
-      // stop method:
-      writer.write("// writes the last update and closes the file writer");
-      writer.write(NEWLINE);
-      writer.write("public void stop() {");
-      writer.write(NEWLINE);
-      writer.write("update();");
-      writer.write(NEWLINE);
-      writer.write("try {");
-      writer.write(NEWLINE);
-      writer.write("writer.close();");
-      writer.write(NEWLINE);
-      writer.write("} catch (IOException e) {");
-      writer.write(NEWLINE);
-      writer.write("JOptionPane.showMessageDialog(null, "
-          + "(\"Error closing log file writer\"), \"File IO Error\","
-          + " JOptionPane.WARNING_MESSAGE);");
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-
       writer.write(CLOSED_BRACK);
 
       writer.close();
@@ -383,9 +87,5 @@ public class LoggerGenerator implements CodeGeneratorConstants {
           + loggerFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

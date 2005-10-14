@@ -40,12 +40,36 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("package simse.adts.objects;");
       writer.write(NEWLINE);
-      writer.write("public abstract class SSObject");
+      writer.write("public abstract class SSObject implements Cloneable");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
+      
+      // constructor:
       writer.write("public SSObject(){}");
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // "clone" method:
+      writer.write("public Object clone() {");
+      writer.write(NEWLINE);
+      writer.write("try {");
+      writer.write(NEWLINE);
+      writer.write("SSObject cl = (SSObject) (super.clone());");
+      writer.write(NEWLINE);
+      writer.write("return cl;");
+      writer.write(NEWLINE);
+      writer.write("} catch (CloneNotSupportedException c) {");
+      writer.write(NEWLINE);
+      writer.write("System.out.println(c.getMessage());");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("return null;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      
       writer.write(CLOSED_BRACK);
       writer.close();
     } catch (IOException e) {
@@ -61,7 +85,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
     generateAbstractObjectClass(SimSEObjectTypeTypes
         .getText(SimSEObjectTypeTypes.PROJECT));
 
-    // generate :
+    // generate Employee class:
     File empClass = new File(directory, ("simse\\adts\\objects\\Employee.java"));
     if (empClass.exists()) {
       empClass.delete(); // delete old version of file
@@ -75,7 +99,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import java.util.*;");
       writer.write(NEWLINE);
-      writer.write("public abstract class Employee extends SSObject");
+      writer.write("public abstract class Employee extends SSObject implements Cloneable");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -86,6 +110,9 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer
           .write("public static final String IDLE_STRING = \"I'm not doing anything right now\";");
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // constructor:
       writer.write("public Employee()");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
@@ -98,6 +125,30 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // "clone" function:
+      writer.write("public Object clone() {");
+      writer.write(NEWLINE);
+      writer.write("Employee cl = (Employee) (super.clone());");
+      writer.write(NEWLINE);
+      writer.write("Vector clonedMenu = new Vector();");
+      writer.write(NEWLINE);
+      writer.write("for (int i = 0; i < menu.size(); i++) {");
+      writer.write(NEWLINE);
+      writer.write("clonedMenu.add((String)(menu.elementAt(i)));");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("cl.menu = clonedMenu;");
+      writer.write(NEWLINE);
+      writer.write("cl.overheadText = overheadText;");
+      writer.write(NEWLINE);
+      writer.write("return cl;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // "getMenu" function:
       writer.write("public Vector getMenu()");
@@ -107,6 +158,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write("return menu;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "clearMenu" function:
@@ -119,6 +171,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write("menu.add(\"Everyone stop what you're doing\");");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "addMenuItem" function:
@@ -160,6 +213,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // "removeMenuItem" function:
       writer.write("public boolean removeMenuItem(String s)");
@@ -188,6 +242,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // "getOverheadText" function:
       writer.write("public String getOverheadText()");
@@ -197,6 +252,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write("return overheadText;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "setOverheadText" function:
@@ -243,6 +299,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // "clearOverheadText" function:
       writer.write("public void clearOverheadText()");
@@ -253,6 +310,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       if (CodeGenerator.allowHireFire) {
         // setHired function - this function will be overridden by subclasses
@@ -262,6 +320,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(OPEN_BRACK);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
+        writer.write(NEWLINE);
 
         // getHired function - this function will be overridden by subclasses
         writer.write("// This function will be overridden by subclasses");
@@ -270,6 +329,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(OPEN_BRACK);
         writer.write("return true;");
         writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
       }
 
       writer.write(CLOSED_BRACK);
@@ -295,12 +355,14 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import java.util.*;");
       writer.write(NEWLINE);
-      writer.write("public abstract class Customer extends SSObject");
+      writer.write("public abstract class Customer extends SSObject implements Cloneable");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer.write("private String overheadText;");
       writer.write(NEWLINE);
+      
+      // constructor:
       writer.write("public Customer()");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
@@ -309,6 +371,21 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // "clone" function:
+      writer.write("public Object clone() {");
+      writer.write(NEWLINE);
+      writer.write("Customer cl = (Customer) (super.clone());");
+      writer.write(NEWLINE);
+      writer.write("cl.overheadText = overheadText;");
+      writer.write(NEWLINE);
+      writer.write("return cl;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
       // "getOverheadText" function:
       writer.write("public String getOverheadText()");
       writer.write(NEWLINE);
@@ -322,6 +399,8 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
       // "setOverheadText" function:
       writer.write("public void setOverheadText(String s)");
       writer.write(NEWLINE);
@@ -331,6 +410,8 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
       // "hasOverheadText" function:
       writer.write("public boolean hasOverheadText()");
       writer.write(NEWLINE);
@@ -386,13 +467,14 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import java.util.*;");
       writer.write(NEWLINE);
-      writer.write("public abstract class Action");
+      writer.write("public abstract class Action implements Cloneable");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer.write("private int id;");
       writer.write(NEWLINE);
       writer.write("private int timeElapsed;");
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // constructor:
@@ -405,6 +487,32 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write("timeElapsed = 0;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // "clone" method:
+      writer.write("public Object clone() {");
+      writer.write(NEWLINE);
+      writer.write("try {");
+      writer.write(NEWLINE);
+      writer.write("Action cl = (Action) (super.clone());");
+      writer.write(NEWLINE);
+      writer.write("cl.id = id;");
+      writer.write(NEWLINE);
+      writer.write("cl.timeElapsed = timeElapsed;");
+      writer.write(NEWLINE);
+      writer.write("return cl;");
+      writer.write(NEWLINE);
+      writer.write("} catch (CloneNotSupportedException c) {");
+      writer.write(NEWLINE);
+      writer.write("System.out.println(c.getMessage());");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("return null;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "getId" method:
@@ -425,6 +533,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // "getTimeElapsed" method:
       writer.write("public int getTimeElapsed()");
@@ -435,13 +544,16 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // "getAllParticipants" abstract method:
       writer.write("public abstract Vector getAllParticipants();");
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // "getAllActiveParticipants" abstract method:
       writer.write("public abstract Vector getAllActiveParticipants();");
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "getAllInactiveParticipants" abstract method:
@@ -475,12 +587,26 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("package simse.adts.objects;");
       writer.write(NEWLINE);
-      writer.write("public abstract class " + className + " extends SSObject");
+      writer.write("public abstract class " + className + " extends SSObject implements Cloneable");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
+      
+      // constructor:
       writer.write("public " + className + "(){}");
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // "clone" method:
+      writer.write("public Object clone() {");
+      writer.write(NEWLINE);
+      writer.write(className + " cl = (" + className + ") (super.clone());");
+      writer.write(NEWLINE);
+      writer.write("return cl;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      
       writer.write(CLOSED_BRACK);
       writer.close();
     } catch (IOException e) {
@@ -510,7 +636,8 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
       }
       writer.write("public class " + getUpperCaseLeading(objType.getName())
-          + " extends " + SimSEObjectTypeTypes.getText(objType.getType()));
+          + " extends " + SimSEObjectTypeTypes.getText(objType.getType()) +
+          " implements Cloneable");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -528,6 +655,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(att.getName().toLowerCase() + ";");
         writer.write(NEWLINE);
       }
+      writer.write(NEWLINE);
 
       // constructor:
       writer.write("public " + getUpperCaseLeading(objType.getName()) + "(");
@@ -546,6 +674,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
+      
       // assignments:
       for (int i = 0; i < attributes.size(); i++) {
         Attribute att = (Attribute) attributes.elementAt(i);
@@ -555,10 +684,30 @@ public class ADTGenerator implements CodeGeneratorConstants {
       }
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // "clone" method:
+      writer.write("public Object clone() {");
+      writer.write(NEWLINE);
+      writer.write(getUpperCaseLeading(objType.getName()) + " cl = (" +
+          getUpperCaseLeading(objType.getName()) + ")(super.clone());");
+      writer.write(NEWLINE);
+      for (int i = 0; i < attributes.size(); i++) {
+        Attribute att = (Attribute)attributes.elementAt(i);
+        writer.write("cl." + att.getName().toLowerCase() + " = " +
+            att.getName().toLowerCase() + ";");
+        writer.write(NEWLINE);
+      }
+      writer.write("return cl;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // get and set functions:
       for (int i = 0; i < attributes.size(); i++) {
         Attribute att = (Attribute) attributes.elementAt(i);
+        
         // "get" method:
         writer.write("public ");
         writer.write(getTypeAsString(att) + " ");
@@ -570,6 +719,8 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
+        writer.write(NEWLINE);
+        
         // "set" method:
         writer.write("public void set" + getUpperCaseLeading(att.getName())
             + "(");
@@ -652,6 +803,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
         }
         writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
         writer.write(NEWLINE);
       }
 
@@ -742,7 +894,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write("import java.util.*;");
       writer.write(NEWLINE);
       writer.write("public class " + getUpperCaseLeading(actType.getName())
-          + "Action extends Action");
+          + "Action extends Action implements Cloneable");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -803,8 +955,35 @@ public class ADTGenerator implements CodeGeneratorConstants {
       }
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // methods:
+      
+      // "clone" method:
+      writer.write("public Object clone() {");
+      writer.write(NEWLINE);
+      writer.write(getUpperCaseLeading(actType.getName()) + "Action cl = (" +
+          getUpperCaseLeading(actType.getName()) + "Action)(super.clone());");
+      writer.write(NEWLINE);
+      for (int i = 0; i < participants.size(); i++) {
+        ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
+            .elementAt(i);
+        writer.write("Hashtable cloned" + tempPart.getName().toLowerCase() 
+            + "s = new Hashtable();");
+        writer.write(NEWLINE);
+        writer.write("cl." + tempPart.getName().toLowerCase() + "s.putAll(" +
+            tempPart.getName().toLowerCase() + "s);");
+        writer.write(NEWLINE);
+        writer.write("cl." + tempPart.getName().toLowerCase() + "s = cloned" +
+            tempPart.getName().toLowerCase() + "s;");
+        writer.write(NEWLINE);
+      }
+      writer.write("return cl;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
       if (hasTimedDestroyer) // timed destroyer
       {
         // "getTimeToLive" method:
@@ -815,6 +994,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write("return timeToLive;");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
         writer.write(NEWLINE);
 
         // "decrementTimeToLive" method:
@@ -833,6 +1013,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
         writer.write(NEWLINE);
       }
 
@@ -870,6 +1051,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write("return all;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "getAllInactiveParticipants" method:
@@ -920,6 +1102,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
+        writer.write(NEWLINE);
 
         // "getAllActive[Participant]s" method:
         writer.write("public Vector getAllActive" + tempPart.getName() + "s()");
@@ -956,6 +1139,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write("return a;");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
         writer.write(NEWLINE);
 
         // "getAllInactive[Participant]s" method:
@@ -994,6 +1178,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write("return a;");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
         writer.write(NEWLINE);
 
         // "add" method:
@@ -1067,6 +1252,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
+        writer.write(NEWLINE);
 
         // "remove" method:
         writer.write("public boolean remove" + tempPart.getName() + "("
@@ -1089,6 +1275,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write("return false;");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
         writer.write(NEWLINE);
 
         // "setActive" method:
@@ -1113,6 +1300,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write("return false;");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
         writer.write(NEWLINE);
 
         // "setInactive" method:

@@ -2,11 +2,12 @@
 
 package simse.codegenerator;
 
-import simse.codegenerator.stategenerator.*;
-import simse.codegenerator.logicgenerator.*;
-import simse.codegenerator.enginegenerator.*;
-import simse.codegenerator.guigenerator.*;
-
+import simse.codegenerator.enginegenerator.EngineGenerator;
+import simse.codegenerator.explanatorytoolgenerator.ExplanatoryToolGenerator;
+import simse.codegenerator.guigenerator.GUIGenerator;
+import simse.codegenerator.logicgenerator.LogicGenerator;
+import simse.codegenerator.stategenerator.StateGenerator;
+import simse.codegenerator.utilgenerator.IDGeneratorGenerator;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.modelbuilder.startstatebuilder.*;
@@ -25,6 +26,8 @@ public class CodeGenerator {
   private LogicGenerator logicGen; // generates the logic component
   private EngineGenerator engineGen; // generates the engine component
   private GUIGenerator guiGen; // generates the GUI component
+  private ExplanatoryToolGenerator expToolGen; // generates the explanatory tool
+  private IDGeneratorGenerator idGen; // generates the IDGenerator
   private File directory; // directory to generate code into
   public static boolean allowHireFire = true;
 
@@ -38,6 +41,8 @@ public class CodeGenerator {
     engineGen = new EngineGenerator(objs, directory);
     guiGen = new GUIGenerator(objTypes, objs, actTypes, iconDir,
         stsObjsToImages, ruleObjsToImages, map, userDatas, imgDir, directory);
+    expToolGen = new ExplanatoryToolGenerator(objTypes, objs, actTypes, directory);
+    idGen = new IDGeneratorGenerator(dir);
   }
 
   public void setAllowHireFire(boolean b) {
@@ -57,6 +62,16 @@ public class CodeGenerator {
       }
     }
     simse.mkdir();
+    
+    File lib = new File(directory, "lib");
+    // if directory already exists, delete all files in it:
+    if (lib.exists() && lib.isDirectory()) {
+      File[] files = lib.listFiles();
+      for (int i = 0; i < files.length; i++) {
+        files[i].delete();
+      }
+    }
+    lib.mkdir();
 
     File adts = new File(simse, "adts");
     // if directory already exists, delete all files in it:
@@ -147,6 +162,16 @@ public class CodeGenerator {
       }
     }
     gui.mkdir();
+    
+    File expTool = new File(simse, "explanatorytool");
+    // if directory already exists, delete all files in it:
+    if (expTool.exists() && expTool.isDirectory()) {
+      File[] files = expTool.listFiles();
+      for (int i = 0; i < files.length; i++) {
+        files[i].delete();
+      }
+    }
+    expTool.mkdir();
 
     File util = new File(simse, "util");
     // if directory already exists, delete all files in it:
@@ -182,9 +207,11 @@ public class CodeGenerator {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
+      
       // constructor:
       writer.write("public SimSE(){}");
       writer.write(NEWLINE);
+      
       // main method:
       writer.write("public static void main(String args[])");
       writer.write(NEWLINE);
@@ -221,6 +248,8 @@ public class CodeGenerator {
     logicGen.generate();
     engineGen.generate();
     guiGen.generate();
+    expToolGen.generate();
+    idGen.generate();
     JOptionPane.showMessageDialog(null, "Simulation generated!",
         "Generation Successful", JOptionPane.INFORMATION_MESSAGE);
   }

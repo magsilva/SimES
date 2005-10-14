@@ -119,9 +119,9 @@ public class ClockGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("stopped = true;");
       writer.write(NEWLINE);
-      writer.write("gui.forceGUIUpdate();");
+      writer.write("logger.update();");
       writer.write(NEWLINE);
-      writer.write("logger.stop();");
+      writer.write("gui.forceGUIUpdate();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);

@@ -25,7 +25,7 @@ public class StateGenerator implements CodeGeneratorConstants {
     adtGen = new ADTGenerator(objTypes, actTypes, directory);
     repGen = new RepositoryGenerator(objTypes, actTypes, directory);
     clockGen = new ClockGenerator(directory);
-    loggerGen = new LoggerGenerator(objTypes, actTypes, directory);
+    loggerGen = new LoggerGenerator(directory);
   }
 
   public void generate() // causes all of this component's sub-components to
@@ -52,7 +52,7 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write("import simse.state.logger.Logger;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("public class State");
+      writer.write("public class State implements Cloneable");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -99,8 +99,46 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // methods:
+      
+      // clone method:
+      writer.write("public Object clone() {");
+      writer.write(NEWLINE);
+      writer.write("try {");
+      writer.write(NEWLINE);
+      writer.write("State cl = (State) (super.clone());");
+      writer.write(NEWLINE);
+      writer.write("cl.esr = (EmployeeStateRepository) (esr.clone());");
+      writer.write(NEWLINE);
+      writer.write("cl.asr = (ArtifactStateRepository) (asr.clone());");
+      writer.write(NEWLINE);
+      writer.write("cl.tsr = (ToolStateRepository) (tsr.clone());");
+      writer.write(NEWLINE);
+      writer.write("cl.psr = (ProjectStateRepository) (psr.clone());");
+      writer.write(NEWLINE);
+      writer.write("cl.csr = (CustomerStateRepository) (csr.clone());");
+      writer.write(NEWLINE);
+      writer.write("cl.actsr = (ActionStateRepository) (actsr.clone());");
+      writer.write(NEWLINE);
+      writer.write("cl.clock = null;");
+      writer.write(NEWLINE);
+      writer.write("cl.logger = null;");
+      writer.write(NEWLINE);
+      writer.write("return cl;");
+      writer.write(NEWLINE);
+      writer.write("} catch (CloneNotSupportedException c) {");
+      writer.write(NEWLINE);
+      writer.write("System.out.println(c.getMessage());");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("return null;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // getEmployeeStateRepository() method:
       writer
@@ -111,6 +149,7 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write("return esr;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // getArtifactStateRepository() method:
@@ -123,6 +162,7 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // getToolStateRepository() method:
       writer.write("public ToolStateRepository getToolStateRepository()");
@@ -133,6 +173,7 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // getProjectStateRepository() method:
       writer.write("public ProjectStateRepository getProjectStateRepository()");
@@ -142,6 +183,7 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write("return psr;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // getCustomerStateRepository() method:
@@ -154,6 +196,7 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // getActionStateRepository() method:
       writer.write("public ActionStateRepository getActionStateRepository()");
@@ -163,6 +206,7 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write("return actsr;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // getClock() method:
@@ -174,6 +218,7 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // getLogger() method:
       writer.write("public Logger getLogger()");
@@ -183,6 +228,7 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write("return logger;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       writer.write(CLOSED_BRACK);

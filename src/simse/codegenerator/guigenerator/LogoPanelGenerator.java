@@ -29,8 +29,6 @@ public class LogoPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("package simse.gui;");
       writer.write(NEWLINE);
-      writer.write("import java.util.*;");
-      writer.write(NEWLINE);
       writer.write("import java.awt.event.*;");
       writer.write(NEWLINE);
       writer.write("import java.awt.*;");
@@ -39,17 +37,9 @@ public class LogoPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import javax.swing.*;");
       writer.write(NEWLINE);
-      writer.write("import javax.swing.text.*;");
-      writer.write(NEWLINE);
-      writer.write("import javax.swing.event.*;");
-      writer.write(NEWLINE);
       writer.write("import java.awt.Color;");
       writer.write(NEWLINE);
-      writer.write("import java.io.*;");
       writer.write(NEWLINE);
-      writer.write("import javax.swing.border.LineBorder;");
-      writer.write(NEWLINE);
-
       writer.write("import simse.engine.*;");
       writer.write(NEWLINE);
       writer.write("import simse.state.*;");
