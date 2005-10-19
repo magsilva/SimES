@@ -8,6 +8,7 @@ package simse.codegenerator.explanatorytoolgenerator;
 import simse.modelbuilder.actionbuilder.ActionType;
 import simse.modelbuilder.actionbuilder.DefinedActionTypes;
 import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.explanatorytoolgenerator.ActionGraphGenerator;
 import simse.codegenerator.explanatorytoolgenerator.ObjectGraphGenerator;
 import simse.modelbuilder.objectbuilder.Attribute;
 import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
@@ -24,10 +25,11 @@ import java.io.*;
 import javax.swing.*;
 
 public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
-  DefinedObjectTypes objTypes;
-  CreatedObjects objs;
-  DefinedActionTypes acts;
+  private DefinedObjectTypes objTypes;
+  private CreatedObjects objs;
+  private DefinedActionTypes acts;
   private ObjectGraphGenerator objGraphGen; // generates the ObjectGraph class
+  private ActionGraphGenerator actGraphGen; // generates the ActionGraph class
 
   private File directory; // directory to generate into
 
@@ -38,6 +40,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
     this.acts = acts;
     directory = dir;
     objGraphGen = new ObjectGraphGenerator(objTypes, objs, dir);
+    actGraphGen = new ActionGraphGenerator(acts, dir);
   }
 
   public void generate() // causes all of this component's sub-components to
@@ -45,8 +48,9 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
   {
     // copy the JFreeChart jars:
     copyJFreeChartJars();
-    
+
     objGraphGen.generate();
+    actGraphGen.generate();
     generateExplanatoryTool();
   }
 
@@ -96,9 +100,11 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer
           .write("private JList actionList; // for choosing which actions to show");
       writer.write(NEWLINE);
-      writer.write("private JPanel bottomPane;");
+      writer
+          .write("private JButton generateObjGraphButton; // for generating an object graph");
       writer.write(NEWLINE);
-      writer.write("private JButton generateButton; // for generating a graph");
+      writer
+          .write("private JButton generateActGraphButton; // for generating an action graph");
       writer.write(NEWLINE);
       writer.write("private Box mainPane;");
       writer.write(NEWLINE);
@@ -115,6 +121,11 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("// Create main panel (box):");
       writer.write(NEWLINE);
       writer.write("mainPane = Box.createVerticalBox();");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// Create main sub-panel:");
+      writer.write(NEWLINE);
+      writer.write("JPanel mainSubPanel = new JPanel();");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// Create title pane and label:");
@@ -185,6 +196,20 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("objectPane.add(attributeListPane);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      writer.write("// Create objectBottom pane & button:");
+      writer.write(NEWLINE);
+      writer.write("JPanel objBottomPane = new JPanel();");
+      writer.write(NEWLINE);
+      writer
+          .write("generateObjGraphButton = new JButton(\"Generate Object Graph\");");
+      writer.write(NEWLINE);
+      writer.write("generateObjGraphButton.addActionListener(this);");
+      writer.write(NEWLINE);
+      writer.write("objBottomPane.add(generateObjGraphButton);");
+      writer.write(NEWLINE);
+      writer.write("objectPane.add(objBottomPane);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
       writer.write("// Create action pane and components:");
       writer.write(NEWLINE);
       writer.write("Box actionPane = Box.createVerticalBox();");
@@ -225,15 +250,18 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("actionPane.add(actionListPane);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("// Create bottom pane & buttons:");
+      writer.write("// Create actionBottom pane & buttons:");
       writer.write(NEWLINE);
-      writer.write("bottomPane = new JPanel();");
+      writer.write("JPanel actBottomPane = new JPanel();");
       writer.write(NEWLINE);
-      writer.write("generateButton = new JButton(\"Generate Graph\");");
+      writer
+          .write("generateActGraphButton = new JButton(\"Generate Action Graph\");");
       writer.write(NEWLINE);
-      writer.write("generateButton.addActionListener(this);");
+      writer.write("generateActGraphButton.addActionListener(this);");
       writer.write(NEWLINE);
-      writer.write("bottomPane.add(generateButton);");
+      writer.write("actBottomPane.add(generateActGraphButton);");
+      writer.write(NEWLINE);
+      writer.write("actionPane.add(actBottomPane);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// set up tool tips:");
@@ -241,7 +269,11 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("setUpToolTips();");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("// Add panes to main pane:");
+      writer.write("// Add panes to main pane and main sub-pane:");
+      writer.write(NEWLINE);
+      writer.write("mainSubPanel.add(objectPane);");
+      writer.write(NEWLINE);
+      writer.write("mainSubPanel.add(actionPane);");
       writer.write(NEWLINE);
       writer.write("mainPane.add(titlePane);");
       writer.write(NEWLINE);
@@ -251,23 +283,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("mainPane.add(separator1);");
       writer.write(NEWLINE);
-      writer.write("mainPane.add(objectPane);");
-      writer.write(NEWLINE);
-      writer.write("JSeparator separator2 = new JSeparator();");
-      writer.write(NEWLINE);
-      writer.write("separator2.setMaximumSize(new Dimension(2900, 1));");
-      writer.write(NEWLINE);
-      writer.write("mainPane.add(separator2);");
-      writer.write(NEWLINE);
-      writer.write("mainPane.add(actionPane);");
-      writer.write(NEWLINE);
-      writer.write("JSeparator separator3 = new JSeparator();");
-      writer.write(NEWLINE);
-      writer.write("separator3.setMaximumSize(new Dimension(2900, 1));");
-      writer.write(NEWLINE);
-      writer.write("mainPane.add(separator3);");
-      writer.write(NEWLINE);
-      writer.write("mainPane.add(bottomPane);");
+      writer.write("mainPane.add(mainSubPanel);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// Set main window frame properties:");
@@ -313,7 +329,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("else if (source == generateButton) { // generateButton has been pressed");
+          .write("else if (source == generateObjGraphButton) { // generateObjGraphButton has been pressed");
       writer.write(NEWLINE);
       writer
           .write("String selectedObj = (String)objectList.getSelectedItem();");
@@ -350,6 +366,29 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer
           .write("ObjectGraph graph = new ObjectGraph(title, log, objTypeType, objType, keyAttVal, attributes);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer
+          .write("else if (source == generateActGraphButton) { // generateActGraphButton has been pressed");
+      writer.write(NEWLINE);
+      writer
+          .write("Object[] selectedActions = actionList.getSelectedValues();");
+      writer.write(NEWLINE);
+      writer.write("String[] actions = new String[selectedActions.length];");
+      writer.write(NEWLINE);
+      writer.write("for (int i = 0; i < selectedActions.length; i++) {");
+      writer.write(NEWLINE);
+      writer.write("actions[i] = new String((String) selectedActions[i]);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer
+          .write("if (actions.length > 0) { // at least one attribute is selected");
+      writer.write(NEWLINE);
+      writer.write("ActionGraph graph = new ActionGraph(log, actions);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -434,7 +473,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
   private String getUpperCaseLeading(String s) {
     return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
-  
+
   // copies the JFreeChart jars into the generated code directory
   private void copyJFreeChartJars() {
     try {
