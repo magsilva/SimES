@@ -971,7 +971,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write("Hashtable cloned" + tempPart.getName().toLowerCase() 
             + "s = new Hashtable();");
         writer.write(NEWLINE);
-        writer.write("cl." + tempPart.getName().toLowerCase() + "s.putAll(" +
+        writer.write("cloned" + tempPart.getName().toLowerCase() + "s.putAll(" +
             tempPart.getName().toLowerCase() + "s);");
         writer.write(NEWLINE);
         writer.write("cl." + tempPart.getName().toLowerCase() + "s = cloned" +

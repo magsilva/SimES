@@ -9,7 +9,9 @@ import simse.modelbuilder.actionbuilder.ActionType;
 import simse.modelbuilder.actionbuilder.DefinedActionTypes;
 import simse.codegenerator.CodeGeneratorConstants;
 import simse.codegenerator.explanatorytoolgenerator.ActionGraphGenerator;
+import simse.codegenerator.explanatorytoolgenerator.ActionInfoPanelGenerator;
 import simse.codegenerator.explanatorytoolgenerator.ObjectGraphGenerator;
+import simse.codegenerator.explanatorytoolgenerator.TriggerDescriptionsGenerator;
 import simse.modelbuilder.objectbuilder.Attribute;
 import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
 import simse.modelbuilder.objectbuilder.NumericalAttribute;
@@ -30,6 +32,19 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
   private DefinedActionTypes acts;
   private ObjectGraphGenerator objGraphGen; // generates the ObjectGraph class
   private ActionGraphGenerator actGraphGen; // generates the ActionGraph class
+  private ActionInfoPanelGenerator actInfoPanelGen; // generates the
+  // ActionInfoPanel class
+  private RuleInfoPanelGenerator ruleInfoPanelGen; // generates the
+  // RuleInfoPanel class
+  private ActionInfoWindowGenerator actInfoWindowGen; // generates the
+                                                      // ActionInfoWindow class
+  private TriggerDescriptionsGenerator trigDescGen; // generates the
+  // TriggerDescriptions class
+  private DestroyerDescriptionsGenerator destDescGen; // generates the
+  // DestroyerDescriptions
+  // class
+  private RuleDescriptionsGenerator ruleDescGen; // generates the
+  // RuleDescriptions class
 
   private File directory; // directory to generate into
 
@@ -41,6 +56,12 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
     directory = dir;
     objGraphGen = new ObjectGraphGenerator(objTypes, objs, dir);
     actGraphGen = new ActionGraphGenerator(acts, dir);
+    actInfoPanelGen = new ActionInfoPanelGenerator(acts, dir);
+    ruleInfoPanelGen = new RuleInfoPanelGenerator(acts, dir);
+    actInfoWindowGen = new ActionInfoWindowGenerator(dir);
+    trigDescGen = new TriggerDescriptionsGenerator(acts, dir);
+    destDescGen = new DestroyerDescriptionsGenerator(acts, dir);
+    ruleDescGen = new RuleDescriptionsGenerator(acts, dir);
   }
 
   public void generate() // causes all of this component's sub-components to
@@ -51,6 +72,12 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
 
     objGraphGen.generate();
     actGraphGen.generate();
+    actInfoPanelGen.generate();
+    ruleInfoPanelGen.generate();
+    actInfoWindowGen.generate();
+    trigDescGen.generate();
+    destDescGen.generate();
+    ruleDescGen.generate();
     generateExplanatoryTool();
   }
 

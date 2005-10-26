@@ -44,6 +44,10 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import org.jfree.chart.ChartFactory;");
       writer.write(NEWLINE);
+      writer.write("import org.jfree.chart.ChartMouseEvent;");
+      writer.write(NEWLINE);
+      writer.write("import org.jfree.chart.ChartMouseListener;");
+      writer.write(NEWLINE);
       writer.write("import org.jfree.chart.ChartPanel;");
       writer.write(NEWLINE);
       writer.write("import org.jfree.chart.JFreeChart;");
@@ -52,12 +56,23 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import org.jfree.chart.axis.ValueAxis;");
       writer.write(NEWLINE);
+      writer.write("import org.jfree.chart.entity.ChartEntity;");
+      writer.write(NEWLINE);
+      writer.write("import org.jfree.chart.entity.XYItemEntity;");
+      writer.write(NEWLINE);
+      writer
+          .write("import org.jfree.chart.labels.AbstractXYItemLabelGenerator;");
+      writer.write(NEWLINE);
+      writer.write("import org.jfree.chart.labels.XYToolTipGenerator;");
+      writer.write(NEWLINE);
       writer.write("import org.jfree.chart.plot.PlotOrientation;");
       writer.write(NEWLINE);
       writer.write("import org.jfree.chart.plot.XYPlot;");
       writer.write(NEWLINE);
       writer
           .write("import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;");
+      writer.write(NEWLINE);
+      writer.write("import org.jfree.data.xy.XYDataItem;");
       writer.write(NEWLINE);
       writer.write("import org.jfree.data.xy.XYDataset;");
       writer.write(NEWLINE);
@@ -72,15 +87,13 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import java.awt.Color;");
       writer.write(NEWLINE);
-      writer.write("import java.awt.event.WindowAdapter;");
-      writer.write(NEWLINE);
-      writer.write("import java.awt.event.WindowEvent;");
-      writer.write(NEWLINE);
       writer.write("import java.util.ArrayList;");
       writer.write(NEWLINE);
       writer.write("import java.util.Enumeration;");
       writer.write(NEWLINE);
       writer.write("import java.util.Hashtable;");
+      writer.write(NEWLINE);
+      writer.write("import java.util.List;");
       writer.write(NEWLINE);
       writer.write("import java.util.Vector;");
       writer.write(NEWLINE);
@@ -88,7 +101,8 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write("import javax.swing.JFrame;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("public class ActionGraph extends JFrame {");
+      writer
+          .write("public class ActionGraph extends JFrame implements ChartMouseListener {");
       writer.write(NEWLINE);
 
       // member variables:
@@ -160,6 +174,8 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write("JFreeChart chart = createChart(dataset);");
       writer.write(NEWLINE);
       writer.write("ChartPanel chartPanel = new ChartPanel(chart);");
+      writer.write(NEWLINE);
+      writer.write("chartPanel.addChartMouseListener(this);");
       writer.write(NEWLINE);
       writer
           .write("chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));");
@@ -275,6 +291,9 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write("chart.setBackgroundPaint(Color.WHITE);");
       writer.write(NEWLINE);
       writer.write("XYPlot plot = (XYPlot) chart.getPlot();");
+      writer.write(NEWLINE);
+      writer
+          .write("plot.getRenderer().setToolTipGenerator(new ActionGraphToolTipGenerator());");
       writer.write(NEWLINE);
       writer.write("plot.setBackgroundPaint(new Color(0xFF, 0xFF, 0xCC));");
       writer.write(NEWLINE);
@@ -428,14 +447,165 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(NEWLINE);
 
-      // ExitListener class:
-      writer.write("public class ExitListener extends WindowAdapter {");
+      // "chartMouseClicked" method:
+      writer.write("// responds to mouse clicks on the chart");
       writer.write(NEWLINE);
-      writer.write("public void windowClosing(WindowEvent event) {");
+      writer.write("public void chartMouseClicked(ChartMouseEvent event) {");
       writer.write(NEWLINE);
-      writer.write("setVisible(false);");
+      writer.write("ChartEntity entity = event.getEntity();");
       writer.write(NEWLINE);
-      writer.write("dispose();");
+      writer
+          .write("if ((entity != null) && (entity instanceof XYItemEntity)) {");
+      writer.write(NEWLINE);
+      writer.write("XYItemEntity xyEntity = (XYItemEntity) entity;");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// get the y-value of the action (action index):");
+      writer.write(NEWLINE);
+      writer
+          .write("int yVal = (int) xyEntity.getDataset().getYValue(xyEntity.getSeriesIndex(), xyEntity.getItem());");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// get the x-value of the action (clock tick):");
+      writer.write(NEWLINE);
+      writer
+          .write("int xVal = (int) xyEntity.getDataset().getXValue(xyEntity.getSeriesIndex(), xyEntity.getItem());");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// get the series name of the action:");
+      writer.write(NEWLINE);
+      writer.write("String seriesName = (String) indices.get(yVal);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// get the action id:");
+      writer.write(NEWLINE);
+      writer.write("int actionId = getIdOfActionWithSeriesName(seriesName);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("if (actionId > -1) { // valid action");
+      writer.write(NEWLINE);
+      writer
+          .write("Action action = log[xVal].getActionStateRepository().getActionWithId(actionId);");
+      writer.write(NEWLINE);
+      writer.write("if (action != null) {");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer
+          .write("// figure out the timing of the clock tick:");
+      writer.write(NEWLINE);
+      writer.write("int clockTickTiming = RuleInfoPanel.INTERMEDIATE;");
+      writer.write(NEWLINE);
+      writer
+          .write("XYSeriesCollection collection = (XYSeriesCollection) xyEntity.getDataset();");
+      writer.write(NEWLINE);
+      writer
+          .write("List items = collection.getSeries(xyEntity.getSeriesIndex()).getItems();");
+      writer.write(NEWLINE);
+      writer.write("if (items.size() == 1) { // only one item, show all types of rules");
+      writer.write(NEWLINE);
+      writer.write("clockTickTiming = RuleInfoPanel.SHOW_ALL;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else {");
+      writer.write(NEWLINE);
+      writer
+          .write("XYDataItem lastItem = (XYDataItem) items.get(items.size() - 1);");
+      writer.write(NEWLINE);
+      writer.write("int lastXVal = lastItem.getX().intValue();");
+      writer.write(NEWLINE);
+      writer.write("if (lastXVal == xVal) {");
+      writer.write(NEWLINE);
+      writer.write("clockTickTiming = RuleInfoPanel.DESTROYER;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else {");
+      writer.write(NEWLINE);
+      writer
+          .write("// figure out whether the clock tick was the trigger clock tick:");
+      writer.write(NEWLINE);
+      writer.write("XYDataItem firstItem = (XYDataItem) items.get(0);");
+      writer.write(NEWLINE);
+      writer.write("int firstXVal = firstItem.getX().intValue();");
+      writer.write(NEWLINE);
+      writer.write("if (firstXVal == xVal) {");
+      writer.write(NEWLINE);
+      writer.write("clockTickTiming = RuleInfoPanel.TRIGGER;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// bring up ActionInfo window:");
+      writer.write(NEWLINE);
+      writer
+          .write("ActionInfoWindow actWindow = new ActionInfoWindow(this, seriesName, action, clockTickTiming, xVal);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+
+      // "chartMouseMoved" method:
+      writer.write("public void chartMouseMoved(ChartMouseEvent event) {}");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+
+      // "getIdOfActionWithSeriesName" method:
+      writer
+          .write("// returns the id of the action that corresponds to the given series name");
+      writer.write(NEWLINE);
+      writer
+          .write("private int getIdOfActionWithSeriesName(String seriesName) {");
+      writer.write(NEWLINE);
+      writer.write("Enumeration keys = series.keys();");
+      writer.write(NEWLINE);
+      writer.write("while (keys.hasMoreElements()) {");
+      writer.write(NEWLINE);
+      writer.write("Integer id = (Integer) keys.nextElement();");
+      writer.write(NEWLINE);
+      writer.write("XYSeries xys = (XYSeries) series.get(id);");
+      writer.write(NEWLINE);
+      writer.write("if (xys.getKey().equals(seriesName)) {");
+      writer.write(NEWLINE);
+      writer.write("return id.intValue();");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("return -1;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+
+      // ActionGraphToolTipGenerator class:
+      writer
+          .write("public class ActionGraphToolTipGenerator extends AbstractXYItemLabelGenerator implements XYToolTipGenerator {");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("public ActionGraphToolTipGenerator() {");
+      writer.write(NEWLINE);
+      writer.write("super();");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer
+          .write("public String generateToolTip(XYDataset dataset, int series, int item) {");
+      writer.write(NEWLINE);
+      writer
+          .write("return new String(dataset.getSeriesKey(series) + \": click for Action info\");");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);

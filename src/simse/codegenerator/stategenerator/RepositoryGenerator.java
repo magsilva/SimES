@@ -335,6 +335,30 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
       }
+      writer.write(NEWLINE);
+      
+      // "getActionWithId" method:
+      writer.write("public Action getActionWithId(int id) {");
+      writer.write(NEWLINE);
+      for (int i =0; i < acts.size(); i++) {
+        ActionType tempAct = (ActionType)acts.get(i);
+        if (i > 0) {
+          writer.write("else ");
+        }
+        writer.write("if (" + tempAct.getName().substring(0, 1).toLowerCase()
+            + i + ".getActionWithId(id) != null) {");
+        writer.write(NEWLINE);
+        writer.write("return " + tempAct.getName().substring(0, 1).toLowerCase()
+            + i + ".getActionWithId(id);");
+        writer.write(NEWLINE);
+        writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
+      }
+      writer.write("return null;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      
       writer.write(CLOSED_BRACK);
       writer.close();
     } catch (IOException e) {
@@ -934,6 +958,29 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write("return all;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // "getActionWithId" method:
+      writer.write("public " + getUpperCaseLeading(actType.getName()) + 
+          "Action getActionWithId(int id) {");
+      writer.write(NEWLINE);
+      writer.write("for (int i = 0; i < actions.size(); i++) {");
+      writer.write(NEWLINE);
+      writer.write(getUpperCaseLeading(actType.getName()) + "Action act = (" +
+          getUpperCaseLeading(actType.getName()) + "Action)actions.get(i);");
+      writer.write(NEWLINE);
+      writer.write("if (act.getId() == id) {");
+      writer.write(NEWLINE);
+      writer.write("return act;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("return null;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);

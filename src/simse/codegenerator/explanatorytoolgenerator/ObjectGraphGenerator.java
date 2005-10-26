@@ -287,7 +287,8 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
       writer
           .write("// change the auto tick unit selection to integer units only:");
       writer.write(NEWLINE);
-      writer.write("NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();");
+      writer
+          .write("NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();");
       writer.write(NEWLINE);
       writer
           .write("domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());");
