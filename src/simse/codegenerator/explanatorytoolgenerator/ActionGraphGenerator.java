@@ -110,6 +110,8 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private String[] actionNames;");
       writer.write(NEWLINE);
+      writer.write("private JFreeChart chart; // chart object");
+      writer.write(NEWLINE);
       writer
           .write("private Hashtable series = new Hashtable(); // a Hashtable to map action ids to XYSeries");
       writer.write(NEWLINE);
@@ -142,7 +144,8 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // constructor:
-      writer.write("public ActionGraph(ArrayList log, String[] actionNames) {");
+      writer
+          .write("public ActionGraph(ArrayList log, String[] actionNames, boolean showChart) {");
       writer.write(NEWLINE);
       writer.write("super(\"Action Graph\");");
       writer.write(NEWLINE);
@@ -171,7 +174,7 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("XYDataset dataset = createDataset();");
       writer.write(NEWLINE);
-      writer.write("JFreeChart chart = createChart(dataset);");
+      writer.write("chart = createChart(dataset);");
       writer.write(NEWLINE);
       writer.write("ChartPanel chartPanel = new ChartPanel(chart);");
       writer.write(NEWLINE);
@@ -186,7 +189,7 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("RefineryUtilities.centerFrameOnScreen(this);");
       writer.write(NEWLINE);
-      writer.write("setVisible(true);");
+      writer.write("setVisible(showChart);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -490,8 +493,7 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write("if (action != null) {");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer
-          .write("// figure out the timing of the clock tick:");
+      writer.write("// figure out the timing of the clock tick:");
       writer.write(NEWLINE);
       writer.write("int clockTickTiming = RuleInfoPanel.INTERMEDIATE;");
       writer.write(NEWLINE);
@@ -501,7 +503,8 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer
           .write("List items = collection.getSeries(xyEntity.getSeriesIndex()).getItems();");
       writer.write(NEWLINE);
-      writer.write("if (items.size() == 1) { // only one item, show all types of rules");
+      writer
+          .write("if (items.size() == 1) { // only one item, show all types of rules");
       writer.write(NEWLINE);
       writer.write("clockTickTiming = RuleInfoPanel.SHOW_ALL;");
       writer.write(NEWLINE);
@@ -584,6 +587,15 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write("return -1;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+
+      // "getXYPlot" method:
+      writer.write("public XYPlot getXYPlot() {");
+      writer.write(NEWLINE);
+      writer.write("return chart.getXYPlot();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);

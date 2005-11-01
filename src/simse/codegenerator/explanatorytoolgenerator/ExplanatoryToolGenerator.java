@@ -32,12 +32,14 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
   private DefinedActionTypes acts;
   private ObjectGraphGenerator objGraphGen; // generates the ObjectGraph class
   private ActionGraphGenerator actGraphGen; // generates the ActionGraph class
+  private CompositeGraphGenerator compGraphGen; // generates the CompositeGraph
+                                                // class
   private ActionInfoPanelGenerator actInfoPanelGen; // generates the
   // ActionInfoPanel class
   private RuleInfoPanelGenerator ruleInfoPanelGen; // generates the
   // RuleInfoPanel class
   private ActionInfoWindowGenerator actInfoWindowGen; // generates the
-                                                      // ActionInfoWindow class
+  // ActionInfoWindow class
   private TriggerDescriptionsGenerator trigDescGen; // generates the
   // TriggerDescriptions class
   private DestroyerDescriptionsGenerator destDescGen; // generates the
@@ -56,6 +58,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
     directory = dir;
     objGraphGen = new ObjectGraphGenerator(objTypes, objs, dir);
     actGraphGen = new ActionGraphGenerator(acts, dir);
+    compGraphGen = new CompositeGraphGenerator(dir);
     actInfoPanelGen = new ActionInfoPanelGenerator(acts, dir);
     ruleInfoPanelGen = new RuleInfoPanelGenerator(acts, dir);
     actInfoWindowGen = new ActionInfoWindowGenerator(dir);
@@ -72,6 +75,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
 
     objGraphGen.generate();
     actGraphGen.generate();
+    compGraphGen.generate();
     actInfoPanelGen.generate();
     ruleInfoPanelGen.generate();
     actInfoWindowGen.generate();
@@ -132,6 +136,9 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer
           .write("private JButton generateActGraphButton; // for generating an action graph");
+      writer.write(NEWLINE);
+      writer
+          .write("private JButton generateCompGraphButton; // for generating a composite graph");
       writer.write(NEWLINE);
       writer.write("private Box mainPane;");
       writer.write(NEWLINE);
@@ -291,6 +298,18 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("actionPane.add(actBottomPane);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      writer.write("// Create bottom pane & button:");
+      writer.write(NEWLINE);
+      writer.write("JPanel bottomPane = new JPanel();");
+      writer.write(NEWLINE);
+      writer
+          .write("generateCompGraphButton = new JButton(\"Generate Composite Graph\");");
+      writer.write(NEWLINE);
+      writer.write("generateCompGraphButton.addActionListener(this);");
+      writer.write(NEWLINE);
+      writer.write("bottomPane.add(generateCompGraphButton);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
       writer.write("// set up tool tips:");
       writer.write(NEWLINE);
       writer.write("setUpToolTips();");
@@ -311,6 +330,14 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("mainPane.add(separator1);");
       writer.write(NEWLINE);
       writer.write("mainPane.add(mainSubPanel);");
+      writer.write(NEWLINE);
+      writer.write("JSeparator separator2 = new JSeparator();");
+      writer.write(NEWLINE);
+      writer.write("separator2.setMaximumSize(new Dimension(2900, 1));");
+      writer.write(NEWLINE);
+      writer.write("mainPane.add(separator2);");
+      writer.write(NEWLINE);
+      writer.write("mainPane.add(bottomPane);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// Set main window frame properties:");
@@ -392,7 +419,14 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
           .write("if (attributes.length > 0) { // at least one attribute is selected");
       writer.write(NEWLINE);
       writer
-          .write("ObjectGraph graph = new ObjectGraph(title, log, objTypeType, objType, keyAttVal, attributes);");
+          .write("ObjectGraph graph = new ObjectGraph(title, log, objTypeType, objType, keyAttVal, attributes, true);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else {");
+      writer.write(NEWLINE);
+      writer
+          .write("JOptionPane.showMessageDialog(null, (\"Please select at least one attribute\"), \"Warning\", JOptionPane.WARNING_MESSAGE);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -415,7 +449,97 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer
           .write("if (actions.length > 0) { // at least one attribute is selected");
       writer.write(NEWLINE);
-      writer.write("ActionGraph graph = new ActionGraph(log, actions);");
+      writer.write("ActionGraph graph = new ActionGraph(log, actions, true);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else {");
+      writer.write(NEWLINE);
+      writer
+          .write("JOptionPane.showMessageDialog(null, (\"Please select at least one action\"), \"Warning\", JOptionPane.WARNING_MESSAGE);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer
+          .write("else if (source == generateCompGraphButton) { // generateCompGraphButton has been pressed");
+      writer.write(NEWLINE);
+      writer
+          .write("String selectedObj = (String) objectList.getSelectedItem();");
+      writer.write(NEWLINE);
+      writer.write("String[] words = selectedObj.split(\"\\\\s\");");
+      writer.write(NEWLINE);
+      writer
+          .write("String title = ((String) objectList.getSelectedItem()) + \" Attributes\";");
+      writer.write(NEWLINE);
+      writer.write("String objType = words[0];");
+      writer.write(NEWLINE);
+      writer.write("String objTypeType = words[1];");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// add 2 for the 2 spaces:");
+      writer.write(NEWLINE);
+      writer
+          .write("String keyAttVal = selectedObj.substring(objType.length() + objTypeType.length() + 2);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer
+          .write("Object[] selectedAtts = attributeList.getSelectedValues();");
+      writer.write(NEWLINE);
+      writer.write("String[] attributes = new String[selectedAtts.length];");
+      writer.write(NEWLINE);
+      writer.write("for (int i = 0; i < selectedAtts.length; i++) {");
+      writer.write(NEWLINE);
+      writer.write("attributes[i] = new String((String) selectedAtts[i]);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer
+          .write("if (attributes.length > 0) { // at least one attribute is selected");
+      writer.write(NEWLINE);
+      writer
+          .write("ObjectGraph objGraph = new ObjectGraph(title, log, objTypeType, objType, keyAttVal, attributes, false);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer
+          .write("Object[] selectedActions = actionList.getSelectedValues();");
+      writer.write(NEWLINE);
+      writer.write("String[] actions = new String[selectedActions.length];");
+      writer.write(NEWLINE);
+      writer.write("for (int i = 0; i < selectedActions.length; i++) {");
+      writer.write(NEWLINE);
+      writer.write("actions[i] = new String((String) selectedActions[i]);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer
+          .write("if (actions.length > 0) { // at least one attribute is selected");
+      writer.write(NEWLINE);
+      writer
+          .write("ActionGraph actGraph = new ActionGraph(log, actions, false);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// generate composite graph:");
+      writer.write(NEWLINE);
+      writer
+          .write("CompositeGraph compGraph = new CompositeGraph(objGraph, actGraph);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else {");
+      writer.write(NEWLINE);
+      writer
+          .write("JOptionPane.showMessageDialog(null, (\"Please select at least one action\"), \"Warning\", JOptionPane.WARNING_MESSAGE);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else {");
+      writer.write(NEWLINE);
+      writer
+          .write("JOptionPane.showMessageDialog(null, (\"Please select at least one attribute\"), \"Warning\", JOptionPane.WARNING_MESSAGE);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);

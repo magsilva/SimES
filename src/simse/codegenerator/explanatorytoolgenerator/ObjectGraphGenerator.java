@@ -103,11 +103,13 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private String[] attributes;");
       writer.write(NEWLINE);
+      writer.write("private JFreeChart chart; // chart object");
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // constructor:
       writer
-          .write("public ObjectGraph(String title, ArrayList log, String objTypeType, String objType, String keyAttVal, String[] attributes) {");
+          .write("public ObjectGraph(String title, ArrayList log, String objTypeType, String objType, String keyAttVal, String[] attributes, boolean showChart) {");
       writer.write(NEWLINE);
       writer.write("super(title);");
       writer.write(NEWLINE);
@@ -129,7 +131,7 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("XYDataset dataset = createDataset();");
       writer.write(NEWLINE);
-      writer.write("JFreeChart chart = createChart(dataset);");
+      writer.write("chart = createChart(dataset);");
       writer.write(NEWLINE);
       writer.write("ChartPanel chartPanel = new ChartPanel(chart);");
       writer.write(NEWLINE);
@@ -142,7 +144,7 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("RefineryUtilities.centerFrameOnScreen(this);");
       writer.write(NEWLINE);
-      writer.write("setVisible(true);");
+      writer.write("setVisible(showChart);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -261,7 +263,7 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
       writer.write("// create the chart:");
       writer.write(NEWLINE);
       writer
-          .write("JFreeChart chart = ChartFactory.createXYLineChart((objType + \" \" + objTypeType + \" \" + keyAttVal + \" \" + \"Attributes\"), \"Clock Ticks\", null, dataset, PlotOrientation.VERTICAL, true, true, false);");
+          .write("JFreeChart chart = ChartFactory.createXYLineChart(this.getTitle(), \"Clock Ticks\", null, dataset, PlotOrientation.VERTICAL, true, true, false);");
       writer.write(NEWLINE);
       writer.write("chart.setBackgroundPaint(Color.white);");
       writer.write(NEWLINE);
@@ -297,6 +299,24 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
       writer.write("return chart;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+
+      // "getXYPlot" method:
+      writer.write("public XYPlot getXYPlot() {");
+      writer.write(NEWLINE);
+      writer.write("return chart.getXYPlot();");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+
+      // "getChartTitle" method:
+      writer.write("public String getChartTitle() {");
+      writer.write(NEWLINE);
+      writer.write("return this.getTitle();");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // ExitListener class:
