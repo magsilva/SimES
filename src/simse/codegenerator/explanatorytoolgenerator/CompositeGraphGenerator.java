@@ -118,7 +118,7 @@ public class CompositeGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("panel.addChartMouseListener(this);");
       writer.write(NEWLINE);
-      writer.write("panel.setPreferredSize(new java.awt.Dimension(500, 270));");
+      writer.write("panel.setPreferredSize(new java.awt.Dimension(1000, 540));");
       writer.write(NEWLINE);
       writer.write("setContentPane(panel);");
       writer.write(NEWLINE);

@@ -49,7 +49,7 @@ public class ActionInfoWindowGenerator implements CodeGeneratorConstants {
       // constructor:
       writer.write("public ActionInfoWindow(JFrame owner, String actionName, simse.adts.actions.Action action, int clockTickTiming, int clockTick) {");
       writer.write(NEWLINE);
-      writer.write("super(actionName + \" Info\");");
+      writer.write("super(actionName + \" Info for Clock Tick \" + clockTick);");
       writer.write(NEWLINE);
       writer.write("// Create main panel:");
       writer.write(NEWLINE);
