@@ -450,8 +450,13 @@ public class ActionTypeParticipantTriggerConstraintsInfoForm extends JDialog
                                                                 // attribute
         {
           try {
-            int intVal = Integer.parseInt(valString);
-            attConst.setValue(new Integer(intVal));
+            if (valString.equals("")) {
+              attConst.setValue(null);
+            }
+            else {
+	            int intVal = Integer.parseInt(valString);
+	            attConst.setValue(new Integer(intVal));
+            }
           } catch (NumberFormatException e) {
             //System.out.println(e.getMessage()); // note: validateInput()
             // should have already been called immediately
@@ -462,8 +467,13 @@ public class ActionTypeParticipantTriggerConstraintsInfoForm extends JDialog
                                                                // attribute
         {
           try {
-            double doubleVal = Double.parseDouble(valString);
-            attConst.setValue(new Double(doubleVal));
+            if (valString.equals("")) {
+              attConst.setValue(null);
+            }
+            else {
+              double doubleVal = Double.parseDouble(valString);
+              attConst.setValue(new Double(doubleVal));
+            }
           } catch (NumberFormatException e) {
             //System.out.println(e.getMessage()); // note: validateInput()
             // should have already been called immediately

@@ -2405,12 +2405,16 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("if((" + action.getName().toLowerCase()
-            + "Act.getTimeElapsed() == 0) || ("
-            + action.getName().toLowerCase() + "Act.getTimeElapsed() == 1))");
-        writer.write(NEWLINE);
-        writer.write(OPEN_BRACK);
-        writer.write(NEWLINE);
+        
+        /* The following lines were causing a bug, and I don't know why they
+         * are there, so I'm commenting them out 5/17/06
+         */
+//        writer.write("if((" + action.getName().toLowerCase()
+//            + "Act.getTimeElapsed() == 0) || ("
+//            + action.getName().toLowerCase() + "Act.getTimeElapsed() == 1))");
+//        writer.write(NEWLINE);
+//        writer.write(OPEN_BRACK);
+//        writer.write(NEWLINE);
         // go through all of the objects to create:
         Vector objsToCreate = coRule.getAllSimSEObjects();
         for (int i = 0; i < objsToCreate.size(); i++) {
@@ -2490,8 +2494,10 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
           }
         }
-        writer.write(CLOSED_BRACK);
+        writer.write("((SimSEGUI) gui).forceGUIUpdate();");
         writer.write(NEWLINE);
+//        writer.write(CLOSED_BRACK);
+//        writer.write(NEWLINE);
         if ((rule.getTiming() == RuleTiming.TRIGGER)
             || (rule.getTiming() == RuleTiming.DESTROYER)) {
           writer.write(CLOSED_BRACK);
@@ -2588,12 +2594,15 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("if((" + action.getName().toLowerCase()
-            + "Act.getTimeElapsed() == 0) || ("
-            + action.getName().toLowerCase() + "Act.getTimeElapsed() == 1))");
-        writer.write(NEWLINE);
-        writer.write(OPEN_BRACK);
-        writer.write(NEWLINE);
+        /* The following lines were causing a bug, and I don't know why they
+         * are there, so I'm commenting them out 5/17/06
+         */
+//        writer.write("if((" + action.getName().toLowerCase()
+//            + "Act.getTimeElapsed() == 0) || ("
+//            + action.getName().toLowerCase() + "Act.getTimeElapsed() == 1))");
+//        writer.write(NEWLINE);
+//        writer.write(OPEN_BRACK);
+//        writer.write(NEWLINE);
 
         // go through each participant condition:
         Vector partConditions = doRule.getAllParticipantConditions();
@@ -2709,14 +2718,16 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
               writer.write("checkAllMins(gui);");
               writer.write(NEWLINE);
             }
+            writer.write("((SimSEGUI) gui).forceGUIUpdate();");
+            writer.write(NEWLINE);
             writer.write(CLOSED_BRACK);
             writer.write(NEWLINE);
           }
           writer.write(CLOSED_BRACK);
           writer.write(NEWLINE);
         }
-        writer.write(CLOSED_BRACK);
-        writer.write(NEWLINE);
+//        writer.write(CLOSED_BRACK);
+//        writer.write(NEWLINE);
         if ((rule.getTiming() == RuleTiming.TRIGGER)
             || (rule.getTiming() == RuleTiming.DESTROYER)) {
           writer.write(CLOSED_BRACK);
