@@ -87,7 +87,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
       writer.write("public static final int TOOL = 4;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("public static final int MAXBUTTONS = 16;");
+      writer.write("public static final int MAXBUTTONS = 32;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("private LogoPanel logoPane;");
@@ -240,7 +240,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
           .write("buttonsPane.setBackground(new Color(69,135,156,255)); // dark green color");
       writer.write(NEWLINE);
       writer
-          .write("JScrollPane buttonsScrollPane = new JScrollPane(buttonsPane, JScrollPane.VERTICAL_SCROLLBAR_NEVER ,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);");
+          .write("JScrollPane buttonsScrollPane = new JScrollPane(buttonsPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);");
       writer.write(NEWLINE);
       writer
           .write("buttonsScrollPane.setPreferredSize(new Dimension(292, 75));");
@@ -480,7 +480,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("shift = 8 * j;");
+      writer.write("shift = 16 * j;");
       writer.write(NEWLINE);
       writer.write("for (int i = 0; i < MAXBUTTONS / 2; i++)");
       writer.write(NEWLINE);
