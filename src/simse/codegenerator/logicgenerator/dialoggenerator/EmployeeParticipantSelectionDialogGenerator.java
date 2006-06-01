@@ -323,65 +323,69 @@ public class EmployeeParticipantSelectionDialogGenerator implements
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
 
-      writer.write("if(participants.size() == 1)");
-      writer.write(NEWLINE);
-      writer.write(OPEN_BRACK);
-      writer.write(NEWLINE);
-      writer.write("Employee e = (Employee)participants.elementAt(0);");
-      writer.write(NEWLINE);
-      boolean putElse2 = false;
-      for (int j = 0; j < acts.size(); j++) {
-        ActionType tempAct = (ActionType) acts.elementAt(j);
-        Vector trigs = tempAct.getAllTriggers();
-        // only generate code for actions w/ user triggers:
-        for (int k = 0; k < trigs.size(); k++) {
-          ActionTypeTrigger tempTrig = (ActionTypeTrigger) trigs.elementAt(k);
-          if (tempTrig instanceof UserActionTypeTrigger) {
-            if (putElse2) // not on first element
-            {
-              writer.write("else ");
-            } else {
-              putElse2 = true;
-            }
-            writer.write("if(action instanceof "
-                + getUpperCaseLeading(tempAct.getName()) + "Action)");
-            writer.write(NEWLINE);
-            writer.write(OPEN_BRACK);
-            writer.write(NEWLINE);
-            // go through all participants:
-            Vector participants = tempAct.getAllParticipants();
-            boolean nextOneWriteElse = false;
-            for (int m = 0; m < participants.size(); m++) {
-              ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
-                  .elementAt(m);
-              if (tempPart.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) // Employee
-                                                                                      // participant
-              {
-                if (nextOneWriteElse) // not on first element
-                {
-                  writer.write("else ");
-                }
-                writer.write("if(partName.equals(\"" + tempPart.getName()
-                    + "\"))");
-                writer.write(NEWLINE);
-                writer.write(OPEN_BRACK);
-                writer.write(NEWLINE);
-                writer.write("((" + getUpperCaseLeading(tempAct.getName())
-                    + "Action)action).add" + tempPart.getName() + "(e);");
-                writer.write(NEWLINE);
-                writer.write(CLOSED_BRACK);
-                writer.write(NEWLINE);
-                nextOneWriteElse = true;
-              }
-            }
-            writer.write(CLOSED_BRACK);
-            writer.write(NEWLINE);
-            break;
-          }
-        }
-      }
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
+/* I think I was trying to do some fancy thing here for convenience, but
+ * it was causing problems by automatically adding the participant even if
+ * the user didn't check it (if there was only one participant to choose from):
+ */
+//      writer.write("if(participants.size() == 1)");
+//      writer.write(NEWLINE);
+//      writer.write(OPEN_BRACK);
+//      writer.write(NEWLINE);
+//      writer.write("Employee e = (Employee)participants.elementAt(0);");
+//      writer.write(NEWLINE);
+//      boolean putElse2 = false;
+//      for (int j = 0; j < acts.size(); j++) {
+//        ActionType tempAct = (ActionType) acts.elementAt(j);
+//        Vector trigs = tempAct.getAllTriggers();
+//        // only generate code for actions w/ user triggers:
+//        for (int k = 0; k < trigs.size(); k++) {
+//          ActionTypeTrigger tempTrig = (ActionTypeTrigger) trigs.elementAt(k);
+//          if (tempTrig instanceof UserActionTypeTrigger) {
+//            if (putElse2) // not on first element
+//            {
+//              writer.write("else ");
+//            } else {
+//              putElse2 = true;
+//            }
+//            writer.write("if(action instanceof "
+//                + getUpperCaseLeading(tempAct.getName()) + "Action)");
+//            writer.write(NEWLINE);
+//            writer.write(OPEN_BRACK);
+//            writer.write(NEWLINE);
+//            // go through all participants:
+//            Vector participants = tempAct.getAllParticipants();
+//            boolean nextOneWriteElse = false;
+//            for (int m = 0; m < participants.size(); m++) {
+//              ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
+//                  .elementAt(m);
+//              if (tempPart.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) // Employee
+//                                                                                      // participant
+//              {
+//                if (nextOneWriteElse) // not on first element
+//                {
+//                  writer.write("else ");
+//                }
+//                writer.write("if(partName.equals(\"" + tempPart.getName()
+//                    + "\"))");
+//                writer.write(NEWLINE);
+//                writer.write(OPEN_BRACK);
+//                writer.write(NEWLINE);
+//                writer.write("((" + getUpperCaseLeading(tempAct.getName())
+//                    + "Action)action).add" + tempPart.getName() + "(e);");
+//                writer.write(NEWLINE);
+//                writer.write(CLOSED_BRACK);
+//                writer.write(NEWLINE);
+//                nextOneWriteElse = true;
+//              }
+//            }
+//            writer.write(CLOSED_BRACK);
+//            writer.write(NEWLINE);
+//            break;
+//          }
+//        }
+//      }
+//      writer.write(CLOSED_BRACK);
+//      writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
