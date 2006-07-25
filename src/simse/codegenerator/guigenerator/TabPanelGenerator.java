@@ -815,6 +815,12 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
+      writer.write("attributePane.update();");
+      writer.write(NEWLINE);
+      for (int i = 0; i < types.length; i++) {
+        writer.write(types[i].toLowerCase() + "Frame.update();");
+        writer.write(NEWLINE);
+      }
       writer.write("if(!guiChanged)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
@@ -1066,12 +1072,6 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("attributePane.update();");
-      writer.write(NEWLINE);
-      for (int i = 0; i < types.length; i++) {
-        writer.write(types[i].toLowerCase() + "Frame.update();");
-        writer.write(NEWLINE);
-      }
       writer.write("validate();");
       writer.write(NEWLINE);
       writer.write("repaint();");
