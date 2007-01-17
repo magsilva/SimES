@@ -224,6 +224,10 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
       writer.write(NEWLINE);
       writer.write("mainPane.add(bottomPane);");
       writer.write(NEWLINE);
+      
+      // add window listener:
+      writer.write("addWindowListener(new ExitListener());");
+      writer.write(NEWLINE);
 
       // Set main window frame properties:
       writer.write("setContentPane(mainPane);");
@@ -590,6 +594,19 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer.write("return actionCancelled;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // ExitListener class:
+      writer.write("public class ExitListener extends WindowAdapter {");
+      writer.write(NEWLINE);
+      writer.write("public void windowClosing(WindowEvent event) {");
+      writer.write(NEWLINE);
+      writer.write("actionCancelled = true;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
