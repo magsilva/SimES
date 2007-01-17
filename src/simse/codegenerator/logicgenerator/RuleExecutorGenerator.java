@@ -178,7 +178,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
             }
           }
           destText = highestPriDest.getDestroyerText();
-          if ((destText.equals(null) == false) && (destText.length() > 0)) // has
+          if ((destText != null) && (destText.length() > 0)) // has
                                                                            // destroyer
                                                                            // text
           {
