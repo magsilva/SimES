@@ -182,19 +182,19 @@ public class ChooseActionToJoinDialogGenerator implements
             + getUpperCaseLeading(act.getName())
             + "Action)actions.elementAt(i);");
         writer.write(NEWLINE);
-        writer.write("StringBuffer label = new StringBuffer();");
+        writer.write("StringBuffer label = new StringBuffer(\"<html>\");");
         writer.write(NEWLINE);
         // go through all participants:
         Vector parts = act.getAllParticipants();
         for (int k = 0; k < parts.size(); k++) {
           if (k > 0) // not on first element
           {
-            writer.write("label.append(\"; \");");
+            writer.write("label.append(\"; <br>\");");
             writer.write(NEWLINE);
           }
           ActionTypeParticipant tempPart = (ActionTypeParticipant) parts
               .elementAt(k);
-          writer.write("label.append(\"" + tempPart.getName() + "(s); \");");
+          writer.write("label.append(\"" + tempPart.getName() + "(s): \");");
           writer.write(NEWLINE);
           writer.write("Vector all" + tempPart.getName() + "s = act.getAll"
               + tempPart.getName() + "s();");
@@ -243,6 +243,8 @@ public class ChooseActionToJoinDialogGenerator implements
           writer.write(CLOSED_BRACK);
           writer.write(NEWLINE);
         }
+        writer.write("label.append(\"</HTML>\");");
+        writer.write(NEWLINE);
         writer.write("JPanel tempPane = new JPanel(new BorderLayout());");
         writer.write(NEWLINE);
         writer
