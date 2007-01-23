@@ -999,7 +999,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
 
       //writer.write("if (selectedTabString.equalsIgnoreCase(\"Employees\")
       // )");
-      writer.write("if (index == EMPLOYEE)");
+      writer.write("if ((index == EMPLOYEE) && (state.getClock().isStopped() == false))");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
