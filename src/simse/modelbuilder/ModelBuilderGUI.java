@@ -248,6 +248,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
       {
         if (openFile.exists()) // file has already been saved before
         {
+          checkForInconsistencies();
           fileManip.generateFile(openFile, graphicsBuilder.getImageDirectory(),
               graphicsBuilder.getStartStateObjsToImages(), graphicsBuilder
                   .getRuleObjsToImages(), objectBuilder.allowHireFire());
@@ -384,127 +385,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
   }
 
   public void stateChanged(ChangeEvent e) {
-    if (mainPane.getSelectedComponent() == startStateBuilder) {
-      if (openFile != null) // there is a file currently open
-      {
-        startStateBuilder.getCreatedObjects().updateAllInstantiatedAttributes();
-        try {
-          File tempFile = File.createTempFile(openFile.getName(), ".mdl"); // create
-                                                                           // a
-                                                                           // temporary
-                                                                           // file
-          tempFile.deleteOnExit(); // make sure it's deleted on exit
-          fileManip.generateFile(tempFile, graphicsBuilder.getImageDirectory(),
-              graphicsBuilder.getStartStateObjsToImages(), graphicsBuilder
-                  .getRuleObjsToImages(), objectBuilder.allowHireFire());
-          startStateBuilder.reload(tempFile);
-          actionBuilder.reload(tempFile);
-          ruleBuilder.reload(tempFile);
-          graphicsBuilder.reload(tempFile);
-          tempFile.delete();
-        } catch (IOException i) {
-          System.out.println("File I/O error creating temp file for "
-              + openFile.getName() + ": " + i.toString());
-        }
-      }
-    } else if (mainPane.getSelectedComponent() == actionBuilder) {
-      if (openFile != null) // there is a file currently open
-      {
-        startStateBuilder.getCreatedObjects().updateAllInstantiatedAttributes();
-        try {
-          File tempFile = File.createTempFile(openFile.getName(), ".mdl"); // create
-                                                                           // a
-                                                                           // temporary
-                                                                           // file
-          tempFile.deleteOnExit(); // make sure it's deleted on exit
-          fileManip.generateFile(tempFile, graphicsBuilder.getImageDirectory(),
-              graphicsBuilder.getStartStateObjsToImages(), graphicsBuilder
-                  .getRuleObjsToImages(), objectBuilder.allowHireFire());
-          startStateBuilder.reload(tempFile);
-          actionBuilder.reload(tempFile);
-          ruleBuilder.reload(tempFile);
-          graphicsBuilder.reload(tempFile);
-          tempFile.delete();
-        } catch (IOException i) {
-          System.out.println("File I/O error creating temp file for "
-              + openFile.getName() + ": " + i.toString());
-        }
-      }
-    } else if (mainPane.getSelectedComponent() == ruleBuilder) {
-      if (openFile != null) // there is a file currently open
-      {
-        startStateBuilder.getCreatedObjects().updateAllInstantiatedAttributes();
-        try {
-          File tempFile = File.createTempFile(openFile.getName(), ".mdl"); // create
-                                                                           // a
-                                                                           // temporary
-                                                                           // file
-          tempFile.deleteOnExit(); // make sure it's deleted on exit
-          fileManip.generateFile(tempFile, graphicsBuilder.getImageDirectory(),
-              graphicsBuilder.getStartStateObjsToImages(), graphicsBuilder
-                  .getRuleObjsToImages(), objectBuilder.allowHireFire());
-          startStateBuilder.reload(tempFile);
-          actionBuilder.reload(tempFile);
-          ruleBuilder.reload(tempFile);
-          graphicsBuilder.reload(tempFile);
-          tempFile.delete();
-        } catch (IOException i) {
-          System.out.println("File I/O error creating temp file for "
-              + openFile.getName() + ": " + i.toString());
-        }
-      }
-    } else if (mainPane.getSelectedComponent() == graphicsBuilder) {
-      if (openFile != null) // there is a file currently open
-      {
-        startStateBuilder.getCreatedObjects().updateAllInstantiatedAttributes();
-        try {
-          File tempFile = File.createTempFile(openFile.getName(), ".mdl"); // create
-                                                                           // a
-                                                                           // temporary
-                                                                           // file
-          tempFile.deleteOnExit(); // make sure it's deleted on exit
-          fileManip.generateFile(tempFile, graphicsBuilder.getImageDirectory(),
-              graphicsBuilder.getStartStateObjsToImages(), graphicsBuilder
-                  .getRuleObjsToImages(), objectBuilder.allowHireFire());
-          // have to reload both rules & start state as well as graphics since
-          // graphics uses the data structures of rules and start state
-          startStateBuilder.reload(tempFile);
-          actionBuilder.reload(tempFile);
-          ruleBuilder.reload(tempFile);
-          graphicsBuilder.reload(tempFile);
-          tempFile.delete();
-        } catch (IOException i) {
-          System.out.println("File I/O error creating temp file for "
-              + openFile.getName() + ": " + i.toString());
-        }
-      }
-    } else if (mainPane.getSelectedComponent() == mapEditor) {
-      if (openFile != null) // there is a file currently open
-      {
-        startStateBuilder.getCreatedObjects().updateAllInstantiatedAttributes();
-        try {
-          File tempFile = File.createTempFile(openFile.getName(), ".mdl"); // create
-                                                                           // a
-                                                                           // temporary
-                                                                           // file
-          tempFile.deleteOnExit(); // make sure it's deleted on exit
-          fileManip.generateFile(tempFile, graphicsBuilder.getImageDirectory(),
-              graphicsBuilder.getStartStateObjsToImages(), graphicsBuilder
-                  .getRuleObjsToImages(), objectBuilder.allowHireFire());
-          // have to reload both rules & start state as well as graphics since
-          // graphics uses the data structures of rules and start state
-          startStateBuilder.reload(tempFile);
-          actionBuilder.reload(tempFile);
-          ruleBuilder.reload(tempFile);
-          graphicsBuilder.reload(tempFile);
-          mapEditor.reload(tempFile, graphicsBuilder.getImageDirectory());
-          //tempFile.delete();
-        } catch (IOException i) {
-          System.out.println("File I/O error creating temp file for "
-              + openFile.getName() + ": " + i.toString());
-        }
-      }
-    }
+    checkForInconsistencies();
   }
 
   public void menuSelected(MenuEvent e) {
@@ -526,6 +407,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       File selectedFile = fileChooser.getSelectedFile();
       if (isMDLFile(selectedFile)) {
+        checkForInconsistencies();
         // generate file:
         fileManip.generateFile(selectedFile, graphicsBuilder
             .getImageDirectory(), graphicsBuilder.getStartStateObjsToImages(),
@@ -688,6 +570,32 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
       return true;
     } else {
       return false;
+    }
+  }
+  
+  private void checkForInconsistencies() {
+    if (openFile != null) // there is a file currently open
+    {
+      startStateBuilder.getCreatedObjects().updateAllInstantiatedAttributes();
+      try {
+        File tempFile = File.createTempFile(openFile.getName(), ".mdl"); // create
+                                                                         // a
+                                                                         // temporary
+                                                                         // file
+        tempFile.deleteOnExit(); // make sure it's deleted on exit
+        fileManip.generateFile(tempFile, graphicsBuilder.getImageDirectory(),
+            graphicsBuilder.getStartStateObjsToImages(), graphicsBuilder
+                .getRuleObjsToImages(), objectBuilder.allowHireFire());
+        startStateBuilder.reload(tempFile);
+        actionBuilder.reload(tempFile);
+        ruleBuilder.reload(tempFile);
+        graphicsBuilder.reload(tempFile);
+        mapEditor.reload(tempFile, graphicsBuilder.getImageDirectory());
+        tempFile.delete();
+      } catch (IOException i) {
+        System.out.println("File I/O error creating temp file for "
+            + openFile.getName() + ": " + i.toString());
+      }
     }
   }
 
