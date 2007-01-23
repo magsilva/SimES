@@ -91,7 +91,8 @@ public class StartingNarrativeDialogGenerator implements CodeGeneratorConstants 
       writer.write("textArea.setEditable(false);");
       writer.write(NEWLINE);
       writer.write("textArea.setText(\"");
-      char[] startNarrChars = createdObjs.getStartingNarrative().toCharArray();
+      char[] startNarrChars = createdObjs.getStartingNarrative().replaceAll("\n", "\\\\n").
+      		replaceAll("\"", "\\\\\"").toCharArray();
       for (int i = 0; i < startNarrChars.length; i++) {
         if (startNarrChars[i] == '\n') {
           writer.write("\" + \'\\n\' + \"");
