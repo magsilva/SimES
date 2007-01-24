@@ -216,12 +216,31 @@ public class ObjectBuilderAttributeTableModel extends AbstractTableModel {
           if (((NumericalAttribute) tempAttr).getMinNumFractionDigits() == null) {
             temp.add("Boundless");
           } else {
-            NumericalAttribute temp2 = (NumericalAttribute) tempAttr;
-            temp.add(numFormat.format(((Integer) (temp2
-                .getMinNumFractionDigits())).intValue()));
+            numFormat = NumberFormat.getIntegerInstance(Locale.US);
+            temp.add(numFormat.format(((NumericalAttribute) tempAttr)
+                .getMinNumFractionDigits()));
           }
         }
       }
+      
+      // Initialize attribute min values:
+      temp = new Vector();
+      for (int i = 0; i < attributes.size(); i++) {
+        Attribute tempAttr = ((Attribute) attributes.elementAt(i));
+        if (tempAttr instanceof NonNumericalAttribute) {
+          temp.add("N/A"); // this field not applicable for non-numerical
+                           // attributes
+        } else // numerical attribute
+        {
+          if (((NumericalAttribute) tempAttr).isMinBoundless()) {
+            temp.add("Boundless");
+          } else {
+            temp.add(numFormat.format(((NumericalAttribute) tempAttr)
+                .getMinValue()));
+          }
+        }
+      }
+      
       if (data.size() < 8) // first-time initialization
       {
         data.add(temp);
@@ -259,6 +278,10 @@ public class ObjectBuilderAttributeTableModel extends AbstractTableModel {
       }
     }
     fireTableDataChanged(); // notify listeners that table data has changed
+    System.out.println("column 3: " + getColumnClass(3));
+    System.out.println("column 4: " + getColumnClass(4));
+    System.out.println("column 7: " + getColumnClass(7));
+    System.out.println("column 8: " + getColumnClass(8));
   }
 
   /*

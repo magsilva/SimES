@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
+
 import java.util.*;
 import java.io.*;
 
@@ -82,6 +83,12 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
     // Create "attribute table" pane:
     attTblMod = new ObjectBuilderAttributeTableModel();
     attributeTable = new JTable(attTblMod);
+    DefaultTableCellRenderer rightAlignRenderer = new DefaultTableCellRenderer();
+		rightAlignRenderer.setHorizontalAlignment(JLabel.RIGHT);
+		attributeTable.getColumnModel().getColumn(3).setCellRenderer(rightAlignRenderer);
+		attributeTable.getColumnModel().getColumn(4).setCellRenderer(rightAlignRenderer);
+		attributeTable.getColumnModel().getColumn(7).setCellRenderer(rightAlignRenderer);
+		attributeTable.getColumnModel().getColumn(8).setCellRenderer(rightAlignRenderer);
     attributeTable.addMouseListener(this);
     attributeTablePane = new JScrollPane(attributeTable);
     attributeTablePane

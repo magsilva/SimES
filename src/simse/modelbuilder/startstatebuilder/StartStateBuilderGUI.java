@@ -9,6 +9,8 @@ import java.awt.event.*;
 import java.awt.Dimension;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.table.DefaultTableCellRenderer;
+
 import java.util.*;
 import java.io.*;
 
@@ -73,6 +75,12 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
     // Create "attribute table" pane:
     attTblMod = new StartStateAttributeTableModel();
     attributeTable = new JTable(attTblMod);
+    DefaultTableCellRenderer rightAlignRenderer = new DefaultTableCellRenderer();
+		rightAlignRenderer.setHorizontalAlignment(JLabel.RIGHT);
+		attributeTable.getColumnModel().getColumn(3).setCellRenderer(rightAlignRenderer);
+		attributeTable.getColumnModel().getColumn(4).setCellRenderer(rightAlignRenderer);
+		attributeTable.getColumnModel().getColumn(5).setCellRenderer(rightAlignRenderer);
+		attributeTable.getColumnModel().getColumn(6).setCellRenderer(rightAlignRenderer);
     attributeTable.addMouseListener(this);
     attributeTablePane = new JScrollPane(attributeTable);
     attributeTablePane

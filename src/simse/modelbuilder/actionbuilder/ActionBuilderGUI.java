@@ -9,6 +9,8 @@ import java.awt.event.*;
 import java.awt.Dimension;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.table.DefaultTableCellRenderer;
+
 import java.util.*;
 import java.io.*;
 
@@ -69,6 +71,9 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     // Create "action table" pane:
     actTblMod = new ActionTableModel();
     actionTable = new JTable(actTblMod);
+    DefaultTableCellRenderer rightAlignRenderer = new DefaultTableCellRenderer();
+		rightAlignRenderer.setHorizontalAlignment(JLabel.RIGHT);
+		actionTable.getColumnModel().getColumn(2).setCellRenderer(rightAlignRenderer);
     actionTable.addMouseListener(this);
     actionTablePane = new JScrollPane(actionTable);
     actionTablePane
