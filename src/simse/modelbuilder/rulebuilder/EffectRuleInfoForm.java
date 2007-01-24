@@ -1129,49 +1129,54 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
 
       // text field:
       JTextField expTextField = new JTextField(500);
-      expTextField.addMouseListener(this);
-      // set the text field to the correct value:
-      ParticipantRuleEffect a = ruleInFocus
-          .getParticipantRuleEffect(participantInFocus.getName());
-      ParticipantTypeRuleEffect b = a
-          .getParticipantTypeEffect(objectTypeInFocus);
-      ParticipantAttributeRuleEffect c = b.getAttributeEffect(att.getName());
-      String exp = c.getEffect();
-      if ((exp != null) && (exp.length() > 0)) // non-empty
-      {
-        expTextField.setText(exp);
+      if (att.isKey()) {
+        expTextField.setEditable(false);
       }
-
-      // make it so whenever the text field gains focus, the button pad will be
-      // refreshed:
-      FocusListener l = new FocusListener() {
-        public void focusGained(FocusEvent ev) {
-          if (!justClosedButtonPad) // valid focus gained, not just as a result
-                                    // of closing the button pad -- if you don't
-                                    // do this, it
-          // will bring the first text field into focus every time you close the
-          // button pad.
-          {
-            if (lastFocusedTextField != null) // there was a text field in focus
-                                              // before
-            {
-              lastFocusedTextField.setBackground(null);
-            }
-            lastFocusedTextField = (JTextField) ev.getSource();
-            lastFocusedTextField.setBackground(Color.YELLOW);
-            refreshButtonPad();
-            buttonPadButton.setEnabled(true);
-          } else // just closed button pad
-          {
-            lastFocusedTextField.requestFocus();
-            justClosedButtonPad = false;
-          }
-        }
-
-        public void focusLost(FocusEvent ev) {
-        }
-      };
-      expTextField.addFocusListener(l);
+      else {
+        expTextField.addMouseListener(this);
+	      // set the text field to the correct value:
+	      ParticipantRuleEffect a = ruleInFocus
+	          .getParticipantRuleEffect(participantInFocus.getName());
+	      ParticipantTypeRuleEffect b = a
+	          .getParticipantTypeEffect(objectTypeInFocus);
+	      ParticipantAttributeRuleEffect c = b.getAttributeEffect(att.getName());
+	      String exp = c.getEffect();
+	      if ((exp != null) && (exp.length() > 0)) // non-empty
+	      {
+	        expTextField.setText(exp);
+	      }
+	
+	      // make it so whenever the text field gains focus, the button pad will be
+	      // refreshed:
+	      FocusListener l = new FocusListener() {
+	        public void focusGained(FocusEvent ev) {
+	          if (!justClosedButtonPad) // valid focus gained, not just as a result
+	                                    // of closing the button pad -- if you don't
+	                                    // do this, it
+	          // will bring the first text field into focus every time you close the
+	          // button pad.
+	          {
+	            if (lastFocusedTextField != null) // there was a text field in focus
+	                                              // before
+	            {
+	              lastFocusedTextField.setBackground(null);
+	            }
+	            lastFocusedTextField = (JTextField) ev.getSource();
+	            lastFocusedTextField.setBackground(Color.YELLOW);
+	            refreshButtonPad();
+	            buttonPadButton.setEnabled(true);
+	          } else // just closed button pad
+	          {
+	            lastFocusedTextField.requestFocus();
+	            justClosedButtonPad = false;
+	          }
+	        }
+	
+	        public void focusLost(FocusEvent ev) {
+	        }
+	      };
+	      expTextField.addFocusListener(l);
+      }
 
       expPanel.add(expTextField);
       textFields.add(expTextField);
