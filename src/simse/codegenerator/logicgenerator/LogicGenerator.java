@@ -65,8 +65,9 @@ public class LogicGenerator implements CodeGeneratorConstants {
     ruleGen = new RuleExecutorGenerator(actTypes, directory);
   }
 
-  public void generate() // causes all of this component's sub-components to
-                         // generate code
+  // returns true if generation successful, false otherwise
+  public boolean generate() // causes all of this component's sub-components to
+                         		// generate code
   {
     miscUGen.generate();
     trigGen.generate();
@@ -78,7 +79,7 @@ public class LogicGenerator implements CodeGeneratorConstants {
     catddGen.generate();
     catjdGen.generate();
     crtpdGen.generate();
-    ruleGen.generate();
+    boolean success = ruleGen.generate();
 
     // generate outer logic component:
     File logicFile = new File(directory, ("simse\\logic\\Logic.java"));
@@ -178,10 +179,12 @@ public class LogicGenerator implements CodeGeneratorConstants {
 
       writer.write(CLOSED_BRACK);
       writer.close();
+      return success;
     } catch (IOException e) {
       JOptionPane.showMessageDialog(null, ("Error writing file "
           + logicFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
+      return false;
     }
   }
 }

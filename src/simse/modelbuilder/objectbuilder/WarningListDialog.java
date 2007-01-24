@@ -14,8 +14,7 @@ public class WarningListDialog extends JFrame implements ActionListener {
   private Vector warnings; // vector of strings, each one a warning message
 
   private JList warningList; // list of warnings
-  private JButton okButton; // for ok'ing the creating/editing of a new
-                            // attribute
+  private JButton okButton; 
 
   public WarningListDialog(Vector warn, String title) {
     warnings = warn;

@@ -245,12 +245,14 @@ public class CodeGenerator {
 
     // generate other components:
     stateGen.generate();
-    logicGen.generate();
+    boolean success = logicGen.generate();
     engineGen.generate();
     guiGen.generate();
     expToolGen.generate();
     idGen.generate();
-    JOptionPane.showMessageDialog(null, "Simulation generated!",
-        "Generation Successful", JOptionPane.INFORMATION_MESSAGE);
+    if (success) {
+      JOptionPane.showMessageDialog(null, "Simulation generated!",
+          "Generation Successful", JOptionPane.INFORMATION_MESSAGE);
+    }
   }
 }

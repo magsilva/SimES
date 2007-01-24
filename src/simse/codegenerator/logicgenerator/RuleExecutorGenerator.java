@@ -36,7 +36,8 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
     initializeRuleLists();
   }
 
-  public void generate() {
+  // returns true if generation successful, false otherwise
+  public boolean generate() {
     try {
       ruleExFile = new File(directory, ("simse\\logic\\RuleExecutor.java"));
       if (ruleExFile.exists()) {
@@ -336,11 +337,14 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
         warnings.add(0, "ERROR! Incomplete simulation generated!!");
         WarningListDialog wld = new WarningListDialog(warnings,
             "Code Generation Errors");
+        return false;
       }
+      return true;
     } catch (IOException e) {
       JOptionPane.showMessageDialog(null, ("Error writing file "
           + ruleExFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
+      return false;
     }
   }
 
