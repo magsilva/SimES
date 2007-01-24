@@ -50,6 +50,28 @@ public class SimSEObjectType implements Cloneable {
     return attributes;
   }
   
+  public Vector getAllVisibleAttributes() {
+    Vector visibleAtts = new Vector();
+    for (int i=0; i<attributes.size(); i++) {
+      Attribute att = (Attribute)attributes.get(i);
+      if (att.isVisible()) {
+        visibleAtts.add(att);
+      }
+    }
+    return visibleAtts;
+  }
+  
+  public Vector getAllVisibleOnCompletionAttributes() {
+    Vector visibleAtts = new Vector();
+    for (int i=0; i<attributes.size(); i++) {
+      Attribute att = (Attribute)attributes.get(i);
+      if (att.isVisibleOnCompletion()) {
+        visibleAtts.add(att);
+      }
+    }
+    return visibleAtts;
+  }
+  
   public int getNumVisibleAttributes() {
     int numVisibleAtts = 0;
     for (int i=0; i<attributes.size(); i++) {

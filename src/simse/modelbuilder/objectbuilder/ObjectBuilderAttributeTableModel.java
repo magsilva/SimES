@@ -278,10 +278,6 @@ public class ObjectBuilderAttributeTableModel extends AbstractTableModel {
       }
     }
     fireTableDataChanged(); // notify listeners that table data has changed
-    System.out.println("column 3: " + getColumnClass(3));
-    System.out.println("column 4: " + getColumnClass(4));
-    System.out.println("column 7: " + getColumnClass(7));
-    System.out.println("column 8: " + getColumnClass(8));
   }
 
   /*

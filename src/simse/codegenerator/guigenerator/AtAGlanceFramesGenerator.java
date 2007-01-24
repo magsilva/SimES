@@ -78,6 +78,10 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("private State state;");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
       writer.write("private JPopupMenu popup;");
       writer.write(NEWLINE);
       writer.write("private PopupListener popupListener;");
@@ -111,6 +115,8 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
       writer.write("public " + type + "sAtAGlanceFrame(State s,SimSEGUI gui)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
+      writer.write(NEWLINE);
+      writer.write("state = s;");
       writer.write(NEWLINE);
       writer.write("// Set window title:");
       writer.write(NEWLINE);
@@ -462,11 +468,49 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-
+      writer.write("DefaultTableCellRenderer rightAlignRenderer = new DefaultTableCellRenderer();");
+      writer.write(NEWLINE);
+  		writer.write("rightAlignRenderer.setHorizontalAlignment(JLabel.RIGHT);");
+  		writer.write(NEWLINE);
       for (int i = 0; i < types.size(); i++) {
         SimSEObjectType tempType = (SimSEObjectType) types.elementAt(i);
         writer.write(tempType.getName().toLowerCase() + "Model.update();");
         writer.write(NEWLINE);
+        
+        // right-aligning for all numerical columns:
+    		writer.write("if (!state.getClock().isStopped()) { // game not over");
+    		writer.write(NEWLINE);
+    		
+    		Vector visibleAtts = tempType.getAllVisibleAttributes();
+    		for (int j = 0; j < visibleAtts.size(); j++) {
+    		  Attribute att = (Attribute)visibleAtts.get(j);
+    		  if (att instanceof NumericalAttribute) {
+	    		  writer.write(tempType.getName().toLowerCase() + 
+	    		      "Table.getColumnModel().getColumn(" + 
+	    		      tempType.getName().toLowerCase() + "Model.getColumnIndex(\"" + 
+	    		      att.getName() + "\")).setCellRenderer(rightAlignRenderer);");
+	    		  writer.write(NEWLINE);
+    		  }
+    		}
+    		writer.write(CLOSED_BRACK);
+    		writer.write(NEWLINE);
+    		writer.write("else { // game over");
+    		writer.write(NEWLINE);
+    		Vector visibleOnCompletionAtts = 
+    		  tempType.getAllVisibleOnCompletionAttributes();
+    		for (int j = 0; j < visibleOnCompletionAtts.size(); j++) {
+    		  Attribute att = (Attribute)visibleOnCompletionAtts.get(j);
+    		  if (att instanceof NumericalAttribute) {
+	    		  writer.write(tempType.getName().toLowerCase() + 
+	    		      "Table.getColumnModel().getColumn(" + 
+	    		      tempType.getName().toLowerCase() + "Model.getColumnIndex(\"" + 
+	    		      att.getName() + "\")).setCellRenderer(rightAlignRenderer);");
+	    		  writer.write(NEWLINE);
+    		  }
+    		}
+    		writer.write(CLOSED_BRACK);
+    		writer.write(NEWLINE);
+        
         writer.write(tempType.getName().toLowerCase() + "Table.update("
             + tempType.getName().toLowerCase() + "Table.getGraphics());");
         writer.write(NEWLINE);
