@@ -207,6 +207,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     setNoOpenFile();
 
     // Set main window frame properties:
+    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     addWindowListener(new ExitListener());
     setContentPane(mainPane);
     setVisible(true);
@@ -289,83 +290,85 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
           actionTypes);
       fileModSinceLastSave = true;
     } else if (source == generateSimItem) {
+      int choice = JOptionPane.OK_OPTION;
       if (fileModSinceLastSave) {
         // must save first
-        int choice = JOptionPane
+        choice = JOptionPane
             .showConfirmDialog(
                 null,
-                ("You must save this model before generating the simulation. Save now?"),
-                "Confirm Save", JOptionPane.YES_NO_CANCEL_OPTION);
-        if (choice != JOptionPane.CANCEL_OPTION) {
-          if (choice == JOptionPane.YES_OPTION) {
-            if (openFile.exists()) // file has already been saved before
-            {
-              fileManip.generateFile(openFile, graphicsBuilder
-                  .getImageDirectory(), graphicsBuilder
-                  .getStartStateObjsToImages(), graphicsBuilder
-                  .getRuleObjsToImages(), objectBuilder.allowHireFire());
-            } else // file has not been saved before
-            {
-              saveAs();
-            }
+                ("You must save this model before generating the simulation. " +
+                		"Press OK to save now."), "Confirm Save", 
+                		JOptionPane.OK_CANCEL_OPTION);
+        if (choice == JOptionPane.OK_OPTION) {
+          if (openFile.exists()) // file has already been saved before
+          {
+            fileManip.generateFile(openFile, graphicsBuilder
+                .getImageDirectory(), graphicsBuilder
+                .getStartStateObjsToImages(), graphicsBuilder
+                .getRuleObjsToImages(), objectBuilder.allowHireFire());
+          } else // file has not been saved before
+          {
+            saveAs();
           }
         }
       }
 
-      // get directory to generate code in:
-      // Bring up a file chooser to choose a directory:
-      JFileChooser dirFileChooser = new JFileChooser();
-      dirFileChooser.addChoosableFileFilter(new DirectoryFileFilter()); // make
-                                                                        // it so
-                                                                        // it
-                                                                        // only
-                                                                        // displays
-                                                                        // directories
-      // bring up open file chooser:
-      dirFileChooser.setSelectedFile(new File(""));
-      dirFileChooser
-          .setDialogTitle("Please select a destination directory (to generate code into):");
-      dirFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-      int returnVal = dirFileChooser.showOpenDialog(this);
-      if (returnVal == JFileChooser.APPROVE_OPTION) {
-        File f = dirFileChooser.getSelectedFile();
-        if (f.isDirectory()) // valid
-        {
-
-          // ask for the image directory for the simulation images:
-          //					dirFileChooser.setSelectedFile(new File(""));
-          //					dirFileChooser.setDialogTitle("Please locate the \"images\"
-          // directory containing the simulation images:");
-          //					int returnVal2 = dirFileChooser.showOpenDialog(this);
-          //					if(returnVal2 == JFileChooser.APPROVE_OPTION)
-          //					{
-
-          File imgDir = dirFileChooser.getSelectedFile();
-
-          //						if(imgDir.isDirectory() && imgDir.getName().equals("images")) //
-          // valid
-          //					    {
-          // generate code:
-          CodeGenerator codeGen = new CodeGenerator(objectTypes, objects,
-              actionTypes, graphicsBuilder.getImageDirectory(), graphicsBuilder
-                  .getStartStateObjsToImages(), graphicsBuilder
-                  .getRuleObjsToImages(), map, userDatas, imgDir, f);//openFile,
-                                                                     // imgDir,
-                                                                     // f);
-          codeGen.setAllowHireFire(objectBuilder.allowHireFire());
-          codeGen.generate();
-          //						}
-          //						else
-          //						{
-          //							JOptionPane.showMessageDialog(null, "You must choose a directory
-          // named \"images\"", "Invalid Selection",
-          //								JOptionPane.WARNING_MESSAGE);
-          //						}
-          //					}
-        } else {
-          JOptionPane.showMessageDialog(null, "You must choose a directory",
-              "Invalid Selection", JOptionPane.WARNING_MESSAGE);
-        }
+      if (choice == JOptionPane.OK_OPTION) {
+	      // get directory to generate code in:
+	      // Bring up a file chooser to choose a directory:
+	      JFileChooser dirFileChooser = new JFileChooser();
+	      dirFileChooser.addChoosableFileFilter(new DirectoryFileFilter()); // make
+	                                                                        // it so
+	                                                                        // it
+	                                                                        // only
+	                                                                        // displays
+	                                                                        // directories
+	      // bring up open file chooser:
+	      dirFileChooser.setSelectedFile(new File(""));
+	      dirFileChooser
+	          .setDialogTitle("Please select a destination directory (to generate code into):");
+	      dirFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	      int returnVal = dirFileChooser.showOpenDialog(this);
+	      if (returnVal == JFileChooser.APPROVE_OPTION) {
+	        File f = dirFileChooser.getSelectedFile();
+	        if (f.isDirectory()) // valid
+	        {
+	
+	          // ask for the image directory for the simulation images:
+	          //					dirFileChooser.setSelectedFile(new File(""));
+	          //					dirFileChooser.setDialogTitle("Please locate the \"images\"
+	          // directory containing the simulation images:");
+	          //					int returnVal2 = dirFileChooser.showOpenDialog(this);
+	          //					if(returnVal2 == JFileChooser.APPROVE_OPTION)
+	          //					{
+	
+	          File imgDir = dirFileChooser.getSelectedFile();
+	
+	          //						if(imgDir.isDirectory() && imgDir.getName().equals("images")) //
+	          // valid
+	          //					    {
+	          // generate code:
+	          CodeGenerator codeGen = new CodeGenerator(objectTypes, objects,
+	              actionTypes, graphicsBuilder.getImageDirectory(), graphicsBuilder
+	                  .getStartStateObjsToImages(), graphicsBuilder
+	                  .getRuleObjsToImages(), map, userDatas, imgDir, f);//openFile,
+	                                                                     // imgDir,
+	                                                                     // f);
+	          codeGen.setAllowHireFire(objectBuilder.allowHireFire());
+	          codeGen.generate();
+	          //						}
+	          //						else
+	          //						{
+	          //							JOptionPane.showMessageDialog(null, "You must choose a directory
+	          // named \"images\"", "Invalid Selection",
+	          //								JOptionPane.WARNING_MESSAGE);
+	          //						}
+	          //					}
+	        } else {
+	          JOptionPane.showMessageDialog(null, "You must choose a directory",
+	              "Invalid Selection", JOptionPane.WARNING_MESSAGE);
+	        }
+	      }
       }
     } else if (source instanceof JMenuItem) {
       JMenuItem mItem = (JMenuItem) source;
@@ -609,8 +612,9 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
 
   public class ExitListener extends WindowAdapter {
     public void windowClosing(WindowEvent event) {
-      closeFile();
-      System.exit(0);
+      if (closeFile()) {
+        System.exit(0);
+      }
     }
   }
 }
