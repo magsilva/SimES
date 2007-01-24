@@ -374,6 +374,10 @@ public class AttributePanelGenerator implements CodeGeneratorConstants {
           for (int k = 0; k < atts.size(); k++) {
             Attribute a = (Attribute) atts.elementAt(k);
             if (a.isVisible()) {
+              writer.write("if(!state.getClock().isStopped()) // game not over");
+              writer.write(NEWLINE);
+              writer.write(OPEN_BRACK);
+              writer.write(NEWLINE);
               if (a.getType() == AttributeTypes.DOUBLE) // double att -- need to
                                                         // do formatting stuff
               {
@@ -413,7 +417,9 @@ public class AttributePanelGenerator implements CodeGeneratorConstants {
                     + "() + \"</font></html>\");");
                 writer.write(NEWLINE);
               }
-            } else if (a.isVisibleOnCompletion()) {
+              writer.write(CLOSED_BRACK);
+              writer.write(NEWLINE);
+            } if (a.isVisibleOnCompletion()) {
               writer.write("if(state.getClock().isStopped()) // game is over");
               writer.write(NEWLINE);
               writer.write(OPEN_BRACK);
