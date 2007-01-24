@@ -113,7 +113,12 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("return ((Vector)data.elementAt(0)).size();");
+      writer.write("if (data.size() > 0) {");
+      writer.write(NEWLINE);
+      writer.write("return ((Vector) data.elementAt(0)).size();");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write("return 0;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -206,22 +211,24 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       int index = 0;
 
-      // generate code for all visible attributes:
+      // generate code for all visible attributes
+      writer.write(NEWLINE);
+      writer.write("if (!state.getClock().isStopped()) {");
+      writer.write(NEWLINE);
+      writer.write("Vector " + type.getName().toLowerCase()
+          + "s = state.get"
+          + SimSEObjectTypeTypes.getText(type.getType())
+          + "StateRepository().get" + getUpperCaseLeading(type.getName())
+          + "StateRepository().getAll();");
+      writer.write(NEWLINE);
+      writer.write("Vector ");
+      writer.write("temp = new Vector();");
+      writer.write(NEWLINE);
       for (int i = 0; i < atts.size(); i++) {
         Attribute a = (Attribute) atts.elementAt(i);
         if (a.isVisible()) {
           writer.write("// Initialize " + a.getName() + ":");
           writer.write(NEWLINE);
-          if (index == 0) // first visible attribute
-          {
-            writer.write("Vector " + type.getName().toLowerCase()
-                + "s = state.get"
-                + SimSEObjectTypeTypes.getText(type.getType())
-                + "StateRepository().get" + getUpperCaseLeading(type.getName())
-                + "StateRepository().getAll();");
-            writer.write(NEWLINE);
-            writer.write("Vector ");
-          }
           writer.write("temp = new Vector();");
           writer.write(NEWLINE);
           writer.write("for(int i=0; i<" + type.getName().toLowerCase()
@@ -298,104 +305,118 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
           index++;
         }
       }
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
 
       // generate code for all visible-at-end attributes:
-      writer.write("if(state.getClock().isStopped()) // game over");
+      writer.write("else // game over");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      for (int i = 0; i < atts.size(); i++) {
-        Attribute a = (Attribute) atts.elementAt(i);
-        if ((a.isVisible() == false) && (a.isVisibleOnCompletion())) // visible
-                                                                     // only at
-                                                                     // end of
-                                                                     // game
-        {
-          writer.write("// Initialize " + a.getName() + ":");
-          writer.write(NEWLINE);
-          writer.write("if(columnNames.contains(\"" + a.getName()
-              + "\") == false)");
-          writer.write(NEWLINE);
-          writer.write(OPEN_BRACK);
-          writer.write(NEWLINE);
-          writer.write("columnNames.add(\"" + a.getName() + "\");");
-          writer.write(NEWLINE);
-          writer.write(CLOSED_BRACK);
-          writer.write("temp = new Vector();");
-          writer.write(NEWLINE);
-          writer.write("for(int i=0; i<" + type.getName().toLowerCase()
-              + "s.size(); i++)");
-          writer.write(NEWLINE);
-          writer.write(OPEN_BRACK);
-          writer.write(NEWLINE);
-          if (a.getType() == AttributeTypes.STRING) {
-            writer.write("temp.add(((" + getUpperCaseLeading(type.getName())
-                + ")" + type.getName().toLowerCase() + "s.elementAt(i)).get"
-                + a.getName() + "());");
-          } else if (a.getType() == AttributeTypes.BOOLEAN) {
-            writer.write("temp.add(new Boolean((("
-                + getUpperCaseLeading(type.getName()) + ")"
-                + type.getName().toLowerCase() + "s.elementAt(i)).get"
-                + a.getName() + "()));");
-          } else if (a.getType() == AttributeTypes.INTEGER) {
-            writer.write("numFormat.setMinimumFractionDigits(0);");
-            writer.write(NEWLINE);
-            writer.write("numFormat.setMaximumFractionDigits(0);");
-            writer.write(NEWLINE);
-            writer.write("temp.add(numFormat.format((("
-                + getUpperCaseLeading(type.getName()) + ")"
-                + type.getName().toLowerCase() + "s.elementAt(i)).get"
-                + a.getName() + "()));");
-          } else if (a.getType() == AttributeTypes.DOUBLE) {
-            NumericalAttribute numAtt = (NumericalAttribute) a;
-            writer.write("numFormat.setMinimumFractionDigits(");
-            if (numAtt.getMinNumFractionDigits() != null) // has min num
-                                                          // fraction digits
-            {
-              writer.write(numAtt.getMinNumFractionDigits().toString());
-            } else {
-              writer.write("0");
-            }
-            writer.write(");");
-            writer.write(NEWLINE);
-            writer.write("numFormat.setMaximumFractionDigits(");
-            if (numAtt.getMaxNumFractionDigits() != null) // has max num
-                                                          // fraction digits
-            {
-              writer.write(numAtt.getMaxNumFractionDigits().toString());
-            } else {
-              writer.write("16");
-            }
-            writer.write(");");
-            writer.write(NEWLINE);
-            writer.write("temp.add(numFormat.format((("
-                + getUpperCaseLeading(type.getName()) + ")"
-                + type.getName().toLowerCase() + "s.elementAt(i)).get"
-                + a.getName() + "()));");
-            writer.write(NEWLINE);
-          }
-          writer.write(CLOSED_BRACK);
-          writer.write(NEWLINE);
-          writer.write("if(data.size() < " + (index + 1) + ")");
-          writer.write(NEWLINE);
-          writer.write(OPEN_BRACK);
-          writer.write(NEWLINE);
-          writer.write("data.add(temp);");
-          writer.write(NEWLINE);
-          writer.write(CLOSED_BRACK);
-          writer.write(NEWLINE);
-          writer.write("else");
-          writer.write(NEWLINE);
-          writer.write(OPEN_BRACK);
-          writer.write(NEWLINE);
-          writer.write("data.setElementAt(temp, " + index + ");");
-          writer.write(NEWLINE);
-          writer.write(CLOSED_BRACK);
-          writer.write(NEWLINE);
-          writer.write(NEWLINE);
-          index++;
-        }
-      }
+      writer.write("data.clear();");
+      writer.write(NEWLINE);
+      writer.write("columnNames.clear();");
+      writer.write(NEWLINE);
+
+      writer.write("Vector " + type.getName().toLowerCase()
+          + "s = state.get"
+          + SimSEObjectTypeTypes.getText(type.getType())
+          + "StateRepository().get" + getUpperCaseLeading(type.getName())
+          + "StateRepository().getAll();");
+      writer.write(NEWLINE);
+      writer.write("Vector ");
+      writer.write("temp = new Vector();");
+      writer.write(NEWLINE);
+      index = 0;
+	    for (int i = 0; i < atts.size(); i++) {
+	      Attribute a = (Attribute) atts.elementAt(i);
+	      if ((a.isVisibleOnCompletion())) // visible at end of game
+	      {
+	        writer.write("// Initialize " + a.getName() + ":");
+	        writer.write(NEWLINE);
+	        writer.write("if(columnNames.contains(\"" + a.getName()
+	            + "\") == false)");
+	        writer.write(NEWLINE);
+	        writer.write(OPEN_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write("columnNames.add(\"" + a.getName() + "\");");
+	        writer.write(NEWLINE);
+	        writer.write(CLOSED_BRACK);
+	        writer.write("temp = new Vector();");
+	        writer.write(NEWLINE);
+	        writer.write("for(int i=0; i<" + type.getName().toLowerCase()
+	            + "s.size(); i++)");
+	        writer.write(NEWLINE);
+	        writer.write(OPEN_BRACK);
+	        writer.write(NEWLINE);
+	        if (a.getType() == AttributeTypes.STRING) {
+	          writer.write("temp.add(((" + getUpperCaseLeading(type.getName())
+	              + ")" + type.getName().toLowerCase() + "s.elementAt(i)).get"
+	              + a.getName() + "());");
+	        } else if (a.getType() == AttributeTypes.BOOLEAN) {
+	          writer.write("temp.add(new Boolean((("
+	              + getUpperCaseLeading(type.getName()) + ")"
+	              + type.getName().toLowerCase() + "s.elementAt(i)).get"
+	              + a.getName() + "()));");
+	        } else if (a.getType() == AttributeTypes.INTEGER) {
+	          writer.write("numFormat.setMinimumFractionDigits(0);");
+	          writer.write(NEWLINE);
+	          writer.write("numFormat.setMaximumFractionDigits(0);");
+	          writer.write(NEWLINE);
+	          writer.write("temp.add(numFormat.format((("
+	              + getUpperCaseLeading(type.getName()) + ")"
+	              + type.getName().toLowerCase() + "s.elementAt(i)).get"
+	              + a.getName() + "()));");
+	        } else if (a.getType() == AttributeTypes.DOUBLE) {
+	          NumericalAttribute numAtt = (NumericalAttribute) a;
+	          writer.write("numFormat.setMinimumFractionDigits(");
+	          if (numAtt.getMinNumFractionDigits() != null) // has min num
+	                                                        // fraction digits
+	          {
+	            writer.write(numAtt.getMinNumFractionDigits().toString());
+	          } else {
+	            writer.write("0");
+	          }
+	          writer.write(");");
+	          writer.write(NEWLINE);
+	          writer.write("numFormat.setMaximumFractionDigits(");
+	          if (numAtt.getMaxNumFractionDigits() != null) // has max num
+	                                                        // fraction digits
+	          {
+	            writer.write(numAtt.getMaxNumFractionDigits().toString());
+	          } else {
+	            writer.write("16");
+	          }
+	          writer.write(");");
+	          writer.write(NEWLINE);
+	          writer.write("temp.add(numFormat.format((("
+	              + getUpperCaseLeading(type.getName()) + ")"
+	              + type.getName().toLowerCase() + "s.elementAt(i)).get"
+	              + a.getName() + "()));");
+	          writer.write(NEWLINE);
+	        }
+	        writer.write(CLOSED_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write("if(data.size() < " + (index + 1) + ")");
+	        writer.write(NEWLINE);
+	        writer.write(OPEN_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write("data.add(temp);");
+	        writer.write(NEWLINE);
+	        writer.write(CLOSED_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write("else");
+	        writer.write(NEWLINE);
+	        writer.write(OPEN_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write("data.setElementAt(temp, " + index + ");");
+	        writer.write(NEWLINE);
+	        writer.write(CLOSED_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write(NEWLINE);
+	        index++;
+	      }
+	    }
       writer.write("fireTableStructureChanged();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
