@@ -145,7 +145,11 @@ public class SimSEMapGenerator implements CodeGeneratorConstants {
       writer
           .write("user.setXYLocations(getXYCoordinates(user.getEmployee())[0], getXYCoordinates(user.getEmployee())[1]);");
       writer.write(NEWLINE);
-      writer.write("user.setUserIcon(getImage(user.getEmployee()));");
+      writer.write("String url = getImage(user.getEmployee());");
+      writer.write(NEWLINE);
+      writer.write("if (url != null) {");
+      writer.write(NEWLINE);
+      writer.write("user.setUserIcon(url);");
       writer.write(NEWLINE);
 
       // go through all user datas:
@@ -201,6 +205,8 @@ public class SimSEMapGenerator implements CodeGeneratorConstants {
               + " object has no key attribute value.");
         }
       }
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
