@@ -36,7 +36,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
   private JButton triggerButton; // button for viewing/editing action triggers
   private JButton destroyerButton; // button for viewing/editing action
                                    // destroyers
-  private JButton visibilityButton; // button for viewing/editing action
+  private JButton optionsButton; // button for viewing/editing action
                                     // visibility
   private JList definedActionsList; // JList of already defined actions
   private JButton renameActionButton; // button for renaming actions
@@ -102,14 +102,14 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     triggerButton.addActionListener(this);
     destroyerButton = new JButton("View/Edit Destroyers");
     destroyerButton.addActionListener(this);
-    visibilityButton = new JButton("View/Edit Visibility");
-    visibilityButton.addActionListener(this);
+    optionsButton = new JButton("View/Edit Action Options");
+    optionsButton.addActionListener(this);
     trigDestroyButtonPane.add(triggerButton);
     trigDestroyButtonPane.add(destroyerButton);
-    trigDestroyButtonPane.add(visibilityButton);
+    trigDestroyButtonPane.add(optionsButton);
     triggerButton.setEnabled(false);
     destroyerButton.setEnabled(false);
-    visibilityButton.setEnabled(false);
+    optionsButton.setEnabled(false);
 
     // Create "defined actions" pane:
     JPanel definedActionsPane = new JPanel();
@@ -332,9 +332,9 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
       ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
     }
 
-    else if (source == visibilityButton) // visibility button selected
+    else if (source == optionsButton) // options button selected
     {
-      ActionTypeVisibilityInfoForm form = new ActionTypeVisibilityInfoForm(
+      ActionTypeOptionsInfoForm form = new ActionTypeOptionsInfoForm(
           mainGUI, actTblMod.getActionTypeInFocus());
       ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
     }
@@ -429,9 +429,9 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
          * participant
          */
         if (hasEmployeeParticipant(actTblMod.getActionTypeInFocus())) {
-          visibilityButton.setEnabled(true);
+          optionsButton.setEnabled(true);
         } else {
-          visibilityButton.setEnabled(false);
+          optionsButton.setEnabled(false);
         }
       }
 
@@ -455,9 +455,9 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
          * participant
          */
         if (hasEmployeeParticipant(actTblMod.getActionTypeInFocus())) {
-          visibilityButton.setEnabled(true);
+          optionsButton.setEnabled(true);
         } else {
-          visibilityButton.setEnabled(false);
+          optionsButton.setEnabled(false);
         }
       }
 
@@ -478,15 +478,6 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
       actTblMod.refreshData();
       removeParticipantButton.setEnabled(false);
       editParticipantButton.setEnabled(false);
-
-      /*
-       * enable the visibility button if the action has an employee participant
-       */
-      if (hasEmployeeParticipant(actTblMod.getActionTypeInFocus())) {
-        visibilityButton.setEnabled(true);
-      } else {
-        visibilityButton.setEnabled(false);
-      }
       ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
     } else // choice == JOptionPane.NO_OPTION
     {
@@ -569,15 +560,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     removeParticipantButton.setEnabled(false);
     triggerButton.setEnabled(true);
     destroyerButton.setEnabled(true);
-
-    /*
-     * enable the visibility button if the action has an employee participant
-     */
-    if (hasEmployeeParticipant(newAct)) {
-      visibilityButton.setEnabled(true);
-    } else {
-      visibilityButton.setEnabled(false);
-    }
+    optionsButton.setEnabled(true);
   }
 
   private void renameAction(String actionName) // removes the action with the
@@ -645,7 +628,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     removeParticipantButton.setEnabled(false);
     triggerButton.setEnabled(false);
     destroyerButton.setEnabled(false);
-    visibilityButton.setEnabled(false);
+    optionsButton.setEnabled(false);
   }
 
   public void setNewOpenFile(File f) {
@@ -672,7 +655,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     removeParticipantButton.setEnabled(false);
     triggerButton.setEnabled(false);
     destroyerButton.setEnabled(false);
-    visibilityButton.setEnabled(false);
+    optionsButton.setEnabled(false);
     removeActionButton.setEnabled(false);
     renameActionButton.setEnabled(false);
     warningPane.clearWarnings();

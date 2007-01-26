@@ -518,7 +518,8 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // JOINING existing actions:
-      if (outerTrig instanceof UserActionTypeTrigger) {
+      if ((outerTrig instanceof UserActionTypeTrigger) && 
+          (action.isJoiningAllowed())) {
         int cnt = counter + 2;
         writer.write("Vector a" + cnt
             + "s = state.getActionStateRepository().get"

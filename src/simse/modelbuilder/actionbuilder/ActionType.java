@@ -16,6 +16,8 @@ public class ActionType implements Cloneable {
   private String description; // description of this action, to be shown in the
                               // user interface of the simulation (if visible)
   private String annotation; // a textual description of this action
+  private boolean joiningAllowed; // whether or not employee participants can
+  																// join this action while it is in progress
   private Vector participants; // all of the ActionTypeParticipants involved in
                                // this action
   private Vector triggers; // a Vector of ActionTypeTriggers for this ActionType
@@ -29,6 +31,7 @@ public class ActionType implements Cloneable {
     visibleInExplanatoryTool = false;
     description = null;
     annotation = "";
+    joiningAllowed = true;
     participants = new Vector();
     triggers = new Vector();
     destroyers = new Vector();
@@ -43,6 +46,7 @@ public class ActionType implements Cloneable {
       cl.visibleInExplanatoryTool = visibleInExplanatoryTool;
       cl.description = description;
       cl.annotation = annotation;
+      cl.joiningAllowed = joiningAllowed;
       Vector clonedTrigs = new Vector();
       for (int i = 0; i < triggers.size(); i++) {
         clonedTrigs.add((ActionTypeTrigger) (((ActionTypeTrigger) (triggers
@@ -114,6 +118,14 @@ public class ActionType implements Cloneable {
 
   public void setAnnotation(String s) {
     annotation = s;
+  }
+  
+  public boolean isJoiningAllowed() {
+    return joiningAllowed;
+  }
+  
+  public void setJoiningAllowed(boolean b) {
+    joiningAllowed = b;
   }
 
   public Vector getAllParticipants() // returns a vector of all
@@ -298,6 +310,28 @@ public class ActionType implements Cloneable {
                                            // in the vector
   {
     triggers = newTrigs;
+  }
+  
+  public boolean hasTriggerOfType(String triggerType) {
+    for (int i = 0; i < triggers.size(); i++) {
+      ActionTypeTrigger tempTrig = (ActionTypeTrigger)triggers.elementAt(i);
+      if (triggerType.equals(ActionTypeTrigger.USER)) {
+        if (tempTrig instanceof UserActionTypeTrigger) {
+          return true;
+        }
+      }
+      else if (triggerType.equals(ActionTypeTrigger.AUTO)) {
+        if (tempTrig instanceof AutonomousActionTypeTrigger) {
+          return true;
+        }
+      }
+      else if (triggerType.equals(ActionTypeTrigger.RANDOM)) {
+        if (tempTrig instanceof RandomActionTypeTrigger) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   public void addDestroyer(ActionTypeDestroyer newDestroyer) // adds this

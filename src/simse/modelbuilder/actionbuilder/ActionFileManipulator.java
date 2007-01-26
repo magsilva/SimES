@@ -135,6 +135,18 @@ public class ActionFileManipulator {
                 {
                   reader.reset();
                 }
+                
+                // new format 1/24/07 that includes joining
+                reader.mark(10);
+                currentLine = reader.readLine();
+                if (currentLine.equals("true") || currentLine.equals("false")) {
+                  newAct.setJoiningAllowed(Boolean.valueOf(
+                      currentLine).booleanValue());
+                  System.out.println("setting join");
+                }
+                else {
+                  reader.reset();
+                }
 
                 int ssObjTypeType = 0; // SimSEObjectTypeType of this ActionType
 

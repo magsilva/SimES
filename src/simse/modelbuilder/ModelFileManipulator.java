@@ -361,6 +361,10 @@ public class ModelFileManipulator {
         writer.write(NEWLINE);
         writer.write(END_ACTION_TYPE_ANNOTATION_TAG);
         writer.write(NEWLINE);
+        
+        // joining
+        writer.write(new Boolean(tempAct.isJoiningAllowed()).toString());
+        writer.write(NEWLINE);
 
         Vector participants = tempAct.getAllParticipants();
         // go through each participant and write it to the file:
