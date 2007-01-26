@@ -142,7 +142,6 @@ public class ActionFileManipulator {
                 if (currentLine.equals("true") || currentLine.equals("false")) {
                   newAct.setJoiningAllowed(Boolean.valueOf(
                       currentLine).booleanValue());
-                  System.out.println("setting join");
                 }
                 else {
                   reader.reset();
