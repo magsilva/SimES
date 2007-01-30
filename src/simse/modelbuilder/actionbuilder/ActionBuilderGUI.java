@@ -602,6 +602,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
         + actionName + " action type?"), "Confirm Action Type Removal",
         JOptionPane.YES_NO_OPTION);
     if (choice == JOptionPane.YES_OPTION) {
+      actions.removeActionType(actionName);
       if ((actTblMod.getActionTypeInFocus() != null)
           && (actTblMod.getActionTypeInFocus().getName() == actionName)) // removing
       // action type currently in focus
