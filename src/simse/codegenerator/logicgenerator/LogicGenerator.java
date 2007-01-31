@@ -5,6 +5,7 @@
 
 package simse.codegenerator.logicgenerator;
 
+import simse.modelbuilder.*;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.codegenerator.logicgenerator.dialoggenerator.*;
@@ -46,13 +47,14 @@ public class LogicGenerator implements CodeGeneratorConstants {
   private RuleExecutorGenerator ruleGen; // generates rule executor component
   private File directory; // directory to generate into
 
-  public LogicGenerator(DefinedObjectTypes objTypes,
+  public LogicGenerator(ModelOptions options, DefinedObjectTypes objTypes,
       DefinedActionTypes actTypes, File dir) {
     directory = dir;
     miscUGen = new MiscUpdaterGenerator(directory);
     trigGen = new TriggerCheckerGenerator(actTypes, directory);
     destGen = new DestroyerCheckerGenerator(actTypes, directory);
-    menuGen = new MenuInputManagerGenerator(actTypes, objTypes, directory);
+    menuGen = new MenuInputManagerGenerator(options, actTypes, objTypes, 
+        directory);
     epsdGen = new EmployeeParticipantSelectionDialogGenerator(actTypes,
         objTypes, directory);
     nepsdGen = new NonEmployeeParticipantSelectionDialogGenerator(actTypes,

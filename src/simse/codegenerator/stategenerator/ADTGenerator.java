@@ -5,6 +5,7 @@
 
 package simse.codegenerator.stategenerator;
 
+import simse.modelbuilder.*;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.codegenerator.*;
@@ -15,12 +16,15 @@ import javax.swing.*;
 
 public class ADTGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
+  private ModelOptions options;
   private DefinedObjectTypes objTypes; // holds all of the defined object types
                                        // from an sso file
   private DefinedActionTypes actTypes; // holds all of the defined action types
                                        // from an ssa file
 
-  public ADTGenerator(DefinedObjectTypes dots, DefinedActionTypes dats, File dir) {
+  public ADTGenerator(ModelOptions opts, DefinedObjectTypes dots, 
+      DefinedActionTypes dats, File dir) {
+    options = opts;
     objTypes = dots;
     actTypes = dats;
     directory = dir;
@@ -168,8 +172,10 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("menu.removeAllElements();");
       writer.write(NEWLINE);
-      writer.write("menu.add(\"Everyone stop what you're doing\");");
-      writer.write(NEWLINE);
+      if (options.getEveryoneStopOption()) {
+        writer.write("menu.add(\"Everyone stop what you're doing\");");
+        writer.write(NEWLINE);
+      }
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);

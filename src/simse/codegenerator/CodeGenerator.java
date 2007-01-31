@@ -8,6 +8,7 @@ import simse.codegenerator.guigenerator.GUIGenerator;
 import simse.codegenerator.logicgenerator.LogicGenerator;
 import simse.codegenerator.stategenerator.StateGenerator;
 import simse.codegenerator.utilgenerator.IDGeneratorGenerator;
+import simse.modelbuilder.*;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.modelbuilder.startstatebuilder.*;
@@ -31,13 +32,13 @@ public class CodeGenerator {
   private File directory; // directory to generate code into
   public static boolean allowHireFire = true;
 
-  public CodeGenerator(DefinedObjectTypes objTypes, CreatedObjects objs,
-      DefinedActionTypes actTypes, File iconDir, Hashtable stsObjsToImages,
-      Hashtable ruleObjsToImages, TileData[][] map, ArrayList userDatas,
-      File imgDir, File dir) {
+  public CodeGenerator(ModelOptions options, DefinedObjectTypes objTypes, 
+      CreatedObjects objs, DefinedActionTypes actTypes, File iconDir, 
+      Hashtable stsObjsToImages, Hashtable ruleObjsToImages, TileData[][] map,
+      ArrayList userDatas, File imgDir, File dir) {
     directory = dir;
-    stateGen = new StateGenerator(objTypes, actTypes, directory);
-    logicGen = new LogicGenerator(objTypes, actTypes, directory);
+    stateGen = new StateGenerator(options, objTypes, actTypes, directory);
+    logicGen = new LogicGenerator(options, objTypes, actTypes, directory);
     engineGen = new EngineGenerator(objs, directory);
     guiGen = new GUIGenerator(objTypes, objs, actTypes, iconDir,
         stsObjsToImages, ruleObjsToImages, map, userDatas, imgDir, directory);

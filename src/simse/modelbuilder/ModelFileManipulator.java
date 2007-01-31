@@ -15,6 +15,7 @@ import java.util.*;
 import javax.swing.*;
 
 public class ModelFileManipulator {
+  private ModelOptions options;
   private DefinedObjectTypes objectTypes;
   private CreatedObjects objects;
   private DefinedActionTypes actionTypes;
@@ -133,14 +134,19 @@ public class ModelFileManipulator {
   private final String END_MAP_TAG = "<endMap>";
   private final String BEGIN_SOP_USERS_TAG = "<beginSOPUsers>";
   private final String END_SOP_USERS_TAG = "<endSOPUsers>";
+  
+  // model options:
+  private final String BEGIN_MODEL_OPTIONS_TAG = "<beginModelOptions>";
+  private final String END_MODEL_OPTIONS_TAG = "<endModelOptions>";
 
   // allow hire and fire constants
   private final String BEGIN_ALLOW_HIRE_FIRE_TAG = "<beginAllowHireFire>";
   private final String END_ALLOW_HIRE_FIRE_TAG = "<endAllowHireFire>";
 
-  public ModelFileManipulator(DefinedObjectTypes objTypes,
+  public ModelFileManipulator(ModelOptions opts, DefinedObjectTypes objTypes,
       DefinedActionTypes defActs, CreatedObjects createdObjs, ArrayList sops,
       TileData[][] map) {
+    options = opts;
     objectTypes = objTypes;
     objects = createdObjs;
     actionTypes = defActs;
@@ -166,6 +172,15 @@ public class ModelFileManipulator {
       writer.write("" + allowHireFire);
       writer.write(NEWLINE);
       writer.write(END_ALLOW_HIRE_FIRE_TAG);
+      writer.write(NEWLINE);
+      
+      //*******MODEL OPTIONS********
+      writer.write(BEGIN_MODEL_OPTIONS_TAG);
+      writer.write(NEWLINE);
+      // everyone stop option:
+      writer.write(String.valueOf(options.getEveryoneStopOption()));
+      writer.write(NEWLINE);
+      writer.write(END_MODEL_OPTIONS_TAG);
       writer.write(NEWLINE);
 
       //*******OBJECT TYPES**********

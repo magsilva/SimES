@@ -29,6 +29,9 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
   private ArrayList userDatas; // list of UserData objects for each employee
                                // that is displayed in the map
   private TileData[][] map; // map
+  private ModelOptions options;
+  private ModelOptionsFileManipulator optionsFileManip;
+  
   private ObjectBuilderGUI objectBuilder;
   private StartStateBuilderGUI startStateBuilder;
   private ActionBuilderGUI actionBuilder;
@@ -51,9 +54,10 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
   private JMenuItem saveAsItem; // menu item in "File" menu
   private JMenuItem exitItem; // menu item in "File" menu
 
-  // Narratives menu:
-  private JMenu narrativesMenu; // narratives menu
-  private JMenuItem startNarrItem; // menu item in "Narratives" menu
+  // Edit menu:
+  private JMenu editMenu; // edit menu
+  private JMenuItem optionsItem;
+  private JMenuItem narrativeItem;
 
   // Prioritize menu:
   private JMenu prioritizeMenu;
@@ -90,6 +94,9 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     mainPane.setPreferredSize(new Dimension(1024, 710));
     SingleSelectionModel model = mainPane.getModel();
     model.addChangeListener(this);
+    
+    options = new ModelOptions();
+    optionsFileManip = new ModelOptionsFileManipulator(options);
 
     objectBuilder = new ObjectBuilderGUI(this);
     mainPane.addTab("Object Types", objectBuilder);
@@ -123,8 +130,8 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     userDatas = mapEditor.getUserDatas();
     map = mapEditor.getMap();
 
-    fileManip = new ModelFileManipulator(objectTypes, actionTypes, objects,
-        userDatas, map);//stsObjsToImages, ruleObjsToImages, userDatas, map);
+    fileManip = new ModelFileManipulator(options, objectTypes, actionTypes, 
+        objects, userDatas, map);
 
     // Create menu bar and menus:
     menuBar = new JMenuBar();
@@ -160,14 +167,17 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
 
     menuBar.add(fileMenu);
 
-    // Narrative menu:
-    narrativesMenu = new JMenu("Narratives"); // "Narratives" menu
-    narrativesMenu.setEnabled(false); // disable menu
-    startNarrItem = new JMenuItem("Starting narrative");
-    narrativesMenu.add(startNarrItem);
-    startNarrItem.addActionListener(this);
+    // Edit menu:
+    editMenu = new JMenu("Edit"); // "Edit" menu
+    editMenu.setEnabled(false); // disable menu
+    optionsItem = new JMenuItem("Model options");
+    editMenu.add(optionsItem);
+    optionsItem.addActionListener(this);
+    narrativeItem = new JMenuItem("Starting narrative");
+    editMenu.add(narrativeItem);
+    narrativeItem.addActionListener(this);
 
-    menuBar.add(narrativesMenu);
+    menuBar.add(editMenu);
 
     // Prioritize menu:
     prioritizeMenu = new JMenu("Prioritize"); // "Prioritize" menu
@@ -259,17 +269,27 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
           saveAs();
         }
       }
-    } else if (source == saveAsItem) {
+    } 
+    else if (source == saveAsItem) {
       if (openFile != null) // a file is open
       {
         saveAs();
       }
-    } else if (source == exitItem) {
+    } 
+    else if (source == exitItem) {
       if (closeFile()) // if current file is successfully closed, exit
       {
         System.exit(0);
       }
-    } else if (source == startNarrItem) {
+    } 
+    else if (source == optionsItem) {
+      if (openFile != null) { // a file is open
+        // bring up model options dialog:
+        ModelOptionsDialog mod = new ModelOptionsDialog(this, options);
+        fileModSinceLastSave = true;
+      }
+    }
+    else if (source == narrativeItem) {
       if (openFile != null) // a file is open
       {
         // bring up starting narrative dialog:
@@ -277,7 +297,8 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
             "Starting Narrative");
         fileModSinceLastSave = true;
       }
-    } else if (source == triggerItem) {
+    } 
+    else if (source == triggerItem) {
       TriggerPrioritizer tp = new TriggerPrioritizer(this, actionTypes);
       fileModSinceLastSave = true;
     }
@@ -348,12 +369,11 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
 	          // valid
 	          //					    {
 	          // generate code:
-	          CodeGenerator codeGen = new CodeGenerator(objectTypes, objects,
-	              actionTypes, graphicsBuilder.getImageDirectory(), graphicsBuilder
-	                  .getStartStateObjsToImages(), graphicsBuilder
-	                  .getRuleObjsToImages(), map, userDatas, imgDir, f);//openFile,
-	                                                                     // imgDir,
-	                                                                     // f);
+	          CodeGenerator codeGen = new CodeGenerator(options, objectTypes, 
+	              objects, actionTypes, graphicsBuilder.getImageDirectory(), 
+	              graphicsBuilder.getStartStateObjsToImages(), graphicsBuilder
+	                  .getRuleObjsToImages(), map, userDatas, imgDir, f);
+	          
 	          codeGen.setAllowHireFire(objectBuilder.allowHireFire());
 	          codeGen.generate();
 	          //						}
@@ -436,9 +456,10 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
   private void setNewOpenFile(File file) {
     openFile = file;
     prioritizeMenu.setEnabled(true);
-    narrativesMenu.setEnabled(true);
+    editMenu.setEnabled(true);
     generateMenu.setEnabled(true);
     resetWindowTitle();
+    optionsFileManip.loadFile(file);
     objectBuilder.setNewOpenFile(openFile);
     startStateBuilder.setNewOpenFile(openFile);
     actionBuilder.setNewOpenFile(openFile);
@@ -452,6 +473,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     openFile = null;
     setTitle("SimSE Model Builder");
     fileModSinceLastSave = false;
+    options.clearAll();
     objectBuilder.setNoOpenFile();
     startStateBuilder.setNoOpenFile();
     actionBuilder.setNoOpenFile();
@@ -460,7 +482,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     mapEditor.setNoOpenFile();
     // disable UI components:
     prioritizeMenu.setEnabled(false);
-    narrativesMenu.setEnabled(false);
+    editMenu.setEnabled(false);
     generateMenu.setEnabled(false);
   }
 

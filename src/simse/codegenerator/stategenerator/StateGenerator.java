@@ -5,6 +5,7 @@
 
 package simse.codegenerator.stategenerator;
 
+import simse.modelbuilder.*;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.codegenerator.*;
@@ -19,10 +20,10 @@ public class StateGenerator implements CodeGeneratorConstants {
   private LoggerGenerator loggerGen; // generates logger
   private File directory; // directory to generate into
 
-  public StateGenerator(DefinedObjectTypes objTypes,
+  public StateGenerator(ModelOptions options, DefinedObjectTypes objTypes,
       DefinedActionTypes actTypes, File dir) {
     directory = dir;
-    adtGen = new ADTGenerator(objTypes, actTypes, directory);
+    adtGen = new ADTGenerator(options, objTypes, actTypes, directory);
     repGen = new RepositoryGenerator(objTypes, actTypes, directory);
     clockGen = new ClockGenerator(directory);
     loggerGen = new LoggerGenerator(directory);

@@ -5,6 +5,7 @@
 
 package simse.codegenerator.logicgenerator;
 
+import simse.modelbuilder.*;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.modelbuilder.rulebuilder.*;
@@ -17,6 +18,8 @@ import javax.swing.*;
 public class MenuInputManagerGenerator implements CodeGeneratorConstants {
   private File directory; // directory to generate into
   private File mimFile; // file to generate
+  
+  private ModelOptions options;
   private DefinedActionTypes actTypes; // holds all of the defined action types
                                        // from an ssa file
   private Vector vectors; // for keeping track of which vectors are being used
@@ -28,8 +31,9 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 
   private DefinedObjectTypes objTypes;
 
-  public MenuInputManagerGenerator(DefinedActionTypes acts,
+  public MenuInputManagerGenerator(ModelOptions opts, DefinedActionTypes acts,
       DefinedObjectTypes obj, File dir) {
+    options = opts;
     directory = dir;
     actTypes = acts;
     objTypes = obj;
@@ -204,325 +208,328 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write("else ");
       }
 
-      writer.write("if(s.equals(\"Everyone stop what you're doing\"))");
-      writer.write(NEWLINE);
-      writer.write(OPEN_BRACK);
-      writer.write(NEWLINE);
-      writer
-          .write("int choice = JOptionPane.showConfirmDialog(null, (\"Are you sure you want everyone to stop what they're doing?\"), \"Confirm Activities Ending\", JOptionPane.YES_NO_OPTION);");
-      writer.write(NEWLINE);
-      writer.write("if(choice == JOptionPane.YES_OPTION)");
-      writer.write(NEWLINE);
-      writer.write(OPEN_BRACK);
-      writer.write(NEWLINE);
-      writer
-          .write("Vector allEmps = state.getEmployeeStateRepository().getAll();");
-      writer.write(NEWLINE);
-      writer.write("for(int z=0; z<allEmps.size(); z++)");
-      writer.write(NEWLINE);
-      writer.write(OPEN_BRACK);
-      writer.write(NEWLINE);
-      writer.write("Employee emp = (Employee)allEmps.elementAt(z);");
-      writer.write(NEWLINE);
-
-      // user destroyers:
-      // make a Vector of all the user destroyers:
-      Vector userDests = new Vector();
-      Vector actions = actTypes.getAllActionTypes();
-      for (int j = 0; j < actions.size(); j++) {
-        ActionType act = (ActionType) actions.elementAt(j);
-        Vector allDests = act.getAllDestroyers();
-        for (int k = 0; k < allDests.size(); k++) {
-          ActionTypeDestroyer tempDest = (ActionTypeDestroyer) allDests
-              .elementAt(k);
-          if (tempDest instanceof UserActionTypeDestroyer) {
-            userDests.add(tempDest);
-          }
-        }
+      if (options.getEveryoneStopOption()) {
+	      writer.write("if(s.equals(\"Everyone stop what you're doing\"))");
+	      writer.write(NEWLINE);
+	      writer.write(OPEN_BRACK);
+	      writer.write(NEWLINE);
+	      writer
+	          .write("int choice = JOptionPane.showConfirmDialog(null, (\"Are you sure you want everyone to stop what they're doing?\"), \"Confirm Activities Ending\", JOptionPane.YES_NO_OPTION);");
+	      writer.write(NEWLINE);
+	      writer.write("if(choice == JOptionPane.YES_OPTION)");
+	      writer.write(NEWLINE);
+	      writer.write(OPEN_BRACK);
+	      writer.write(NEWLINE);
+	      writer
+	          .write("Vector allEmps = state.getEmployeeStateRepository().getAll();");
+	      writer.write(NEWLINE);
+	      writer.write("for(int z=0; z<allEmps.size(); z++)");
+	      writer.write(NEWLINE);
+	      writer.write(OPEN_BRACK);
+	      writer.write(NEWLINE);
+	      writer.write("Employee emp = (Employee)allEmps.elementAt(z);");
+	      writer.write(NEWLINE);
+	
+	      // user destroyers:
+	      // make a Vector of all the user destroyers:
+	      Vector userDests = new Vector();
+	      Vector actions = actTypes.getAllActionTypes();
+	      for (int j = 0; j < actions.size(); j++) {
+	        ActionType act = (ActionType) actions.elementAt(j);
+	        Vector allDests = act.getAllDestroyers();
+	        for (int k = 0; k < allDests.size(); k++) {
+	          ActionTypeDestroyer tempDest = (ActionTypeDestroyer) allDests
+	              .elementAt(k);
+	          if (tempDest instanceof UserActionTypeDestroyer) {
+	            userDests.add(tempDest);
+	          }
+	        }
+	      }
+	
+	      // go through each destroyer and generate code for it:
+	      for (int j = 0; j < userDests.size(); j++) {
+	        ActionTypeDestroyer outerDest = (ActionTypeDestroyer) userDests
+	            .elementAt(j);
+	        ActionType act = outerDest.getActionType();
+	        writer.write("// "
+	            + ((UserActionTypeDestroyer) outerDest).getMenuText() + ":");
+	        writer.write(NEWLINE);
+	        writer.write("Vector allActions" + j
+	            + " = state.getActionStateRepository().get"
+	            + getUpperCaseLeading(act.getName())
+	            + "ActionStateRepository().getAllActions();");
+	        writer.write(NEWLINE);
+	        writer.write("int a" + j + " = 0;");
+	        writer.write(NEWLINE);
+	        writer.write("for(int i=0; i<allActions" + j + ".size(); i++)");
+	        writer.write(NEWLINE);
+	        writer.write(OPEN_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write(getUpperCaseLeading(act.getName()) + "Action b" + j
+	            + " = (" + getUpperCaseLeading(act.getName()) + "Action)allActions"
+	            + j + ".elementAt(i);");
+	        writer.write(NEWLINE);
+	        writer.write("if(b" + j + ".getAllParticipants().contains(emp))");
+	        writer.write(NEWLINE);
+	        writer.write(OPEN_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write("a" + j + "++;");
+	        writer.write(NEWLINE);
+	        writer.write(CLOSED_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write(CLOSED_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write("if(a" + j + " == 1)");
+	        writer.write(NEWLINE);
+	        writer.write(OPEN_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write("for(int i=0; i<allActions" + j + ".size(); i++)");
+	        writer.write(NEWLINE);
+	        writer.write(OPEN_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write(getUpperCaseLeading(act.getName()) + "Action b" + j
+	            + " = (" + getUpperCaseLeading(act.getName()) + "Action)allActions"
+	            + j + ".elementAt(i);");
+	        writer.write(NEWLINE);
+	        // go through all participants:
+	        Vector parts = act.getAllParticipants();
+	        for (int k = 0; k < parts.size(); k++) {
+	          ActionTypeParticipant tempPart = (ActionTypeParticipant) parts
+	              .elementAt(k);
+	          if (tempPart.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) // participant
+	                                                                                  // is
+	                                                                                  // of
+	                                                                                  // employee
+	                                                                                  // type
+	          {
+	            writer.write("if(b" + j + ".getAll" + tempPart.getName()
+	                + "s().contains(emp))");
+	            writer.write(NEWLINE);
+	            writer.write(OPEN_BRACK);
+	            writer.write(NEWLINE);
+	
+	            Vector destRules = act.getAllDestroyerRules();
+	            for (int i = 0; i < destRules.size(); i++) {
+	              Rule dRule = (Rule) destRules.elementAt(i);
+	              writer
+	                  .write("ruleExec.update(parent, RuleExecutor.UPDATE_ONE, \""
+	                      + dRule.getName() + "\", b" + j + ");");
+	              writer.write(NEWLINE);
+	            }
+	
+	            writer.write("b" + j + ".remove" + tempPart.getName() + "(emp);");
+	            writer.write(NEWLINE);
+	            if ((outerDest.getDestroyerText() != null)
+	                && (outerDest.getDestroyerText().length() > 0)) {
+	              writer.write("emp.setOverheadText(\""
+	                  + ((UserActionTypeDestroyer) outerDest).getDestroyerText()
+	                  + "\");");
+	              writer.write(NEWLINE);
+	            }
+	            writer.write("if(b" + j + ".getAll" + tempPart.getName()
+	                + "s().size() < ");
+	            if (tempPart.getQuantity().isMinValBoundless()) // no minimum
+	            {
+	              writer.write("0)");
+	            } else // has a minimum
+	            {
+	              writer.write(tempPart.getQuantity().getMinVal().intValue() + ")");
+	            }
+	            writer.write(NEWLINE);
+	            writer.write(OPEN_BRACK);
+	            writer.write(NEWLINE);
+	            writer
+	                .write("Vector c" + j + " = b" + j + ".getAllParticipants();");
+	            writer.write(NEWLINE);
+	            writer.write("for(int j=0; j<c" + j + ".size(); j++)");
+	            writer.write(NEWLINE);
+	            writer.write(OPEN_BRACK);
+	            writer.write(NEWLINE);
+	            writer.write("SSObject d" + j + " = (SSObject)c" + j
+	                + ".elementAt(j);");
+	            writer.write(NEWLINE);
+	            writer.write("if(d" + j + " instanceof Employee)");
+	            writer.write(NEWLINE);
+	            writer.write(OPEN_BRACK);
+	            writer.write(NEWLINE);
+	            if ((outerDest.getDestroyerText() != null)
+	                && (outerDest.getDestroyerText().length() > 0)) {
+	              writer.write("((Employee)d" + j + ").setOverheadText(\""
+	                  + ((UserActionTypeDestroyer) outerDest).getDestroyerText()
+	                  + "\");");
+	              writer.write(NEWLINE);
+	            }
+	            writer.write(CLOSED_BRACK);
+	            writer.write(NEWLINE);
+	            writer.write("else if(d" + j + " instanceof Customer)");
+	            writer.write(NEWLINE);
+	            writer.write(OPEN_BRACK);
+	            writer.write(NEWLINE);
+	            if ((outerDest.getDestroyerText() != null)
+	                && (outerDest.getDestroyerText().length() > 0)) {
+	              writer.write("((Customer)d" + j + ").setOverheadText(\""
+	                  + ((UserActionTypeDestroyer) outerDest).getDestroyerText()
+	                  + "\");");
+	              writer.write(NEWLINE);
+	            }
+	            writer.write(CLOSED_BRACK);
+	            writer.write(NEWLINE);
+	            writer.write(CLOSED_BRACK);
+	            writer.write(NEWLINE);
+	
+	            // remove action from repository:
+	            writer.write("state.getActionStateRepository().get"
+	                + getUpperCaseLeading(act.getName())
+	                + "ActionStateRepository().remove(b" + j + ");");
+	            writer.write(NEWLINE);
+	
+	            // game-ending:
+	            if (outerDest.isGameEndingDestroyer()) {
+	              writer.write("// stop game and give score:");
+	              writer.write(NEWLINE);
+	              writer.write(getUpperCaseLeading(act.getName()) + "Action t111"
+	                  + j + " = (" + getUpperCaseLeading(act.getName())
+	                  + "Action)b" + j + ";");
+	              writer.write(NEWLINE);
+	              // find the scoring attribute:
+	              ActionTypeParticipantDestroyer scoringPartDest = null;
+	              ActionTypeParticipantConstraint scoringPartConst = null;
+	              ActionTypeParticipantAttributeConstraint scoringAttConst = null;
+	              Vector partDests = outerDest.getAllParticipantDestroyers();
+	              for (int m = 0; m < partDests.size(); m++) {
+	                ActionTypeParticipantDestroyer partDest = (ActionTypeParticipantDestroyer) partDests
+	                    .elementAt(m);
+	                Vector partConsts = partDest.getAllConstraints();
+	                for (int n = 0; n < partConsts.size(); n++) {
+	                  ActionTypeParticipantConstraint partConst = (ActionTypeParticipantConstraint) partConsts
+	                      .elementAt(n);
+	                  ActionTypeParticipantAttributeConstraint[] attConsts = partConst
+	                      .getAllAttributeConstraints();
+	                  for (int p = 0; p < attConsts.length; p++) {
+	                    if (attConsts[p].isScoringAttribute()) {
+	                      scoringAttConst = attConsts[p];
+	                      scoringPartConst = partConst;
+	                      scoringPartDest = partDest;
+	                      break;
+	                    }
+	                  }
+	                }
+	              }
+	              if ((scoringAttConst != null) && (scoringPartConst != null)
+	                  && (scoringPartDest != null)) {
+	                writer.write("if(t111" + j + ".getAll"
+	                    + scoringPartDest.getParticipant().getName()
+	                    + "s().size() > 0)");
+	                writer.write(NEWLINE);
+	                writer.write(OPEN_BRACK);
+	                writer.write(NEWLINE);
+	                writer.write(getUpperCaseLeading(scoringPartConst
+	                    .getSimSEObjectType().getName())
+	                    + " t"
+	                    + j
+	                    + " = ("
+	                    + getUpperCaseLeading(scoringPartConst.getSimSEObjectType()
+	                        .getName())
+	                    + ")(t111"
+	                    + j
+	                    + ".getAll"
+	                    + scoringPartDest.getParticipant().getName()
+	                    + "s().elementAt(0));");
+	                writer.write(NEWLINE);
+	                writer.write("if(t" + j + " != null)");
+	                writer.write(NEWLINE);
+	                writer.write(OPEN_BRACK);
+	                writer.write(NEWLINE);
+	                if (scoringAttConst.getAttribute().getType() == AttributeTypes.INTEGER) {
+	                  writer.write("int");
+	                } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.DOUBLE) {
+	                  writer.write("double");
+	                } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.STRING) {
+	                  writer.write("String");
+	                } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.BOOLEAN) {
+	                  writer.write("boolean");
+	                }
+	                writer.write(" v" + j + " = t" + j + ".get"
+	                    + scoringAttConst.getAttribute().getName() + "();");
+	                writer.write(NEWLINE);
+	                writer.write("state.getClock().stop();");
+	                writer.write(NEWLINE);
+	                writer.write("((SimSEGUI)parent).update();");
+	                writer.write(NEWLINE);
+	                writer
+	                    .write("JOptionPane.showMessageDialog(null, (\"Your score is \" + v"
+	                        + j
+	                        + "), \"Game over!\", JOptionPane.INFORMATION_MESSAGE);");
+	                writer.write(NEWLINE);
+	                writer.write(CLOSED_BRACK);
+	                writer.write(NEWLINE);
+	                writer.write(CLOSED_BRACK);
+	                writer.write(NEWLINE);
+	              }
+	            }
+	
+	            writer.write(CLOSED_BRACK);
+	            writer.write(NEWLINE);
+	            writer.write(CLOSED_BRACK);
+	            writer.write(NEWLINE);
+	          }
+	        }
+	        writer.write(CLOSED_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write(CLOSED_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write("else if(a" + j + " > 1)");
+	        writer.write(NEWLINE);
+	        writer.write(OPEN_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write("Vector b" + j + " = new Vector();");
+	        writer.write(NEWLINE);
+	        writer.write("for(int i=0; i<allActions" + j + ".size(); i++)");
+	        writer.write(NEWLINE);
+	        writer.write(OPEN_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write(getUpperCaseLeading(act.getName()) + "Action c" + j
+	            + " = (" + getUpperCaseLeading(act.getName()) + "Action)allActions"
+	            + j + ".elementAt(i);");
+	        writer.write(NEWLINE);
+	        // go through all participants:
+	        for (int k = 0; k < parts.size(); k++) {
+	          ActionTypeParticipant tempPart = (ActionTypeParticipant) parts
+	              .elementAt(k);
+	          if (tempPart.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) {
+	            writer
+	                .write("if((c" + j + ".getAll" + tempPart.getName()
+	                    + "s().contains(emp)) && (!(b" + j + ".contains(c" + j
+	                    + "))))");
+	            writer.write(NEWLINE);
+	            writer.write(OPEN_BRACK);
+	            writer.write(NEWLINE);
+	            writer.write("b" + j + ".add(c" + j + ");");
+	            writer.write(NEWLINE);
+	            writer.write(CLOSED_BRACK);
+	            writer.write(NEWLINE);
+	          }
+	        }
+	        writer.write(CLOSED_BRACK);
+	        writer.write(NEWLINE);
+	        writer.write("ChooseActionToDestroyDialog z" + j
+	            + " = new ChooseActionToDestroyDialog(parent, b" + j
+	            + ", state, emp, ruleExec, s);");
+	        writer.write(NEWLINE);
+	        writer.write(CLOSED_BRACK);
+	        writer.write(NEWLINE);
+	      }
+	      writer.write(CLOSED_BRACK);
+	      writer.write(NEWLINE);
+	      writer.write(CLOSED_BRACK);
+	      writer.write(NEWLINE);
+	      writer.write(CLOSED_BRACK);
+	      writer.write(NEWLINE);
       }
-
-      // go through each destroyer and generate code for it:
-      for (int j = 0; j < userDests.size(); j++) {
-        ActionTypeDestroyer outerDest = (ActionTypeDestroyer) userDests
-            .elementAt(j);
-        ActionType act = outerDest.getActionType();
-        writer.write("// "
-            + ((UserActionTypeDestroyer) outerDest).getMenuText() + ":");
-        writer.write(NEWLINE);
-        writer.write("Vector allActions" + j
-            + " = state.getActionStateRepository().get"
-            + getUpperCaseLeading(act.getName())
-            + "ActionStateRepository().getAllActions();");
-        writer.write(NEWLINE);
-        writer.write("int a" + j + " = 0;");
-        writer.write(NEWLINE);
-        writer.write("for(int i=0; i<allActions" + j + ".size(); i++)");
-        writer.write(NEWLINE);
-        writer.write(OPEN_BRACK);
-        writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(act.getName()) + "Action b" + j
-            + " = (" + getUpperCaseLeading(act.getName()) + "Action)allActions"
-            + j + ".elementAt(i);");
-        writer.write(NEWLINE);
-        writer.write("if(b" + j + ".getAllParticipants().contains(emp))");
-        writer.write(NEWLINE);
-        writer.write(OPEN_BRACK);
-        writer.write(NEWLINE);
-        writer.write("a" + j + "++;");
-        writer.write(NEWLINE);
-        writer.write(CLOSED_BRACK);
-        writer.write(NEWLINE);
-        writer.write(CLOSED_BRACK);
-        writer.write(NEWLINE);
-        writer.write("if(a" + j + " == 1)");
-        writer.write(NEWLINE);
-        writer.write(OPEN_BRACK);
-        writer.write(NEWLINE);
-        writer.write("for(int i=0; i<allActions" + j + ".size(); i++)");
-        writer.write(NEWLINE);
-        writer.write(OPEN_BRACK);
-        writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(act.getName()) + "Action b" + j
-            + " = (" + getUpperCaseLeading(act.getName()) + "Action)allActions"
-            + j + ".elementAt(i);");
-        writer.write(NEWLINE);
-        // go through all participants:
-        Vector parts = act.getAllParticipants();
-        for (int k = 0; k < parts.size(); k++) {
-          ActionTypeParticipant tempPart = (ActionTypeParticipant) parts
-              .elementAt(k);
-          if (tempPart.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) // participant
-                                                                                  // is
-                                                                                  // of
-                                                                                  // employee
-                                                                                  // type
-          {
-            writer.write("if(b" + j + ".getAll" + tempPart.getName()
-                + "s().contains(emp))");
-            writer.write(NEWLINE);
-            writer.write(OPEN_BRACK);
-            writer.write(NEWLINE);
-
-            Vector destRules = act.getAllDestroyerRules();
-            for (int i = 0; i < destRules.size(); i++) {
-              Rule dRule = (Rule) destRules.elementAt(i);
-              writer
-                  .write("ruleExec.update(parent, RuleExecutor.UPDATE_ONE, \""
-                      + dRule.getName() + "\", b" + j + ");");
-              writer.write(NEWLINE);
-            }
-
-            writer.write("b" + j + ".remove" + tempPart.getName() + "(emp);");
-            writer.write(NEWLINE);
-            if ((outerDest.getDestroyerText() != null)
-                && (outerDest.getDestroyerText().length() > 0)) {
-              writer.write("emp.setOverheadText(\""
-                  + ((UserActionTypeDestroyer) outerDest).getDestroyerText()
-                  + "\");");
-              writer.write(NEWLINE);
-            }
-            writer.write("if(b" + j + ".getAll" + tempPart.getName()
-                + "s().size() < ");
-            if (tempPart.getQuantity().isMinValBoundless()) // no minimum
-            {
-              writer.write("0)");
-            } else // has a minimum
-            {
-              writer.write(tempPart.getQuantity().getMinVal().intValue() + ")");
-            }
-            writer.write(NEWLINE);
-            writer.write(OPEN_BRACK);
-            writer.write(NEWLINE);
-            writer
-                .write("Vector c" + j + " = b" + j + ".getAllParticipants();");
-            writer.write(NEWLINE);
-            writer.write("for(int j=0; j<c" + j + ".size(); j++)");
-            writer.write(NEWLINE);
-            writer.write(OPEN_BRACK);
-            writer.write(NEWLINE);
-            writer.write("SSObject d" + j + " = (SSObject)c" + j
-                + ".elementAt(j);");
-            writer.write(NEWLINE);
-            writer.write("if(d" + j + " instanceof Employee)");
-            writer.write(NEWLINE);
-            writer.write(OPEN_BRACK);
-            writer.write(NEWLINE);
-            if ((outerDest.getDestroyerText() != null)
-                && (outerDest.getDestroyerText().length() > 0)) {
-              writer.write("((Employee)d" + j + ").setOverheadText(\""
-                  + ((UserActionTypeDestroyer) outerDest).getDestroyerText()
-                  + "\");");
-              writer.write(NEWLINE);
-            }
-            writer.write(CLOSED_BRACK);
-            writer.write(NEWLINE);
-            writer.write("else if(d" + j + " instanceof Customer)");
-            writer.write(NEWLINE);
-            writer.write(OPEN_BRACK);
-            writer.write(NEWLINE);
-            if ((outerDest.getDestroyerText() != null)
-                && (outerDest.getDestroyerText().length() > 0)) {
-              writer.write("((Customer)d" + j + ").setOverheadText(\""
-                  + ((UserActionTypeDestroyer) outerDest).getDestroyerText()
-                  + "\");");
-              writer.write(NEWLINE);
-            }
-            writer.write(CLOSED_BRACK);
-            writer.write(NEWLINE);
-            writer.write(CLOSED_BRACK);
-            writer.write(NEWLINE);
-
-            // remove action from repository:
-            writer.write("state.getActionStateRepository().get"
-                + getUpperCaseLeading(act.getName())
-                + "ActionStateRepository().remove(b" + j + ");");
-            writer.write(NEWLINE);
-
-            // game-ending:
-            if (outerDest.isGameEndingDestroyer()) {
-              writer.write("// stop game and give score:");
-              writer.write(NEWLINE);
-              writer.write(getUpperCaseLeading(act.getName()) + "Action t111"
-                  + j + " = (" + getUpperCaseLeading(act.getName())
-                  + "Action)b" + j + ";");
-              writer.write(NEWLINE);
-              // find the scoring attribute:
-              ActionTypeParticipantDestroyer scoringPartDest = null;
-              ActionTypeParticipantConstraint scoringPartConst = null;
-              ActionTypeParticipantAttributeConstraint scoringAttConst = null;
-              Vector partDests = outerDest.getAllParticipantDestroyers();
-              for (int m = 0; m < partDests.size(); m++) {
-                ActionTypeParticipantDestroyer partDest = (ActionTypeParticipantDestroyer) partDests
-                    .elementAt(m);
-                Vector partConsts = partDest.getAllConstraints();
-                for (int n = 0; n < partConsts.size(); n++) {
-                  ActionTypeParticipantConstraint partConst = (ActionTypeParticipantConstraint) partConsts
-                      .elementAt(n);
-                  ActionTypeParticipantAttributeConstraint[] attConsts = partConst
-                      .getAllAttributeConstraints();
-                  for (int p = 0; p < attConsts.length; p++) {
-                    if (attConsts[p].isScoringAttribute()) {
-                      scoringAttConst = attConsts[p];
-                      scoringPartConst = partConst;
-                      scoringPartDest = partDest;
-                      break;
-                    }
-                  }
-                }
-              }
-              if ((scoringAttConst != null) && (scoringPartConst != null)
-                  && (scoringPartDest != null)) {
-                writer.write("if(t111" + j + ".getAll"
-                    + scoringPartDest.getParticipant().getName()
-                    + "s().size() > 0)");
-                writer.write(NEWLINE);
-                writer.write(OPEN_BRACK);
-                writer.write(NEWLINE);
-                writer.write(getUpperCaseLeading(scoringPartConst
-                    .getSimSEObjectType().getName())
-                    + " t"
-                    + j
-                    + " = ("
-                    + getUpperCaseLeading(scoringPartConst.getSimSEObjectType()
-                        .getName())
-                    + ")(t111"
-                    + j
-                    + ".getAll"
-                    + scoringPartDest.getParticipant().getName()
-                    + "s().elementAt(0));");
-                writer.write(NEWLINE);
-                writer.write("if(t" + j + " != null)");
-                writer.write(NEWLINE);
-                writer.write(OPEN_BRACK);
-                writer.write(NEWLINE);
-                if (scoringAttConst.getAttribute().getType() == AttributeTypes.INTEGER) {
-                  writer.write("int");
-                } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.DOUBLE) {
-                  writer.write("double");
-                } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.STRING) {
-                  writer.write("String");
-                } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.BOOLEAN) {
-                  writer.write("boolean");
-                }
-                writer.write(" v" + j + " = t" + j + ".get"
-                    + scoringAttConst.getAttribute().getName() + "();");
-                writer.write(NEWLINE);
-                writer.write("state.getClock().stop();");
-                writer.write(NEWLINE);
-                writer.write("((SimSEGUI)parent).update();");
-                writer.write(NEWLINE);
-                writer
-                    .write("JOptionPane.showMessageDialog(null, (\"Your score is \" + v"
-                        + j
-                        + "), \"Game over!\", JOptionPane.INFORMATION_MESSAGE);");
-                writer.write(NEWLINE);
-                writer.write(CLOSED_BRACK);
-                writer.write(NEWLINE);
-                writer.write(CLOSED_BRACK);
-                writer.write(NEWLINE);
-              }
-            }
-
-            writer.write(CLOSED_BRACK);
-            writer.write(NEWLINE);
-            writer.write(CLOSED_BRACK);
-            writer.write(NEWLINE);
-          }
-        }
-        writer.write(CLOSED_BRACK);
-        writer.write(NEWLINE);
-        writer.write(CLOSED_BRACK);
-        writer.write(NEWLINE);
-        writer.write("else if(a" + j + " > 1)");
-        writer.write(NEWLINE);
-        writer.write(OPEN_BRACK);
-        writer.write(NEWLINE);
-        writer.write("Vector b" + j + " = new Vector();");
-        writer.write(NEWLINE);
-        writer.write("for(int i=0; i<allActions" + j + ".size(); i++)");
-        writer.write(NEWLINE);
-        writer.write(OPEN_BRACK);
-        writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(act.getName()) + "Action c" + j
-            + " = (" + getUpperCaseLeading(act.getName()) + "Action)allActions"
-            + j + ".elementAt(i);");
-        writer.write(NEWLINE);
-        // go through all participants:
-        for (int k = 0; k < parts.size(); k++) {
-          ActionTypeParticipant tempPart = (ActionTypeParticipant) parts
-              .elementAt(k);
-          if (tempPart.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) {
-            writer
-                .write("if((c" + j + ".getAll" + tempPart.getName()
-                    + "s().contains(emp)) && (!(b" + j + ".contains(c" + j
-                    + "))))");
-            writer.write(NEWLINE);
-            writer.write(OPEN_BRACK);
-            writer.write(NEWLINE);
-            writer.write("b" + j + ".add(c" + j + ");");
-            writer.write(NEWLINE);
-            writer.write(CLOSED_BRACK);
-            writer.write(NEWLINE);
-          }
-        }
-        writer.write(CLOSED_BRACK);
-        writer.write(NEWLINE);
-        writer.write("ChooseActionToDestroyDialog z" + j
-            + " = new ChooseActionToDestroyDialog(parent, b" + j
-            + ", state, emp, ruleExec, s);");
-        writer.write(NEWLINE);
-        writer.write(CLOSED_BRACK);
-        writer.write(NEWLINE);
-      }
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
 
       // make a Vector of all the user triggers:
       Vector userTrigs = new Vector();
+      Vector actions = actTypes.getAllActionTypes();
       for (int i = 0; i < actions.size(); i++) {
         ActionType act = (ActionType) actions.elementAt(i);
         Vector allTrigs = act.getAllTriggers();
@@ -835,6 +842,20 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
       }
 
+      // make a Vector of all the user destroyers:
+      Vector userDests = new Vector();
+      for (int j = 0; j < actions.size(); j++) {
+        ActionType act = (ActionType) actions.elementAt(j);
+        Vector allDests = act.getAllDestroyers();
+        for (int k = 0; k < allDests.size(); k++) {
+          ActionTypeDestroyer tempDest = (ActionTypeDestroyer) allDests
+              .elementAt(k);
+          if (tempDest instanceof UserActionTypeDestroyer) {
+            userDests.add(tempDest);
+          }
+        }
+      }
+      
       // go through each destroyer and generate code for it:
       for (int j = 0; j < userDests.size(); j++) {
         ActionTypeDestroyer outerDest = (ActionTypeDestroyer) userDests
