@@ -459,7 +459,9 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     editMenu.setEnabled(true);
     generateMenu.setEnabled(true);
     resetWindowTitle();
-    optionsFileManip.loadFile(file);
+    if (file.exists()) {
+      optionsFileManip.loadFile(file);
+    }
     objectBuilder.setNewOpenFile(openFile);
     startStateBuilder.setNewOpenFile(openFile);
     actionBuilder.setNewOpenFile(openFile);
