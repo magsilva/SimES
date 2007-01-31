@@ -197,6 +197,8 @@ public abstract class ActionTypeTrigger implements Cloneable {
       UserActionTypeTrigger userTrig = new UserActionTypeTrigger(name, action);
       if (this instanceof UserActionTypeTrigger) {
         userTrig.setMenuText(((UserActionTypeTrigger) (this)).getMenuText());
+        userTrig.setRequiresConfirmation(((UserActionTypeTrigger) (this)).
+            requiresConfirmation());
       }
       userTrig.setTriggers(participantTriggers);
       userTrig.setTriggerText(triggerText);

@@ -471,8 +471,10 @@ public class ModelFileManipulator {
           {
             writer.write(ActionTypeTrigger.USER);
             writer.write(NEWLINE);
-            writer.write(((UserActionTypeTrigger) (tempTrig)).getMenuText()); // menu
-                                                                              // text
+            writer.write(((UserActionTypeTrigger) (tempTrig)).getMenuText());                                                     // text
+            writer.write(NEWLINE);
+            writer.write(String.valueOf(((UserActionTypeTrigger) (tempTrig)).
+                requiresConfirmation()));
             writer.write(NEWLINE);
           }
           // trigger text:

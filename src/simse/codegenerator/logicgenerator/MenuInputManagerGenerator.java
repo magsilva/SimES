@@ -567,6 +567,17 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
         }
+        
+        // triggers requiring confirmation:
+        if (((UserActionTypeTrigger)outerTrig).requiresConfirmation()) {
+          writer
+          .write("int choice = JOptionPane.showConfirmDialog(null, (\"Are you sure?\"), \"Confirm Action\", JOptionPane.YES_NO_OPTION);");
+          writer.write(NEWLINE);
+          writer.write("if(choice == JOptionPane.YES_OPTION)");
+          writer.write(NEWLINE);
+          writer.write(OPEN_BRACK);
+          writer.write(NEWLINE);
+        }
 
         Vector triggers = outerTrig.getAllParticipantTriggers();
         for (int j = 0; j < triggers.size(); j++) {
@@ -787,7 +798,9 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
 
-        if (outerTrig.isGameEndingTrigger()) // add extra closed brack
+        if (outerTrig.isGameEndingTrigger() || 
+            (((UserActionTypeTrigger)outerTrig).requiresConfirmation())) 
+          	// add extra closed brack
         {
           writer.write(CLOSED_BRACK);
           writer.write(NEWLINE);

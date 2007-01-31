@@ -6,20 +6,27 @@ public class UserActionTypeTrigger extends ActionTypeTrigger implements
     Cloneable {
   private String menuText; // what should appear on a user's menu for performing
                            // this action
+  private boolean requiresConfirmation; // whether or not this action requires
+  																		  // confirmation from the user before
+  																			// starting
 
-  public UserActionTypeTrigger(String name, ActionType action, String text) {
+  public UserActionTypeTrigger(String name, ActionType action, String text,
+      boolean confirm) {
     super(name, action);
     menuText = text;
+    requiresConfirmation = confirm;
   }
 
   public UserActionTypeTrigger(String name, ActionType action) {
     super(name, action);
     menuText = new String();
+    requiresConfirmation = false;
   }
 
   public Object clone() {
     UserActionTypeTrigger cl = (UserActionTypeTrigger) (super.clone());
     cl.menuText = menuText;
+    cl.requiresConfirmation = requiresConfirmation;
     return cl;
   }
 
@@ -29,5 +36,13 @@ public class UserActionTypeTrigger extends ActionTypeTrigger implements
 
   public void setMenuText(String newText) {
     menuText = newText;
+  }
+  
+  public boolean requiresConfirmation() {
+    return requiresConfirmation;
+  }
+  
+  public void setRequiresConfirmation(boolean b) {
+    requiresConfirmation = b;
   }
 }

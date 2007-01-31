@@ -289,9 +289,21 @@ public class ActionFileManipulator {
                                                                            // trigger
                                                                            // type
                     {
-                      newTrig = new UserActionTypeTrigger(triggerName, newAct,
-                          reader.readLine()); // create a new user trigger
-                      // with the menu text from the file
+                      String menuText = reader.readLine();
+                      reader.mark(100);
+                      String confirm = reader.readLine();
+                      if ((confirm.equals("true")) || 
+                          (confirm.equals("false"))) { // new format 1/31/07
+                        															 // that includes confirm
+                        															 // option
+                        newTrig = new UserActionTypeTrigger(triggerName, newAct,
+                            menuText, Boolean.parseBoolean(confirm));
+                      }
+                      else { // old format
+                        newTrig = new UserActionTypeTrigger(triggerName, newAct,
+                          menuText, false); 
+                        reader.reset();
+                      }
                     } else // autonomous trigger type
                     {
                       newTrig = new AutonomousActionTypeTrigger(triggerName,

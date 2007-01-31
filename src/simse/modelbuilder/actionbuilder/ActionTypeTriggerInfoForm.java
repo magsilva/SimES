@@ -26,6 +26,7 @@ public class ActionTypeTriggerInfoForm extends JDialog implements
                                      // (autonomous, user, or random)
   private JTextField textTextField; // for entering trigger text
   private JTextField menuTextField; // only for user triggers
+  private JCheckBox areYouSureCBox; // only for user triggers
   private JTextField frequencyTextField; // only for random triggers
   private JList participantList; // for choosing a participant whose trigger
                                  // conditions to edit
@@ -34,7 +35,7 @@ public class ActionTypeTriggerInfoForm extends JDialog implements
                                  // game-ending trigger
   private JButton okButton;
   private JButton cancelButton;
-  private JPanel menuTextPane; // only for user triggers
+  private Box userTrigPane; // only for user triggers
   private JPanel freqPane; // only for random triggers
   private JPanel optionalPane; // only for user/random triggers
 
@@ -93,13 +94,21 @@ public class ActionTypeTriggerInfoForm extends JDialog implements
     // Create optionalPane:
     optionalPane = new JPanel();
 
-    // Create menuText pane and components:
-    menuTextPane = new JPanel();
+    // Create userTrig pane and components:
+    userTrigPane = Box.createVerticalBox();
+    JPanel menuTextPane = new JPanel();
     menuTextPane.add(new JLabel("Menu text:"));
     menuTextField = new JTextField(10);
-    menuTextField
-        .setToolTipText("Enter the text to be shown on the user's menu for this trigger");
+    menuTextField.setToolTipText("Enter the text to be shown on the user's " +
+    		"menu for this trigger");
     menuTextPane.add(menuTextField);
+    userTrigPane.add(menuTextPane);
+    JPanel areYouSurePane = new JPanel();
+    areYouSureCBox = new JCheckBox("User must confirm to start action");
+    areYouSureCBox.setToolTipText("Asks the user, \"Are you sure?\" " +
+    		"before starting the action");
+    areYouSurePane.add(areYouSureCBox);
+    userTrigPane.add(areYouSurePane);
 
     // Create freqPane and components:
     freqPane = new JPanel();
@@ -177,7 +186,7 @@ public class ActionTypeTriggerInfoForm extends JDialog implements
       JSeparator separator1 = new JSeparator();
       separator1.setMaximumSize(new Dimension(450, 1));
       optionalPane.add(separator1);
-      optionalPane.add(menuTextPane);
+      optionalPane.add(userTrigPane);
     } else if (triggerTypeList.getSelectedItem().equals(
         ActionTypeTrigger.RANDOM)) {
       JSeparator separator1 = new JSeparator();
@@ -250,7 +259,7 @@ public class ActionTypeTriggerInfoForm extends JDialog implements
           ActionTypeTrigger.USER)) // user trigger type selected
       {
         optionalPane.removeAll();
-        optionalPane.add(menuTextPane);
+        optionalPane.add(userTrigPane);
         validate();
         pack();
         repaint();
@@ -346,6 +355,8 @@ public class ActionTypeTriggerInfoForm extends JDialog implements
         {
           ((UserActionTypeTrigger) (trigger)).setMenuText(menuTextField
               .getText()); // set the trigger's menu text
+          ((UserActionTypeTrigger)(trigger)).setRequiresConfirmation(
+              areYouSureCBox.isSelected());
         } else if (triggerTypeList.getSelectedItem().equals(
             ActionTypeTrigger.RANDOM)) // random trigger
         {
@@ -420,6 +431,8 @@ public class ActionTypeTriggerInfoForm extends JDialog implements
                                                                                 // reflect
                                                                                 // actual
                                                                                 // value
+      areYouSureCBox.setSelected(((UserActionTypeTrigger)(trigger)).
+          requiresConfirmation());
     } else if (trigger instanceof RandomActionTypeTrigger) // trigger is random
                                                            // type
     {
