@@ -145,25 +145,30 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
     repaint();
   }
 
-  public void reload(File tempFile) // reloads the graphics from a temporary
-                                    // file
+  /*
+   * reloads the graphics from a temporary file; if resetUI is true, clears all
+   * current selections in the UI.
+   */
+  public void reload(File tempFile, boolean resetUI)
   {
     // reload:
     Vector returnVector = sopFileManip.loadFile(tempFile);
     imageDir = (File) returnVector.elementAt(0);
     generateWarnings((Vector) returnVector.elementAt(1));
 
-    // reset UI stuff:
-    refreshImagePane();
-    topPanelLabel.setText("Choose an object:");
-    bottomPanelLabel.setText("Choose an image:");
-    selectedImage.setEnabled(true);
-    objectList.setEnabled(true);
-
-    selectedImage.setIcon(null);
-    refreshObjectList();
-    clearObjectInFocus();
-    matchButton.setEnabled(false);
+    if (resetUI) {
+	    // reset UI stuff:
+	    refreshImagePane();
+	    topPanelLabel.setText("Choose an object:");
+	    bottomPanelLabel.setText("Choose an image:");
+	    selectedImage.setEnabled(true);
+	    objectList.setEnabled(true);
+	
+	    selectedImage.setIcon(null);
+	    refreshObjectList();
+	    clearObjectInFocus();
+	    matchButton.setEnabled(false);
+    }
   }
 
   private void generateWarnings(Vector warnings) // displays warnings of errors
@@ -339,7 +344,7 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
     iconDirButt.setEnabled(true);
     if (f.exists()) // file has been saved before
     {
-      reload(f);
+      reload(f, true);
     }
   }
 

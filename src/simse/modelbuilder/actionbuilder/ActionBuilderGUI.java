@@ -222,31 +222,36 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     return actions;
   }
 
-  public void reload(File tempFile) // reloads the action types from a temporary
-                                    // file
+  /*
+   * reloads the action types from a temporary file; if restUI is true, clears
+   * all current selections
+   */
+  public void reload(File tempFile, boolean resetUI) 
   {
     // reload:
     Vector warnings = actFileManip.loadFile(tempFile);
     generateWarnings(warnings);
 
-    // reset UI stuff:
-    updateDefinedActionsList();
-    clearActionInFocus();
-    createNewActionButton.setEnabled(false);
-    Vector objTypes = objects.getAllObjectTypes();
-    if (objTypes.size() > 0) // there is at least one object type
-    {
-      // make sure there is at least one object type w/ at least one attribute:
-      for (int i = 0; i < objTypes.size(); i++) {
-        SimSEObjectType type = (SimSEObjectType) objTypes.elementAt(i);
-        // check if it has at least one attribute:
-        if (type.getAllAttributes().size() > 0) {
-          createNewActionButton.setEnabled(true);
-          break;
-        }
-      }
-    } else {
-      createNewActionButton.setEnabled(false);
+    if (resetUI) {
+	    // reset UI stuff:
+	    updateDefinedActionsList();
+	    clearActionInFocus();
+	    createNewActionButton.setEnabled(false);
+	    Vector objTypes = objects.getAllObjectTypes();
+	    if (objTypes.size() > 0) // there is at least one object type
+	    {
+	      // make sure there is at least one object type w/ at least one attribute:
+	      for (int i = 0; i < objTypes.size(); i++) {
+	        SimSEObjectType type = (SimSEObjectType) objTypes.elementAt(i);
+	        // check if it has at least one attribute:
+	        if (type.getAllAttributes().size() > 0) {
+	          createNewActionButton.setEnabled(true);
+	          break;
+	        }
+	      }
+	    } else {
+	      createNewActionButton.setEnabled(false);
+	    }
     }
   }
 
@@ -640,7 +645,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     warningPane.clearWarnings();
     if (f.exists()) // file has been saved before
     {
-      reload(f);
+      reload(f, true);
     }
   }
 

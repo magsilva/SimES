@@ -259,7 +259,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
       {
         if (openFile.exists()) // file has already been saved before
         {
-          checkForInconsistencies();
+          checkForInconsistencies(false);
           fileManip.generateFile(openFile, graphicsBuilder.getImageDirectory(),
               graphicsBuilder.getStartStateObjsToImages(), graphicsBuilder
                   .getRuleObjsToImages(), objectBuilder.allowHireFire());
@@ -408,7 +408,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
   }
 
   public void stateChanged(ChangeEvent e) {
-    checkForInconsistencies();
+    checkForInconsistencies(true);
   }
 
   public void menuSelected(MenuEvent e) {
@@ -430,7 +430,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       File selectedFile = fileChooser.getSelectedFile();
       if (isMDLFile(selectedFile)) {
-        checkForInconsistencies();
+        checkForInconsistencies(false);
         // generate file:
         fileManip.generateFile(selectedFile, graphicsBuilder
             .getImageDirectory(), graphicsBuilder.getStartStateObjsToImages(),
@@ -600,7 +600,11 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     }
   }
   
-  private void checkForInconsistencies() {
+  /*
+   * Checks for inconsistencies between the model parts; if resetUI is true,
+   * resets the UI by clearing all current selections.
+   */
+  private void checkForInconsistencies(boolean resetUI) {
     if (openFile != null) // there is a file currently open
     {
       startStateBuilder.getCreatedObjects().updateAllInstantiatedAttributes();
@@ -613,10 +617,10 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
         fileManip.generateFile(tempFile, graphicsBuilder.getImageDirectory(),
             graphicsBuilder.getStartStateObjsToImages(), graphicsBuilder
                 .getRuleObjsToImages(), objectBuilder.allowHireFire());
-        startStateBuilder.reload(tempFile);
-        actionBuilder.reload(tempFile);
-        ruleBuilder.reload(tempFile);
-        graphicsBuilder.reload(tempFile);
+        startStateBuilder.reload(tempFile, resetUI);
+        actionBuilder.reload(tempFile, resetUI);
+        ruleBuilder.reload(tempFile, resetUI);
+        graphicsBuilder.reload(tempFile, resetUI);
         mapEditor.reload(tempFile, graphicsBuilder.getImageDirectory());
         tempFile.delete();
       } catch (IOException i) {

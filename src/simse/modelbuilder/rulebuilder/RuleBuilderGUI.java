@@ -197,23 +197,28 @@ public class RuleBuilderGUI extends JPanel implements ActionListener,
     }
   }
 
-  public void reload(File tempFile) // reloads the action types from a temporary
-                                    // file
+  /*
+   * reloads the rules from a temporary file; if resetUI is true, clears all
+   * current selections in the UI.
+   */
+  public void reload(File tempFile, boolean resetUI) 
   {
     // reload:
     Vector warnings = ruleFileManip.loadFile(tempFile);
     generateWarnings(warnings);
 
+    if (resetUI) {
     // reset UI stuff:
-    clearActionInFocus();
-    refreshDefinedActionsList();
-
-    addCreateObjectsRuleButton.setEnabled(false);
-    addDestroyObjectsRuleButton.setEnabled(false);
-    addEffectRuleButton.setEnabled(false);
-    editRuleButton.setEnabled(false);
-    removeRuleButton.setEnabled(false);
-    renameRuleButton.setEnabled(false);
+	    clearActionInFocus();
+	    refreshDefinedActionsList();
+	
+	    addCreateObjectsRuleButton.setEnabled(false);
+	    addDestroyObjectsRuleButton.setEnabled(false);
+	    addEffectRuleButton.setEnabled(false);
+	    editRuleButton.setEnabled(false);
+	    removeRuleButton.setEnabled(false);
+	    renameRuleButton.setEnabled(false);
+    }
   }
 
   private void generateWarnings(Vector warnings) // displays warnings of errors
@@ -666,7 +671,7 @@ public class RuleBuilderGUI extends JPanel implements ActionListener,
     warningPane.clearWarnings();
     if (f.exists()) // file has been saved before
     {
-      reload(f);
+      reload(f, true);
     }
   }
 

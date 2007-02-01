@@ -198,39 +198,44 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
     return objects;
   }
 
-  public void reload(File tempFile) // reloads the start state objects from a
-                                    // temporary file
+  /*
+   * reloads the start state objects from a temporary file; if resetUI is
+   * true, it clears the current selections in the UI
+   */
+  public void reload(File tempFile, boolean resetUI) 
   {
     // reload:
     Vector warnings = ssFileManip.loadFile(tempFile);
     generateWarnings(warnings);
 
     // reset UI stuff:
-    resetCreateObjectList();
-    updateCreatedObjectsList();
-    clearObjectInFocus();
-    attTblMod.refreshData();
-    createNewObjLabel.setEnabled(false);
-    createObjectList.setEnabled(false);
-    okCreateObjectButton.setEnabled(false);
-    Vector objTypes = objectTypes.getAllObjectTypes();
-    if (objTypes.size() > 0) // there is at least one object type
-    {
-      // make sure there is at least one object type w/ at least one attribute:
-      for (int i = 0; i < objTypes.size(); i++) {
-        SimSEObjectType type = (SimSEObjectType) objTypes.elementAt(i);
-        // check if it has at least one attribute:
-        if (type.getAllAttributes().size() > 0) {
-          createNewObjLabel.setEnabled(true);
-          createObjectList.setEnabled(true);
-          okCreateObjectButton.setEnabled(true);
-          break;
-        }
-      }
-    } else {
-      createNewObjLabel.setEnabled(false);
-      createObjectList.setEnabled(false);
-      okCreateObjectButton.setEnabled(false);
+    if (resetUI) {
+	    resetCreateObjectList();
+	    updateCreatedObjectsList();
+	    clearObjectInFocus();
+	    attTblMod.refreshData();
+	    createNewObjLabel.setEnabled(false);
+	    createObjectList.setEnabled(false);
+	    okCreateObjectButton.setEnabled(false);
+	    Vector objTypes = objectTypes.getAllObjectTypes();
+	    if (objTypes.size() > 0) // there is at least one object type
+	    {
+	      // make sure there is at least one object type w/ at least one attribute:
+	      for (int i = 0; i < objTypes.size(); i++) {
+	        SimSEObjectType type = (SimSEObjectType) objTypes.elementAt(i);
+	        // check if it has at least one attribute:
+	        if (type.getAllAttributes().size() > 0) {
+	          createNewObjLabel.setEnabled(true);
+	          createObjectList.setEnabled(true);
+	          okCreateObjectButton.setEnabled(true);
+	          break;
+	        }
+	      }
+	    } else {
+	      createNewObjLabel.setEnabled(false);
+	      createObjectList.setEnabled(false);
+	      okCreateObjectButton.setEnabled(false);
+	    }
     }
   }
 
@@ -522,7 +527,7 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
     warningPane.clearWarnings();
     if (f.exists()) // file has been saved before
     {
-      reload(f);
+      reload(f, true);
     }
   }
 
