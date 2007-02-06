@@ -82,6 +82,10 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
       writer.write(NEWLINE);
       writer.write("private Vector checkBoxes;");
       writer.write(NEWLINE);
+      writer.write("private JButton checkAllButton;");
+      writer.write(NEWLINE);
+      writer.write("private JButton clearAllButton;");
+      writer.write(NEWLINE);
       writer.write("private JButton okButton;");
       writer.write(NEWLINE);
       writer.write("private JButton cancelButton;");
@@ -200,6 +204,22 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      
+      // check pane:
+      writer.write("JPanel checkPane = new JPanel();");
+      writer.write(NEWLINE);
+      writer.write("checkAllButton = new JButton(\"Check All\");");
+      writer.write(NEWLINE);
+      writer.write("checkAllButton.addActionListener(this);");
+      writer.write(NEWLINE);
+      writer.write("checkPane.add(checkAllButton);");
+      writer.write(NEWLINE);
+      writer.write("clearAllButton = new JButton(\"Clear All\");");
+      writer.write(NEWLINE);
+      writer.write("clearAllButton.addActionListener(this);");
+      writer.write(NEWLINE);
+      writer.write("checkPane.add(clearAllButton);");
+      writer.write(NEWLINE);
 
       // bottom pane:
       writer.write("JPanel bottomPane = new JPanel();");
@@ -221,6 +241,20 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
       writer.write("mainPane.add(topPane);");
       writer.write(NEWLINE);
       writer.write("mainPane.add(middlePane);");
+      writer.write(NEWLINE);
+      writer.write("JSeparator separator1 = new JSeparator();");
+      writer.write(NEWLINE);
+      writer.write("separator1.setMaximumSize(new Dimension(900, 1));");
+      writer.write(NEWLINE);
+      writer.write("mainPane.add(separator1);");
+      writer.write(NEWLINE);
+      writer.write("mainPane.add(checkPane);");
+      writer.write(NEWLINE);
+      writer.write("JSeparator separator2 = new JSeparator();");
+      writer.write(NEWLINE);
+      writer.write("separator2.setMaximumSize(new Dimension(900, 1));");
+      writer.write(NEWLINE);
+      writer.write("mainPane.add(separator2);");
       writer.write(NEWLINE);
       writer.write("mainPane.add(bottomPane);");
       writer.write(NEWLINE);
@@ -400,6 +434,25 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
       writer.write(NEWLINE);
       writer.write("dispose();");
       writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else if (source == checkAllButton) {");
+      writer.write(NEWLINE);
+      writer.write("for (int i = 0; i < checkBoxes.size(); i++) {");
+      writer.write(NEWLINE);
+      writer.write("((JCheckBox) checkBoxes.elementAt(i)).setSelected(true);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else if (source == clearAllButton) {");
+      writer.write(NEWLINE);
+      writer.write("for (int i = 0; i < checkBoxes.size(); i++) {");
+      writer.write(NEWLINE);
+      writer.write("((JCheckBox) checkBoxes.elementAt(i)).setSelected(false);");
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
