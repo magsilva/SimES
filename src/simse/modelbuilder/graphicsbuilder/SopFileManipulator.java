@@ -2,15 +2,17 @@
 
 package simse.modelbuilder.graphicsbuilder;
 
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+import simse.modelbuilder.*;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.startstatebuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 import simse.modelbuilder.rulebuilder.*;
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
 
 public class SopFileManipulator {
+  private ModelOptions options;
   private DefinedObjectTypes objectTypes;
   private CreatedObjects objects;
   private DefinedActionTypes actTypes;
@@ -21,13 +23,13 @@ public class SopFileManipulator {
                                       // CreateObjectsRules in
                                       // DefinedActionTypes to filename of
                                       // associated image file (String)
-  private final char NEWLINE = '\n';
   private final String BEGIN_GRAPHICS_TAG = "<beginGraphics>";
   private final String END_GRAPHICS_TAG = "<endGraphics>";
 
-  public SopFileManipulator(DefinedObjectTypes defObjs,
+  public SopFileManipulator(ModelOptions opts, DefinedObjectTypes defObjs,
       CreatedObjects createdObjs, DefinedActionTypes acts,
       Hashtable stsObjsToImgs, Hashtable ruleObjsToImgs) {
+    options = opts;
     objectTypes = defObjs;
     objects = createdObjs;
     actTypes = acts;
@@ -38,14 +40,11 @@ public class SopFileManipulator {
   public Vector loadFile(File inputFile) // loads the mdl file, filling the
                                          // startStateObjsToImages,
                                          // ruleObjsToImages, createdObjs,
-  // objTypes, and actTypes with the data from the file, and returns as the
-  // first element in the Vector, a String denoting the pathname
-  // for the directory in which the icons are located, and as the second element
-  // in the Vector, a Vector of warning messages.
+  // objTypes, and actTypes with the data from the file, and returns a Vector 
+  // of warning messages.
   {
     startStateObjsToImages.clear();
     ruleObjsToImages.clear();
-    String iconDirectory = new String();
     Vector warnings = new Vector(); // vector of warning messages
     try {
       BufferedReader reader = new BufferedReader(new FileReader(inputFile));
@@ -56,9 +55,25 @@ public class SopFileManipulator {
         if (currentLine.equals(BEGIN_GRAPHICS_TAG)) // beginning of graphics
         {
           foundBeginningOfGraphics = true;
-          currentLine = reader.readLine(); // read in BEGIN_ICONS_DIR_TAG
-          iconDirectory = reader.readLine(); // get the icon directory path
-          currentLine = reader.readLine(); // read in END_ICONS_DIR_TAG
+          reader.mark(200);
+          currentLine = reader.readLine(); 
+          if (currentLine.equals("<beginIconDirectoryPath>")) { // old format
+            String iconDir = reader.readLine(); // get the icon directory path
+            if (iconDir != null) {
+              File iconDirFile = new File(iconDir);
+              if (iconDirFile.exists() && iconDirFile.isDirectory()) {
+                options.setIconDirectory(iconDirFile);
+              }
+              else {
+                warnings.add("Cannot find icon directory " + 
+                    iconDirFile.getAbsolutePath());
+              }
+            }
+            reader.readLine(); // read in END_ICONS_DIR_TAG
+          }
+          else { // new format
+            reader.reset();
+          }
           boolean endOfGraphics = false;
           while (!endOfGraphics) {
             currentLine = reader.readLine(); // read in the next line of text
@@ -233,10 +248,7 @@ public class SopFileManipulator {
       JOptionPane.showMessageDialog(null, ("Error reading file! " + e
           .toString()), "File IO Error", JOptionPane.WARNING_MESSAGE);
     }
-    Vector returnVector = new Vector();
-    returnVector.add(new File(iconDirectory));
-    returnVector.add(warnings);
-    return returnVector;
+    return warnings;
   }
 
   private SimSEObject getObjectFromRules(int type, String simSEObjectTypeName,

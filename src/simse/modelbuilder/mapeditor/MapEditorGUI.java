@@ -21,10 +21,11 @@ public class MapEditorGUI extends JPanel {
   private MapEditorMap map;
   private WarningListPane warningPane;
 
-  public MapEditorGUI(ModelBuilderGUI owner, DefinedObjectTypes objectTypes,
-      CreatedObjects objects, DefinedActionTypes actions, File iconDir,
-      Hashtable startStateObjsToImages, Hashtable ruleObjsToImages) {
-    map = new MapEditorMap(owner, objectTypes, objects, actions, iconDir,
+  public MapEditorGUI(ModelBuilderGUI owner, ModelOptions options, 
+      DefinedObjectTypes objectTypes, CreatedObjects objects, 
+      DefinedActionTypes actions, Hashtable startStateObjsToImages, 
+      Hashtable ruleObjsToImages) {
+    map = new MapEditorMap(owner, options, objectTypes, objects, actions, 
         startStateObjsToImages, ruleObjsToImages);
     warningPane = new WarningListPane();
 
@@ -51,11 +52,10 @@ public class MapEditorGUI extends JPanel {
     return map.getMap();
   }
 
-  public void reload(File tempFile, File iconDir) // reloads the map from a
-                                                  // temporary file
+  public void reload(File tempFile) // reloads the map from a temporary file
   {
     // reload:
-    Vector warnings = map.loadFile(tempFile, iconDir);
+    Vector warnings = map.loadFile(tempFile);
     generateWarnings(warnings);
   }
 
@@ -74,12 +74,12 @@ public class MapEditorGUI extends JPanel {
     warningPane.clearWarnings();
   }
 
-  public void setNewOpenFile(File f, File iconDir) {
+  public void setNewOpenFile(File f) {
     map.setNewOpenFile();
     warningPane.clearWarnings();
     if (f.exists()) // file has been saved before
     {
-      reload(f, iconDir);
+      reload(f);
     }
   }
 }

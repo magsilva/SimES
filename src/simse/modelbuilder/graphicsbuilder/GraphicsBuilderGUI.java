@@ -15,6 +15,7 @@ import java.io.*;
 
 public class GraphicsBuilderGUI extends JPanel implements ActionListener {
   private ModelBuilderGUI mainGUI;
+  private ModelOptions options;
   private CreatedObjects objects; // data structure for holding all of the
                                   // created SimSE objects
   private DefinedObjectTypes objTypes;
@@ -31,9 +32,6 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
                                             // file (String)
   private Hashtable imagesToFilenames; // maps ImageIcons (keys) to the filename
                                        // of that image's file (String) (values)
-  private File imageDir; // directory containing images
-  private JFileChooser imageDirChooser; // for opening image directory
-  private JButton iconDirButt; // button for changing icon directory
   private JList objectList; // list of objects to match pictures to
   private Vector objectListData; // data for objectList
   private JButton matchButton; // button to match a picture to an object
@@ -43,30 +41,19 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
   private JLabel bottomPanelLabel;
   private WarningListPane warningPane;
 
-  public GraphicsBuilderGUI(ModelBuilderGUI owner, DefinedObjectTypes objTs,
-      CreatedObjects objs, DefinedActionTypes acts) {
+  public GraphicsBuilderGUI(ModelBuilderGUI owner, ModelOptions opts, 
+      DefinedObjectTypes objTs, CreatedObjects objs, DefinedActionTypes acts) {
     mainGUI = owner;
     imagesToFilenames = new Hashtable();
     startStateObjsToImgFilenames = new Hashtable();
     ruleObjsToImgFilenames = new Hashtable();
+    options = opts;
     objects = objs;
     objTypes = objTs;
     actTypes = acts;
 
-    sopFileManip = new SopFileManipulator(objTypes, objects, actTypes,
+    sopFileManip = new SopFileManipulator(options, objTypes, objects, actTypes,
         startStateObjsToImgFilenames, ruleObjsToImgFilenames);
-
-    // image dir file chooser:
-    imageDirChooser = new JFileChooser();
-    imageDirChooser.addChoosableFileFilter(new DirectoryFileFilter()); // make
-                                                                       // it so
-                                                                       // it
-                                                                       // only
-                                                                       // displays
-                                                                       // directories
-    imageDirChooser
-        .setDialogTitle("Please select the directory where available icons are located:");
-    imageDirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
     // Create main panel (box):
     Box mainPane = Box.createVerticalBox();
@@ -74,13 +61,6 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 
     // Create top pane:
     Box topPane = Box.createVerticalBox();
-    JPanel topButtonPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    iconDirButt = new JButton("Icon Directory");
-    iconDirButt.addActionListener(this);
-    iconDirButt
-        .setToolTipText("Change the directory where the icons are located");
-    topButtonPane.add(iconDirButt);
-    topPane.add(topButtonPane);
     JPanel topLabelPane = new JPanel();
     topPanelLabel = new JLabel();
     topLabelPane.add(topPanelLabel);
@@ -152,9 +132,7 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
   public void reload(File tempFile, boolean resetUI)
   {
     // reload:
-    Vector returnVector = sopFileManip.loadFile(tempFile);
-    imageDir = (File) returnVector.elementAt(0);
-    generateWarnings((Vector) returnVector.elementAt(1));
+    generateWarnings(sopFileManip.loadFile(tempFile));
 
     if (resetUI) {
 	    // reset UI stuff:
@@ -189,10 +167,6 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
     return ruleObjsToImgFilenames;
   }
 
-  public File getImageDirectory() {
-    return imageDir;
-  }
-
   public void actionPerformed(ActionEvent evt) {
     Object source = evt.getSource();
 
@@ -221,19 +195,6 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
       } else {
         JOptionPane.showMessageDialog(null, "Please choose an object to match",
             "Match Unsuccessful", JOptionPane.WARNING_MESSAGE);
-      }
-    } else if (source == iconDirButt) // icon directory button
-    {
-      // bring up image dir file chooser:
-      imageDirChooser.setSelectedFile(new File(""));
-      int dirReturnVal = imageDirChooser.showOpenDialog(this);
-      if (dirReturnVal == JFileChooser.APPROVE_OPTION) {
-        File f = imageDirChooser.getSelectedFile();
-        if (f.isDirectory()) // valid
-        {
-          imageDir = f;
-          refreshImagePane();
-        }
       }
     } else if (source instanceof JButton) // one of the image buttons
     {
@@ -307,7 +268,17 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 
   private void refreshImagePane() {
     imagesPanel.removeAll();
-    if ((imageDir != null) && (imageDir.exists())) // image dir exists
+    imagesToFilenames.clear();
+    File imageDir = options.getIconDirectory();
+    if ((imageDir != null) && ((!imageDir.exists()) || 
+        (!imageDir.isDirectory()))) {
+      String warning = new String("Cannot find icon directory " +
+          imageDir.getAbsolutePath());
+      Vector warningVector = new Vector();
+      warningVector.add(warning);
+      generateWarnings(warningVector);
+    }
+    else if ((imageDir != null) && (imageDir.exists())) // image dir exists
     {
       String pictureFiles[] = imageDir.list(); // list out all picture filenames
                                                // and store in pictureFiles[]
@@ -341,7 +312,6 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
     selectedImage.setEnabled(true);
     objectList.setEnabled(true);
     warningPane.clearWarnings();
-    iconDirButt.setEnabled(true);
     if (f.exists()) // file has been saved before
     {
       reload(f, true);
@@ -357,13 +327,11 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
     startStateObjsToImgFilenames.clear();
     ruleObjsToImgFilenames.clear();
     refreshObjectList();
-    imageDir = null;
     clearObjectInFocus();
     refreshImagePane();
     topPanelLabel.setText("No File Opened");
     bottomPanelLabel.setText("");
     objectList.setEnabled(false);
-    iconDirButt.setEnabled(false);
     warningPane.clearWarnings();
   }
 

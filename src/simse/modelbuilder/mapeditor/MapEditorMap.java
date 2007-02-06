@@ -76,10 +76,10 @@ public class MapEditorMap extends SimSEMap {
   JMenuItem drawTableBM;
   JMenuItem drawTableBR;
 
-  public MapEditorMap(ModelBuilderGUI owner, DefinedObjectTypes objTypes,
-      CreatedObjects objs, DefinedActionTypes acts, File iconDir,
-      Hashtable startStateObjs, Hashtable ruleObjs) {
-    super(objTypes, objs, acts, iconDir, startStateObjs, ruleObjs);
+  public MapEditorMap(ModelBuilderGUI owner, ModelOptions opts, 
+      DefinedObjectTypes objTypes, CreatedObjects objs, DefinedActionTypes 
+      acts, Hashtable startStateObjs, Hashtable ruleObjs) {
+    super(opts, objTypes, objs, acts, startStateObjs, ruleObjs);
     mainGUI = owner;
 
     drawComputer = new JMenuItem("- Computer");
@@ -245,8 +245,8 @@ public class MapEditorMap extends SimSEMap {
     }
   }
 
-  public Vector loadFile(File inputFile, File iconDir) {
-    Vector v = super.loadFile(inputFile, iconDir);
+  public Vector loadFile(File inputFile) {
+    Vector v = super.loadFile(inputFile);
     createPopupMenu();
 
     return v;

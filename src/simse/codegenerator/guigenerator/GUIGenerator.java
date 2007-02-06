@@ -5,6 +5,7 @@
 
 package simse.codegenerator.guigenerator;
 
+import simse.modelbuilder.*;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.startstatebuilder.*;
 import simse.modelbuilder.actionbuilder.*;
@@ -16,6 +17,7 @@ import java.io.*;
 import javax.swing.*;
 
 public class GUIGenerator implements CodeGeneratorConstants {
+  private ModelOptions options;
   private ImageLoaderGenerator imageLoaderGen; // generates the image loader
   private ClockPanelGenerator clockPanelGen; // generates the clock panel
   private TabPanelGenerator tabPanelGen; // generates the tab panel
@@ -38,45 +40,54 @@ public class GUIGenerator implements CodeGeneratorConstants {
   private SimSEAboutDialogGenerator aboutDialogGen; // generates the About
                                                     // Dialog when you click the
                                                     // SimSE logo
-  private File directory; // directory to generate into
-  String panelsImageDir; // directory of images for panels
-  String worldImageDir; // directory of images for world
 
-  public GUIGenerator(DefinedObjectTypes objTypes, CreatedObjects objs,
-      DefinedActionTypes acts, File iconDir, Hashtable stsObjs,
-      Hashtable ruleObjs, TileData[][] map, ArrayList userDatas, File imgDir,
-      File dir) {
-    directory = dir;
-    worldImageDir = imgDir.getPath();
+  public GUIGenerator(ModelOptions opts, DefinedObjectTypes objTypes, 
+      CreatedObjects objs, DefinedActionTypes acts, Hashtable stsObjs, 
+      Hashtable ruleObjs, TileData[][] map, ArrayList userDatas) {
+    options = opts;
     Hashtable allObjsToImages = new Hashtable();
     allObjsToImages.putAll(stsObjs);
     allObjsToImages.putAll(ruleObjs);
-    panelsImageDir = iconDir.getPath();
-    imageLoaderGen = new ImageLoaderGenerator(dir);
-    tabPanelGen = new TabPanelGenerator(objTypes, allObjsToImages, dir);
-    clockPanelGen = new ClockPanelGenerator(dir);
-    logoPanelGen = new LogoPanelGenerator(dir);
-    attPanelGen = new AttributePanelGenerator(objTypes, dir);
-    actPanelGen = new ActionPanelGenerator(objTypes, acts, dir);
-    popupListGen = new PopupListenerGenerator(dir);
-    dispEmpGen = new DisplayedEmployeeGenerator(dir);
-    mapDataGen = new MapDataGenerator(dir);
+    imageLoaderGen = new ImageLoaderGenerator(
+        options.getCodeGenerationDestinationDirectory());
+    tabPanelGen = new TabPanelGenerator(objTypes, allObjsToImages, 
+        options.getCodeGenerationDestinationDirectory());
+    clockPanelGen = new ClockPanelGenerator(
+        options.getCodeGenerationDestinationDirectory());
+    logoPanelGen = new LogoPanelGenerator(
+        options.getCodeGenerationDestinationDirectory());
+    attPanelGen = new AttributePanelGenerator(objTypes, 
+        options.getCodeGenerationDestinationDirectory());
+    actPanelGen = new ActionPanelGenerator(objTypes, acts, 
+        options.getCodeGenerationDestinationDirectory());
+    popupListGen = new PopupListenerGenerator(
+        options.getCodeGenerationDestinationDirectory());
+    dispEmpGen = new DisplayedEmployeeGenerator(
+        options.getCodeGenerationDestinationDirectory());
+    mapDataGen = new MapDataGenerator(
+        options.getCodeGenerationDestinationDirectory());
     ssmGen = new SimSEMapGenerator(objTypes, allObjsToImages, map, userDatas,
-        dir);
-    worldGen = new WorldGenerator(dir);
-    glanceFramesGen = new AtAGlanceFramesGenerator(objTypes, dir);
-    glanceTblModGen = new AtAGlanceTableModelGenerator(objTypes, dir);
-    aboutDialogGen = new SimSEAboutDialogGenerator(dir);
+        options.getCodeGenerationDestinationDirectory());
+    worldGen = new WorldGenerator(
+        options.getCodeGenerationDestinationDirectory());
+    glanceFramesGen = new AtAGlanceFramesGenerator(objTypes, 
+        options.getCodeGenerationDestinationDirectory());
+    glanceTblModGen = new AtAGlanceTableModelGenerator(objTypes, 
+        options.getCodeGenerationDestinationDirectory());
+    aboutDialogGen = new SimSEAboutDialogGenerator(
+        options.getCodeGenerationDestinationDirectory());
   }
 
   public void generate() // causes all of this component's sub-components to
                          // generate code
   {
-    copyDir(panelsImageDir,
-        (directory.getPath() + "\\simse\\gui\\" + (new File(panelsImageDir))
-            .getName()));
+    copyDir(options.getIconDirectory().getPath(),
+        (options.getCodeGenerationDestinationDirectory().getPath() + 
+            "\\simse\\gui\\" + (new File(options.getIconDirectory().
+                getPath())).getName()));
 
-    ImageLoader.copyImagesToDir(directory.getPath() + "\\simse\\gui\\");
+    ImageLoader.copyImagesToDir(options.getCodeGenerationDestinationDirectory()
+        .getPath() + "\\simse\\gui\\");
 
     imageLoaderGen.generate();
     clockPanelGen.generate();
@@ -97,7 +108,9 @@ public class GUIGenerator implements CodeGeneratorConstants {
 
   private void generateMainGUI() // generates the SimSEGUI class
   {
-    File mainGUIFile = new File(directory, ("simse\\gui\\SimSEGUI.java"));
+    File mainGUIFile = new File(
+        options.getCodeGenerationDestinationDirectory(), 
+        ("simse\\gui\\SimSEGUI.java"));
     if (mainGUIFile.exists()) {
       mainGUIFile.delete(); // delete old version of file
     }

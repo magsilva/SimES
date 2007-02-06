@@ -14,19 +14,19 @@ import java.io.*;
 import javax.swing.*;
 
 public class StateGenerator implements CodeGeneratorConstants {
+  private ModelOptions options;
   private ADTGenerator adtGen; // generates ADTs
   private RepositoryGenerator repGen; // generates state repositories
   private ClockGenerator clockGen; // generates clock
   private LoggerGenerator loggerGen; // generates logger
-  private File directory; // directory to generate into
 
-  public StateGenerator(ModelOptions options, DefinedObjectTypes objTypes,
-      DefinedActionTypes actTypes, File dir) {
-    directory = dir;
-    adtGen = new ADTGenerator(options, objTypes, actTypes, directory);
-    repGen = new RepositoryGenerator(objTypes, actTypes, directory);
-    clockGen = new ClockGenerator(directory);
-    loggerGen = new LoggerGenerator(directory);
+  public StateGenerator(ModelOptions opts, DefinedObjectTypes objTypes,
+      DefinedActionTypes actTypes) {
+    options = opts;
+    adtGen = new ADTGenerator(options, objTypes, actTypes);
+    repGen = new RepositoryGenerator(options, objTypes, actTypes);
+    clockGen = new ClockGenerator(options);
+    loggerGen = new LoggerGenerator(options);
   }
 
   public void generate() // causes all of this component's sub-components to
@@ -38,7 +38,8 @@ public class StateGenerator implements CodeGeneratorConstants {
     loggerGen.generate();
 
     // generate outer state component:
-    File stateFile = new File(directory, ("simse\\state\\State.java"));
+    File stateFile = new File(options.getCodeGenerationDestinationDirectory(), 
+        ("simse\\state\\State.java"));
     if (stateFile.exists()) {
       stateFile.delete(); // delete old version of file
     }

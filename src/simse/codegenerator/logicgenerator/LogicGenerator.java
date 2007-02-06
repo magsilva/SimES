@@ -48,8 +48,8 @@ public class LogicGenerator implements CodeGeneratorConstants {
   private File directory; // directory to generate into
 
   public LogicGenerator(ModelOptions options, DefinedObjectTypes objTypes,
-      DefinedActionTypes actTypes, File dir) {
-    directory = dir;
+      DefinedActionTypes actTypes) {
+    directory = options.getCodeGenerationDestinationDirectory();
     miscUGen = new MiscUpdaterGenerator(directory);
     trigGen = new TriggerCheckerGenerator(actTypes, directory);
     destGen = new DestroyerCheckerGenerator(actTypes, directory);

@@ -5,9 +5,10 @@
 
 package simse.codegenerator.enginegenerator;
 
+import simse.codegenerator.*;
+import simse.modelbuilder.*;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.startstatebuilder.*;
-import simse.codegenerator.*;
 
 import java.util.*;
 import java.io.*;
@@ -18,8 +19,8 @@ public class EngineGenerator implements CodeGeneratorConstants {
   private CreatedObjects createdObjs; // start state objects
   private StartingNarrativeDialogGenerator sndg;
 
-  public EngineGenerator(CreatedObjects cObjs, File dir) {
-    directory = dir;
+  public EngineGenerator(ModelOptions options, CreatedObjects cObjs) {
+    directory = options.getCodeGenerationDestinationDirectory();
     createdObjs = cObjs;
     sndg = new StartingNarrativeDialogGenerator(createdObjs, directory);
   }

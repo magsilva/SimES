@@ -10,12 +10,13 @@ import java.io.*;
 import javax.swing.*;
 
 import simse.codegenerator.*;
+import simse.modelbuilder.*;
 
 public class LoggerGenerator implements CodeGeneratorConstants {
   private File directory; // directory to generate into
 
-  public LoggerGenerator(File dir) {
-    directory = dir;
+  public LoggerGenerator(ModelOptions options) {
+    directory = options.getCodeGenerationDestinationDirectory();
   }
 
   public void generate() {

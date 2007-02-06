@@ -9,12 +9,13 @@ import java.io.*;
 import javax.swing.*;
 
 import simse.codegenerator.*;
+import simse.modelbuilder.*;
 
 public class ClockGenerator implements CodeGeneratorConstants {
   private File directory; // directory to generate into
 
-  public ClockGenerator(File dir) {
-    directory = dir;
+  public ClockGenerator(ModelOptions options) {
+    directory = options.getCodeGenerationDestinationDirectory();
   }
 
   public void generate() {

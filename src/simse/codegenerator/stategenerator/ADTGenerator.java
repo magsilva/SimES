@@ -15,7 +15,6 @@ import java.io.*;
 import javax.swing.*;
 
 public class ADTGenerator implements CodeGeneratorConstants {
-  private File directory; // directory to save generated code into
   private ModelOptions options;
   private DefinedObjectTypes objTypes; // holds all of the defined object types
                                        // from an sso file
@@ -23,17 +22,17 @@ public class ADTGenerator implements CodeGeneratorConstants {
                                        // from an ssa file
 
   public ADTGenerator(ModelOptions opts, DefinedObjectTypes dots, 
-      DefinedActionTypes dats, File dir) {
+      DefinedActionTypes dats) {
     options = opts;
     objTypes = dots;
     actTypes = dats;
-    directory = dir;
   }
 
   public void generate() {
     Vector objs = objTypes.getAllObjectTypes();
     // generate SSObject class:
-    File objClass = new File(directory, ("simse\\adts\\objects\\SSObject.java"));
+    File objClass = new File(options.getCodeGenerationDestinationDirectory(),
+        ("simse\\adts\\objects\\SSObject.java"));
     if (objClass.exists()) {
       objClass.delete(); // delete old version of file
     }
@@ -90,7 +89,8 @@ public class ADTGenerator implements CodeGeneratorConstants {
         .getText(SimSEObjectTypeTypes.PROJECT));
 
     // generate Employee class:
-    File empClass = new File(directory, ("simse\\adts\\objects\\Employee.java"));
+    File empClass = new File(options.getCodeGenerationDestinationDirectory(),
+        ("simse\\adts\\objects\\Employee.java"));
     if (empClass.exists()) {
       empClass.delete(); // delete old version of file
     }
@@ -347,7 +347,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
     }
 
     // generate Customer class:
-    File custClass = new File(directory,
+    File custClass = new File(options.getCodeGenerationDestinationDirectory(),
         ("simse\\adts\\objects\\Customer.java"));
     if (custClass.exists()) {
       custClass.delete(); // delete old version of file
@@ -456,7 +456,8 @@ public class ADTGenerator implements CodeGeneratorConstants {
     }
 
     // generate Action class:
-    File actClass = new File(directory, ("simse\\adts\\actions\\Action.java"));
+    File actClass = new File(options.getCodeGenerationDestinationDirectory(), 
+        ("simse\\adts\\actions\\Action.java"));
     if (actClass.exists()) {
       actClass.delete(); // delete old version of file
     }
@@ -581,7 +582,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
   }
 
   private void generateAbstractObjectClass(String className) {
-    File absClass = new File(directory,
+    File absClass = new File(options.getCodeGenerationDestinationDirectory(),
         ("simse\\adts\\objects\\" + className + ".java"));
     if (absClass.exists()) {
       absClass.delete(); // delete old version of file
@@ -623,8 +624,9 @@ public class ADTGenerator implements CodeGeneratorConstants {
   }
 
   private void generateObjectADT(SimSEObjectType objType) {
-    File adtFile = new File(directory, ("simse\\adts\\objects\\"
-        + getUpperCaseLeading(objType.getName()) + ".java"));
+    File adtFile = new File(options.getCodeGenerationDestinationDirectory(), 
+        ("simse\\adts\\objects\\" + getUpperCaseLeading(objType.getName()) + 
+            ".java"));
     if (adtFile.exists()) {
       adtFile.delete(); // delete old version of file
     }
@@ -883,8 +885,9 @@ public class ADTGenerator implements CodeGeneratorConstants {
   }
 
   private void generateActionADT(ActionType actType) {
-    File adtFile = new File(directory, ("simse\\adts\\actions\\"
-        + getUpperCaseLeading(actType.getName()) + "Action.java"));
+    File adtFile = new File(options.getCodeGenerationDestinationDirectory(), 
+        ("simse\\adts\\actions\\" + getUpperCaseLeading(actType.getName()) + 
+            "Action.java"));
     if (adtFile.exists()) {
       adtFile.delete(); // delete old version of file
     }

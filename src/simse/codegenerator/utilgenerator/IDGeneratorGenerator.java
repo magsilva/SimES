@@ -7,18 +7,20 @@ package simse.codegenerator.utilgenerator;
 
 import java.io.*;
 import javax.swing.*;
+import simse.modelbuilder.ModelOptions;
 
 import simse.codegenerator.CodeGeneratorConstants;
 
 public class IDGeneratorGenerator implements CodeGeneratorConstants {
-  private File directory; // directory to save generated code into
+  private ModelOptions options;
 
-  public IDGeneratorGenerator(File dir) {
-    directory = dir;
+  public IDGeneratorGenerator(ModelOptions options) {
+    this.options = options;
   }
 
   public void generate() {
-    File idGenFile = new File(directory, ("simse\\util\\IDGenerator.java"));
+    File idGenFile = new File(options.getCodeGenerationDestinationDirectory(),
+        ("simse\\util\\IDGenerator.java"));
     if (idGenFile.exists()) {
       idGenFile.delete(); // delete old version of file
     }

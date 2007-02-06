@@ -10,12 +10,14 @@ import simse.modelbuilder.graphicsbuilder.*;
 import simse.modelbuilder.mapeditor.*;
 import simse.codegenerator.*;
 
-import java.awt.event.*;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.*;
+import java.io.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.util.*;
-import java.io.*;
+
 
 public class ModelBuilderGUI extends JFrame implements ActionListener,
     ChangeListener, MenuListener {
@@ -116,13 +118,13 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     ruleBuilder = new RuleBuilderGUI(this, objectTypes, actionTypes);
     mainPane.addTab("Rules", ruleBuilder);
 
-    graphicsBuilder = new GraphicsBuilderGUI(this, objectTypes, objects,
-        actionTypes);
+    graphicsBuilder = new GraphicsBuilderGUI(this, options, objectTypes, 
+        objects, actionTypes);
     mainPane.addTab("Graphics", graphicsBuilder);
 
-    mapEditor = new MapEditorGUI(this, objectTypes, objects, actionTypes,
-        graphicsBuilder.getImageDirectory(), graphicsBuilder
-            .getStartStateObjsToImages(), graphicsBuilder.getRuleObjsToImages());
+    mapEditor = new MapEditorGUI(this, options, objectTypes, objects, 
+        actionTypes, graphicsBuilder.getStartStateObjsToImages(), 
+        graphicsBuilder.getRuleObjsToImages());
     mainPane.addTab("Map", mapEditor);
 
     mainPane.setOpaque(true);
@@ -260,9 +262,9 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
         if (openFile.exists()) // file has already been saved before
         {
           checkForInconsistencies(false);
-          fileManip.generateFile(openFile, graphicsBuilder.getImageDirectory(),
-              graphicsBuilder.getStartStateObjsToImages(), graphicsBuilder
-                  .getRuleObjsToImages(), objectBuilder.allowHireFire());
+          fileManip.generateFile(openFile, graphicsBuilder.
+              getStartStateObjsToImages(), graphicsBuilder.
+              getRuleObjsToImages(), objectBuilder.allowHireFire());
           fileModSinceLastSave = false;
         } else // file has not been saved before
         {
@@ -287,6 +289,17 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
         // bring up model options dialog:
         ModelOptionsDialog mod = new ModelOptionsDialog(this, options);
         fileModSinceLastSave = true;
+        
+        Component selectedComp = mainPane.getSelectedComponent();
+        /*
+         * if the graphics builder or map editor are in focus and the model
+         * options (icon dir) have changed, reload: 
+         */
+        if ((selectedComp instanceof JPanel) &&
+            ((selectedComp == graphicsBuilder) ||
+                (selectedComp == mapEditor))) {
+          checkForInconsistencies(true);
+        }
       }
     }
     else if (source == narrativeItem) {
@@ -310,7 +323,9 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
       ContinuousRulePrioritizer rp = new ContinuousRulePrioritizer(this,
           actionTypes);
       fileModSinceLastSave = true;
-    } else if (source == generateSimItem) {
+    } 
+    
+    else if (source == generateSimItem) {
       int choice = JOptionPane.OK_OPTION;
       if (fileModSinceLastSave) {
         // must save first
@@ -324,9 +339,9 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
           if (openFile.exists()) // file has already been saved before
           {
             fileManip.generateFile(openFile, graphicsBuilder
-                .getImageDirectory(), graphicsBuilder
                 .getStartStateObjsToImages(), graphicsBuilder
                 .getRuleObjsToImages(), objectBuilder.allowHireFire());
+            fileModSinceLastSave = false;
           } else // file has not been saved before
           {
             saveAs();
@@ -335,60 +350,42 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
       }
 
       if (choice == JOptionPane.OK_OPTION) {
-	      // get directory to generate code in:
-	      // Bring up a file chooser to choose a directory:
-	      JFileChooser dirFileChooser = new JFileChooser();
-	      dirFileChooser.addChoosableFileFilter(new DirectoryFileFilter()); // make
-	                                                                        // it so
-	                                                                        // it
-	                                                                        // only
-	                                                                        // displays
-	                                                                        // directories
-	      // bring up open file chooser:
-	      dirFileChooser.setSelectedFile(new File(""));
-	      dirFileChooser
-	          .setDialogTitle("Please select a destination directory (to generate code into):");
-	      dirFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-	      int returnVal = dirFileChooser.showOpenDialog(this);
-	      if (returnVal == JFileChooser.APPROVE_OPTION) {
-	        File f = dirFileChooser.getSelectedFile();
-	        if (f.isDirectory()) // valid
-	        {
-	
-	          // ask for the image directory for the simulation images:
-	          //					dirFileChooser.setSelectedFile(new File(""));
-	          //					dirFileChooser.setDialogTitle("Please locate the \"images\"
-	          // directory containing the simulation images:");
-	          //					int returnVal2 = dirFileChooser.showOpenDialog(this);
-	          //					if(returnVal2 == JFileChooser.APPROVE_OPTION)
-	          //					{
-	
-	          File imgDir = dirFileChooser.getSelectedFile();
-	
-	          //						if(imgDir.isDirectory() && imgDir.getName().equals("images")) //
-	          // valid
-	          //					    {
-	          // generate code:
-	          CodeGenerator codeGen = new CodeGenerator(options, objectTypes, 
-	              objects, actionTypes, graphicsBuilder.getImageDirectory(), 
-	              graphicsBuilder.getStartStateObjsToImages(), graphicsBuilder
-	                  .getRuleObjsToImages(), map, userDatas, imgDir, f);
-	          
-	          codeGen.setAllowHireFire(objectBuilder.allowHireFire());
-	          codeGen.generate();
-	          //						}
-	          //						else
-	          //						{
-	          //							JOptionPane.showMessageDialog(null, "You must choose a directory
-	          // named \"images\"", "Invalid Selection",
-	          //								JOptionPane.WARNING_MESSAGE);
-	          //						}
-	          //					}
-	        } else {
-	          JOptionPane.showMessageDialog(null, "You must choose a directory",
-	              "Invalid Selection", JOptionPane.WARNING_MESSAGE);
-	        }
-	      }
+        if (options.getCodeGenerationDestinationDirectory() == null) { // no
+          																														 // dest
+          																														 // dir 
+          																														 // set
+		      // get directory to generate code in:
+		      // Bring up a file chooser to choose a directory:
+		      JFileChooser dirFileChooser = new JFileChooser();
+		      dirFileChooser.addChoosableFileFilter(new DirectoryFileFilter()); // make
+		                                                                        // it so
+		                                                                        // it
+		                                                                        // only
+		                                                                        // displays
+		                                                                        // directories
+		      // bring up open file chooser:
+		      dirFileChooser.setSelectedFile(new File(""));
+		      dirFileChooser
+		          .setDialogTitle("Please select a destination directory (to generate code into):");
+		      dirFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		      int returnVal = dirFileChooser.showOpenDialog(this);
+		      if (returnVal == JFileChooser.APPROVE_OPTION) {
+		        File f = dirFileChooser.getSelectedFile();
+		        if (f.isDirectory()) // valid
+		        {
+		          // set destination directory
+		          options.setCodeGenerationDestinationDirectory(f);
+		        }
+		      }
+        }
+        // generate code:
+        CodeGenerator codeGen = new CodeGenerator(options, objectTypes, 
+            objects, actionTypes, graphicsBuilder.
+            getStartStateObjsToImages(), graphicsBuilder.
+            getRuleObjsToImages(), map, userDatas);
+        
+        codeGen.setAllowHireFire(objectBuilder.allowHireFire());
+        codeGen.generate();
       }
     } else if (source instanceof JMenuItem) {
       JMenuItem mItem = (JMenuItem) source;
@@ -432,10 +429,9 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
       if (isMDLFile(selectedFile)) {
         checkForInconsistencies(false);
         // generate file:
-        fileManip.generateFile(selectedFile, graphicsBuilder
-            .getImageDirectory(), graphicsBuilder.getStartStateObjsToImages(),
-            graphicsBuilder.getRuleObjsToImages(), objectBuilder
-                .allowHireFire());
+        fileManip.generateFile(selectedFile, graphicsBuilder.
+            getStartStateObjsToImages(), graphicsBuilder.getRuleObjsToImages(),
+            objectBuilder.allowHireFire());
         openFile = selectedFile;
         resetWindowTitle();
         fileModSinceLastSave = false;
@@ -467,7 +463,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     actionBuilder.setNewOpenFile(openFile);
     ruleBuilder.setNewOpenFile(openFile);
     graphicsBuilder.setNewOpenFile(openFile);
-    mapEditor.setNewOpenFile(openFile, graphicsBuilder.getImageDirectory());
+    mapEditor.setNewOpenFile(openFile);
   }
 
   private void setNoOpenFile() // makes it so there's no open file in the GUI
@@ -543,7 +539,6 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
           if (openFile.exists()) // file has already been saved before
           {
             fileManip.generateFile(openFile, graphicsBuilder
-                .getImageDirectory(), graphicsBuilder
                 .getStartStateObjsToImages(), graphicsBuilder
                 .getRuleObjsToImages(), objectBuilder.allowHireFire());
           } else // file has not been saved before
@@ -614,14 +609,14 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
                                                                          // temporary
                                                                          // file
         tempFile.deleteOnExit(); // make sure it's deleted on exit
-        fileManip.generateFile(tempFile, graphicsBuilder.getImageDirectory(),
-            graphicsBuilder.getStartStateObjsToImages(), graphicsBuilder
-                .getRuleObjsToImages(), objectBuilder.allowHireFire());
+        fileManip.generateFile(tempFile, graphicsBuilder.
+            getStartStateObjsToImages(), graphicsBuilder.getRuleObjsToImages(),
+            objectBuilder.allowHireFire());
         startStateBuilder.reload(tempFile, resetUI);
         actionBuilder.reload(tempFile, resetUI);
         ruleBuilder.reload(tempFile, resetUI);
         graphicsBuilder.reload(tempFile, resetUI);
-        mapEditor.reload(tempFile, graphicsBuilder.getImageDirectory());
+        mapEditor.reload(tempFile);
         tempFile.delete();
       } catch (IOException i) {
         System.out.println("File I/O error creating temp file for "

@@ -5,6 +5,7 @@
 
 package simse.codegenerator.explanatorytoolgenerator;
 
+import simse.modelbuilder.ModelOptions;
 import simse.modelbuilder.actionbuilder.ActionType;
 import simse.modelbuilder.actionbuilder.DefinedActionTypes;
 import simse.codegenerator.CodeGeneratorConstants;
@@ -27,6 +28,7 @@ import java.io.*;
 import javax.swing.*;
 
 public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
+  private ModelOptions options;
   private DefinedObjectTypes objTypes;
   private CreatedObjects objs;
   private DefinedActionTypes acts;
@@ -48,23 +50,31 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
   private RuleDescriptionsGenerator ruleDescGen; // generates the
   // RuleDescriptions class
 
-  private File directory; // directory to generate into
-
-  public ExplanatoryToolGenerator(DefinedObjectTypes objTypes,
-      CreatedObjects objs, DefinedActionTypes acts, File dir) {
+  public ExplanatoryToolGenerator(ModelOptions options, 
+      DefinedObjectTypes objTypes, CreatedObjects objs, 
+      DefinedActionTypes acts) {
+    this.options = options;
     this.objTypes = objTypes;
     this.objs = objs;
     this.acts = acts;
-    directory = dir;
-    objGraphGen = new ObjectGraphGenerator(objTypes, objs, dir);
-    actGraphGen = new ActionGraphGenerator(acts, dir);
-    compGraphGen = new CompositeGraphGenerator(dir);
-    actInfoPanelGen = new ActionInfoPanelGenerator(acts, dir);
-    ruleInfoPanelGen = new RuleInfoPanelGenerator(acts, dir);
-    actInfoWindowGen = new ActionInfoWindowGenerator(dir);
-    trigDescGen = new TriggerDescriptionsGenerator(acts, dir);
-    destDescGen = new DestroyerDescriptionsGenerator(acts, dir);
-    ruleDescGen = new RuleDescriptionsGenerator(acts, dir);
+    objGraphGen = new ObjectGraphGenerator(objTypes, objs, 
+        options.getCodeGenerationDestinationDirectory());
+    actGraphGen = new ActionGraphGenerator(acts, 
+        options.getCodeGenerationDestinationDirectory());
+    compGraphGen = new CompositeGraphGenerator(
+        options.getCodeGenerationDestinationDirectory());
+    actInfoPanelGen = new ActionInfoPanelGenerator(acts, 
+        options.getCodeGenerationDestinationDirectory());
+    ruleInfoPanelGen = new RuleInfoPanelGenerator(acts, 
+        options.getCodeGenerationDestinationDirectory());
+    actInfoWindowGen = new ActionInfoWindowGenerator(
+        options.getCodeGenerationDestinationDirectory());
+    trigDescGen = new TriggerDescriptionsGenerator(acts, 
+        options.getCodeGenerationDestinationDirectory());
+    destDescGen = new DestroyerDescriptionsGenerator(acts, 
+        options.getCodeGenerationDestinationDirectory());
+    ruleDescGen = new RuleDescriptionsGenerator(acts, 
+        options.getCodeGenerationDestinationDirectory());
   }
 
   public void generate() // causes all of this component's sub-components to
@@ -87,7 +97,8 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
 
   private void generateExplanatoryTool() // generates the ExplanatoryTool class
   {
-    File expToolFile = new File(directory,
+    File expToolFile = new File(options.
+        getCodeGenerationDestinationDirectory(),
         ("simse\\explanatorytool\\ExplanatoryTool.java"));
     if (expToolFile.exists()) {
       expToolFile.delete(); // delete old version of file
@@ -635,11 +646,14 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
         if (ze == null) {
           break;
         }
-        new File(directory + "\\lib\\" + ze.getName()).createNewFile();
+        new File(options.getCodeGenerationDestinationDirectory() + "\\lib\\" +
+            ze.getName()).createNewFile();
         byte[] buffer = new byte[1024];
         int len = 1024;
         BufferedOutputStream out = new BufferedOutputStream(
-            new FileOutputStream(directory + "\\lib\\" + ze.getName()));
+            new FileOutputStream(options.
+                getCodeGenerationDestinationDirectory() + "\\lib\\" + 
+                ze.getName()));
         while ((len = zis.read(buffer, 0, len)) >= 0) {
           out.write(buffer, 0, len);
         }

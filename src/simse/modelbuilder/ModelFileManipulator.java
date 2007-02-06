@@ -126,8 +126,6 @@ public class ModelFileManipulator {
   // graphics constants:
   private final String BEGIN_GRAPHICS_TAG = "<beginGraphics>";
   private final String END_GRAPHICS_TAG = "<endGraphics>";
-  private final String BEGIN_ICONS_DIR_TAG = "<beginIconDirectoryPath>";
-  private final String END_ICONS_DIR_TAG = "<endIconDirectoryPath>";
 
   // map constants:
   private final String BEGIN_MAP_TAG = "<beginMap>";
@@ -154,11 +152,12 @@ public class ModelFileManipulator {
     mapRep = map;
   }
 
-  public void generateFile(File outputFile, File iconDirectory,
-      Hashtable startStateObjsToImages, Hashtable ruleObjsToImages,
-      boolean allowHireFire) // generates a file with the name of the
-  // given file parameter that contains the
-  // model data structures in memory
+  /*
+   * generates a file with the name of the given file parameter that contains 
+   * the model data structures in memory
+   */
+  public void generateFile(File outputFile, Hashtable startStateObjsToImages,
+      Hashtable ruleObjsToImages, boolean allowHireFire) 
   {
     if (outputFile.exists()) {
       outputFile.delete(); // delete old version of file
@@ -179,6 +178,23 @@ public class ModelFileManipulator {
       writer.write(NEWLINE);
       // everyone stop option:
       writer.write(String.valueOf(options.getEveryoneStopOption()));
+      writer.write(NEWLINE);
+      // icon directory:
+      if (options.getIconDirectory() != null) {
+        writer.write(options.getIconDirectory().getAbsolutePath());
+      }
+      else {
+        writer.write(EMPTY_VALUE);
+      }
+      writer.write(NEWLINE);
+      // code gen directory:
+      if (options.getCodeGenerationDestinationDirectory() != null) {
+        writer.write(options.getCodeGenerationDestinationDirectory().
+            getAbsolutePath());
+      }
+      else {
+        writer.write(EMPTY_VALUE);
+      }
       writer.write(NEWLINE);
       writer.write(END_MODEL_OPTIONS_TAG);
       writer.write(NEWLINE);
@@ -1013,21 +1029,6 @@ public class ModelFileManipulator {
 
       //***************GRAPHICS******************
       writer.write(BEGIN_GRAPHICS_TAG);
-      writer.write(NEWLINE);
-
-      // icons directory:
-      writer.write(BEGIN_ICONS_DIR_TAG);
-      writer.write(NEWLINE);
-      if ((iconDirectory != null) && (iconDirectory.getPath().length() > 0)) // has
-                                                                             // icon
-                                                                             // dir
-      {
-        writer.write(iconDirectory.getPath());
-      } else {
-        writer.write("");
-      }
-      writer.write(NEWLINE);
-      writer.write(END_ICONS_DIR_TAG);
       writer.write(NEWLINE);
 
       // start state objects:
