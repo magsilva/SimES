@@ -10,6 +10,8 @@ import simse.modelbuilder.actionbuilder.*;
 import simse.codegenerator.*;
 
 import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Image;
 import java.io.*;
 import javax.swing.*;
 
@@ -44,6 +46,10 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
       writer.write("package simse.logic.dialogs;");
       writer.write(NEWLINE);
       // imports:
+      writer.write("import simse.gui.ImageLoader;");
+      writer.write(NEWLINE);
+      writer.write("import simse.gui.TabPanel;");
+      writer.write(NEWLINE);
       writer.write("import simse.state.*;");
       writer.write(NEWLINE);
       writer.write("import simse.adts.objects.*;");
@@ -199,6 +205,10 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
       writer.write("tempPane.add(tempCheckBox, BorderLayout.WEST);");
       writer.write(NEWLINE);
       writer.write("checkBoxes.add(tempCheckBox);");
+      writer.write(NEWLINE);
+      writer.write("ImageIcon icon =  new ImageIcon(ImageLoader.getImageFromURL(TabPanel.getImage(tempObj)).getScaledInstance(30, 30, Image.SCALE_AREA_AVERAGING));");
+      writer.write(NEWLINE);
+      writer.write("tempPane.add(new JLabel(icon), BorderLayout.EAST);");
       writer.write(NEWLINE);
       writer.write("middlePane.add(tempPane);");
       writer.write(NEWLINE);
