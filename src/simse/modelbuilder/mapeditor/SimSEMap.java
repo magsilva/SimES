@@ -66,7 +66,7 @@ public class SimSEMap extends JPanel implements MouseListener, ActionListener {
             iconDir.getAbsolutePath());
       }
       else {
-		    // load the startste objects
+		    // load the startstate objects
 		    Enumeration ssObj = startStateObjsToImages.keys();
 		    Enumeration ssImg = startStateObjsToImages.elements();
 		

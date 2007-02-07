@@ -24,6 +24,18 @@ public class DefinedObjectTypes {
   }
 
   public void addObjectType(SimSEObjectType newObject) {
+    // insert at correct alpha order:
+    for (int i = 0; i < objs.size(); i++) {
+      SimSEObjectType tempObj = (SimSEObjectType) objs.elementAt(i);
+      if (newObject.getName().compareToIgnoreCase(tempObj.getName()) < 0) { 
+        // should be inserted before tempObj
+        objs.insertElementAt(newObject, i);
+        return;
+      }
+    }
+    
+    // only reaches here if objs is empty or "newObject" should be placed at 
+    // the end
     objs.add(newObject);
   }
 
@@ -82,9 +94,30 @@ public class DefinedObjectTypes {
     }
     return false;
   }
+  
+  public int getIndexOf(SimSEObjectType type) {
+    for (int i = 0; i < objs.size(); i++) {
+      SimSEObjectType objType = (SimSEObjectType) objs.elementAt(i);
+      if (objType.getName().equals(type.getName())) {
+        return objs.indexOf(objType);
+      }
+    }
+    return -1;
+  }
 
   public void clearAll() // removes all object types
   {
     objs.removeAllElements();
+  }
+  
+  /*
+   * sorts the object types in ascending alpha order by name
+   */
+  public void sort() { 
+    Vector temp = (Vector) objs.clone();
+    clearAll();
+    for (int i = 0; i < temp.size(); i++) {
+      addObjectType((SimSEObjectType)temp.elementAt(i));
+    }
   }
 }

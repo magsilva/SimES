@@ -201,7 +201,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("String item = (String) menu.elementAt(i);");
       writer.write(NEWLINE);
-      writer.write("if (s.compareTo(item) < 0) { // should be inserted before 'item'");
+      writer.write("if (s.compareToIgnoreCase(item) < 0) { // should be inserted before 'item'");
       writer.write(NEWLINE);
       writer.write("menu.insertElementAt(s, i);");
       writer.write(NEWLINE);

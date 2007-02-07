@@ -566,6 +566,10 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     triggerButton.setEnabled(true);
     destroyerButton.setEnabled(true);
     optionsButton.setEnabled(true);
+    
+    // set focus on defined actions list:
+    definedActionsList.setSelectedIndex(actions.getIndexOf(newAct));
+
   }
 
   private void renameAction(String actionName) // removes the action with the
@@ -591,10 +595,11 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
       } else // user has entered valid input
       {
         act.setName(response);
+        actions.sort();
+        updateDefinedActionsList();
         setActionInFocus(act); // set newly created object to be the focus of
                                // the GUI
         ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
-        updateDefinedActionsList();
       }
     }
   }

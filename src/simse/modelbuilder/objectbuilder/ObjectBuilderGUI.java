@@ -384,10 +384,7 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
     }
   }
 
-  private void renameObject(SimSEObjectType obj) // creates a new SimSE object
-                                                 // of selectedItem type and
-                                                 // adds it to the data
-                                                 // structure
+  private void renameObject(SimSEObjectType obj)
   {
     String response = JOptionPane.showInputDialog(null, "Enter new name for "
         + obj.getName(), "Rename Object Type", JOptionPane.QUESTION_MESSAGE); // Show
@@ -407,10 +404,11 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
       } else // user has entered valid input
       {
         obj.setName(response);
-        setObjectInFocus(obj); // set newly created object to be the focus of
-                               // the GUI
-        ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
+        objects.sort();
         updateDefinedObjectsList();
+        setObjectInFocus(obj); // set newly created object to be the focus of
+        // the GUI
+        ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
       }
     }
   }
@@ -705,6 +703,9 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
       addNewAttributeButton.setEnabled(true);
       editAttributeButton.setEnabled(false);
       removeAttributeButton.setEnabled(false);
+      
+      // set focus on defined objects list:
+      definedObjectsList.setSelectedIndex(objects.getIndexOf(newObj));
     }
   }
 

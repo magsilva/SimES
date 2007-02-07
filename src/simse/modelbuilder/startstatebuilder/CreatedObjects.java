@@ -42,9 +42,57 @@ public class CreatedObjects {
     }
     return v;
   }
-
+  
   public void addObject(SimSEObject newObject) {
-    objs.add(newObject);
+    boolean otherObjsOfSameType;
+    int numObjectsOfSameType = 
+      getAllObjectsOfType(newObject.getSimSEObjectType()).size();
+    if (numObjectsOfSameType > 0) {
+      otherObjsOfSameType = true;
+    }
+    else {
+      otherObjsOfSameType = false;
+    }
+    
+	  // insert at correct alpha order:
+    int numObjsSameTypeEncountered = 0;
+    for (int i = 0; i < objs.size(); i++) {
+      SimSEObject tempObj = (SimSEObject) objs.elementAt(i);
+      
+      if (otherObjsOfSameType) {
+      // Check SimSEObjectType name:
+	      if (newObject.getName().equals(tempObj.getName())) {
+	        numObjsSameTypeEncountered++;
+	        // same SimSEObjectType, so check key att val:
+	        if (newObject.getKey().getValue().toString().compareToIgnoreCase(
+	            tempObj.getKey().getValue().toString()) < 0) {
+	          // should be inserted before tempObj
+	          objs.insertElementAt(newObject, i);
+	          return;
+	        }
+	        if (numObjsSameTypeEncountered == numObjectsOfSameType) { // last 
+	          																												// object 
+	          																												// of same 
+	          																												// type
+	          // insert after last object of same type
+	          objs.insertElementAt(newObject, (i + 1));
+	          return;
+	        }
+	      }
+      }
+      else { // no other objects of same type
+        // just need to compare SimSEObjectType name:
+  	    if (newObject.getName().compareToIgnoreCase(tempObj.getName()) < 0) {
+  	      // should be inserted before tempObj
+  	      objs.insertElementAt(newObject, i);
+  	      return;
+  	    }
+      }
+    }
+    
+	  // only reaches here if objs is empty or "newObject" should be placed at 
+	  // the end
+	  objs.add(newObject);
   }
 
   public SimSEObject getObject(int type, String name, Object keyAttValue) // returns
