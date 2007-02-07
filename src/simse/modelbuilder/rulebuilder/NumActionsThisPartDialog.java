@@ -18,7 +18,6 @@ public class NumActionsThisPartDialog extends JDialog implements ActionListener 
   private ActionTypeParticipant participant; // participant in focus
   private SimSEObjectType objType; // object type in focus
   private DefinedActionTypes actions; // defined action types
-  private JTextField fieldInFocus; // text field to edit
   private JTextArea echoedField; // text field echoed in the button pad GUI
   private boolean trimWhitespace; // whether or not to trim trailing whitespace
                                   // in the text field b4 appending to it
@@ -31,14 +30,13 @@ public class NumActionsThisPartDialog extends JDialog implements ActionListener 
   public NumActionsThisPartDialog(JDialog owner,
       ActionTypeParticipant participantInFocus,
       SimSEObjectType objectTypeInFocus, DefinedActionTypes acts,
-      JTextField tField, JTextArea echoedTField, boolean trim) {
+      JTextArea echoedTField, boolean trim) {
     super(owner, true);
     setTitle("Num Actions This Participant");
 
     participant = participantInFocus;
     objType = objectTypeInFocus;
     actions = acts;
-    fieldInFocus = tField;
     echoedField = echoedTField;
     trimWhitespace = trim;
 
@@ -124,11 +122,11 @@ public class NumActionsThisPartDialog extends JDialog implements ActionListener 
       }
       // set the text field:
       if (trimWhitespace) {
-        setFocusedTextFieldText(fieldInFocus.getText().trim().concat(
+        setFocusedTextFieldText(echoedField.getText().trim().concat(
             activeString + "-" + partString + "-" + typeString + ":"
                 + actionString + " "));
       } else {
-        setFocusedTextFieldText(fieldInFocus.getText().concat(
+        setFocusedTextFieldText(echoedField.getText().concat(
             activeString + "-" + partString + "-" + typeString + ":"
                 + actionString + " "));
       }
@@ -149,7 +147,6 @@ public class NumActionsThisPartDialog extends JDialog implements ActionListener 
                                                     // passed in to the
                                                     // specified text
   {
-    fieldInFocus.setText(text);
     echoedField.setText(text);
   }
 }

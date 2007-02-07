@@ -18,7 +18,6 @@ public class NumActionsOtherPartDialog extends JDialog implements
     ActionListener {
   private Vector participants; // participants to choose from
   private DefinedActionTypes actions; // currently defined action types
-  private JTextField fieldInFocus; // text field to edit
   private JTextArea echoedField; // echoed field in ButtonPadGUI to edit
   private boolean trimWhitespace; // whether or not to trim the trailing
                                   // whitespace in the textfield b4 appending to
@@ -31,14 +30,12 @@ public class NumActionsOtherPartDialog extends JDialog implements
   private JButton cancelButton;
 
   public NumActionsOtherPartDialog(JDialog owner, Vector parts,
-      DefinedActionTypes acts, JTextField tField, JTextArea echoedTField,
-      boolean trim) {
+      DefinedActionTypes acts, JTextArea echoedTField, boolean trim) {
     super(owner, true);
     setTitle("Num Actions");
 
     participants = parts;
     actions = acts;
-    fieldInFocus = tField;
     echoedField = echoedTField;
     trimWhitespace = trim;
 
@@ -131,10 +128,10 @@ public class NumActionsOtherPartDialog extends JDialog implements
       }
       // set the text field:
       if (trimWhitespace) {
-        setFocusedTextFieldText(fieldInFocus.getText().trim().concat(
+        setFocusedTextFieldText(echoedField.getText().trim().concat(
             activeString + "-" + partString + ":" + actionString + " "));
       } else {
-        setFocusedTextFieldText(fieldInFocus.getText().concat(
+        setFocusedTextFieldText(echoedField.getText().concat(
             activeString + "-" + partString + ":" + actionString + " "));
       }
       setVisible(false);
@@ -171,7 +168,6 @@ public class NumActionsOtherPartDialog extends JDialog implements
                                                     // passed in to the
                                                     // specified text
   {
-    fieldInFocus.setText(text);
     echoedField.setText(text);
   }
 }

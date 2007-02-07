@@ -17,7 +17,6 @@ import java.awt.Color;
 public class OtherParticipantAttributeDialog extends JDialog implements
     ActionListener {
   private Vector participants; // participants to choose from
-  private JTextField fieldInFocus; // text field to edit
   private JTextArea echoedField; // echoed text field in button pad gui
   private int attributeType; // type of the attribute in focus
   boolean trimWhitespace; // whether or not to trim the trailing whitespace b4
@@ -29,13 +28,12 @@ public class OtherParticipantAttributeDialog extends JDialog implements
   private JButton okButton;
   private JButton cancelButton;
 
-  public OtherParticipantAttributeDialog(JDialog owner, Vector parts,
-      JTextField tField, JTextArea echoedTField, int attType, boolean trim) {
+  public OtherParticipantAttributeDialog(JDialog owner, Vector parts, 
+      JTextArea echoedTField, int attType, boolean trim) {
     super(owner, true);
     setTitle("Other Participant(s) Attribute");
 
     participants = parts;
-    fieldInFocus = tField;
     echoedField = echoedTField;
     attributeType = attType;
     trimWhitespace = trim;
@@ -133,10 +131,10 @@ public class OtherParticipantAttributeDialog extends JDialog implements
       String attString = (String) attList.getSelectedItem();
       // set the text field:
       if (trimWhitespace) {
-        setFocusedTextFieldText(fieldInFocus.getText().trim().concat(
+        setEchoedTextFieldText(echoedField.getText().trim().concat(
             activeString + "-" + partString + ":" + attString + " "));
       } else {
-        setFocusedTextFieldText(fieldInFocus.getText().concat(
+        setEchoedTextFieldText(echoedField.getText().concat(
             activeString + "-" + partString + ":" + attString + " "));
       }
       setVisible(false);
@@ -219,11 +217,9 @@ public class OtherParticipantAttributeDialog extends JDialog implements
     repaint();
   }
 
-  private void setFocusedTextFieldText(String text) // sets both the text fields
-                                                    // passed in to the
-                                                    // specified text
+  private void setEchoedTextFieldText(String text) // sets the echoed field
+                                                    // to the specified text
   {
-    fieldInFocus.setText(text);
     echoedField.setText(text);
   }
 }

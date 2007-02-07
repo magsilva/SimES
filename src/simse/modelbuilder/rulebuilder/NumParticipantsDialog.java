@@ -16,7 +16,6 @@ import java.awt.Color;
 
 public class NumParticipantsDialog extends JDialog implements ActionListener {
   private Vector participants; // participants to choose from
-  private JTextField fieldInFocus; // text field to edit
   private JTextArea echoedField; // echoed text field in the button gui
   private boolean trimWhitespace; // whether or not to trip the trailing
                                   // whitespace in the text field b4 appending
@@ -27,13 +26,12 @@ public class NumParticipantsDialog extends JDialog implements ActionListener {
   private JButton okButton;
   private JButton cancelButton;
 
-  public NumParticipantsDialog(JDialog owner, Vector parts, JTextField tField,
+  public NumParticipantsDialog(JDialog owner, Vector parts, 
       JTextArea echoedTField, boolean trim) {
     super(owner, true);
     setTitle("Num Participants");
 
     participants = parts;
-    fieldInFocus = tField;
     echoedField = echoedTField;
     trimWhitespace = trim;
 
@@ -114,10 +112,10 @@ public class NumParticipantsDialog extends JDialog implements ActionListener {
           '-');
       // set the text field:
       if (trimWhitespace) {
-        setFocusedTextFieldText(fieldInFocus.getText().trim().concat(
+        setFocusedTextFieldText(echoedField.getText().trim().concat(
             activeString + "-" + partString + " "));
       } else {
-        setFocusedTextFieldText(fieldInFocus.getText().concat(
+        setFocusedTextFieldText(echoedField.getText().concat(
             activeString + "-" + partString + " "));
       }
       setVisible(false);
@@ -142,11 +140,9 @@ public class NumParticipantsDialog extends JDialog implements ActionListener {
     }
   }
 
-  private void setFocusedTextFieldText(String text) // sets both the text fields
-                                                    // passed in to the
-                                                    // specified text
+  private void setFocusedTextFieldText(String text) // sets the echoed field
+                                                    // to the specified text
   {
-    fieldInFocus.setText(text);
     echoedField.setText(text);
   }
 }

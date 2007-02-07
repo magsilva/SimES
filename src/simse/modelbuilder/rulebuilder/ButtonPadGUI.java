@@ -31,12 +31,16 @@ public class ButtonPadGUI extends JDialog implements ActionListener {
   private Vector otherButtons; // e.g., random(min, max)
   private JTextArea echoedTextField; // text field from the effect rule info
                                      // form to be echoed under the button pad
+  private JTextField parentTextField; // actual text field for the attribute
+  																		// effect being edited
   private JButton okButton;
+  private JButton cancelButton;
 
   public ButtonPadGUI(JDialog owner, JButton input, JButton attsThis,
       JButton attsOther, JButton numObjects, JButton numActionsThis,
       JButton numActionsOther, Vector time, Vector digits, Vector operators,
-      Vector other, JTextArea echoedTField, String attDescription) {
+      Vector other, JTextArea echoedTField, JTextField parentTField, 
+      String attDescription) {
     super(owner, true);
 
     inputButton = input;
@@ -50,6 +54,7 @@ public class ButtonPadGUI extends JDialog implements ActionListener {
     operatorButtons = operators;
     otherButtons = other;
     echoedTextField = echoedTField;
+    parentTextField = parentTField;
 
     // Set window title:
     setTitle("Button Pad - " + attDescription);
@@ -102,6 +107,9 @@ public class ButtonPadGUI extends JDialog implements ActionListener {
     okButton = new JButton("OK");
     okButton.addActionListener(this);
     okPane.add(okButton);
+    cancelButton = new JButton("Cancel");
+    cancelButton.addActionListener(this);
+    okPane.add(cancelButton);
 
     // Add panes to main pane:
     mainPane.add(topPane);
@@ -134,6 +142,7 @@ public class ButtonPadGUI extends JDialog implements ActionListener {
   }
 
   public void okButtonPressed() {
+    parentTextField.setText(echoedTextField.getText());
     setVisible(false);
     dispose();
   }
@@ -143,6 +152,10 @@ public class ButtonPadGUI extends JDialog implements ActionListener {
     Object source = evt.getSource();
     if (source == okButton) {
       okButtonPressed();
+    }
+    else if (source == cancelButton) {
+      setVisible(false);
+      dispose();
     }
   }
 

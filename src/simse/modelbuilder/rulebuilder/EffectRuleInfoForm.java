@@ -617,14 +617,14 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
 
     else if (source == timeElapsedButton) {
       // append the text to the text field:
-      if ((getLastTokenType(lastFocusedTextField.getText()) == DIGIT)
-          && (getLastToken(lastFocusedTextField.getText()).equals("-"))) // negative
+      if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
+          && (getLastToken(echoedTextField.getText()).equals("-"))) // negative
       // sign was last token
       {
-        setFocusedTextFieldText(lastFocusedTextField.getText().trim().concat(
+        setEchoedTextFieldText(echoedTextField.getText().trim().concat(
             "totalTimeElapsed "));
       } else {
-        setFocusedTextFieldText(lastFocusedTextField.getText().concat(
+        setEchoedTextFieldText(echoedTextField.getText().concat(
             "totalTimeElapsed "));
       }
       refreshButtonPad(NUMBER);
@@ -753,14 +753,14 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     else if ((source instanceof JButton)
         && (((JButton) source).getText().equals("("))) {
       // append the text to the text field:
-      if ((getLastTokenType(lastFocusedTextField.getText()) == DIGIT)
-          && (getLastToken(lastFocusedTextField.getText()).equals("-"))) // negative
+      if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
+          && (getLastToken(echoedTextField.getText()).equals("-"))) // negative
       // sign was last token
       {
-        setFocusedTextFieldText(lastFocusedTextField.getText().trim().concat(
+        setEchoedTextFieldText(echoedTextField.getText().trim().concat(
             "("));
       } else {
-        setFocusedTextFieldText(lastFocusedTextField.getText().concat("("));
+        setEchoedTextFieldText(echoedTextField.getText().concat("("));
       }
       refreshButtonPad(OPEN_PAREN);
     }
@@ -768,7 +768,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     else if ((source instanceof JButton)
         && (((JButton) source).getText().equals(")"))) {
       // append the text to the text field:
-      setFocusedTextFieldText(lastFocusedTextField.getText().trim()
+      setEchoedTextFieldText(echoedTextField.getText().trim()
           .concat(") "));
       refreshButtonPad(CLOSED_PAREN);
     }
@@ -1339,22 +1339,17 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
                               // focus
   {
     // bring up new button pad:
+    echoedTextField.setText(lastFocusedTextField.getText());
     refreshButtonPad();
     refreshButtonPad(getLastTokenType(lastFocusedTextField.getText()));
-    echoedTextField.setText(lastFocusedTextField.getText());
     Vector attributes = objectTypeInFocus.getAllAttributes();
-    String attDescription = "";
-    for (int i = 0; i < textFields.size(); i++) {
-      JTextField field = (JTextField)textFields.elementAt(i);
-      if (field == lastFocusedTextField) {
-        attDescription = new String (objectTypeInFocus.getName() + "." +
-            ((Attribute)attributes.elementAt(i)).getName());
-      }
-    }
+
     buttGUI = new ButtonPadGUI(this, inputButton, attributeThisPartButton,
         attributeOtherPartButton, numObjectsButton, numActionsThisPartButton,
         numActionsOtherPartButton, timeButtons, digitButtons, operatorButtons,
-        otherButtons, echoedTextField, attDescription);
+        otherButtons, echoedTextField, lastFocusedTextField, 
+        new String(objectTypeInFocus.getName() + "." + 
+            getAttributeInFocus().getName()));
 
     // Makes it so this gui will refresh itself after this rule input info form
     // closes:
@@ -1490,8 +1485,8 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
         || (getAttributeInFocus().getType() == AttributeTypes.BOOLEAN))
     // boolean or string attribute
     {
-      if ((lastFocusedTextField.getText() != null)
-          && (lastFocusedTextField.getText().length() > 0)) // non-empty text
+      if ((echoedTextField.getText() != null)
+          && (echoedTextField.getText().length() > 0)) // non-empty text
                                                             // field
       {
         disableAllButtons();
@@ -1639,7 +1634,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
         }
 
         // disable "." button if necessary:
-        String textFieldText = lastFocusedTextField.getText();
+        String textFieldText = echoedTextField.getText();
         if (getLastToken(textFieldText).indexOf('.') != -1) // dot has already
                                                             // appeared in this
                                                             // number
@@ -1654,7 +1649,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
           buttonCloseParen.setEnabled(false);
         }
 
-        if (getLastToken(lastFocusedTextField.getText()).equals("-")) // negative
+        if (getLastToken(echoedTextField.getText()).equals("-")) // negative
                                                                       // sign
         {
           // disable minus button:
@@ -1676,7 +1671,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
           }
           // enable open paren:
           buttonOpenParen.setEnabled(true);
-        } else if (getLastToken(lastFocusedTextField.getText()).endsWith(".")) // dot
+        } else if (getLastToken(echoedTextField.getText()).endsWith(".")) // dot
         {
           // disable operator buttons:
           for (int i = 0; i < operatorButtons.size(); i++) {
@@ -1720,10 +1715,10 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
   }
 
   private int numOpenParen() // returns the number of open parentheses that are
-                             // in the last focused text field
+                             // in the echoed text field
   {
     int num = 0;
-    char[] text = lastFocusedTextField.getText().toCharArray();
+    char[] text = echoedTextField.getText().toCharArray();
     for (int i = 0; i < text.length; i++) {
       if (text[i] == '(') {
         num++;
@@ -1733,10 +1728,10 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
   }
 
   private int numClosingParen() // returns the number of closing parentheses
-                                // that are in the last focused text field
+                                // that are in the echoed text field
   {
     int num = 0;
-    char[] text = lastFocusedTextField.getText().toCharArray();
+    char[] text = echoedTextField.getText().toCharArray();
     for (int i = 0; i < text.length; i++) {
       if (text[i] == ')') {
         num++;
@@ -1836,14 +1831,14 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     if ((response != null) && (response.length() > 0)) // a selection was made
     {
       // append the text for the selected input to the text field:
-      if ((getLastTokenType(lastFocusedTextField.getText()) == DIGIT)
-          && (getLastToken(lastFocusedTextField.getText()).equals("-")))
+      if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
+          && (getLastToken(echoedTextField.getText()).equals("-")))
       // negative sign was last token
       {
-        setFocusedTextFieldText(lastFocusedTextField.getText().trim().concat(
+        setEchoedTextFieldText(echoedTextField.getText().trim().concat(
             "input-" + response + " "));
       } else {
-        setFocusedTextFieldText(lastFocusedTextField.getText().concat(
+        setEchoedTextFieldText(echoedTextField.getText().concat(
             "input-" + response + " "));
       }
       if ((attInFocus.getType() == AttributeTypes.INTEGER)
@@ -1908,16 +1903,16 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     if ((response != null) && (response.length() > 0)) // a selection was made
     {
       // append the text for the selected input to the text field:
-      if ((getLastTokenType(lastFocusedTextField.getText()) == DIGIT)
-          && (getLastToken(lastFocusedTextField.getText()).equals("-")))
+      if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
+          && (getLastToken(echoedTextField.getText()).equals("-")))
       // negative sign was last token
       {
-        setFocusedTextFieldText(lastFocusedTextField.getText().trim().concat(
+        setEchoedTextFieldText(echoedTextField.getText().trim().concat(
             "this" + objectTypeInFocus.getName() + "-"
                 + SimSEObjectTypeTypes.getText(objectTypeInFocus.getType())
                 + ":" + response + " "));
       } else {
-        setFocusedTextFieldText(lastFocusedTextField.getText().concat(
+        setEchoedTextFieldText(echoedTextField.getText().concat(
             "this" + objectTypeInFocus.getName() + "-"
                 + SimSEObjectTypeTypes.getText(objectTypeInFocus.getType())
                 + ":" + response + " "));
@@ -1936,28 +1931,28 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
                                                 // this button is clicked
   {
     Attribute attInFocus = getAttributeInFocus();
-    String oldText = lastFocusedTextField.getText(); // temporarily hold the
+    String oldText = echoedTextField.getText(); // temporarily hold the
                                                      // text from the text field
     boolean trimWhitespace = false;
-    if ((getLastTokenType(lastFocusedTextField.getText()) == DIGIT)
-        && (getLastToken(lastFocusedTextField.getText()).equals("-")))
+    if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
+        && (getLastToken(echoedTextField.getText()).equals("-")))
     // negative sign was last token
     {
       trimWhitespace = true;
     }
     OtherParticipantAttributeDialog opad = new OtherParticipantAttributeDialog(
-        this, actionInFocus.getAllParticipants(), lastFocusedTextField,
-        echoedTextField, attInFocus.getType(), trimWhitespace);
+        this, actionInFocus.getAllParticipants(), echoedTextField, 
+        attInFocus.getType(), trimWhitespace);
     if ((attInFocus.getType() == AttributeTypes.INTEGER)
         || (attInFocus.getType() == AttributeTypes.DOUBLE)) {
-      if (lastFocusedTextField.getText().equals(oldText) == false) // text has
+      if (echoedTextField.getText().equals(oldText) == false) // text has
                                                                    // changed
       {
         refreshButtonPad(NUMBER);
       }
     } else // string/boolean attribute
     {
-      if (lastFocusedTextField.getText().equals(oldText) == false) // text has
+      if (echoedTextField.getText().equals(oldText) == false) // text has
                                                                    // changed
       {
         disableAllButtons();
@@ -1968,19 +1963,18 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
   private void numObjectsButtonChosen() // takes care of what to do when this
                                         // button is clicked
   {
-    String oldText = lastFocusedTextField.getText(); // temporarily hold the
+    String oldText = echoedTextField.getText(); // temporarily hold the
                                                      // text from the text field
     boolean trimWhitespace = false;
-    if ((getLastTokenType(lastFocusedTextField.getText()) == DIGIT)
-        && (getLastToken(lastFocusedTextField.getText()).equals("-")))
+    if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
+        && (getLastToken(echoedTextField.getText()).equals("-")))
     // negative sign was last token
     {
       trimWhitespace = true;
     }
     NumParticipantsDialog npd = new NumParticipantsDialog(this, actionInFocus
-        .getAllParticipants(), lastFocusedTextField, echoedTextField,
-        trimWhitespace);
-    if (lastFocusedTextField.getText().equals(oldText) == false) // text has
+        .getAllParticipants(), echoedTextField, trimWhitespace);
+    if (echoedTextField.getText().equals(oldText) == false) // text has
                                                                  // changed
     {
       refreshButtonPad(NUMBER);
@@ -1990,19 +1984,19 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
   private void numActionsThisPartButtonChosen() // takes care of what to do when
                                                 // this button is clicked
   {
-    String oldText = lastFocusedTextField.getText(); // temporarily hold the
+    String oldText = echoedTextField.getText(); // temporarily hold the
                                                      // text from the text field
     boolean trimWhitespace = false;
-    if ((getLastTokenType(lastFocusedTextField.getText()) == DIGIT)
-        && (getLastToken(lastFocusedTextField.getText()).equals("-")))
+    if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
+        && (getLastToken(echoedTextField.getText()).equals("-")))
     // negative sign was last token
     {
       trimWhitespace = true;
     }
     NumActionsThisPartDialog dialog = new NumActionsThisPartDialog(this,
-        participantInFocus, objectTypeInFocus, actions, lastFocusedTextField,
-        echoedTextField, trimWhitespace);
-    if (lastFocusedTextField.getText().equals(oldText) == false) // text has
+        participantInFocus, objectTypeInFocus, actions, echoedTextField, 
+        trimWhitespace);
+    if (echoedTextField.getText().equals(oldText) == false) // text has
                                                                  // changed
     {
       refreshButtonPad(NUMBER);
@@ -2012,19 +2006,19 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
   private void numActionsOtherPartButtonChosen() // takes care of what to do
                                                  // when this button is clicked
   {
-    String oldText = lastFocusedTextField.getText(); // temporarily hold the
+    String oldText = echoedTextField.getText(); // temporarily hold the
                                                      // text from the text field
     boolean trimWhitespace = false;
-    if ((getLastTokenType(lastFocusedTextField.getText()) == DIGIT)
-        && (getLastToken(lastFocusedTextField.getText()).equals("-")))
+    if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
+        && (getLastToken(echoedTextField.getText()).equals("-")))
     // negative sign was last token
     {
       trimWhitespace = true;
     }
     NumActionsOtherPartDialog dialog = new NumActionsOtherPartDialog(this,
-        actionInFocus.getAllParticipants(), actions, lastFocusedTextField,
-        echoedTextField, trimWhitespace);
-    if (lastFocusedTextField.getText().equals(oldText) == false) // text has
+        actionInFocus.getAllParticipants(), actions, echoedTextField, 
+        trimWhitespace);
+    if (echoedTextField.getText().equals(oldText) == false) // text has
                                                                  // changed
     {
       refreshButtonPad(NUMBER);
@@ -2036,14 +2030,14 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
   {
     String text = "actionTimeElapsed";
     // append the text for the selected input to the text field:
-    if ((getLastTokenType(lastFocusedTextField.getText()) == DIGIT)
-        && (getLastToken(lastFocusedTextField.getText()).equals("-")))
+    if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
+        && (getLastToken(echoedTextField.getText()).equals("-")))
     // negative sign was last token
     {
-      setFocusedTextFieldText(lastFocusedTextField.getText().trim().concat(
+      setEchoedTextFieldText(echoedTextField.getText().trim().concat(
           text + " "));
     } else {
-      setFocusedTextFieldText(lastFocusedTextField.getText().concat(text + " "));
+      setEchoedTextFieldText(echoedTextField.getText().concat(text + " "));
     }
     refreshButtonPad(NUMBER);
   }
@@ -2051,18 +2045,18 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
   private void randomButtonChosen() // takes care of what to do when this button
                                     // is clicked
   {
-    String oldText = lastFocusedTextField.getText(); // temporarily hold the
+    String oldText = echoedTextField.getText(); // temporarily hold the
                                                      // text from the text field
     boolean trimWhitespace = false;
-    if ((getLastTokenType(lastFocusedTextField.getText()) == DIGIT)
-        && (getLastToken(lastFocusedTextField.getText()).equals("-")))
+    if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
+        && (getLastToken(echoedTextField.getText()).equals("-")))
     // negative sign was last token
     {
       trimWhitespace = true;
     }
-    RandomFunctionDialog dialog = new RandomFunctionDialog(this,
-        lastFocusedTextField, echoedTextField, trimWhitespace);
-    if (lastFocusedTextField.getText().equals(oldText) == false) // text has
+    RandomFunctionDialog dialog = new RandomFunctionDialog(this, 
+        echoedTextField, trimWhitespace);
+    if (echoedTextField.getText().equals(oldText) == false) // text has
                                                                  // changed
     {
       refreshButtonPad(NUMBER);
@@ -2075,26 +2069,26 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
   {
     //System.out.println("*********** At the beginning of digitButtonChosen for
     // butt w/ this text: *" + digitButt.getText() + "*");
-    if (getLastToken(lastFocusedTextField.getText()) == null) // empty text
+    if (getLastToken(echoedTextField.getText()) == null) // empty text
                                                               // field
     {
       //System.out.println("Last token = null");
       //System.out.println("About to append the text *" + digitButt.getText() +
       // "* plus a space");
       // append the text:
-      setFocusedTextFieldText(lastFocusedTextField.getText().concat(
+      setEchoedTextFieldText(echoedTextField.getText().concat(
           digitButt.getText() + " "));
     } else // non-empty text field
     {
       //System.out.println("Last token = *" +
       // getLastToken(lastFocusedTextField.getText()) + "*");
-      int tokenType = getLastTokenType(lastFocusedTextField.getText());
+      int tokenType = getLastTokenType(echoedTextField.getText());
       //System.out.println("Last token type = " + tokenType);
       if ((tokenType == OPEN_PAREN) || (tokenType == OPERATOR)) {
         //System.out.println("Last token type is open paren or operator --
         // about to append *" + digitButt.getText() + "* plus a space");
         // append the text:
-        setFocusedTextFieldText(lastFocusedTextField.getText().concat(
+        setEchoedTextFieldText(echoedTextField.getText().concat(
             digitButt.getText() + " "));
       } else if (tokenType == DIGIT) {
         //System.out.println("Last token type is digit -- about to remove
@@ -2102,7 +2096,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
         //+ "* plus a space");
         // append the text, removing trailing white space from what was
         // previously in the text field:
-        setFocusedTextFieldText(lastFocusedTextField.getText().trim().concat(
+        setEchoedTextFieldText(echoedTextField.getText().trim().concat(
             digitButt.getText() + " "));
       }
     }
@@ -2119,13 +2113,13 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     if (opButt.getText().equals("-")) {
       //System.out.println("************* At the beginning of
       // operatorButtonChosen function, and - button chosen");
-      String lastToken = getLastToken(lastFocusedTextField.getText());
+      String lastToken = getLastToken(echoedTextField.getText());
       //System.out.println("Last token = " + lastToken);
       //System.out.println("Last token type = " +
       // getLastTokenType(lastFocusedTextField.getText()));
       if ((lastToken == null) || (lastToken.length() == 0)
-          || (getLastTokenType(lastFocusedTextField.getText()) == OPERATOR)
-          || (getLastTokenType(lastFocusedTextField.getText()) == OPEN_PAREN)) // "-"
+          || (getLastTokenType(echoedTextField.getText()) == OPERATOR)
+          || (getLastTokenType(echoedTextField.getText()) == OPEN_PAREN)) // "-"
                                                                                // counts
                                                                                // for
                                                                                // a
@@ -2143,7 +2137,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
         //System.out.println("About to append minus sign plus a space -- minus
         // button counts for a operator");
         // append text:
-        setFocusedTextFieldText(lastFocusedTextField.getText().concat(
+        setEchoedTextFieldText(echoedTextField.getText().concat(
             opButt.getText() + " "));
         //System.out.println("About to refresh button pad for operator just
         // chosen");
@@ -2156,7 +2150,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       //System.out.println("A non minus sign operator chosen, about to append
       // text: *" + opButt.getText() + "* plus a space");
       // append text:
-      setFocusedTextFieldText(lastFocusedTextField.getText().concat(
+      setEchoedTextFieldText(echoedTextField.getText().concat(
           opButt.getText() + " "));
       //System.out.println("About to refresh button pad for operator just
       // chosen.");
@@ -2187,7 +2181,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
         stringButtonChosen(); // try again
       } else // valid input
       {
-        setFocusedTextFieldText("\"" + response + "\"");
+        setEchoedTextFieldText("\"" + response + "\"");
         disableAllButtons();
       }
     }
@@ -2204,7 +2198,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     if ((response != null) && (response.length() > 0)) // a selection was made
     {
       // set the text field:
-      setFocusedTextFieldText(response);
+      setEchoedTextFieldText(response);
       disableAllButtons();
     }
   }
@@ -2216,32 +2210,32 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
         || (getAttributeInFocus().getType() == AttributeTypes.BOOLEAN))
     // string or boolean attribute
     {
-      setFocusedTextFieldText(null); // clear text
+      setEchoedTextFieldText(null); // clear text
       refreshButtonPad();
     } else // numerical attribute
     {
-      String lastToken = getLastToken(lastFocusedTextField.getText());
+      String lastToken = getLastToken(echoedTextField.getText());
       if ((lastToken != null) && (lastToken.length() > 0)) // there was text in
                                                            // the field
       {
-        if (getLastTokenType(lastFocusedTextField.getText()) == DIGIT) // digit
+        if (getLastTokenType(echoedTextField.getText()) == DIGIT) // digit
                                                                        // token
         {
           // remove the last character:
-          setFocusedTextFieldText(lastFocusedTextField.getText().trim()
+          setEchoedTextFieldText(echoedTextField.getText().trim()
               .substring(0,
-                  (lastFocusedTextField.getText().trim().length() - 1)));
+                  (echoedTextField.getText().trim().length() - 1)));
         } else // non-digit token
         {
           // remove the last token:
-          setFocusedTextFieldText(lastFocusedTextField.getText().trim()
+          setEchoedTextFieldText(echoedTextField.getText().trim()
               .substring(
                   0,
-                  (lastFocusedTextField.getText().trim().length() - lastToken
+                  (echoedTextField.getText().trim().length() - lastToken
                       .length())));
         }
-        if ((getLastTokenType(lastFocusedTextField.getText()) != -1)
-            && (getLastTokenType(lastFocusedTextField.getText()) != OPEN_PAREN)) // last
+        if ((getLastTokenType(echoedTextField.getText()) != -1)
+            && (getLastTokenType(echoedTextField.getText()) != OPEN_PAREN)) // last
                                                                                  // token
                                                                                  // was
                                                                                  // not
@@ -2254,17 +2248,17 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
                                                                                  // paren
         {
           // add a space to the text field:
-          setFocusedTextFieldText(lastFocusedTextField.getText().trim() + " ");
+          setEchoedTextFieldText(echoedTextField.getText().trim() + " ");
         }
-        if ((lastFocusedTextField.getText() == null)
-            || (lastFocusedTextField.getText().length() == 0)) // all of the
+        if ((echoedTextField.getText() == null)
+            || (echoedTextField.getText().length() == 0)) // all of the
                                                                // text has been
         // removed
         {
           refreshButtonPad(); // refresh button pad based on attribute type only
         } else {
           // refresh button pad based on last token type:
-          refreshButtonPad(getLastTokenType(lastFocusedTextField.getText()));
+          refreshButtonPad(getLastTokenType(echoedTextField.getText()));
         }
       }
     }
@@ -2413,13 +2407,8 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     }
   }
 
-  private void setFocusedTextFieldText(String text) // sets the last focused
-                                                    // text field, as well as
-                                                    // the echo of this text
-                                                    // field in the
-  // button pad, to the specified text
+  private void setEchoedTextFieldText(String text)
   {
-    lastFocusedTextField.setText(text);
     echoedTextField.setText(text);
   }
 }

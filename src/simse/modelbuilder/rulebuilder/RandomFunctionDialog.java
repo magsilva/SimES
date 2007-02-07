@@ -11,7 +11,6 @@ import javax.swing.*;
 import java.awt.Color;
 
 public class RandomFunctionDialog extends JDialog implements ActionListener {
-  private JTextField fieldInFocus; // text field to edit
   private JTextArea echoedField; // echoed text field in the button pad gui
   private boolean trimWhitespace; // whether or not to trim the trailing
                                   // whitespace in the text field b4 appending
@@ -22,12 +21,11 @@ public class RandomFunctionDialog extends JDialog implements ActionListener {
   private JButton okButton;
   private JButton cancelButton;
 
-  public RandomFunctionDialog(JDialog owner, JTextField tField,
-      JTextArea echoedTField, boolean trim) {
+  public RandomFunctionDialog(JDialog owner, JTextArea echoedTField, 
+      boolean trim) {
     super(owner, true);
     setTitle("Random(min, max)");
 
-    fieldInFocus = tField;
     echoedField = echoedTField;
     trimWhitespace = trim;
 
@@ -106,10 +104,10 @@ public class RandomFunctionDialog extends JDialog implements ActionListener {
       } else {
         // set the text field text:
         if (trimWhitespace) {
-          setFocusedTextFieldText(fieldInFocus.getText().trim().concat(
+          setFocusedTextFieldText(echoedField.getText().trim().concat(
               "random:" + minVal + "," + maxVal + " "));
         } else {
-          setFocusedTextFieldText(fieldInFocus.getText().concat(
+          setFocusedTextFieldText(echoedField.getText().concat(
               "random:" + minVal + "," + maxVal + " "));
         }
       }
@@ -129,7 +127,6 @@ public class RandomFunctionDialog extends JDialog implements ActionListener {
                                                     // passed in to the
                                                     // specified text
   {
-    fieldInFocus.setText(text);
     echoedField.setText(text);
   }
 }
