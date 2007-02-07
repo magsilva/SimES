@@ -402,11 +402,14 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants {
             }
             writer.write(NEWLINE);
             
-            // For each user destroyer, remove the menu item:
+            // For each user destroyer for this action, remove the menu item:
             for (int k = 0; k < allDestroyers.size(); k++) {
               ActionTypeDestroyer tempDest2 = (ActionTypeDestroyer) allDestroyers
               	.elementAt(k);
-              if (tempDest2 instanceof UserActionTypeDestroyer) {
+              if ((tempDest2 instanceof UserActionTypeDestroyer) &&
+                  (tempDest2 != tempDest) && 
+                  (tempDest2.getActionType().getName().equals(
+                      tempDest.getActionType().getName()))) {
                 writer.write("((Employee) c).removeMenuItem(\"" +
                     ((UserActionTypeDestroyer)tempDest2).getMenuText()
                     + "\");");
