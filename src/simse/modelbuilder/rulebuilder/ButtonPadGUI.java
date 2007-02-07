@@ -36,7 +36,7 @@ public class ButtonPadGUI extends JDialog implements ActionListener {
   public ButtonPadGUI(JDialog owner, JButton input, JButton attsThis,
       JButton attsOther, JButton numObjects, JButton numActionsThis,
       JButton numActionsOther, Vector time, Vector digits, Vector operators,
-      Vector other, JTextArea echoedTField) {
+      Vector other, JTextArea echoedTField, String attDescription) {
     super(owner, true);
 
     inputButton = input;
@@ -52,7 +52,7 @@ public class ButtonPadGUI extends JDialog implements ActionListener {
     echoedTextField = echoedTField;
 
     // Set window title:
-    setTitle("Button Pad");
+    setTitle("Button Pad - " + attDescription);
 
     // Create main panel (box):
     Box mainPane = Box.createVerticalBox();

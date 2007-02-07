@@ -1342,10 +1342,19 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     refreshButtonPad();
     refreshButtonPad(getLastTokenType(lastFocusedTextField.getText()));
     echoedTextField.setText(lastFocusedTextField.getText());
+    Vector attributes = objectTypeInFocus.getAllAttributes();
+    String attDescription = "";
+    for (int i = 0; i < textFields.size(); i++) {
+      JTextField field = (JTextField)textFields.elementAt(i);
+      if (field == lastFocusedTextField) {
+        attDescription = new String (objectTypeInFocus.getName() + "." +
+            ((Attribute)attributes.elementAt(i)).getName());
+      }
+    }
     buttGUI = new ButtonPadGUI(this, inputButton, attributeThisPartButton,
         attributeOtherPartButton, numObjectsButton, numActionsThisPartButton,
         numActionsOtherPartButton, timeButtons, digitButtons, operatorButtons,
-        otherButtons, echoedTextField);
+        otherButtons, echoedTextField, attDescription);
 
     // Makes it so this gui will refresh itself after this rule input info form
     // closes:
