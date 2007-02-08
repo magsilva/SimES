@@ -3,6 +3,7 @@
 package simse.modelbuilder.actionbuilder;
 
 import java.util.*;
+
 import simse.modelbuilder.rulebuilder.*;
 
 public class ActionType implements Cloneable {
@@ -409,6 +410,22 @@ public class ActionType implements Cloneable {
     }
     return null;
   }
+  
+  /*
+   * Returns the index of the participant with the specified name
+   */
+  public int getParticipantIndex(String name) 
+  {
+    for (int i = 0; i < participants.size(); i++) {
+      ActionTypeParticipant p = (ActionTypeParticipant) participants.elementAt(
+          i);
+      if (p.getName().equals(name)) {
+        int index = participants.indexOf(p);
+        return index;
+      }
+    }
+    return -1;
+  }
 
   public void addParticipant(ActionTypeParticipant part) {
     participants.add(part);
@@ -423,8 +440,11 @@ public class ActionType implements Cloneable {
     participants.add(index, part);
   }
 
-  public void removeParticipant(String name) // removes the participant with the
-                                             // specified name
+  /*
+   * removes the participant with the specified name and returns the position
+   * it removed it from; returns -1 if participant was not found
+   */
+  public int removeParticipant(String name) 
   {
     for (int i = 0; i < participants.size(); i++) {
       ActionTypeParticipant tempPart = (ActionTypeParticipant) (participants
@@ -445,8 +465,28 @@ public class ActionType implements Cloneable {
               .elementAt(j);
           tempDest.removeDestroyer(tempPart.getName());
         }
+        return i;
       }
     }
+    return -1;
+  }
+  
+  /*
+   * removes the participant with the specified name and returns the position
+   * it removed it from, but does not remove the participant triggers and
+   * destroyers for the participant; returns -1 if participant was not found
+   */
+  public int temporarilyRemoveParticipant(String name) 
+  {
+    for (int i = 0; i < participants.size(); i++) {
+      ActionTypeParticipant tempPart = (ActionTypeParticipant) (participants
+          .elementAt(i));
+      if (tempPart.getName().equals(name)) {
+        participants.removeElementAt(i);
+        return i;
+      }
+    }
+    return -1;
   }
 
   public void removeParticipant(ActionTypeParticipant part) {

@@ -33,6 +33,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
                                          // an action
   private JButton removeParticipantButton; // button for deleting a participant
                                            // from an action
+  private JButton moveUpButton; // for moving a participant up
+  private JButton moveDownButton; // for moving a participant down
   private JButton triggerButton; // button for viewing/editing action triggers
   private JButton destroyerButton; // button for viewing/editing action
                                    // destroyers
@@ -89,12 +91,20 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     editParticipantButton.addActionListener(this);
     removeParticipantButton = new JButton("Remove Participant");
     removeParticipantButton.addActionListener(this);
+    moveUpButton = new JButton("Move Up");
+    moveUpButton.addActionListener(this);
+    moveDownButton = new JButton("Move Down");
+    moveDownButton.addActionListener(this);
     actionTableButtonPane.add(addParticipantButton);
     actionTableButtonPane.add(editParticipantButton);
     actionTableButtonPane.add(removeParticipantButton);
+    actionTableButtonPane.add(moveUpButton);
+    actionTableButtonPane.add(moveDownButton);
     addParticipantButton.setEnabled(false);
     editParticipantButton.setEnabled(false);
     removeParticipantButton.setEnabled(false);
+    moveUpButton.setEnabled(false);
+    moveDownButton.setEnabled(false);
 
     // Create trigger/destroyer button pane and buttons:
     JPanel trigDestroyButtonPane = new JPanel();
@@ -203,6 +213,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
         editParticipant(tempPart);
         editParticipantButton.setEnabled(false);
         removeParticipantButton.setEnabled(false);
+        moveUpButton.setEnabled(false);
+        moveDownButton.setEnabled(false);
       }
     }
   }
@@ -281,6 +293,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
       addParticipant();
       editParticipantButton.setEnabled(false);
       removeParticipantButton.setEnabled(false);
+      moveUpButton.setEnabled(false);
+      moveDownButton.setEnabled(false);
     }
 
     else if (source == editParticipantButton) {
@@ -293,6 +307,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
         editParticipant(tempPart);
         editParticipantButton.setEnabled(false);
         removeParticipantButton.setEnabled(false);
+        moveUpButton.setEnabled(false);
+        moveDownButton.setEnabled(false);
       }
     }
 
@@ -304,6 +320,26 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
             .getParticipant(
                 (String) (actTblMod.getValueAt(actionTable.getSelectedRow(), 0)));
         removeParticipant(tempPart);
+      }
+    }
+    
+    else if (source == moveUpButton) {
+      if (actionTable.getSelectedRow() >= 0) // a row is selected
+      {
+        ActionTypeParticipant tempPart = actTblMod.getActionTypeInFocus().
+        	getParticipant((String) (actTblMod.getValueAt(
+        	    actionTable.getSelectedRow(), 0)));
+        moveParticipantUp(tempPart);
+      }
+    }
+    
+    else if (source == moveDownButton) {
+      if (actionTable.getSelectedRow() >= 0) // a row is selected
+      {
+        ActionTypeParticipant tempPart = actTblMod.getActionTypeInFocus().
+        	getParticipant((String) (actTblMod.getValueAt(
+        	    actionTable.getSelectedRow(), 0)));
+        moveParticipantDown(tempPart);
       }
     }
 
@@ -428,6 +464,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
         actTblMod.refreshData();
         editParticipantButton.setEnabled(false);
         removeParticipantButton.setEnabled(false);
+        moveUpButton.setEnabled(false);
+        moveDownButton.setEnabled(false);
 
         /*
          * enable the visibility button if the action has an employee
@@ -483,6 +521,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
       actTblMod.refreshData();
       removeParticipantButton.setEnabled(false);
       editParticipantButton.setEnabled(false);
+      moveUpButton.setEnabled(false);
+      moveDownButton.setEnabled(false);
       ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
     } else // choice == JOptionPane.NO_OPTION
     {
@@ -507,6 +547,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
         if (lsm.isSelectionEmpty() == false) {
           editParticipantButton.setEnabled(true);
           removeParticipantButton.setEnabled(true);
+          moveUpButton.setEnabled(true);
+          moveDownButton.setEnabled(true);
         }
       }
     });
@@ -563,6 +605,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     addParticipantButton.setEnabled(true);
     editParticipantButton.setEnabled(false);
     removeParticipantButton.setEnabled(false);
+    moveUpButton.setEnabled(false);
+    moveDownButton.setEnabled(false);
     triggerButton.setEnabled(true);
     destroyerButton.setEnabled(true);
     optionsButton.setEnabled(true);
@@ -637,6 +681,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     addParticipantButton.setEnabled(false);
     editParticipantButton.setEnabled(false);
     removeParticipantButton.setEnabled(false);
+    moveUpButton.setEnabled(false);
+    moveDownButton.setEnabled(false);
     triggerButton.setEnabled(false);
     destroyerButton.setEnabled(false);
     optionsButton.setEnabled(false);
@@ -664,6 +710,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     addParticipantButton.setEnabled(false);
     editParticipantButton.setEnabled(false);
     removeParticipantButton.setEnabled(false);
+    moveUpButton.setEnabled(false);
+    moveDownButton.setEnabled(false);
     triggerButton.setEnabled(false);
     destroyerButton.setEnabled(false);
     optionsButton.setEnabled(false);
@@ -687,5 +735,45 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
       }
     }
     return false;
+  }
+  
+  /*
+   * Moves a participant up in the list
+   */
+  private void moveParticipantUp(ActionTypeParticipant part) {
+    int partIndex = 
+      actTblMod.getActionTypeInFocus().getParticipantIndex(part.getName());
+    Vector parts = actTblMod.getActionTypeInFocus().getAllParticipants();
+    if (partIndex > 0) // first list element wasn't chosen
+    {
+      int position = actTblMod.getActionTypeInFocus().
+      	temporarilyRemoveParticipant(part.getName());
+      
+      // move up:
+      actTblMod.getActionTypeInFocus().addParticipant(part, (position - 1)); 
+      ((ModelBuilderGUI)mainGUI).setFileModSinceLastSave();
+      actTblMod.refreshData();
+      actionTable.setRowSelectionInterval((position - 1), (position - 1));
+    }
+  }
+  
+  /*
+   * Moves a participant down in the list
+   */
+  private void moveParticipantDown(ActionTypeParticipant part) {
+    int partIndex = 
+      actTblMod.getActionTypeInFocus().getParticipantIndex(part.getName());
+    Vector parts = actTblMod.getActionTypeInFocus().getAllParticipants();
+    if (partIndex < (parts.size() - 1)) // last list element wasn't chosen
+    {
+      int position = actTblMod.getActionTypeInFocus().
+      	temporarilyRemoveParticipant(part.getName());
+      
+      // move down:
+      actTblMod.getActionTypeInFocus().addParticipant(part, (position + 1)); 
+      ((ModelBuilderGUI)mainGUI).setFileModSinceLastSave();
+      actTblMod.refreshData();
+      actionTable.setRowSelectionInterval((position + 1), (position + 1));
+    }
   }
 }

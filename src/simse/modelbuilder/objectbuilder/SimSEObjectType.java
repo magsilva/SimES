@@ -159,6 +159,9 @@ public class SimSEObjectType implements Cloneable {
     return -1;
   }
   
+  /*
+   * Returns the index of the attribute with the specified name
+   */
   public int getAttributeIndex(String name) 
   {
     for (int i = 0; i < attributes.size(); i++) {
