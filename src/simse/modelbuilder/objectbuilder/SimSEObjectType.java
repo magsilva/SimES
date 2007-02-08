@@ -158,6 +158,18 @@ public class SimSEObjectType implements Cloneable {
     }
     return -1;
   }
+  
+  public int getAttributeIndex(String name) 
+  {
+    for (int i = 0; i < attributes.size(); i++) {
+      Attribute a = (Attribute) attributes.elementAt(i);
+      if (a.getName().equals(name)) {
+        int index = attributes.indexOf(a);
+        return index;
+      }
+    }
+    return -1;
+  }
 
   public int getNumAttributes() // returns the number of attributes this object
   // has
