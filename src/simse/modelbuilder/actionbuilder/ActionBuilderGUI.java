@@ -639,7 +639,6 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
       } else // user has entered valid input
       {
         act.setName(response);
-        actions.sort();
         updateDefinedActionsList();
         setActionInFocus(act); // set newly created object to be the focus of
                                // the GUI

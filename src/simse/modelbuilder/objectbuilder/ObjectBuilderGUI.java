@@ -30,11 +30,14 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
   private JButton addNewAttributeButton; // button for adding a new attribute
   private JButton editAttributeButton; // button for editing an attribute
   private JButton removeAttributeButton; // button for deleting an attribute
-  private JButton moveUpButton; // for moving an attribute up
-  private JButton moveDownButton; // for moving an attribute down
+  private JButton moveAttUpButton; // for moving an attribute up
+  private JButton moveAttDownButton; // for moving an attribute down
   private JList definedObjectsList; // JList of already defined objects
   //private JButton viewEditButton; // button for viewing/editing an already
   // defined object
+  private JButton moveObjUpButton; // for moving an object type up
+  private JButton moveObjDownButton; // for moving an object type down
+
   private JButton removeObjectButton; // button for removing an already defined
                                       // object
   private JButton renameObjectButton; // button for renaming an existing object
@@ -107,20 +110,20 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
     editAttributeButton.addActionListener(this);
     removeAttributeButton = new JButton("Remove Attribute");
     removeAttributeButton.addActionListener(this);
-    moveUpButton = new JButton("Move Up");
-    moveUpButton.addActionListener(this);
-    moveDownButton = new JButton("Move Down");
-    moveDownButton.addActionListener(this);
+    moveAttUpButton = new JButton("Move Up");
+    moveAttUpButton.addActionListener(this);
+    moveAttDownButton = new JButton("Move Down");
+    moveAttDownButton.addActionListener(this);
     attributeButtonPane.add(addNewAttributeButton);
     attributeButtonPane.add(editAttributeButton);
     attributeButtonPane.add(removeAttributeButton);
-    attributeButtonPane.add(moveUpButton);
-    attributeButtonPane.add(moveDownButton);
+    attributeButtonPane.add(moveAttUpButton);
+    attributeButtonPane.add(moveAttDownButton);
     addNewAttributeButton.setEnabled(false);
     editAttributeButton.setEnabled(false);
     removeAttributeButton.setEnabled(false);
-    moveUpButton.setEnabled(false);
-    moveDownButton.setEnabled(false);
+    moveAttUpButton.setEnabled(false);
+    moveAttDownButton.setEnabled(false);
 
     // Create "defined objects" pane:
     JPanel definedObjectsPane = new JPanel();
@@ -149,15 +152,24 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
     updateDefinedObjectsList();
     setupDefinedObjectsListSelectionListenerStuff();
 
-    // Create and add "view/edit" button, "remove" button, and pane for these
-    // buttons::
+    // Create buttons for this pane:
     Box definedObjectsButtonPane = Box.createVerticalBox();
-    renameObjectButton = new JButton("Rename  ");
+    moveObjUpButton = new JButton("Move up     ");
+    definedObjectsButtonPane.add(moveObjUpButton);
+    moveObjUpButton.addActionListener(this);
+    moveObjUpButton.setEnabled(false);
+    
+    moveObjDownButton = new JButton("Move down");
+    definedObjectsButtonPane.add(moveObjDownButton);
+    moveObjDownButton.addActionListener(this);
+    moveObjDownButton.setEnabled(false);
+    
+    renameObjectButton = new JButton("Rename      ");
     definedObjectsButtonPane.add(renameObjectButton);
     renameObjectButton.addActionListener(this);
     renameObjectButton.setEnabled(false);
 
-    removeObjectButton = new JButton("Remove  ");
+    removeObjectButton = new JButton("Remove      ");
     definedObjectsButtonPane.add(removeObjectButton);
     removeObjectButton.addActionListener(this);
     removeObjectButton.setEnabled(false);
@@ -211,8 +223,8 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
         editAttribute(tempAttr);
         editAttributeButton.setEnabled(false);
         removeAttributeButton.setEnabled(false);
-        moveUpButton.setEnabled(false);
-        moveDownButton.setEnabled(false);
+        moveAttUpButton.setEnabled(false);
+        moveAttDownButton.setEnabled(false);
       }
     }
   }
@@ -262,8 +274,8 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
       addNewAttribute();
       editAttributeButton.setEnabled(false);
       removeAttributeButton.setEnabled(false);
-      moveUpButton.setEnabled(false);
-      moveDownButton.setEnabled(false);
+      moveAttUpButton.setEnabled(false);
+      moveAttDownButton.setEnabled(false);
     }
 
     else if (source == editAttributeButton) {
@@ -276,8 +288,8 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
         editAttribute(tempAttr);
         editAttributeButton.setEnabled(false);
         removeAttributeButton.setEnabled(false);
-        moveUpButton.setEnabled(false);
-        moveDownButton.setEnabled(false);
+        moveAttUpButton.setEnabled(false);
+        moveAttDownButton.setEnabled(false);
       }
     }
 
@@ -292,7 +304,18 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
       }
     }
     
-    else if (source == moveUpButton) {
+    else if (source == moveAttDownButton) {
+      if (attributeTable.getSelectedRow() >= 0) // a row is selected
+      {
+        Attribute tempAttr = attTblMod.getObjectInFocus()
+        .getAttribute(
+            (String) (attTblMod.getValueAt(attributeTable.getSelectedRow(),
+                0)));
+        moveAttributeDown(tempAttr);
+      }
+    }
+    
+    else if (source == moveAttUpButton) {
       if (attributeTable.getSelectedRow() >= 0) // a row is selected
       {
         Attribute tempAttr = attTblMod.getObjectInFocus()
@@ -303,14 +326,23 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
       }
     }
     
-    else if (source == moveDownButton) {
-      if (attributeTable.getSelectedRow() >= 0) // a row is selected
+    else if (source == moveObjDownButton) {
+      if (!definedObjectsList.getSelectionModel().isSelectionEmpty())
       {
-        Attribute tempAttr = attTblMod.getObjectInFocus()
-        .getAttribute(
-            (String) (attTblMod.getValueAt(attributeTable.getSelectedRow(),
-                0)));
-        moveAttributeDown(tempAttr);
+        SimSEObjectType tempObj = (SimSEObjectType) (objects
+            .getAllObjectTypes().elementAt(definedObjectsList
+            .getSelectedIndex()));
+        moveObjectDown(tempObj);
+      }
+    }
+    
+    else if (source == moveObjUpButton) {
+      if (!definedObjectsList.getSelectionModel().isSelectionEmpty())
+      {
+        SimSEObjectType tempObj = (SimSEObjectType) (objects
+            .getAllObjectTypes().elementAt(definedObjectsList
+            .getSelectedIndex()));
+        moveObjectUp(tempObj);
       }
     }
 
@@ -442,7 +474,6 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
       } else // user has entered valid input
       {
         obj.setName(response);
-        objects.sort();
         updateDefinedObjectsList();
         setObjectInFocus(obj); // set newly created object to be the focus of
         // the GUI
@@ -580,8 +611,8 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
         attTblMod.refreshData();
         editAttributeButton.setEnabled(false);
         removeAttributeButton.setEnabled(false);
-        moveUpButton.setEnabled(false);
-        moveDownButton.setEnabled(false);
+        moveAttUpButton.setEnabled(false);
+        moveAttDownButton.setEnabled(false);
       }
 
       public void windowGainedFocus(WindowEvent ev) {
@@ -626,8 +657,8 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
         attTblMod.refreshData();
         removeAttributeButton.setEnabled(false);
         editAttributeButton.setEnabled(false);
-        moveUpButton.setEnabled(false);
-        moveDownButton.setEnabled(false);
+        moveAttUpButton.setEnabled(false);
+        moveAttDownButton.setEnabled(false);
         mainGUI.setFileModSinceLastSave();
         //mainGUI.resetObjectTypes();
       }
@@ -669,8 +700,8 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
         if (lsm.isSelectionEmpty() == false) {
           editAttributeButton.setEnabled(true);
           removeAttributeButton.setEnabled(true);
-          moveUpButton.setEnabled(true);
-          moveDownButton.setEnabled(true);
+          moveAttUpButton.setEnabled(true);
+          moveAttDownButton.setEnabled(true);
         }
       }
     });
@@ -696,6 +727,8 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
         if (lsm.isSelectionEmpty() == false) {
           removeObjectButton.setEnabled(true);
           renameObjectButton.setEnabled(true);
+          moveObjUpButton.setEnabled(true);
+          moveObjDownButton.setEnabled(true);
         }
       }
     });
@@ -747,8 +780,8 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
       addNewAttributeButton.setEnabled(true);
       editAttributeButton.setEnabled(false);
       removeAttributeButton.setEnabled(false);
-      moveUpButton.setEnabled(false);
-      moveDownButton.setEnabled(false);
+      moveAttUpButton.setEnabled(false);
+      moveAttDownButton.setEnabled(false);
       
       // set focus on defined objects list:
       definedObjectsList.setSelectedIndex(objects.getIndexOf(newObj));
@@ -776,6 +809,8 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
       objects.removeObjectType(obj.getType(), obj.getName());
       removeObjectButton.setEnabled(false);
       renameObjectButton.setEnabled(false);
+      moveObjUpButton.setEnabled(false);
+      moveObjDownButton.setEnabled(false);
       updateDefinedObjectsList();
       mainGUI.setFileModSinceLastSave();
     } else // choice == JOptionPane.NO_OPTION
@@ -792,8 +827,8 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
     addNewAttributeButton.setEnabled(false);
     editAttributeButton.setEnabled(false);
     removeAttributeButton.setEnabled(false);
-    moveUpButton.setEnabled(false);
-    moveDownButton.setEnabled(false);
+    moveAttUpButton.setEnabled(false);
+    moveAttDownButton.setEnabled(false);
   }
   
   /*
@@ -825,6 +860,35 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
       mainGUI.setFileModSinceLastSave();
       attTblMod.refreshData();
       attributeTable.setRowSelectionInterval((position + 1), (position + 1));
+    }
+  }
+  
+  /*
+   * Moves an object up in the list
+   */
+  private void moveObjectUp(SimSEObjectType obj) {
+    int objIndex = objects.getIndexOf(obj);
+    if (objIndex > 0) { // first element wasn't chosen
+      int position = objects.removeObjectType(obj.getType(), obj.getName());
+      objects.addObjectType(obj, (position - 1)); // move up
+      updateDefinedObjectsList();
+      setObjectInFocus(obj);
+      ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
+    }
+  }
+  
+  /*
+   * Moves an object down in the list
+   */
+  private void moveObjectDown(SimSEObjectType obj) {
+    int objIndex = objects.getIndexOf(obj);
+    if (objIndex < (objects.getAllObjectTypes().size() - 1)) { // last element
+      																												 // wasn't chosen
+      int position = objects.removeObjectType(obj.getType(), obj.getName());
+      objects.addObjectType(obj, (position + 1)); // move down
+      updateDefinedObjectsList();
+      setObjectInFocus(obj);
+      ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
     }
   }
 

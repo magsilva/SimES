@@ -32,15 +32,15 @@ public class DefinedActionTypes {
 
   public void addActionType(ActionType act)
   {
-	  // insert at correct alpha order:
-	  for (int i = 0; i < actions.size(); i++) {
-	    ActionType tempAct = (ActionType) actions.elementAt(i);
-	    if (act.getName().compareToIgnoreCase(tempAct.getName()) < 0) { 
-	      // should be inserted before tempAct
-	      actions.insertElementAt(act, i);
-	      return;
-	    }
-	  }
+//	  // insert at correct alpha order:
+//	  for (int i = 0; i < actions.size(); i++) {
+//	    ActionType tempAct = (ActionType) actions.elementAt(i);
+//	    if (act.getName().compareToIgnoreCase(tempAct.getName()) < 0) { 
+//	      // should be inserted before tempAct
+//	      actions.insertElementAt(act, i);
+//	      return;
+//	    }
+//	  }
   
 	  // only reaches here if actions is empty or "act" should be placed at 
 	  // the end
@@ -85,13 +85,13 @@ public class DefinedActionTypes {
   /*
    * sorts the action types in ascending alpha order by name
    */
-  public void sort() { 
-    Vector temp = (Vector) actions.clone();
-    clearAll();
-    for (int i = 0; i < temp.size(); i++) {
-      addActionType((ActionType)temp.elementAt(i));
-    }
-  }
+//  public void sort() { 
+//    Vector temp = (Vector) actions.clone();
+//    clearAll();
+//    for (int i = 0; i < temp.size(); i++) {
+//      addActionType((ActionType)temp.elementAt(i));
+//    }
+//  }
 
   public void removeAllRules() // removes all rules from all action types
   {

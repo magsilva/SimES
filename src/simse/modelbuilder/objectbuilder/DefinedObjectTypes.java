@@ -25,18 +25,25 @@ public class DefinedObjectTypes {
 
   public void addObjectType(SimSEObjectType newObject) {
     // insert at correct alpha order:
-    for (int i = 0; i < objs.size(); i++) {
-      SimSEObjectType tempObj = (SimSEObjectType) objs.elementAt(i);
-      if (newObject.getName().compareToIgnoreCase(tempObj.getName()) < 0) { 
-        // should be inserted before tempObj
-        objs.insertElementAt(newObject, i);
-        return;
-      }
-    }
+//    for (int i = 0; i < objs.size(); i++) {
+//      SimSEObjectType tempObj = (SimSEObjectType) objs.elementAt(i);
+//      if (newObject.getName().compareToIgnoreCase(tempObj.getName()) < 0) { 
+//        // should be inserted before tempObj
+//        objs.insertElementAt(newObject, i);
+//        return;
+//      }
+//    }
     
     // only reaches here if objs is empty or "newObject" should be placed at 
     // the end
     objs.add(newObject);
+  }
+  
+  /*
+   * Adds the new object at the specified position
+   */
+  public void addObjectType(SimSEObjectType newObject, int position) {
+    objs.insertElementAt(newObject, position);
   }
 
   public Vector getAllObjectTypesOfType(int type) // returns a Vector of all
@@ -72,17 +79,20 @@ public class DefinedObjectTypes {
     return null;
   }
 
-  public void removeObjectType(int type, String name) // removes the object type
-                                                      // w/ the specified name
-                                                      // and type from the data
-                                                      // structure
+  /*
+   * removes the object type w/ the specified name and type from the data
+   * structure and returns the position it was removed from, or -1 if not found
+   */
+  public int removeObjectType(int type, String name) 
   {
     for (int i = 0; i < objs.size(); i++) {
       SimSEObjectType tempObj = ((SimSEObjectType) objs.elementAt(i));
       if ((tempObj.getType() == type) && (tempObj.getName().equals(name))) {
         objs.remove(i);
+        return i;
       }
     }
+    return -1;
   }
 
   public boolean hasObjectType(SimSEObjectType type) // returns true if this
@@ -113,11 +123,11 @@ public class DefinedObjectTypes {
   /*
    * sorts the object types in ascending alpha order by name
    */
-  public void sort() { 
-    Vector temp = (Vector) objs.clone();
-    clearAll();
-    for (int i = 0; i < temp.size(); i++) {
-      addObjectType((SimSEObjectType)temp.elementAt(i));
-    }
-  }
+//  public void sort() { 
+//    Vector temp = (Vector) objs.clone();
+//    clearAll();
+//    for (int i = 0; i < temp.size(); i++) {
+//      addObjectType((SimSEObjectType)temp.elementAt(i));
+//    }
+//  }
 }
