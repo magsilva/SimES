@@ -35,6 +35,8 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
   private JButton editStartingValButton; // button for editing the starting
                                          // value of an attribute
   private JList createdObjectsList; // JList of already created objects
+  private JButton moveObjectUpButton;
+  private JButton moveObjectDownButton;
   private JButton removeObjectButton; // button for removing an already created
                                       // object
   private AttributeStartingValueForm aInfo; // form for entering the starting
@@ -119,13 +121,21 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
     createdObjectsPane.add(createdObjectsListPane);
     setupCreatedObjectsListSelectionListenerStuff();
 
-    // Create and add "view/edit" button, "remove" button, and pane for these
-    // buttons::
+    // Create and add "move up", "move down", and "remove" button, and pane:
     Box createdObjectsButtonPane = Box.createVerticalBox();
-    removeObjectButton = new JButton("Remove  ");
+    moveObjectUpButton = new JButton("Move up     ");
+    createdObjectsButtonPane.add(moveObjectUpButton);
+    moveObjectUpButton.addActionListener(this);
+    moveObjectUpButton.setEnabled(false);
+    moveObjectDownButton = new JButton("Move down");
+    createdObjectsButtonPane.add(moveObjectDownButton);
+    moveObjectDownButton.addActionListener(this);
+    moveObjectDownButton.setEnabled(false);
+    removeObjectButton = new JButton("Remove      ");
     createdObjectsButtonPane.add(removeObjectButton);
     removeObjectButton.addActionListener(this);
     removeObjectButton.setEnabled(false);
+    
     createdObjectsPane.add(createdObjectsButtonPane);
 
     // Warning list pane:
@@ -269,6 +279,26 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
         editStartingValButton.setEnabled(false);
       }
     }
+    
+    else if (source == moveObjectUpButton) {
+      if (createdObjectsList.getSelectedIndex() >= 0) // an item (object) is
+                                                      // selected
+      {
+        SimSEObject tempObj = (SimSEObject) (objects.getAllObjects()
+            .elementAt(createdObjectsList.getSelectedIndex()));
+        moveObjectUp(tempObj);
+      }
+    }
+    
+    else if (source == moveObjectDownButton) {
+      if (createdObjectsList.getSelectedIndex() >= 0) // an item (object) is
+                                                      // selected
+      {
+        SimSEObject tempObj = (SimSEObject) (objects.getAllObjects()
+            .elementAt(createdObjectsList.getSelectedIndex()));
+        moveObjectDown(tempObj);
+      }
+    }
 
     else if (source == removeObjectButton) {
       if (createdObjectsList.getSelectedIndex() >= 0) // an item (object) is
@@ -407,6 +437,9 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
                                           // new object
     // disable buttons:
     editStartingValButton.setEnabled(false);
+    
+    // set focus on created objects list:
+    createdObjectsList.setSelectedIndex(objects.getIndexOf(newObj));
   }
 
   private void setupAttributeTableRenderers() {
@@ -438,8 +471,7 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
   }
 
   private void setupCreatedObjectsListSelectionListenerStuff() // enables
-                                                               // view/edit
-                                                               // button
+                                                               // buttons
                                                                // whenever a
                                                                // list item
                                                                // (object) is
@@ -455,6 +487,10 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
 
         ListSelectionModel lsm = (ListSelectionModel) e.getSource();
         if (lsm.isSelectionEmpty() == false) {
+          createdObjectsList.ensureIndexIsVisible(
+              createdObjectsList.getSelectedIndex());
+          moveObjectUpButton.setEnabled(true);
+          moveObjectDownButton.setEnabled(true);
           removeObjectButton.setEnabled(true);
         }
       }
@@ -502,6 +538,8 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
       }
       objects.removeObject(obj.getSimSEObjectType().getType(), obj.getName(),
           obj.getKey().getValue());
+      moveObjectUpButton.setEnabled(false);
+      moveObjectDownButton.setEnabled(false);
       removeObjectButton.setEnabled(false);
       updateCreatedObjectsList();
       ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
@@ -557,6 +595,37 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
             + SimSEObjectTypeTypes.getText(tempType.getType()));
         createObjectList.addItem(tempStr);
       }
+    }
+  }
+  
+  /*
+   * Moves an object up in the list
+   */
+  private void moveObjectUp(SimSEObject obj) {
+    int objIndex = objects.getIndexOf(obj);
+    if (objIndex > 0) { // first element wasn't chosen
+      int position = objects.removeObject(obj.getSimSEObjectType().getType(),
+          obj.getSimSEObjectType().getName(), obj.getKey().getValue());
+      objects.addObject(obj, (position - 1)); // move up
+      updateCreatedObjectsList();
+      setObjectInFocus(obj);
+      ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
+    }
+  }
+  
+  /*
+   * Moves an object down in the list
+   */
+  private void moveObjectDown(SimSEObject obj) {
+    int objIndex = objects.getIndexOf(obj);
+    if (objIndex < (objects.getAllObjects().size() - 1)) { // last element
+			 // wasn't chosen
+      int position = objects.removeObject(obj.getSimSEObjectType().getType(),
+          obj.getSimSEObjectType().getName(), obj.getKey().getValue());
+      objects.addObject(obj, (position + 1)); // move down
+      updateCreatedObjectsList();
+      setObjectInFocus(obj);
+      ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
     }
   }
 }

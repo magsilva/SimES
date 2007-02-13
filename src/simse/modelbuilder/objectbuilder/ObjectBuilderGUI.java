@@ -708,8 +708,7 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
   }
 
   private void setupDefinedObjectsListSelectionListenerStuff() // enables
-                                                               // view/edit
-                                                               // button
+                                                               // buttons
                                                                // whenever a
                                                                // list item
                                                                // (object) is
@@ -725,6 +724,8 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
 
         ListSelectionModel lsm = (ListSelectionModel) e.getSource();
         if (lsm.isSelectionEmpty() == false) {
+          definedObjectsList.ensureIndexIsVisible(
+              definedObjectsList.getSelectedIndex());
           removeObjectButton.setEnabled(true);
           renameObjectButton.setEnabled(true);
           moveObjUpButton.setEnabled(true);

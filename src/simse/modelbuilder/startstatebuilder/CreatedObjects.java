@@ -43,58 +43,68 @@ public class CreatedObjects {
     return v;
   }
   
+  /*
+   * adds an object to the end of the Vector
+   */
   public void addObject(SimSEObject newObject) {
-    boolean otherObjsOfSameType;
-    int numObjectsOfSameType = 
-      getAllObjectsOfType(newObject.getSimSEObjectType()).size();
-    if (numObjectsOfSameType > 0) {
-      otherObjsOfSameType = true;
-    }
-    else {
-      otherObjsOfSameType = false;
-    }
-    
-	  // insert at correct alpha order:
-    int numObjsSameTypeEncountered = 0;
-    for (int i = 0; i < objs.size(); i++) {
-      SimSEObject tempObj = (SimSEObject) objs.elementAt(i);
-      
-      if (otherObjsOfSameType) {
-      // Check SimSEObjectType name:
-	      if (newObject.getName().equals(tempObj.getName())) {
-	        numObjsSameTypeEncountered++;
-	        // same SimSEObjectType, so check key att val:
-	        if (newObject.getKey().getValue().toString().compareToIgnoreCase(
-	            tempObj.getKey().getValue().toString()) < 0) {
-	          // should be inserted before tempObj
-	          objs.insertElementAt(newObject, i);
-	          return;
-	        }
-	        if (numObjsSameTypeEncountered == numObjectsOfSameType) { // last 
-	          																												// object 
-	          																												// of same 
-	          																												// type
-	          // insert after last object of same type
-	          objs.insertElementAt(newObject, (i + 1));
-	          return;
-	        }
-	      }
-      }
-      else { // no other objects of same type
-        // just need to compare SimSEObjectType name:
-  	    if (newObject.getName().compareToIgnoreCase(tempObj.getName()) < 0) {
-  	      // should be inserted before tempObj
-  	      objs.insertElementAt(newObject, i);
-  	      return;
-  	    }
-      }
-    }
-    
-	  // only reaches here if objs is empty or "newObject" should be placed at 
-	  // the end
+//    boolean otherObjsOfSameType;
+//    int numObjectsOfSameType = 
+//      getAllObjectsOfType(newObject.getSimSEObjectType()).size();
+//    if (numObjectsOfSameType > 0) {
+//      otherObjsOfSameType = true;
+//    }
+//    else {
+//      otherObjsOfSameType = false;
+//    }
+//    
+//	  // insert at correct alpha order:
+//    int numObjsSameTypeEncountered = 0;
+//    for (int i = 0; i < objs.size(); i++) {
+//      SimSEObject tempObj = (SimSEObject) objs.elementAt(i);
+//      
+//      if (otherObjsOfSameType) {
+//      // Check SimSEObjectType name:
+//	      if (newObject.getName().equals(tempObj.getName())) {
+//	        numObjsSameTypeEncountered++;
+//	        // same SimSEObjectType, so check key att val:
+//	        if (newObject.getKey().getValue().toString().compareToIgnoreCase(
+//	            tempObj.getKey().getValue().toString()) < 0) {
+//	          // should be inserted before tempObj
+//	          objs.insertElementAt(newObject, i);
+//	          return;
+//	        }
+//	        if (numObjsSameTypeEncountered == numObjectsOfSameType) { // last 
+//	          																												// object 
+//	          																												// of same 
+//	          																												// type
+//	          // insert after last object of same type
+//	          objs.insertElementAt(newObject, (i + 1));
+//	          return;
+//	        }
+//	      }
+//      }
+//      else { // no other objects of same type
+//        // just need to compare SimSEObjectType name:
+//  	    if (newObject.getName().compareToIgnoreCase(tempObj.getName()) < 0) {
+//  	      // should be inserted before tempObj
+//  	      objs.insertElementAt(newObject, i);
+//  	      return;
+//  	    }
+//      }
+//    }
+//    
+//	  // only reaches here if objs is empty or "newObject" should be placed at 
+//	  // the end
 	  objs.add(newObject);
   }
-
+  
+  /*
+   * adds an object at the specified position
+   */
+  public void addObject(SimSEObject obj, int position) {
+    objs.insertElementAt(obj, position);
+  }
+  
   public SimSEObject getObject(int type, String name, Object keyAttValue) // returns
                                                                           // the
                                                                           // object
@@ -124,20 +134,12 @@ public class CreatedObjects {
     return null;
   }
 
-  public void removeObject(int type, String name, Object keyAttValue) // removes
-                                                                      // the
-                                                                      // object
-                                                                      // w/ the
-                                                                      // specified
-                                                                      // name,
-                                                                      // type,
-                                                                      // and key
-                                                                      // attribute
-                                                                      // value
-                                                                      // from
-                                                                      // the
-                                                                      // data
-                                                                      // structure
+  /*
+   * removes the object with the specified SimSEObjectTypeType ("type"),
+   * SimSEObjectType name ("name"), and key attribute value ("keyAttValue"),
+   * and returns the position from which it was removed, or -1 if not found
+   */
+  public int removeObject(int type, String name, Object keyAttValue) 
   {
     for (int i = 0; i < objs.size(); i++) {
       SimSEObject tempObj = ((SimSEObject) objs.elementAt(i));
@@ -146,12 +148,24 @@ public class CreatedObjects {
           && (tempObj.getKey().isInstantiated())
           && (tempObj.getKey().getValue().equals(keyAttValue))) {
         objs.remove(i);
+        return i;
       }
     }
+    return -1;
   }
 
   public void removeObject(SimSEObject obj) {
     objs.remove(obj);
+  }
+  
+  public int getIndexOf(SimSEObject obj) {
+    for (int i = 0; i < objs.size(); i++) {
+      SimSEObject tempObj = (SimSEObject) objs.elementAt(i);
+      if (tempObj.getName().equals(obj.getName())) {
+        return objs.indexOf(obj);
+      }
+    }
+    return -1;
   }
 
   public void clearAll() // removes all objects

@@ -46,6 +46,13 @@ public class DefinedActionTypes {
 	  // the end
 	  actions.add(act);
   }
+  
+  /*
+   * adds and action type at the specified position
+   */
+  public void addActionType(ActionType act, int position) {
+    actions.insertElementAt(act, position);
+  }
 
   public void removeActionType(ActionType act) // removes the specified action
                                                // type from the data structure
@@ -53,16 +60,20 @@ public class DefinedActionTypes {
     actions.remove(act);
   }
 
-  public void removeActionType(String name) // removes the action with the
-                                            // specified name from the data
-                                            // structure
+  /*
+   * removes the action with the specified name and returns the position from
+   * which it was removed
+   */
+  public int removeActionType(String name)
   {
     for (int i = 0; i < actions.size(); i++) {
       ActionType tempAct = (ActionType) (actions.elementAt(i));
       if (tempAct.getName().equals(name)) {
         actions.removeElementAt(i);
+        return i;
       }
     }
+    return -1;
   }
   
   

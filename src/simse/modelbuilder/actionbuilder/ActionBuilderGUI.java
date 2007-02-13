@@ -33,14 +33,16 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
                                          // an action
   private JButton removeParticipantButton; // button for deleting a participant
                                            // from an action
-  private JButton moveUpButton; // for moving a participant up
-  private JButton moveDownButton; // for moving a participant down
+  private JButton movePartUpButton; // for moving a participant up
+  private JButton movePartDownButton; // for moving a participant down
   private JButton triggerButton; // button for viewing/editing action triggers
   private JButton destroyerButton; // button for viewing/editing action
                                    // destroyers
   private JButton optionsButton; // button for viewing/editing action
                                     // visibility
   private JList definedActionsList; // JList of already defined actions
+  private JButton moveActUpButton;
+  private JButton moveActDownButton;
   private JButton renameActionButton; // button for renaming actions
   private JButton removeActionButton; // button for removing an already defined
                                       // action
@@ -91,20 +93,20 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     editParticipantButton.addActionListener(this);
     removeParticipantButton = new JButton("Remove Participant");
     removeParticipantButton.addActionListener(this);
-    moveUpButton = new JButton("Move Up");
-    moveUpButton.addActionListener(this);
-    moveDownButton = new JButton("Move Down");
-    moveDownButton.addActionListener(this);
+    movePartUpButton = new JButton("Move Up");
+    movePartUpButton.addActionListener(this);
+    movePartDownButton = new JButton("Move Down");
+    movePartDownButton.addActionListener(this);
     actionTableButtonPane.add(addParticipantButton);
     actionTableButtonPane.add(editParticipantButton);
     actionTableButtonPane.add(removeParticipantButton);
-    actionTableButtonPane.add(moveUpButton);
-    actionTableButtonPane.add(moveDownButton);
+    actionTableButtonPane.add(movePartUpButton);
+    actionTableButtonPane.add(movePartDownButton);
     addParticipantButton.setEnabled(false);
     editParticipantButton.setEnabled(false);
     removeParticipantButton.setEnabled(false);
-    moveUpButton.setEnabled(false);
-    moveDownButton.setEnabled(false);
+    movePartUpButton.setEnabled(false);
+    movePartDownButton.setEnabled(false);
 
     // Create trigger/destroyer button pane and buttons:
     JPanel trigDestroyButtonPane = new JPanel();
@@ -145,14 +147,21 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     updateDefinedActionsList();
     setupDefinedActionsListSelectionListenerStuff();
 
-    // Create and add "view/edit" button, "remove" button, and pane for these
-    // buttons::
+    // Create and defined actions button pane:
     Box definedActionsButtonPane = Box.createVerticalBox();
-    renameActionButton = new JButton("Rename  ");
+    moveActUpButton = new JButton("Move up     ");
+    definedActionsButtonPane.add(moveActUpButton);
+    moveActUpButton.addActionListener(this);
+    moveActUpButton.setEnabled(false);
+    moveActDownButton = new JButton("Move down");
+    definedActionsButtonPane.add(moveActDownButton);
+    moveActDownButton.addActionListener(this);
+    moveActDownButton.setEnabled(false);    
+    renameActionButton = new JButton("Rename     ");
     definedActionsButtonPane.add(renameActionButton);
     renameActionButton.addActionListener(this);
     renameActionButton.setEnabled(false);
-    removeActionButton = new JButton("Remove  ");
+    removeActionButton = new JButton("Remove     ");
     definedActionsButtonPane.add(removeActionButton);
     removeActionButton.addActionListener(this);
     removeActionButton.setEnabled(false);
@@ -213,8 +222,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
         editParticipant(tempPart);
         editParticipantButton.setEnabled(false);
         removeParticipantButton.setEnabled(false);
-        moveUpButton.setEnabled(false);
-        moveDownButton.setEnabled(false);
+        movePartUpButton.setEnabled(false);
+        movePartDownButton.setEnabled(false);
       }
     }
   }
@@ -293,8 +302,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
       addParticipant();
       editParticipantButton.setEnabled(false);
       removeParticipantButton.setEnabled(false);
-      moveUpButton.setEnabled(false);
-      moveDownButton.setEnabled(false);
+      movePartUpButton.setEnabled(false);
+      movePartDownButton.setEnabled(false);
     }
 
     else if (source == editParticipantButton) {
@@ -307,8 +316,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
         editParticipant(tempPart);
         editParticipantButton.setEnabled(false);
         removeParticipantButton.setEnabled(false);
-        moveUpButton.setEnabled(false);
-        moveDownButton.setEnabled(false);
+        movePartUpButton.setEnabled(false);
+        movePartDownButton.setEnabled(false);
       }
     }
 
@@ -323,7 +332,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
       }
     }
     
-    else if (source == moveUpButton) {
+    else if (source == movePartUpButton) {
       if (actionTable.getSelectedRow() >= 0) // a row is selected
       {
         ActionTypeParticipant tempPart = actTblMod.getActionTypeInFocus().
@@ -333,13 +342,31 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
       }
     }
     
-    else if (source == moveDownButton) {
+    else if (source == movePartDownButton) {
       if (actionTable.getSelectedRow() >= 0) // a row is selected
       {
         ActionTypeParticipant tempPart = actTblMod.getActionTypeInFocus().
         	getParticipant((String) (actTblMod.getValueAt(
         	    actionTable.getSelectedRow(), 0)));
         moveParticipantDown(tempPart);
+      }
+    }
+    
+    else if (source == moveActUpButton) {
+      if (!definedActionsList.getSelectionModel().isSelectionEmpty())
+      {
+        ActionType tempAct = (ActionType) (actions.getAllActionTypes()
+            .elementAt(definedActionsList.getSelectedIndex()));
+        moveActionUp(tempAct);
+      }
+    }
+    
+    else if (source == moveActDownButton) {
+      if (!definedActionsList.getSelectionModel().isSelectionEmpty())
+      {
+        ActionType tempAct = (ActionType) (actions.getAllActionTypes()
+            .elementAt(definedActionsList.getSelectedIndex()));
+        moveActionDown(tempAct);
       }
     }
 
@@ -408,6 +435,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
                                      // of the GUI
         updateDefinedActionsList();
         // disable buttons:
+        moveActUpButton.setEnabled(false);
+        moveActDownButton.setEnabled(false);
         removeActionButton.setEnabled(false);
         renameActionButton.setEnabled(false);
       }
@@ -464,8 +493,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
         actTblMod.refreshData();
         editParticipantButton.setEnabled(false);
         removeParticipantButton.setEnabled(false);
-        moveUpButton.setEnabled(false);
-        moveDownButton.setEnabled(false);
+        movePartUpButton.setEnabled(false);
+        movePartDownButton.setEnabled(false);
 
         /*
          * enable the visibility button if the action has an employee
@@ -521,8 +550,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
       actTblMod.refreshData();
       removeParticipantButton.setEnabled(false);
       editParticipantButton.setEnabled(false);
-      moveUpButton.setEnabled(false);
-      moveDownButton.setEnabled(false);
+      movePartUpButton.setEnabled(false);
+      movePartDownButton.setEnabled(false);
       ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
     } else // choice == JOptionPane.NO_OPTION
     {
@@ -547,16 +576,15 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
         if (lsm.isSelectionEmpty() == false) {
           editParticipantButton.setEnabled(true);
           removeParticipantButton.setEnabled(true);
-          moveUpButton.setEnabled(true);
-          moveDownButton.setEnabled(true);
+          movePartUpButton.setEnabled(true);
+          movePartDownButton.setEnabled(true);
         }
       }
     });
   }
 
   private void setupDefinedActionsListSelectionListenerStuff() // enables
-                                                               // view/edit
-                                                               // button
+                                                               // buttons
                                                                // whenever a
                                                                // list item
                                                                // (action) is
@@ -572,6 +600,10 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
 
         ListSelectionModel lsm = (ListSelectionModel) e.getSource();
         if (lsm.isSelectionEmpty() == false) {
+          definedActionsList.ensureIndexIsVisible(
+              definedActionsList.getSelectedIndex());
+          moveActUpButton.setEnabled(true);
+          moveActDownButton.setEnabled(true);
           removeActionButton.setEnabled(true);
           renameActionButton.setEnabled(true);
         }
@@ -605,8 +637,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     addParticipantButton.setEnabled(true);
     editParticipantButton.setEnabled(false);
     removeParticipantButton.setEnabled(false);
-    moveUpButton.setEnabled(false);
-    moveDownButton.setEnabled(false);
+    movePartUpButton.setEnabled(false);
+    movePartDownButton.setEnabled(false);
     triggerButton.setEnabled(true);
     destroyerButton.setEnabled(true);
     optionsButton.setEnabled(true);
@@ -662,6 +694,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
       {
         clearActionInFocus(); // set it so that there's no action type in focus
       }
+      moveActUpButton.setEnabled(false);
+      moveActDownButton.setEnabled(false);
       removeActionButton.setEnabled(false);
       renameActionButton.setEnabled(false);
       updateDefinedActionsList();
@@ -680,8 +714,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     addParticipantButton.setEnabled(false);
     editParticipantButton.setEnabled(false);
     removeParticipantButton.setEnabled(false);
-    moveUpButton.setEnabled(false);
-    moveDownButton.setEnabled(false);
+    movePartUpButton.setEnabled(false);
+    movePartDownButton.setEnabled(false);
     triggerButton.setEnabled(false);
     destroyerButton.setEnabled(false);
     optionsButton.setEnabled(false);
@@ -709,11 +743,13 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     addParticipantButton.setEnabled(false);
     editParticipantButton.setEnabled(false);
     removeParticipantButton.setEnabled(false);
-    moveUpButton.setEnabled(false);
-    moveDownButton.setEnabled(false);
+    movePartUpButton.setEnabled(false);
+    movePartDownButton.setEnabled(false);
     triggerButton.setEnabled(false);
     destroyerButton.setEnabled(false);
     optionsButton.setEnabled(false);
+    moveActUpButton.setEnabled(false);
+    moveActDownButton.setEnabled(false);
     removeActionButton.setEnabled(false);
     renameActionButton.setEnabled(false);
     warningPane.clearWarnings();
@@ -773,6 +809,35 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
       ((ModelBuilderGUI)mainGUI).setFileModSinceLastSave();
       actTblMod.refreshData();
       actionTable.setRowSelectionInterval((position + 1), (position + 1));
+    }
+  }
+  
+  /*
+   * Moves an action up in the list
+   */
+  private void moveActionUp(ActionType act) {
+    int actIndex = actions.getIndexOf(act);
+    if (actIndex > 0) { // first element wasn't chosen
+      int position = actions.removeActionType(act.getName());
+      actions.addActionType(act, (position - 1)); // move up
+      updateDefinedActionsList();
+      setActionInFocus(act);
+      ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
+    }
+  }
+  
+  /*
+   * Moves an action down in the list
+   */
+  private void moveActionDown(ActionType act) {
+    int actIndex = actions.getIndexOf(act);
+    if (actIndex < (actions.getAllActionTypes().size() - 1)) { // last element
+			 // wasn't chosen
+      int position = actions.removeActionType(act.getName());
+      actions.addActionType(act, (position + 1)); // move down
+      updateDefinedActionsList();
+      setActionInFocus(act);
+      ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
     }
   }
 }
