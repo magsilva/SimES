@@ -13,9 +13,8 @@ public class ParticipantTypeRuleEffect implements Cloneable {
                                      // participant type
   private Vector attributeEffects; // Vector of ParticipantAttributeRuleEffects
                                    // for the attributes of this participant
-  private String otherActEffect; // the effect of this action on the
-                                 // participant's other actions (defined by
-                                 // OtherActionsEffect class)
+  private OtherActionsEffect otherActEffect; // the effect of this action on the
+                                 // participant's other actions
 
   public ParticipantTypeRuleEffect(SimSEObjectType type) {
     ssObjType = type;
@@ -26,7 +25,7 @@ public class ParticipantTypeRuleEffect implements Cloneable {
       attributeEffects.add(new ParticipantAttributeRuleEffect(
           (Attribute) attributes.elementAt(i)));
     }
-    otherActEffect = OtherActionsEffect.NONE;
+    otherActEffect = new OtherActionsEffect();
   }
 
   public Object clone() {
@@ -47,7 +46,7 @@ public class ParticipantTypeRuleEffect implements Cloneable {
       cl.attributeEffects = clonedAttEffects;
 
       // other effect:
-      cl.otherActEffect = otherActEffect;
+      cl.otherActEffect = (OtherActionsEffect) otherActEffect.clone();
       return cl;
     } catch (CloneNotSupportedException c) {
       System.out.println(c.getMessage());
@@ -63,7 +62,7 @@ public class ParticipantTypeRuleEffect implements Cloneable {
     return attributeEffects;
   }
 
-  public String getOtherActionsEffect() {
+  public OtherActionsEffect getOtherActionsEffect() {
     return otherActEffect;
   }
 
@@ -132,7 +131,7 @@ public class ParticipantTypeRuleEffect implements Cloneable {
     }
   }
 
-  public void setOtherActionsEffect(String newEffect) {
+  public void setOtherActionsEffect(OtherActionsEffect newEffect) {
     otherActEffect = newEffect;
   }
 }

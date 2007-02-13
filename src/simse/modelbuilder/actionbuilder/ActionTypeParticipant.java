@@ -113,6 +113,16 @@ public class ActionTypeParticipant implements Cloneable {
     }
     return null;
   }
+  
+  public boolean hasSimSEObjectType(String typeName) {
+    for (int i = 0; i < simseObjTypes.size(); i++) {
+      SimSEObjectType tempType = (SimSEObjectType) (simseObjTypes.elementAt(i));
+      if (tempType.getName().equals(typeName)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   public void setQuantity(ActionTypeParticipantQuantity newQuantity) // sets the
                                                                      // conditions

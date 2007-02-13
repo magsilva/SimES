@@ -76,8 +76,9 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
   private Vector partNames; // list of participants for JList
   private JButton viewEditEffectsButton; // for viewing a participant's effects
   private JButton buttonPadButton; // for bringing up button pad
-  private JPanel otherActEffectPanel; // main panel for the specifying effect on
+  private Box otherActEffectPanel; // main panel for the specifying effect on
                                       // participant's other actions:
+  private JPanel actDeactActsListsPane;
   private ButtonGroup buttonGroupOtherActEffect; // for following radio buttons
   private JRadioButton activateButton; // for activating all other actions of
                                        // participant in focus
@@ -85,6 +86,14 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
                                          // of participant in focus
   private JRadioButton noneButton; // for specifying no effects on the other
                                    // actions of the participant in focus
+  private JRadioButton specificButton; // for specifying specific actions to
+  																		 // activate/deactivate
+  private JLabel activateLabel;
+  private JLabel deactivateLabel;
+  private JList actionsToActivateList; // for specifying which actions to 
+  																		 // activate
+  private JList actionsToDeactivateList; // for specifying which actions to
+  																			 // deactivate
   private JList ruleInputList; // list for holding rule inputs
   private JButton newRuleInputButton; // for adding a new rule input
   private JButton viewEditInputButton; // for viewing/editing existing rule
@@ -144,22 +153,52 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     effectsMiddlePane.setPreferredSize(new Dimension(1000, 200));
 
     // Radio buttons / Other actions effect panel:
-    otherActEffectPanel = new JPanel(new BorderLayout());
+    otherActEffectPanel = Box.createVerticalBox();
+    JPanel otherActEffectButtonsPanel = new JPanel(new BorderLayout());
     JPanel radioButtonsPane = new JPanel();
     activateButton = new JRadioButton(OtherActionsEffect.ACTIVATE_ALL);
+    activateButton.addActionListener(this);
     deactivateButton = new JRadioButton(OtherActionsEffect.DEACTIVATE_ALL);
+    deactivateButton.addActionListener(this);
     noneButton = new JRadioButton(OtherActionsEffect.NONE);
+    noneButton.addActionListener(this);
+    specificButton = new JRadioButton(
+        OtherActionsEffect.ACTIVATE_DEACTIVATE_SPECIFIC_ACTIONS);
+    specificButton.addActionListener(this);
     JLabel labelT = new JLabel("Effect on Participant's Other Actions: ");
     radioButtonsPane.add(labelT);
     radioButtonsPane.add(activateButton);
     radioButtonsPane.add(deactivateButton);
     radioButtonsPane.add(noneButton);
+    radioButtonsPane.add(specificButton);
     radioButtonsPane.setAlignmentX(JComponent.LEFT_ALIGNMENT);
     buttonGroupOtherActEffect = new ButtonGroup();
     buttonGroupOtherActEffect.add(activateButton);
     buttonGroupOtherActEffect.add(deactivateButton);
     buttonGroupOtherActEffect.add(noneButton);
-    otherActEffectPanel.add(radioButtonsPane, BorderLayout.WEST);
+    buttonGroupOtherActEffect.add(specificButton);
+    otherActEffectButtonsPanel.add(radioButtonsPane, BorderLayout.WEST);
+    otherActEffectPanel.add(otherActEffectButtonsPanel);
+    
+    JPanel actDeactActsListsPaneOuter = new JPanel(new BorderLayout());
+    actDeactActsListsPane = new JPanel();
+    actDeactActsListsPane.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+    activateLabel = new JLabel("Activate:");
+    actDeactActsListsPane.add(activateLabel);
+    actionsToActivateList = new JList();
+    actionsToActivateList.setVisibleRowCount(5); // make 5 items visible
+    actionsToActivateList.setFixedCellWidth(250);
+    JScrollPane actListPane = new JScrollPane(actionsToActivateList);
+    actDeactActsListsPane.add(actListPane);
+    deactivateLabel = new JLabel("Deactivate:");
+    actDeactActsListsPane.add(deactivateLabel);
+    actionsToDeactivateList = new JList();
+    actionsToDeactivateList.setVisibleRowCount(5); // make 5 items visible
+    actionsToDeactivateList.setFixedCellWidth(250);
+    JScrollPane deactListPane = new JScrollPane(actionsToDeactivateList);
+    actDeactActsListsPane.add(deactListPane);
+    actDeactActsListsPaneOuter.add(actDeactActsListsPane, BorderLayout.WEST);
+    otherActEffectPanel.add(actDeactActsListsPaneOuter);
 
     // button pad:
     inputButton = new JButton("Rule Input");
@@ -577,7 +616,6 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
 
   public void actionPerformed(ActionEvent evt) // handles user actions
   {
-
     if (buttGUI != null)
       buttGUI.requestFocus();
 
@@ -636,6 +674,23 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
 
     else if (source == randomButton) {
       randomButtonChosen();
+    }
+    
+    else if (source == activateButton) {
+      setActionListsEnabled(false);
+    }
+    
+    else if (source == deactivateButton) {
+      setActionListsEnabled(false);
+    }
+    
+    else if (source == noneButton) {
+      setActionListsEnabled(false);
+    }
+    
+    else if (source == specificButton) {
+      setActionListsEnabled(true);
+      refreshActionLists();
     }
 
     else if (source == newRuleInputButton) {
@@ -853,6 +908,63 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     }
   }
 
+  // refreshes the actionsToActivate and actionsToDeactivate lists
+  private void refreshActionLists() {
+    /*
+     * make a Vector of the names of all possible actions this object 
+     * could participate in:
+     */
+    Vector relevantActs = new Vector();
+    Vector allActs = actions.getAllActionTypes();
+    for (int i = 0; i < allActs.size(); i++) {
+      ActionType tempAct = (ActionType) allActs.elementAt(i);
+      Vector parts = tempAct.getAllParticipants();
+      for (int j = 0; j < parts.size(); j++) {
+        ActionTypeParticipant tempPart = 
+          (ActionTypeParticipant) parts.elementAt(j);
+        if (tempPart.hasSimSEObjectType(objectTypeInFocus.getName())) {
+          relevantActs.add(tempAct.getName());
+          break;
+        }
+      }
+    }
+    actionsToActivateList.setListData(relevantActs);
+    actionsToDeactivateList.setListData(relevantActs);
+    actionsToActivateList.clearSelection();
+    actionsToDeactivateList.clearSelection();
+    
+    // set the proper actions to activate to selected/unselected:
+    Vector actActions = ruleInFocus.getParticipantRuleEffect(
+        participantInFocus.getName()).getParticipantTypeEffect(
+            objectTypeInFocus).getOtherActionsEffect().getActionsToActivate();
+    for (int i = 0; i < actActions.size(); i ++) {
+      ActionType tempAct = (ActionType) actActions.elementAt(i);
+      for (int j = 0; j < relevantActs.size(); j++) {
+        String listActName = (String) relevantActs.elementAt(j);
+        if (tempAct.getName().equals(listActName)) {
+          actionsToActivateList.addSelectionInterval(j, j);
+          break;
+        }
+      }
+    }
+    
+    // set the proper actions to deactivate selected/unselected:
+    Vector deactActions = ruleInFocus.getParticipantRuleEffect(
+        participantInFocus.getName()).getParticipantTypeEffect(
+            objectTypeInFocus).getOtherActionsEffect().
+            getActionsToDeactivate();
+    for (int i = 0; i < deactActions.size(); i ++) {
+      ActionType tempAct = (ActionType) deactActions.elementAt(i);
+      for (int j = 0; j < relevantActs.size(); j++) {
+        String listActName = (String) relevantActs.elementAt(j);
+        if (tempAct.getName().equals(listActName)) {
+          actionsToDeactivateList.addSelectionInterval(j, j);
+          break;
+        }
+      }
+    }
+  }
+
   private void refreshJoinCheckBox() {
     joinCheckBox.setSelected(ruleInFocus.getExecuteOnJoins());
   }
@@ -1057,18 +1169,61 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       if (activateButton.isSelected()) // activate all
       {
         ruleInFocus.getParticipantRuleEffect(participantInFocus.getName())
-            .getParticipantTypeEffect(objectTypeInFocus).setOtherActionsEffect(
-                OtherActionsEffect.ACTIVATE_ALL);
-      } else if (deactivateButton.isSelected()) // deactivate all
+            .getParticipantTypeEffect(objectTypeInFocus).getOtherActionsEffect().
+            setEffect(OtherActionsEffect.ACTIVATE_ALL);
+      } 
+      else if (deactivateButton.isSelected()) // deactivate all
       {
         ruleInFocus.getParticipantRuleEffect(participantInFocus.getName())
-            .getParticipantTypeEffect(objectTypeInFocus).setOtherActionsEffect(
-                OtherActionsEffect.DEACTIVATE_ALL);
-      } else if (noneButton.isSelected()) // none
+            .getParticipantTypeEffect(objectTypeInFocus).getOtherActionsEffect().
+            setEffect(OtherActionsEffect.DEACTIVATE_ALL);
+      } 
+      else if (noneButton.isSelected()) // none
       {
         ruleInFocus.getParticipantRuleEffect(participantInFocus.getName())
-            .getParticipantTypeEffect(objectTypeInFocus).setOtherActionsEffect(
-                OtherActionsEffect.NONE);
+            .getParticipantTypeEffect(objectTypeInFocus).getOtherActionsEffect().
+            setEffect(OtherActionsEffect.NONE);
+      }
+      else if (specificButton.isSelected()) // specific
+      {
+        ruleInFocus.getParticipantRuleEffect(participantInFocus.getName())
+            .getParticipantTypeEffect(objectTypeInFocus).
+            getOtherActionsEffect().setEffect(
+                OtherActionsEffect.ACTIVATE_DEACTIVATE_SPECIFIC_ACTIONS);
+        
+        // clear current settings for specific actions to activate/deactivate:
+        ruleInFocus.getParticipantRuleEffect(participantInFocus.getName())
+        	.getParticipantTypeEffect(objectTypeInFocus).
+        	getOtherActionsEffect().clearAllActionsToActivate();
+        ruleInFocus.getParticipantRuleEffect(participantInFocus.getName())
+        	.getParticipantTypeEffect(objectTypeInFocus).
+        	getOtherActionsEffect().clearAllActionsToDeactivate();
+        
+        // reset actions to activate:
+        int[] selectedActActs = actionsToActivateList.getSelectedIndices();
+        for (int i = 0; i < actionsToActivateList.getModel().getSize(); i++) {
+          if (Arrays.binarySearch(selectedActActs, i) >= 0) { // selected
+            String listItem = (String)actionsToActivateList.getModel().
+          		getElementAt(i);
+            ruleInFocus.getParticipantRuleEffect(participantInFocus.getName()).
+            	getParticipantTypeEffect(objectTypeInFocus).
+            	getOtherActionsEffect().addActionToActivate(actions.
+            	    getActionType(listItem));
+          }
+        }
+        
+        // reset actions to deactivate:
+        int[] selectedDeactActs = actionsToDeactivateList.getSelectedIndices();
+        for (int i = 0; i < actionsToDeactivateList.getModel().getSize(); i++) {
+          if (Arrays.binarySearch(selectedDeactActs, i) >= 0) { // selected
+            String listItem = (String)actionsToDeactivateList.getModel().
+          		getElementAt(i);
+            ruleInFocus.getParticipantRuleEffect(participantInFocus.getName()).
+            	getParticipantTypeEffect(objectTypeInFocus).
+            	getOtherActionsEffect().addActionToDeactivate(actions.
+            	    getActionType(listItem));
+          }
+        }
       }
     }
   }
@@ -1183,24 +1338,48 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     }
 
     // other actions effect:
+    actionsToActivateList.clearSelection();
+    actionsToDeactivateList.clearSelection();
     if (ruleInFocus.getParticipantRuleEffect(participantInFocus.getName())
         .getParticipantTypeEffect(objectTypeInFocus).getOtherActionsEffect()
-        .equals(OtherActionsEffect.ACTIVATE_ALL)) {
+        .getEffect().equals(OtherActionsEffect.ACTIVATE_ALL)) {
       activateButton.setSelected(true);
       deactivateButton.setSelected(false);
       noneButton.setSelected(false);
-    } else if (ruleInFocus.getParticipantRuleEffect(
-        participantInFocus.getName()).getParticipantTypeEffect(
-        objectTypeInFocus).getOtherActionsEffect().equals(
-        OtherActionsEffect.DEACTIVATE_ALL)) {
+      specificButton.setSelected(false);
+      setActionListsEnabled(false);
+    } 
+    else if (ruleInFocus.getParticipantRuleEffect(participantInFocus
+        .getName()).getParticipantTypeEffect(objectTypeInFocus)
+        .getOtherActionsEffect().getEffect().equals(
+            OtherActionsEffect.DEACTIVATE_ALL)) {
       deactivateButton.setSelected(true);
       activateButton.setSelected(false);
       noneButton.setSelected(false);
-    } else // (ruleInFocus.getParticipantRuleEffect(participantInFocus.getName()).getParticipantTypeEffect(objectTypeInFocus).getOtherActionsEffect().equals(OtherActionsEffect.NONE))
+      specificButton.setSelected(false);
+      actDeactActsListsPane.setEnabled(false);
+      setActionListsEnabled(false);
+    }
+    else if (ruleInFocus.getParticipantRuleEffect(participantInFocus
+        .getName()).getParticipantTypeEffect(objectTypeInFocus)
+        .getOtherActionsEffect().getEffect().equals(
+            OtherActionsEffect.ACTIVATE_DEACTIVATE_SPECIFIC_ACTIONS)) {
+      deactivateButton.setSelected(false);
+      activateButton.setSelected(false);
+      noneButton.setSelected(false);
+      specificButton.setSelected(true);
+      actDeactActsListsPane.setEnabled(true);
+      setActionListsEnabled(true);
+      refreshActionLists();      
+    }
+    else // no other actions effect
     {
       noneButton.setSelected(true);
       activateButton.setSelected(false);
       deactivateButton.setSelected(false);
+      specificButton.setSelected(false);
+      actDeactActsListsPane.setEnabled(false);
+      setActionListsEnabled(false);
     }
 
     buttonPadButton.setEnabled(false);
@@ -1212,6 +1391,13 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     effectsMiddleMiddlePane.add(otherActEffectPanel);
 
     repaint();
+  }
+  
+  private void setActionListsEnabled(boolean enable) {
+    activateLabel.setEnabled(enable);
+    deactivateLabel.setEnabled(enable);
+    actionsToActivateList.setEnabled(enable);
+    actionsToDeactivateList.setEnabled(enable);
   }
 
   private void newRuleInput() // creates a new rule input and adds it to the
@@ -1334,7 +1520,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     {
     }
   }
-
+  
   private void newButtonPad() // creates a new button pad for the participant in
                               // focus
   {

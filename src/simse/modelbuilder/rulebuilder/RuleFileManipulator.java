@@ -18,10 +18,6 @@ public class RuleFileManipulator {
   private final char NEWLINE = '\n';
   private final String EMPTY_VALUE = "<>";
 
-  // action file constants:
-  private final String BEGIN_ACTION_FILENAME_TAG = "<beginActionFileName>";
-  private final String END_ACTION_FILENAME_TAG = "<endActionFileName>";
-
   // rule file constants:
   private final String BEGIN_RULES_TAG = "<beginRules>";
   private final String END_RULES_TAG = "<endRules>";
@@ -31,6 +27,10 @@ public class RuleFileManipulator {
   private final String END_PARTICIPANT_EFFECT_TAG = "<endParticipantRuleEffect>";
   private final String BEGIN_PARTICIPANT_TYPE_EFFECT_TAG = "<beginParticipantTypeRuleEffect>";
   private final String END_PARTICIPANT_TYPE_EFFECT_TAG = "<endParticipantTypeRuleEffect>";
+  private final String BEGIN_ACTIONS_TO_ACTIVATE_TAG = "<beginActionsToActivate>";
+  private final String END_ACTIONS_TO_ACTIVATE_TAG = "<endActionsToActivate>";
+  private final String BEGIN_ACTIONS_TO_DEACTIVATE_TAG = "<beginActionsToDeactivate>";
+  private final String END_ACTIONS_TO_DEACTIVATE_TAG = "<endActionsToDeactivate>";
   private final String BEGIN_ATTRIBUTE_EFFECT_TAG = "<beginParticipantAttributeRuleEffect>";
   private final String END_ATTRIBUTE_EFFECT_TAG = "<endParticipantAttributeRuleEffect>";
   private final String BEGIN_RULE_INPUT_TAG = "<beginRuleInput>";
@@ -324,8 +324,58 @@ public class RuleFileManipulator {
                               ParticipantTypeRuleEffect tempPartTypeEffect = new ParticipantTypeRuleEffect(
                                   tempObjType); // create a new
                               // ParticipantTypeRuleEffect
-                              tempPartTypeEffect.setOtherActionsEffect(reader
+                              tempPartTypeEffect.getOtherActionsEffect().setEffect(reader
                                   .readLine()); // set the other actions effect
+                              
+                              reader.mark(200);
+                              String currentLineA = reader.readLine();
+                              if (currentLineA.equals(
+                                  BEGIN_ACTIONS_TO_ACTIVATE_TAG)) { // new
+                                																		// format
+                                																		// 2/13
+                                
+                                // actions to activate:
+                                boolean endOfActsToAdd = false;
+                                while (!endOfActsToAdd) {
+	                                currentLineA = reader.readLine();
+	                                if (!currentLineA.equals(
+	                                    END_ACTIONS_TO_ACTIVATE_TAG)) {
+	                                  ActionType actToAdd = actionTypes.
+	                                  	getActionType(currentLineA);
+	                                  if (actToAdd != null) {
+	                                    tempPartTypeEffect.getOtherActionsEffect().
+	                                  		addActionToActivate(actToAdd);
+	                                  }
+	                                }
+	                                else {
+	                                  endOfActsToAdd = true;
+	                                }
+                                }
+                                
+                                // actions to deactivate:
+                                reader.readLine(); // read in begin actions to 
+                                									 // deactivate tag
+                                endOfActsToAdd = false;
+                                while (!endOfActsToAdd) {
+	                                currentLineA = reader.readLine();
+	                                if (!currentLineA.equals(
+	                                    END_ACTIONS_TO_DEACTIVATE_TAG)) {
+	                                  ActionType actToAdd = actionTypes.
+	                                  	getActionType(currentLineA);
+	                                  if (actToAdd != null) {
+	                                    tempPartTypeEffect.getOtherActionsEffect().
+	                                  		addActionToDeactivate(actToAdd);
+	                                  }
+	                                }
+	                                else {
+	                                  endOfActsToAdd = true;
+	                                }
+                                }
+                              }
+                              else { // old format
+                                reader.reset();
+                              }
+                              
                               String currentLine3 = reader.readLine();
                               boolean getNextLine2 = true;
                               if (currentLine3.startsWith("<") == false) // old

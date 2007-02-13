@@ -108,6 +108,10 @@ public class ModelFileManipulator {
   private final String END_PARTICIPANT_EFFECT_TAG = "<endParticipantRuleEffect>";
   private final String BEGIN_PARTICIPANT_TYPE_EFFECT_TAG = "<beginParticipantTypeRuleEffect>";
   private final String END_PARTICIPANT_TYPE_EFFECT_TAG = "<endParticipantTypeRuleEffect>";
+  private final String BEGIN_ACTIONS_TO_ACTIVATE_TAG = "<beginActionsToActivate>";
+  private final String END_ACTIONS_TO_ACTIVATE_TAG = "<endActionsToActivate>";
+  private final String BEGIN_ACTIONS_TO_DEACTIVATE_TAG = "<beginActionsToDeactivate>";
+  private final String END_ACTIONS_TO_DEACTIVATE_TAG = "<endActionsToDeactivate>";
   private final String BEGIN_ATTRIBUTE_EFFECT_TAG = "<beginParticipantAttributeRuleEffect>";
   private final String END_ATTRIBUTE_EFFECT_TAG = "<endParticipantAttributeRuleEffect>";
   private final String BEGIN_RULE_INPUT_TAG = "<beginRuleInput>";
@@ -779,20 +783,65 @@ public class ModelFileManipulator {
                 writer.write(NEWLINE);
                 writer.write(tempPartTypeEffect.getSimSEObjectType().getName()); // SimSEObjectType
                                                                                  // name
+                
+                // other actions effect:
                 writer.write(NEWLINE);
-                writer.write(tempPartTypeEffect.getOtherActionsEffect()); // other
-                                                                          // actions
-                                                                          // effect
+                writer.write(tempPartTypeEffect.getOtherActionsEffect().
+                    getEffect()); 
                 writer.write(NEWLINE);
+                if (tempPartTypeEffect.getOtherActionsEffect().getEffect().
+                    equals(OtherActionsEffect.
+                        ACTIVATE_DEACTIVATE_SPECIFIC_ACTIONS)) {
+                  // actions to activate:
+                  writer.write(BEGIN_ACTIONS_TO_ACTIVATE_TAG);
+                  writer.write(NEWLINE);
+                  Vector actionsToActivate = tempPartTypeEffect.
+                  	getOtherActionsEffect().getActionsToActivate();
+                  if (actionsToActivate.isEmpty()) {
+                    writer.write(EMPTY_VALUE);
+                    writer.write(NEWLINE);
+                  }
+                  else {
+                    for (int n = 0; n < actionsToActivate.size(); n++) {
+                      ActionType tempAct2 = (ActionType)actionsToActivate.
+                      	elementAt(n);
+                      writer.write(tempAct2.getName());
+                      writer.write(NEWLINE);
+                    }
+                  }
+                  writer.write(END_ACTIONS_TO_ACTIVATE_TAG);
+                  writer.write(NEWLINE);
+                  
+                  // actions to deactivate:
+                  writer.write(BEGIN_ACTIONS_TO_DEACTIVATE_TAG);
+                  writer.write(NEWLINE);
+                  Vector actionsToDeactivate = tempPartTypeEffect.
+                  	getOtherActionsEffect().getActionsToDeactivate();
+                  if (actionsToDeactivate.isEmpty()) {
+                    writer.write(EMPTY_VALUE);
+                    writer.write(NEWLINE);
+                  }
+                  else {
+                    for (int n = 0; n < actionsToDeactivate.size(); n++) {
+                      ActionType tempAct2 = (ActionType)actionsToDeactivate.
+                      	elementAt(n);
+                      writer.write(tempAct2.getName());
+                      writer.write(NEWLINE);
+                    }
+                  }
+                  writer.write(END_ACTIONS_TO_DEACTIVATE_TAG);
+                  writer.write(NEWLINE);
+                }
+                
                 Vector partTypeAttEffects = tempPartTypeEffect
                     .getAllAttributeEffects();
                 // go through each ParticipantAttributeRuleEffect and write it
                 // to the file:
-                for (int n = 0; n < partTypeAttEffects.size(); n++) {
+                for (int p = 0; p < partTypeAttEffects.size(); p++) {
                   writer.write(BEGIN_ATTRIBUTE_EFFECT_TAG);
                   writer.write(NEWLINE);
                   ParticipantAttributeRuleEffect tempPartAttEffect = (ParticipantAttributeRuleEffect) partTypeAttEffects
-                      .elementAt(n);
+                      .elementAt(p);
                   writer.write(tempPartAttEffect.getAttribute().getName()); // attribute
                                                                             // name
                   writer.write(NEWLINE);
