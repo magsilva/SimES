@@ -783,20 +783,19 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
 
             // effect on participants' other actions:
-            if (partTypeRuleEff.getOtherActionsEffect().equals(
-                OtherActionsEffect.NONE) == false) // has an effect on
-                                                   // participant's other
-                                                   // actions
-            {
+            if (partTypeRuleEff.getOtherActionsEffect().getEffect().equals(
+                OtherActionsEffect.ACTIVATE_ALL) || partTypeRuleEff.
+                getOtherActionsEffect().getEffect().equals(OtherActionsEffect.
+                    DEACTIVATE_ALL)) {
               writer
                   .write("Vector otherActs = state.getActionStateRepository().getAll");
               boolean activateAll = true;
-              if (partTypeRuleEff.getOtherActionsEffect().equals(
+              if (partTypeRuleEff.getOtherActionsEffect().getEffect().equals(
                   OtherActionsEffect.DEACTIVATE_ALL)) {
                 activateAll = false;
                 writer.write("Active");
-              } else if (partTypeRuleEff.getOtherActionsEffect().equals(
-                  OtherActionsEffect.ACTIVATE_ALL)) {
+              } else if (partTypeRuleEff.getOtherActionsEffect().getEffect().
+                  equals(OtherActionsEffect.ACTIVATE_ALL)) {
                 activateAll = true;
                 writer.write("Inactive");
               }
@@ -863,16 +862,98 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
               writer.write(CLOSED_BRACK);
               writer.write(NEWLINE);
             }
+            else if (partTypeRuleEff.getOtherActionsEffect().getEffect().
+                equals(OtherActionsEffect.
+                    ACTIVATE_DEACTIVATE_SPECIFIC_ACTIONS)) {
+              
+              // actions to activate:
+              Vector actsToActivate = partTypeRuleEff.getOtherActionsEffect().
+              	getActionsToActivate();
+              for (int m = 0; m < actsToActivate.size(); m++) {
+                ActionType tempAct = (ActionType)actsToActivate.elementAt(m);
+                writer.write("Vector " + tempAct.getName().toLowerCase() +
+                    "actionsActivate = state.getActionStateRepository().get" +
+                    getUpperCaseLeading(tempAct.getName()) + 
+                    "ActionStateRepository().getAllInactiveActions(" + 
+                    partTypeRuleEff.getSimSEObjectType().getName().
+                    toLowerCase() + ");");
+                writer.write(NEWLINE);
+                writer.write("for (int k = 0; k < " + tempAct.getName().
+                    toLowerCase() + "actionsActivate.size(); k++) {");
+                writer.write(NEWLINE);
+                writer.write(getUpperCaseLeading(tempAct.getName()) + 
+                    "Action tempAct = (" + getUpperCaseLeading(tempAct.
+                        getName()) + "Action) " + tempAct.getName().
+                        toLowerCase() + "actionsActivate.elementAt(k);");
+                writer.write(NEWLINE);  
+                
+                // go through all participants:
+                Vector allParts = tempAct.getAllParticipants();
+                for (int n = 0; n < allParts.size(); n++) {
+                  ActionTypeParticipant tempPart = (ActionTypeParticipant) allParts
+                      .elementAt(n);
+                  if (tempPart.getSimSEObjectTypeType() == partTypeRuleEff
+                      .getSimSEObjectType().getType()) {
+                    writer.write("tempAct.set" + tempPart.getName() + "Active(" + 
+                        partTypeRuleEff.getSimSEObjectType().getName().
+                        toLowerCase() + ");");
+                    writer.write(NEWLINE); 
+                  }
+                }
+                writer.write(CLOSED_BRACK);
+                writer.write(NEWLINE);
+              }
+              
+              // actions to deactivate:
+              Vector actsToDeactivate = partTypeRuleEff.
+              	getOtherActionsEffect().getActionsToDeactivate();
+              for (int m = 0; m < actsToDeactivate.size(); m++) {
+                ActionType tempAct = (ActionType)actsToDeactivate.elementAt(m);
+                writer.write("Vector " + tempAct.getName().toLowerCase() +
+                    "actionsDeactivate = state.getActionStateRepository().get" 
+                    + getUpperCaseLeading(tempAct.getName()) + 
+                    "ActionStateRepository().getAllActiveActions(" + 
+                    partTypeRuleEff.getSimSEObjectType().getName().
+                    toLowerCase() + ");");
+                writer.write(NEWLINE);
+                writer.write("for (int k = 0; k < " + tempAct.getName().
+                    toLowerCase() + "actionsDeactivate.size(); k++) {");
+                writer.write(NEWLINE);
+                writer.write(getUpperCaseLeading(tempAct.getName()) + 
+                    "Action tempAct = (" + getUpperCaseLeading(tempAct.
+                        getName()) + "Action) " + tempAct.getName().
+                        toLowerCase() + "actionsDeactivate.elementAt(k);");
+                writer.write(NEWLINE);  
+                
+                // go through all participants:
+                Vector allParts = tempAct.getAllParticipants();
+                for (int n = 0; n < allParts.size(); n++) {
+                  ActionTypeParticipant tempPart = (ActionTypeParticipant) allParts
+                      .elementAt(n);
+                  if (tempPart.getSimSEObjectTypeType() == partTypeRuleEff
+                      .getSimSEObjectType().getType()) {
+                    writer.write("tempAct.set" + tempPart.getName() + 
+                        "Inactive(" + partTypeRuleEff.getSimSEObjectType().
+                        getName().toLowerCase() + ");");
+                    writer.write(NEWLINE); 
+                  }
+                }
+                writer.write(CLOSED_BRACK);
+                writer.write(NEWLINE);
+              }
+            }
 
             // go through all participant attribute rule effects:
             Vector partAttRuleEffects = partTypeRuleEff
                 .getAllAttributeEffects();
             for (int m = 0; m < partAttRuleEffects.size(); m++) {
-              ParticipantAttributeRuleEffect partAttRuleEff = (ParticipantAttributeRuleEffect) partAttRuleEffects
-                  .elementAt(m);
+              ParticipantAttributeRuleEffect partAttRuleEff = 
+                (ParticipantAttributeRuleEffect) partAttRuleEffects.elementAt(
+                    m);
               if ((partAttRuleEff.getEffect().equals(null) == false)
                   && (partAttRuleEff.getEffect().length() > 0)) {
-                if ((partAttRuleEff.getAttribute().getType() == AttributeTypes.INTEGER)
+                if ((partAttRuleEff.getAttribute().getType() == 
+                  AttributeTypes.INTEGER)
                     || (partAttRuleEff.getAttribute().getType() == AttributeTypes.DOUBLE)) // numerical
                                                                                            // attributes
                 {
