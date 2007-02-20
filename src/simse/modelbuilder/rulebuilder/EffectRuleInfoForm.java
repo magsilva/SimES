@@ -561,36 +561,9 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       if (enabled)
         digitButtonChosen(btn);
       break;
-
-    case KeyEvent.VK_ADD:
-    case KeyEvent.VK_SUBTRACT:
-    case KeyEvent.VK_MULTIPLY:
-    case KeyEvent.VK_DIVIDE:
-    case KeyEvent.VK_ASTERISK:
-    case KeyEvent.VK_SLASH:
-    case KeyEvent.VK_MINUS:
-    case KeyEvent.VK_LEFT_PARENTHESIS:
-    case KeyEvent.VK_RIGHT_PARENTHESIS:
-      for (int i = 0; i < operatorButtons.size(); i++) {
-        JButton b = (JButton) operatorButtons.get(i);
-
-        if (b.getText().trim().equalsIgnoreCase(ke.getKeyChar() + ""))
-          enabled = b.isEnabled();
-      }
-      if (enabled)
-        operatorButtonChosen(btn);
-      break;
-
     }
 
     boolean found = false;
-    for (int i = 0; !found && i < operatorButtons.size(); i++) {
-      JButton abtn = (JButton) operatorButtons.get(i);
-      if (abtn.isEnabled()) {
-        abtn.requestFocus();
-        found = true;
-      }
-    }
     for (int i = 0; !found && i < digitButtons.size(); i++) {
       JButton abtn = (JButton) digitButtons.get(i);
       if (abtn.isEnabled()) {
@@ -612,6 +585,34 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
   }
 
   public void keyTyped(KeyEvent ke) {
+    char keyChar = ke.getKeyChar();
+    boolean enabled = false;
+    switch(keyChar) {
+	  case '+':
+	  case '-':
+	  case '*':
+	  case '/':
+	  case '(':
+	  case ')':
+	    for (int i = 0; i < operatorButtons.size(); i++) {
+	      JButton b = (JButton) operatorButtons.get(i);
+	      if (b.getText().trim().equalsIgnoreCase(keyChar + ""))
+	        enabled = b.isEnabled();
+	    }
+	    if (enabled)
+	      operatorButtonChosen(new JButton(keyChar + ""));
+	    break;
+	
+	  }
+	
+	  boolean found = false;
+	  for (int i = 0; !found && i < operatorButtons.size(); i++) {
+	    JButton abtn = (JButton) operatorButtons.get(i);
+	    if (abtn.isEnabled()) {
+	      abtn.requestFocus();
+	      found = true;
+	    }
+	  }
   }
 
   public void actionPerformed(ActionEvent evt) // handles user actions
