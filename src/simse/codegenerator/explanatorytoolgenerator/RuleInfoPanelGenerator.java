@@ -61,37 +61,23 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
       writer
           .write("private simse.adts.actions.Action action; // action in focus");
       writer.write(NEWLINE);
-      writer
-          .write("private int clockTickTiming; // whether the clock tick is trigger, destroyer, or intermediate");
       writer.write(NEWLINE);
+      writer.write("private JList triggerRuleList;");
       writer.write(NEWLINE);
-      writer
-          .write("private JList ruleList; // for choosing which rule to show");
+      writer.write("private JList destroyerRuleList;");
+      writer.write(NEWLINE);
+      writer.write("private JList intermediateRuleList;");
       writer.write(NEWLINE);
       writer
           .write("private JTextArea descriptionArea; // for displaying a rule description");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer
-          .write("// constants for determining which kind of clock tick the one in focus is:");
-      writer.write(NEWLINE);
-      writer.write("static final int TRIGGER = 0;");
-      writer.write(NEWLINE);
-      writer.write("static final int DESTROYER = 1;");
-      writer.write(NEWLINE);
-      writer.write("static final int INTERMEDIATE = 2;");
-      writer.write(NEWLINE);
-      writer.write("static final int SHOW_ALL = 3;");
-      writer.write(NEWLINE);
-      writer.write(NEWLINE);
 
       // constructor:
       writer
-          .write("public RuleInfoPanel(JFrame owner, simse.adts.actions.Action action, int clockTickTiming, int clockTick) {");
+          .write("public RuleInfoPanel(JFrame owner, simse.adts.actions.Action action) {");
       writer.write(NEWLINE);
       writer.write("this.action = action;");
-      writer.write(NEWLINE);
-      writer.write("this.clockTickTiming = clockTickTiming;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// Create main panel:");
@@ -105,56 +91,91 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("Box rulePane = Box.createVerticalBox();");
       writer.write(NEWLINE);
-      writer.write("JPanel ruleTitlePane = new JPanel();");
+      writer.write("JPanel trigRuleTitlePane = new JPanel();");
       writer.write(NEWLINE);
-      writer.write("String title = \"\";");
+      writer.write("trigRuleTitlePane.add(new JLabel(\"Trigger Rules:\"));");
       writer.write(NEWLINE);
-      writer.write("if (clockTickTiming == TRIGGER) {");
-      writer.write(NEWLINE);
-      writer.write("title = \"Trigger Rules:\";");
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write("else if (clockTickTiming == DESTROYER) {");
-      writer.write(NEWLINE);
-      writer.write("title = \"Destroyer Rules:\";");
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write("else if (clockTickTiming == INTERMEDIATE) {");
-      writer.write(NEWLINE);
-      writer.write("title = \"Intermediate Rules:\";");
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write("else if (clockTickTiming == SHOW_ALL) {");
-      writer.write(NEWLINE);
-      writer.write("title = \"All Rules:\";");
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write("ruleTitlePane.add(new JLabel(title));");
-      writer.write(NEWLINE);
-      writer.write("rulePane.add(ruleTitlePane);");
+      writer.write("rulePane.add(trigRuleTitlePane);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("// rule list:");
+      writer.write("// rule lists:");
       writer.write(NEWLINE);
-      writer.write("ruleList = new JList();");
+      writer.write("triggerRuleList = new JList();");
       writer.write(NEWLINE);
-      writer.write("ruleList.setVisibleRowCount(26);");
+      writer.write("triggerRuleList.setVisibleRowCount(7);");
       writer.write(NEWLINE);
-      writer.write("ruleList.setFixedCellWidth(400);");
+      writer.write("triggerRuleList.setFixedCellWidth(400);");
       writer.write(NEWLINE);
-      writer
-          .write("ruleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);");
+      writer.write("triggerRuleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);");
       writer.write(NEWLINE);
-      writer.write("ruleList.addListSelectionListener(this);");
+      writer.write("triggerRuleList.addListSelectionListener(this);");
       writer.write(NEWLINE);
-      writer.write("initializeRuleList();");
+      writer.write("JScrollPane triggerRuleListPane = new JScrollPane(triggerRuleList);");
       writer.write(NEWLINE);
-      writer.write("JScrollPane ruleListPane = new JScrollPane(ruleList);");
+      writer.write("String trigToolTip = \"Rules that execute at the beginning of the action\";");
       writer.write(NEWLINE);
-      writer.write("rulePane.add(ruleListPane);");
+      writer.write("trigRuleTitlePane.setToolTipText(trigToolTip);");
+      writer.write(NEWLINE);
+      writer.write("triggerRuleList.setToolTipText(trigToolTip);");
+      writer.write(NEWLINE);
+      writer.write("rulePane.add(triggerRuleListPane);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("JPanel destRuleTitlePane = new JPanel();");
+      writer.write(NEWLINE);
+      writer.write("destRuleTitlePane.add(new JLabel(\"Destroyer Rules:\"));");
+      writer.write(NEWLINE);
+      writer.write("rulePane.add(destRuleTitlePane);");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList = new JList();");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList.setVisibleRowCount(7);");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList.setFixedCellWidth(400);");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList.addListSelectionListener(this);");
+      writer.write(NEWLINE);
+      writer.write("JScrollPane destroyerRuleListPane = new JScrollPane(destroyerRuleList);");
+      writer.write(NEWLINE);
+      writer.write("String destToolTip = \"Rules that execute at the end of the action\";");
+      writer.write(NEWLINE);
+      writer.write("destRuleTitlePane.setToolTipText(destToolTip);");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList.setToolTipText(destToolTip);");
+      writer.write(NEWLINE);
+      writer.write("rulePane.add(destroyerRuleListPane);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("JPanel intRuleTitlePane = new JPanel();");
+      writer.write(NEWLINE);
+      writer.write("intRuleTitlePane.add(new JLabel(\"Intermediate Rules:\"));");
+      writer.write(NEWLINE);
+      writer.write("rulePane.add(intRuleTitlePane);");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList = new JList();");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList.setVisibleRowCount(7);");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList.setFixedCellWidth(400);");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList.addListSelectionListener(this);");
+      writer.write(NEWLINE);
+      writer.write("JScrollPane intermediateRuleListPane = new JScrollPane(intermediateRuleList);");
+      writer.write(NEWLINE);
+      writer.write("String intToolTip = \"Rules that execute every clock tick during the life of the action\";");
+      writer.write(NEWLINE);
+      writer.write("intRuleTitlePane.setToolTipText(intToolTip);");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList.setToolTipText(intToolTip);");
+      writer.write(NEWLINE);
+      writer.write("rulePane.add(intermediateRuleListPane);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("initializeRuleLists();");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// description pane:");
@@ -209,8 +230,31 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
       // "valueChanged" method:
       writer.write("public void valueChanged(ListSelectionEvent e) {");
       writer.write(NEWLINE);
-      writer
-          .write("if (e.getSource() == ruleList && ruleList.getSelectedIndex() >= 0) {");
+      writer.write("if ((e.getSource() == triggerRuleList && !triggerRuleList.isSelectionEmpty())) {");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList.clearSelection();");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList.clearSelection();");
+      writer.write(NEWLINE);
+      writer.write("refreshDescriptionArea();");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else if (e.getSource() == destroyerRuleList && !destroyerRuleList.isSelectionEmpty()) {");
+      writer.write(NEWLINE);
+      writer.write("triggerRuleList.clearSelection();");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList.clearSelection();");
+      writer.write(NEWLINE);
+      writer.write("refreshDescriptionArea();");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else if (e.getSource() == intermediateRuleList && !intermediateRuleList.isSelectionEmpty()) {");
+      writer.write(NEWLINE);
+      writer.write("triggerRuleList.clearSelection();");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList.clearSelection();");
       writer.write(NEWLINE);
       writer.write("refreshDescriptionArea();");
       writer.write(NEWLINE);
@@ -220,8 +264,8 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(NEWLINE);
 
-      // "initializeRuleList" method:
-      writer.write("private void initializeRuleList() {");
+      // "initializeRuleLists" method:
+      writer.write("private void initializeRuleLists() {");
       writer.write(NEWLINE);
 
       // go through all actions:
@@ -238,11 +282,9 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
           writer.write("if (action instanceof "
               + getUpperCaseLeading(action.getName()) + "Action) {");
           writer.write(NEWLINE);
-          writer.write("if (clockTickTiming == TRIGGER) {");
-          writer.write(NEWLINE);
           Vector trigRules = action.getAllTriggerRules();
           if (trigRules.size() > 0) {
-            writer.write("String[] list = {");
+            writer.write("String[] trigList = {");
             writer.write(NEWLINE);
 
             // go through all trigger rules:
@@ -255,16 +297,12 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
             }
             writer.write("};");
             writer.write(NEWLINE);
-            writer.write("ruleList.setListData(list);");
+            writer.write("triggerRuleList.setListData(trigList);");
             writer.write(NEWLINE);
           }
-          writer.write(CLOSED_BRACK);
-          writer.write(NEWLINE);
-          writer.write("else if (clockTickTiming == DESTROYER) {");
-          writer.write(NEWLINE);
           Vector destRules = action.getAllDestroyerRules();
           if (destRules.size() > 0) {
-            writer.write("String[] list = {");
+            writer.write("String[] destList = {");
             writer.write(NEWLINE);
 
             // go through all destroyer rules:
@@ -277,16 +315,12 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
             }
             writer.write("};");
             writer.write(NEWLINE);
-            writer.write("ruleList.setListData(list);");
+            writer.write("destroyerRuleList.setListData(destList);");
             writer.write(NEWLINE);
           }
-          writer.write(CLOSED_BRACK);
-          writer.write(NEWLINE);
-          writer.write("else if (clockTickTiming == INTERMEDIATE) {");
-          writer.write(NEWLINE);
           Vector contRules = action.getAllContinuousRules();
           if (contRules.size() > 0) {
-            writer.write("String[] list = {");
+            writer.write("String[] intList = {");
             writer.write(NEWLINE);
 
             // go through all continuous rules:
@@ -299,33 +333,9 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
             }
             writer.write("};");
             writer.write(NEWLINE);
-            writer.write("ruleList.setListData(list);");
+            writer.write("intermediateRuleList.setListData(intList);");
             writer.write(NEWLINE);
           }
-          writer.write(CLOSED_BRACK);
-          writer.write(NEWLINE);
-          writer.write("else if (clockTickTiming == SHOW_ALL) {");
-          writer.write(NEWLINE);
-          Vector allRules = action.getAllRules();
-          if (allRules.size() > 0) {
-            writer.write("String[] list = {");
-            writer.write(NEWLINE);
-
-            // go through all rules:
-            for (int j = 0; j < allRules.size(); j++) {
-              Rule rule = (Rule) allRules.get(j);
-              if (rule.isVisibleInExplanatoryTool()) {
-                writer.write("\"" + rule.getName() + "\",");
-                writer.write(NEWLINE);
-              }
-            }
-            writer.write("};");
-            writer.write(NEWLINE);
-            writer.write("ruleList.setListData(list);");
-            writer.write(NEWLINE);
-          }
-          writer.write(CLOSED_BRACK);
-          writer.write(NEWLINE);
           writer.write(CLOSED_BRACK);
           writer.write(NEWLINE);
         }
@@ -340,7 +350,25 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private void refreshDescriptionArea() {");
       writer.write(NEWLINE);
-      writer.write("String name = (String) ruleList.getSelectedValue();");
+      writer.write("String name = null;");
+      writer.write(NEWLINE);
+      writer.write("if (!triggerRuleList.isSelectionEmpty()) {");
+      writer.write(NEWLINE);
+      writer.write("name = (String) triggerRuleList.getSelectedValue();");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else if (!destroyerRuleList.isSelectionEmpty()) {");
+      writer.write(NEWLINE);
+      writer.write("name = (String) destroyerRuleList.getSelectedValue();");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else if (!intermediateRuleList.isSelectionEmpty()) {");
+      writer.write(NEWLINE);
+      writer.write("name = (String) intermediateRuleList.getSelectedValue();");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write("if (name != null) {");
       writer.write(NEWLINE);

@@ -491,62 +491,10 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
           .write("Action action = log[xVal].getActionStateRepository().getActionWithId(actionId);");
       writer.write(NEWLINE);
       writer.write("if (action != null) {");
-      writer.write(NEWLINE);
-      writer.write(NEWLINE);
-      writer.write("// figure out the timing of the clock tick:");
-      writer.write(NEWLINE);
-      writer.write("int clockTickTiming = RuleInfoPanel.INTERMEDIATE;");
-      writer.write(NEWLINE);
-      writer
-          .write("XYSeriesCollection collection = (XYSeriesCollection) xyEntity.getDataset();");
-      writer.write(NEWLINE);
-      writer
-          .write("List items = collection.getSeries(xyEntity.getSeriesIndex()).getItems();");
-      writer.write(NEWLINE);
-      writer
-          .write("if (items.size() == 1) { // only one item, show all types of rules");
-      writer.write(NEWLINE);
-      writer.write("clockTickTiming = RuleInfoPanel.SHOW_ALL;");
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write("else {");
-      writer.write(NEWLINE);
-      writer
-          .write("XYDataItem lastItem = (XYDataItem) items.get(items.size() - 1);");
-      writer.write(NEWLINE);
-      writer.write("int lastXVal = lastItem.getX().intValue();");
-      writer.write(NEWLINE);
-      writer.write("if (lastXVal == xVal) {");
-      writer.write(NEWLINE);
-      writer.write("clockTickTiming = RuleInfoPanel.DESTROYER;");
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write("else {");
-      writer.write(NEWLINE);
-      writer
-          .write("// figure out whether the clock tick was the trigger clock tick:");
-      writer.write(NEWLINE);
-      writer.write("XYDataItem firstItem = (XYDataItem) items.get(0);");
-      writer.write(NEWLINE);
-      writer.write("int firstXVal = firstItem.getX().intValue();");
-      writer.write(NEWLINE);
-      writer.write("if (firstXVal == xVal) {");
-      writer.write(NEWLINE);
-      writer.write("clockTickTiming = RuleInfoPanel.TRIGGER;");
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write(NEWLINE);
       writer.write("// bring up ActionInfo window:");
       writer.write(NEWLINE);
       writer
-          .write("ActionInfoWindow actWindow = new ActionInfoWindow(this, seriesName, action, clockTickTiming, xVal);");
+          .write("ActionInfoWindow actWindow = new ActionInfoWindow(this, seriesName, action, xVal);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
