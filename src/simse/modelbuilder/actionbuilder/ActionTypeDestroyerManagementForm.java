@@ -15,7 +15,7 @@ import java.util.*;
 import java.awt.Color;
 
 public class ActionTypeDestroyerManagementForm extends JDialog implements
-    ActionListener {
+    ActionListener, MouseListener {
   private ActionType actionInFocus; // temporary copy of action being edited
   private ActionType originalAction; // original action
   private DefinedActionTypes allActions; // all of the currently defined actions
@@ -62,6 +62,7 @@ public class ActionTypeDestroyerManagementForm extends JDialog implements
                                                                          // item
                                                                          // at a
                                                                          // time
+    destroyerList.addMouseListener(this);
     JScrollPane topPane = new JScrollPane(destroyerList);
     // initialize destroyer names:
     destroyerNames = new Vector();
@@ -122,18 +123,7 @@ public class ActionTypeDestroyerManagementForm extends JDialog implements
     Object source = evt.getSource(); // get which component the action came from
 
     if (source == viewEditButton) {
-      if (destroyerList.isSelectionEmpty() == false) // a destroyer is selected
-      {
-        // Bring up form for viewing/editing destroyer:
-        String selectedStr = (String) destroyerList.getSelectedValue();
-        ActionTypeDestroyer dest = actionInFocus.getDestroyer(selectedStr
-            .substring(0, selectedStr.indexOf(' ')));
-        ActionTypeDestroyerInfoForm destInfoForm = new ActionTypeDestroyerInfoForm(
-            this, actionInFocus, dest, allActions);
-        removeButton.setEnabled(false);
-        viewEditButton.setEnabled(false);
-        refreshDestroyerList();
-      }
+      viewEditButtonClicked();
     }
 
     else if (source == removeButton) {
@@ -200,6 +190,26 @@ public class ActionTypeDestroyerManagementForm extends JDialog implements
       dispose();
     }
   }
+  
+  public void mousePressed(MouseEvent me) {
+  }
+
+  public void mouseReleased(MouseEvent me) {
+  }
+
+  public void mouseEntered(MouseEvent me) {
+  }
+
+  public void mouseExited(MouseEvent me) {
+  }
+
+  public void mouseClicked(MouseEvent me) {
+    int clicks = me.getClickCount();
+    if ((me.getSource() == destroyerList) && 
+        (me.getButton() == MouseEvent.BUTTON1) && (clicks >= 2)) {
+      viewEditButtonClicked();
+    }
+  }
 
   private void refreshDestroyerList() {
     destroyerNames.removeAllElements();
@@ -243,6 +253,21 @@ public class ActionTypeDestroyerManagementForm extends JDialog implements
         }
       }
     });
+  }
+  
+  private void viewEditButtonClicked() {
+    if (destroyerList.isSelectionEmpty() == false) // a destroyer is selected
+    {
+      // Bring up form for viewing/editing destroyer:
+      String selectedStr = (String) destroyerList.getSelectedValue();
+      ActionTypeDestroyer dest = actionInFocus.getDestroyer(selectedStr
+          .substring(0, selectedStr.indexOf(' ')));
+      ActionTypeDestroyerInfoForm destInfoForm = new ActionTypeDestroyerInfoForm(
+          this, actionInFocus, dest, allActions);
+      removeButton.setEnabled(false);
+      viewEditButton.setEnabled(false);
+      refreshDestroyerList();
+    }
   }
 
   public class ExitListener extends WindowAdapter {

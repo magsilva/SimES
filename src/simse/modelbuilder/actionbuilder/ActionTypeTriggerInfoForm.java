@@ -12,7 +12,7 @@ import java.util.*;
 import java.awt.Color;
 
 public class ActionTypeTriggerInfoForm extends JDialog implements
-    ActionListener {
+    ActionListener, MouseListener {
   private ActionTypeTrigger trigger; // temporary copy of trigger being edited
   private ActionTypeTrigger originalTrigger; // original trigger
   private ActionType actionInFocus; // action in focus
@@ -144,6 +144,7 @@ public class ActionTypeTriggerInfoForm extends JDialog implements
                                                                            // item
                                                                            // at a
                                                                            // time
+    participantList.addMouseListener(this);
     JScrollPane partListPane = new JScrollPane(participantList);
     // initialize participant names:
     participantNames = new Vector();
@@ -279,55 +280,7 @@ public class ActionTypeTriggerInfoForm extends JDialog implements
     }
 
     else if (source == viewEditButton) {
-      if (participantList.isSelectionEmpty() == false) // a participant is
-                                                       // selected
-      {
-        // Bring up form for entering info for the new participant trigger:
-        ActionTypeParticipantTrigger partTrig = trigger
-            .getParticipantTrigger((String) (participantList.getSelectedValue()));
-        ActionTypeParticipantTriggerConstraintsInfoForm constsForm = new ActionTypeParticipantTriggerConstraintsInfoForm(
-            this, partTrig, trigger);
-        if (trigger.isGameEndingTrigger()) {
-          // check if any of the attributes have just been set to scoring
-          // attributes, and if so, remove scoring status from whatever
-          // attribute had this status previously:
-          boolean attSetToScoring = false;
-          Vector partConsts = partTrig.getAllConstraints();
-          for (int i = 0; i < partConsts.size(); i++) {
-            ActionTypeParticipantConstraint partConst = (ActionTypeParticipantConstraint) partConsts
-                .elementAt(i);
-            ActionTypeParticipantAttributeConstraint[] attConsts = partConst
-                .getAllAttributeConstraints();
-            for (int j = 0; j < attConsts.length; j++) {
-              if (attConsts[j].isScoringAttribute()) {
-                attSetToScoring = true;
-                break;
-              }
-            }
-          }
-          if (attSetToScoring) {
-            Vector partTrigs = trigger.getAllParticipantTriggers();
-            for (int i = 0; i < partTrigs.size(); i++) {
-              ActionTypeParticipantTrigger pTrig = (ActionTypeParticipantTrigger) partTrigs
-                  .elementAt(i);
-              if (pTrig != partTrig) // not participant trigger that you just
-                                     // edited
-              {
-                Vector partConsts2 = pTrig.getAllConstraints();
-                for (int j = 0; j < partConsts2.size(); j++) {
-                  ActionTypeParticipantConstraint partConst = (ActionTypeParticipantConstraint) partConsts2
-                      .elementAt(j);
-                  ActionTypeParticipantAttributeConstraint[] attConsts = partConst
-                      .getAllAttributeConstraints();
-                  for (int k = 0; k < attConsts.length; k++) {
-                    attConsts[k].setScoringAttribute(false);
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+      viewEditButtonClicked();
     }
 
     else if (source == gameEndCBox) {
@@ -396,6 +349,26 @@ public class ActionTypeTriggerInfoForm extends JDialog implements
     else if (source == cancelButton) {
       setVisible(false);
       dispose();
+    }
+  }
+  
+  public void mousePressed(MouseEvent me) {
+  }
+
+  public void mouseReleased(MouseEvent me) {
+  }
+
+  public void mouseEntered(MouseEvent me) {
+  }
+
+  public void mouseExited(MouseEvent me) {
+  }
+
+  public void mouseClicked(MouseEvent me) {
+    int clicks = me.getClickCount();
+    if ((me.getSource() == participantList) && 
+        (me.getButton() == MouseEvent.BUTTON1) && (clicks >= 2)) {
+      viewEditButtonClicked();
     }
   }
 
@@ -679,6 +652,56 @@ public class ActionTypeTriggerInfoForm extends JDialog implements
       }
     }
     return messages;
+  }
+  
+  private void viewEditButtonClicked() {
+    if (participantList.isSelectionEmpty() == false) {
+      // Bring up form for entering info for the new participant trigger:
+      ActionTypeParticipantTrigger partTrig = trigger
+          .getParticipantTrigger((String) (participantList.getSelectedValue()));
+      ActionTypeParticipantTriggerConstraintsInfoForm constsForm = new ActionTypeParticipantTriggerConstraintsInfoForm(
+          this, partTrig, trigger);
+      if (trigger.isGameEndingTrigger()) {
+        // check if any of the attributes have just been set to scoring
+        // attributes, and if so, remove scoring status from whatever
+        // attribute had this status previously:
+        boolean attSetToScoring = false;
+        Vector partConsts = partTrig.getAllConstraints();
+        for (int i = 0; i < partConsts.size(); i++) {
+          ActionTypeParticipantConstraint partConst = (ActionTypeParticipantConstraint) partConsts
+              .elementAt(i);
+          ActionTypeParticipantAttributeConstraint[] attConsts = partConst
+              .getAllAttributeConstraints();
+          for (int j = 0; j < attConsts.length; j++) {
+            if (attConsts[j].isScoringAttribute()) {
+              attSetToScoring = true;
+              break;
+            }
+          }
+        }
+        if (attSetToScoring) {
+          Vector partTrigs = trigger.getAllParticipantTriggers();
+          for (int i = 0; i < partTrigs.size(); i++) {
+            ActionTypeParticipantTrigger pTrig = (ActionTypeParticipantTrigger) partTrigs
+                .elementAt(i);
+            if (pTrig != partTrig) // not participant trigger that you just
+            // edited
+            {
+              Vector partConsts2 = pTrig.getAllConstraints();
+              for (int j = 0; j < partConsts2.size(); j++) {
+                ActionTypeParticipantConstraint partConst = (ActionTypeParticipantConstraint) partConsts2
+                    .elementAt(j);
+                ActionTypeParticipantAttributeConstraint[] attConsts = partConst
+                    .getAllAttributeConstraints();
+                for (int k = 0; k < attConsts.length; k++) {
+                  attConsts[k].setScoringAttribute(false);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   public class ExitListener extends WindowAdapter {

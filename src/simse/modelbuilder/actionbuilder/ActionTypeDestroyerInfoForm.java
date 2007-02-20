@@ -12,7 +12,7 @@ import java.util.*;
 import java.awt.Color;
 
 public class ActionTypeDestroyerInfoForm extends JDialog implements
-    ActionListener {
+    ActionListener, MouseListener {
   private ActionTypeDestroyer destroyer; // temporary copy of destroyer being
                                          // edited
   private ActionTypeDestroyer originalDestroyer; // original destroyer
@@ -155,6 +155,7 @@ public class ActionTypeDestroyerInfoForm extends JDialog implements
                                                                            // item
                                                                            // at a
                                                                            // time
+    participantList.addMouseListener(this);
     JScrollPane partListPane = new JScrollPane(participantList);
     // initialize participant names:
     participantNames = new Vector();
@@ -310,56 +311,7 @@ public class ActionTypeDestroyerInfoForm extends JDialog implements
     }
 
     else if (source == viewEditButton) {
-      if (participantList.isSelectionEmpty() == false) // a participant is
-                                                       // selected
-      {
-        // Bring up form for entering info for the new participant destroyer:
-        ActionTypeParticipantDestroyer partDest = destroyer
-            .getParticipantDestroyer((String) participantList
-                .getSelectedValue());
-        ActionTypeParticipantDestroyerConstraintsInfoForm constsForm = new ActionTypeParticipantDestroyerConstraintsInfoForm(
-            this, partDest, destroyer);
-        if (destroyer.isGameEndingDestroyer()) {
-          // check if any of the attributes have just been set to scoring
-          // attributes, and if so, remove scoring status from whatever
-          // attribute had this status previously:
-          boolean attSetToScoring = false;
-          Vector partConsts = partDest.getAllConstraints();
-          for (int i = 0; i < partConsts.size(); i++) {
-            ActionTypeParticipantConstraint partConst = (ActionTypeParticipantConstraint) partConsts
-                .elementAt(i);
-            ActionTypeParticipantAttributeConstraint[] attConsts = partConst
-                .getAllAttributeConstraints();
-            for (int j = 0; j < attConsts.length; j++) {
-              if (attConsts[j].isScoringAttribute()) {
-                attSetToScoring = true;
-                break;
-              }
-            }
-          }
-          if (attSetToScoring) {
-            Vector partDests = destroyer.getAllParticipantDestroyers();
-            for (int i = 0; i < partDests.size(); i++) {
-              ActionTypeParticipantDestroyer pDest = (ActionTypeParticipantDestroyer) partDests
-                  .elementAt(i);
-              if (pDest != partDest) // not participant destroyer that you just
-                                     // edited
-              {
-                Vector partConsts2 = pDest.getAllConstraints();
-                for (int j = 0; j < partConsts2.size(); j++) {
-                  ActionTypeParticipantConstraint partConst = (ActionTypeParticipantConstraint) partConsts2
-                      .elementAt(j);
-                  ActionTypeParticipantAttributeConstraint[] attConsts = partConst
-                      .getAllAttributeConstraints();
-                  for (int k = 0; k < attConsts.length; k++) {
-                    attConsts[k].setScoringAttribute(false);
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+      viewEditButtonClicked();
     }
 
     else if (source == gameEndCBox) {
@@ -439,6 +391,26 @@ public class ActionTypeDestroyerInfoForm extends JDialog implements
     else if (source == cancelButton) {
       setVisible(false);
       dispose();
+    }
+  }
+  
+  public void mousePressed(MouseEvent me) {
+  }
+
+  public void mouseReleased(MouseEvent me) {
+  }
+
+  public void mouseEntered(MouseEvent me) {
+  }
+
+  public void mouseExited(MouseEvent me) {
+  }
+
+  public void mouseClicked(MouseEvent me) {
+    int clicks = me.getClickCount();
+    if ((me.getSource() == participantList) && 
+        (me.getButton() == MouseEvent.BUTTON1) && (clicks >= 2)) {
+      viewEditButtonClicked();
     }
   }
 
@@ -770,6 +742,58 @@ public class ActionTypeDestroyerInfoForm extends JDialog implements
       }
     }
     return messages;
+  }
+  
+  private void viewEditButtonClicked() {
+    if (participantList.isSelectionEmpty() == false) // a participant is
+      // selected
+    {
+      // Bring up form for entering info for the new participant destroyer:
+      ActionTypeParticipantDestroyer partDest = destroyer
+          .getParticipantDestroyer((String) participantList.getSelectedValue());
+      ActionTypeParticipantDestroyerConstraintsInfoForm constsForm = new ActionTypeParticipantDestroyerConstraintsInfoForm(
+          this, partDest, destroyer);
+      if (destroyer.isGameEndingDestroyer()) {
+        // check if any of the attributes have just been set to scoring
+        // attributes, and if so, remove scoring status from whatever
+        // attribute had this status previously:
+        boolean attSetToScoring = false;
+        Vector partConsts = partDest.getAllConstraints();
+        for (int i = 0; i < partConsts.size(); i++) {
+          ActionTypeParticipantConstraint partConst = (ActionTypeParticipantConstraint) partConsts
+              .elementAt(i);
+          ActionTypeParticipantAttributeConstraint[] attConsts = partConst
+              .getAllAttributeConstraints();
+          for (int j = 0; j < attConsts.length; j++) {
+            if (attConsts[j].isScoringAttribute()) {
+              attSetToScoring = true;
+              break;
+            }
+          }
+        }
+        if (attSetToScoring) {
+          Vector partDests = destroyer.getAllParticipantDestroyers();
+          for (int i = 0; i < partDests.size(); i++) {
+            ActionTypeParticipantDestroyer pDest = (ActionTypeParticipantDestroyer) partDests
+                .elementAt(i);
+            if (pDest != partDest) // not participant destroyer that you just
+            // edited
+            {
+              Vector partConsts2 = pDest.getAllConstraints();
+              for (int j = 0; j < partConsts2.size(); j++) {
+                ActionTypeParticipantConstraint partConst = (ActionTypeParticipantConstraint) partConsts2
+                    .elementAt(j);
+                ActionTypeParticipantAttributeConstraint[] attConsts = partConst
+                    .getAllAttributeConstraints();
+                for (int k = 0; k < attConsts.length; k++) {
+                  attConsts[k].setScoringAttribute(false);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   public class ExitListener extends WindowAdapter {

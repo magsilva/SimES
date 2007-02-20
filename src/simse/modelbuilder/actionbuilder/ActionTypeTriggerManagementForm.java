@@ -6,6 +6,7 @@
 package simse.modelbuilder.actionbuilder;
 
 import simse.modelbuilder.objectbuilder.*;
+
 import java.awt.event.*;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -15,7 +16,7 @@ import java.util.*;
 import java.awt.Color;
 
 public class ActionTypeTriggerManagementForm extends JDialog implements
-    ActionListener {
+    ActionListener, MouseListener {
   private ActionType actionInFocus; // temporary copy of action being edited
   private ActionType originalAction; // original action
   private DefinedActionTypes allActions; // all of the currently defined actions
@@ -62,6 +63,7 @@ public class ActionTypeTriggerManagementForm extends JDialog implements
                                                                        // item
                                                                        // at a
                                                                        // time
+    triggerList.addMouseListener(this);
     JScrollPane topPane = new JScrollPane(triggerList);
     // initialize trigger names:
     triggerNames = new Vector();
@@ -122,18 +124,7 @@ public class ActionTypeTriggerManagementForm extends JDialog implements
     Object source = evt.getSource(); // get which component the action came from
 
     if (source == viewEditButton) {
-      if (triggerList.isSelectionEmpty() == false) // a trigger is selected
-      {
-        // Bring up form for viewing/editing trigger:
-        String selectedStr = (String) triggerList.getSelectedValue();
-        ActionTypeTrigger trig = actionInFocus.getTrigger(selectedStr
-            .substring(0, selectedStr.indexOf(' ')));
-        ActionTypeTriggerInfoForm trigInfoForm = new ActionTypeTriggerInfoForm(
-            this, actionInFocus, trig, allActions);
-        removeButton.setEnabled(false);
-        viewEditButton.setEnabled(false);
-        refreshTriggerList();
-      }
+      viewEditButtonClicked();
     }
 
     else if (source == removeButton) {
@@ -199,6 +190,26 @@ public class ActionTypeTriggerManagementForm extends JDialog implements
       dispose();
     }
   }
+  
+  public void mousePressed(MouseEvent me) {
+  }
+
+  public void mouseReleased(MouseEvent me) {
+  }
+
+  public void mouseEntered(MouseEvent me) {
+  }
+
+  public void mouseExited(MouseEvent me) {
+  }
+
+  public void mouseClicked(MouseEvent me) {
+    int clicks = me.getClickCount();
+    if ((me.getSource() == triggerList) && 
+        (me.getButton() == MouseEvent.BUTTON1) && (clicks >= 2)) {
+      viewEditButtonClicked();
+    }
+  }
 
   private void refreshTriggerList() {
     triggerNames.removeAllElements();
@@ -239,6 +250,21 @@ public class ActionTypeTriggerManagementForm extends JDialog implements
         }
       }
     });
+  }
+  
+  private void viewEditButtonClicked() {
+    if (triggerList.isSelectionEmpty() == false) // a trigger is selected
+    {
+      // Bring up form for viewing/editing trigger:
+      String selectedStr = (String) triggerList.getSelectedValue();
+      ActionTypeTrigger trig = actionInFocus.getTrigger(selectedStr
+          .substring(0, selectedStr.indexOf(' ')));
+      ActionTypeTriggerInfoForm trigInfoForm = new ActionTypeTriggerInfoForm(
+          this, actionInFocus, trig, allActions);
+      removeButton.setEnabled(false);
+      viewEditButton.setEnabled(false);
+      refreshTriggerList();
+    }
   }
 
   public class ExitListener extends WindowAdapter {
