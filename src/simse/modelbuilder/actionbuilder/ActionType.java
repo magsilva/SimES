@@ -135,6 +135,17 @@ public class ActionType implements Cloneable {
   {
     return participants;
   }
+  
+  public boolean hasParticipantOfMetaType(int metaType) {
+    for (int i = 0; i < participants.size(); i++) {
+      ActionTypeParticipant part = 
+        (ActionTypeParticipant)participants.elementAt(i);
+      if (part.getSimSEObjectTypeType() == metaType) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   public Vector getAllTriggers() // returns a vector of all ActionTypeTriggers
                                  // for this action type

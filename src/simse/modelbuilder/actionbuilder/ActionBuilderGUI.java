@@ -431,9 +431,9 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
                                                          // type
         actions.addActionType(newAction); // add to the data structure
         ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
-        setActionInFocus(newAction); // set newly created action to be the focus
-                                     // of the GUI
         updateDefinedActionsList();
+        setActionInFocus(newAction); // set newly created action to be the focus
+        														 // of the GUI
         // disable buttons:
         moveActUpButton.setEnabled(false);
         moveActDownButton.setEnabled(false);
@@ -495,16 +495,6 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
         removeParticipantButton.setEnabled(false);
         movePartUpButton.setEnabled(false);
         movePartDownButton.setEnabled(false);
-
-        /*
-         * enable the visibility button if the action has an employee
-         * participant
-         */
-        if (hasEmployeeParticipant(actTblMod.getActionTypeInFocus())) {
-          optionsButton.setEnabled(true);
-        } else {
-          optionsButton.setEnabled(false);
-        }
       }
 
       public void windowGainedFocus(WindowEvent ev) {
@@ -522,15 +512,6 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     WindowFocusListener l = new WindowFocusListener() {
       public void windowLostFocus(WindowEvent ev) {
         actTblMod.refreshData();
-        /*
-         * enable the visibility button if the action has an employee
-         * participant
-         */
-        if (hasEmployeeParticipant(actTblMod.getActionTypeInFocus())) {
-          optionsButton.setEnabled(true);
-        } else {
-          optionsButton.setEnabled(false);
-        }
       }
 
       public void windowGainedFocus(WindowEvent ev) {
@@ -644,8 +625,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     optionsButton.setEnabled(true);
     
     // set focus on defined actions list:
-    definedActionsList.setSelectedIndex(actions.getIndexOf(newAct));
-
+    definedActionsList.setSelectedValue(newAct.getName(), true);
   }
 
   private void renameAction(String actionName) // removes the action with the
@@ -753,23 +733,6 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     removeActionButton.setEnabled(false);
     renameActionButton.setEnabled(false);
     warningPane.clearWarnings();
-  }
-
-  private boolean hasEmployeeParticipant(ActionType act) // returns true if
-                                                         // there is at least
-                                                         // one participant in
-                                                         // this action that is
-                                                         // of
-  // type Employee
-  {
-    Vector parts = act.getAllParticipants();
-    for (int i = 0; i < parts.size(); i++) {
-      ActionTypeParticipant p = (ActionTypeParticipant) parts.elementAt(i);
-      if (p.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) {
-        return true;
-      }
-    }
-    return false;
   }
   
   /*

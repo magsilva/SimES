@@ -12,11 +12,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+
 public class ActionTypeOptionsInfoForm extends JDialog implements
     ActionListener {
   private ActionType actionInFocus; // action type whose attributes are being
                                     // edited
 
+  private JLabel simVisLabel;
   private JComboBox simVisibleList; // for choosing whether the action is
                                     // visible in the simulation
   private JComboBox expVisibleList; // for choosing whether the action is
@@ -43,7 +46,8 @@ public class ActionTypeOptionsInfoForm extends JDialog implements
 
     // Create simVis pane:
     JPanel simVisPane = new JPanel();
-    simVisPane.add(new JLabel("Visibile in simulation:"));
+    simVisLabel = new JLabel("Visible in simulation:");
+    simVisPane.add(simVisLabel);
     simVisibleList = new JComboBox();
     simVisibleList.addItem("true");
     simVisibleList.addItem("false");
@@ -60,6 +64,16 @@ public class ActionTypeOptionsInfoForm extends JDialog implements
     descriptionTextField
         .setToolTipText("Description of this action type to appear in the simulation's user interface");
     descriptionPane.add(descriptionTextField);
+    
+    // Disable simulation visibility stuff if no employee participant in action:
+    if (!actionInFocus.hasParticipantOfMetaType(
+        SimSEObjectTypeTypes.EMPLOYEE)) {
+      simVisLabel.setEnabled(false);
+      simVisibleList.setSelectedItem("false");
+      simVisibleList.setEnabled(false);
+      descriptionLabel.setEnabled(false);
+      descriptionTextField.setEnabled(false);
+    }
 
     // Create expVis pane:
     JPanel expVisPane = new JPanel();
@@ -204,16 +218,19 @@ public class ActionTypeOptionsInfoForm extends JDialog implements
                                 // being edited
   {
     // simulation visibility
-    if (actionInFocus.isVisibleInSimulation()) {
-      simVisibleList.setSelectedIndex(0);
-    } else // not visible
-    {
-      simVisibleList.setSelectedIndex(1);
-    }
-    if ((actionInFocus.getDescription() != null)
-        && (actionInFocus.getDescription().length() > 0)) // has a description
-    {
-      descriptionTextField.setText(actionInFocus.getDescription());
+    if (actionInFocus.hasParticipantOfMetaType(
+        SimSEObjectTypeTypes.EMPLOYEE)) {
+	    if (actionInFocus.isVisibleInSimulation()) {
+	      simVisibleList.setSelectedIndex(0);
+	    } else // not visible
+	    {
+	      simVisibleList.setSelectedIndex(1);
+	    }
+	    if ((actionInFocus.getDescription() != null)
+	        && (actionInFocus.getDescription().length() > 0)) // has a description
+	    {
+	      descriptionTextField.setText(actionInFocus.getDescription());
+	    }
     }
 
     // explanatory tool visibility
