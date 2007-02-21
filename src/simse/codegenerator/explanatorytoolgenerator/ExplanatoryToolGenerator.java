@@ -18,6 +18,7 @@ import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
 import simse.modelbuilder.objectbuilder.NumericalAttribute;
 import simse.modelbuilder.objectbuilder.SimSEObjectType;
 import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+import simse.modelbuilder.rulebuilder.Rule;
 import simse.modelbuilder.startstatebuilder.CreatedObjects;
 import simse.modelbuilder.startstatebuilder.SimSEObject;
 
@@ -129,6 +130,8 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import java.util.ArrayList;");
       writer.write(NEWLINE);
+      writer.write("import java.util.Vector;");
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer
           .write("public class ExplanatoryTool extends JFrame implements ActionListener, ListSelectionListener {");
@@ -156,6 +159,16 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer
           .write("private JButton generateCompGraphButton; // for generating a composite graph");
       writer.write(NEWLINE);
+      writer.write("private JComboBox actionComboBox;");
+      writer.write(NEWLINE);
+      writer.write("private JList triggerRuleList;");
+      writer.write(NEWLINE);
+      writer.write("private JList destroyerRuleList;");
+      writer.write(NEWLINE);
+      writer.write("private JList intermediateRuleList;");
+      writer.write(NEWLINE);
+      writer.write("private JTextArea descriptionArea;");
+      writer.write(NEWLINE);
       writer.write("private Box mainPane;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
@@ -175,14 +188,14 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("// Create main sub-panel:");
       writer.write(NEWLINE);
-      writer.write("JPanel mainSubPanel = new JPanel();");
+      writer.write("JPanel generateGraphsPanel = new JPanel();");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("// Create title pane and label:");
+      writer.write("// Create generate graphs title pane and label:");
       writer.write(NEWLINE);
-      writer.write("JPanel titlePane = new JPanel();");
+      writer.write("JPanel generateGraphsTitlePane = new JPanel();");
       writer.write(NEWLINE);
-      writer.write("titlePane.add(new JLabel(\"Generate Graph(s):\"));");
+      writer.write("generateGraphsTitlePane.add(new JLabel(\"Generate Graph(s):\"));");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// Create object pane and components:");
@@ -318,19 +331,14 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("// Create bottom pane & button:");
       writer.write(NEWLINE);
-      writer.write("JPanel bottomPane = new JPanel();");
+      writer.write("JPanel generateCompGraphPane = new JPanel();");
       writer.write(NEWLINE);
       writer
           .write("generateCompGraphButton = new JButton(\"Generate Composite Graph\");");
       writer.write(NEWLINE);
       writer.write("generateCompGraphButton.addActionListener(this);");
       writer.write(NEWLINE);
-      writer.write("bottomPane.add(generateCompGraphButton);");
-      writer.write(NEWLINE);
-      writer.write(NEWLINE);
-      writer.write("// set up tool tips:");
-      writer.write(NEWLINE);
-      writer.write("setUpToolTips();");
+      writer.write("generateCompGraphPane.add(generateCompGraphButton);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("refreshAttributeList();");
@@ -344,13 +352,157 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("refreshButtons();");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      writer.write("// Create viewRuleTitlePane and label:");
+      writer.write(NEWLINE);
+      writer.write("JPanel viewRulesTitlePane = new JPanel();");
+      writer.write(NEWLINE);
+      writer.write("viewRulesTitlePane.add(new JLabel(\"View Rules:\"));");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// Create rulesPane:");
+      writer.write(NEWLINE);
+      writer.write("Box rulesPane = Box.createVerticalBox();");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// Create actionsComboBoxPane:");
+      writer.write(NEWLINE);
+      writer.write("JPanel actionComboBoxPane = new JPanel();");
+      writer.write(NEWLINE);
+      writer.write("actionComboBoxPane.add(new JLabel(\"Actions:\"));");
+      writer.write(NEWLINE);
+      writer.write("actionComboBox = new JComboBox(actions);");
+      writer.write(NEWLINE);
+      writer.write("actionComboBox.addActionListener(this);");
+      writer.write(NEWLINE);
+      writer.write("actionComboBoxPane.add(actionComboBox);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// Create rulesMainPane:");
+      writer.write(NEWLINE);
+      writer.write("JPanel rulesMainPane = new JPanel();");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// Create ruleListsPane:");
+      writer.write(NEWLINE);
+      writer.write("Box ruleListsPane = Box.createVerticalBox();");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// rule lists:");
+      writer.write(NEWLINE);
+      writer.write("JPanel trigRuleTitlePane = new JPanel();");
+      writer.write(NEWLINE);
+      writer.write("trigRuleTitlePane.add(new JLabel(\"Trigger Rules:\"));");
+      writer.write(NEWLINE);
+      writer.write("ruleListsPane.add(trigRuleTitlePane);");
+      writer.write(NEWLINE);
+      writer.write("triggerRuleList = new JList();");
+      writer.write(NEWLINE);
+      writer.write("triggerRuleList.setVisibleRowCount(4);");
+      writer.write(NEWLINE);
+      writer.write("triggerRuleList.setFixedCellWidth(250);");
+      writer.write(NEWLINE);
+      writer.write("triggerRuleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);");
+      writer.write(NEWLINE);
+      writer.write("triggerRuleList.addListSelectionListener(this);");
+      writer.write(NEWLINE);
+      writer.write("JScrollPane triggerRuleListPane = new JScrollPane(triggerRuleList);");
+      writer.write(NEWLINE);
+      writer.write("ruleListsPane.add(triggerRuleListPane);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("JPanel destRuleTitlePane = new JPanel();");
+      writer.write(NEWLINE);
+      writer.write("destRuleTitlePane.add(new JLabel(\"Destroyer Rules:\"));");
+      writer.write(NEWLINE);
+      writer.write("ruleListsPane.add(destRuleTitlePane);");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList = new JList();");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList.setVisibleRowCount(4);");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList.setFixedCellWidth(250);");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList.addListSelectionListener(this);");
+      writer.write(NEWLINE);
+      writer.write("JScrollPane destroyerRuleListPane = new JScrollPane(destroyerRuleList);");
+      writer.write(NEWLINE);
+      writer.write("ruleListsPane.add(destroyerRuleListPane);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("JPanel intRuleTitlePane = new JPanel();");
+      writer.write(NEWLINE);
+      writer.write("intRuleTitlePane.add(new JLabel(\"Intermediate Rules:\"));");
+      writer.write(NEWLINE);
+      writer.write("ruleListsPane.add(intRuleTitlePane);");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList = new JList();");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList.setVisibleRowCount(4);");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList.setFixedCellWidth(250);");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList.addListSelectionListener(this);");
+      writer.write(NEWLINE);
+      writer.write("JScrollPane intermediateRuleListPane = new JScrollPane(intermediateRuleList);");
+      writer.write(NEWLINE);
+      writer.write("ruleListsPane.add(intermediateRuleListPane);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("rulesMainPane.add(ruleListsPane);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// description pane:");
+      writer.write(NEWLINE);
+      writer.write("Box descriptionPane = Box.createVerticalBox();");
+      writer.write(NEWLINE);
+      writer.write("JPanel descriptionTitlePane = new JPanel();");
+      writer.write(NEWLINE);
+      writer.write("descriptionTitlePane.add(new JLabel(\"Description:\"));");
+      writer.write(NEWLINE);
+      writer.write("descriptionPane.add(descriptionTitlePane);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// description text area:");
+      writer.write(NEWLINE);
+      writer.write("descriptionArea = new JTextArea(16, 30);");
+      writer.write(NEWLINE);
+      writer.write("descriptionArea.setLineWrap(true);");
+      writer.write(NEWLINE);
+      writer.write("descriptionArea.setWrapStyleWord(true);");
+      writer.write(NEWLINE);
+      writer.write("descriptionArea.setEditable(false);");
+      writer.write(NEWLINE);
+      writer.write("JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);");
+      writer.write(NEWLINE);
+      writer.write("descriptionPane.add(descriptionScrollPane);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("rulesMainPane.add(descriptionPane);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("if (actions.length > 0) { // at least one action in list");
+      writer.write(NEWLINE);
+      writer.write("actionComboBox.setSelectedIndex(0);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// set up tool tips:");
+      writer.write(NEWLINE);
+      writer.write("setUpToolTips();");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
       writer.write("// Add panes to main pane and main sub-pane:");
       writer.write(NEWLINE);
-      writer.write("mainSubPanel.add(objectPane);");
+      writer.write("generateGraphsPanel.add(objectPane);");
       writer.write(NEWLINE);
-      writer.write("mainSubPanel.add(actionPane);");
+      writer.write("generateGraphsPanel.add(actionPane);");
       writer.write(NEWLINE);
-      writer.write("mainPane.add(titlePane);");
+      writer.write("mainPane.add(generateGraphsTitlePane);");
       writer.write(NEWLINE);
       writer.write("JSeparator separator1 = new JSeparator();");
       writer.write(NEWLINE);
@@ -358,7 +510,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("mainPane.add(separator1);");
       writer.write(NEWLINE);
-      writer.write("mainPane.add(mainSubPanel);");
+      writer.write("mainPane.add(generateGraphsPanel);");
       writer.write(NEWLINE);
       writer.write("JSeparator separator2 = new JSeparator();");
       writer.write(NEWLINE);
@@ -366,7 +518,25 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("mainPane.add(separator2);");
       writer.write(NEWLINE);
-      writer.write("mainPane.add(bottomPane);");
+      writer.write("mainPane.add(generateCompGraphPane);");
+      writer.write(NEWLINE);
+      writer.write("JSeparator separator3 = new JSeparator();");
+      writer.write(NEWLINE);
+      writer.write("separator3.setMaximumSize(new Dimension(2900, 1));");
+      writer.write(NEWLINE);
+      writer.write("mainPane.add(separator3);");
+      writer.write(NEWLINE);
+      writer.write("mainPane.add(viewRulesTitlePane);");
+      writer.write(NEWLINE);
+      writer.write("JSeparator separator4 = new JSeparator();");
+      writer.write(NEWLINE);
+      writer.write("separator4.setMaximumSize(new Dimension(2900, 1));");
+      writer.write(NEWLINE);
+      writer.write("mainPane.add(separator4);");
+      writer.write(NEWLINE);
+      writer.write("mainPane.add(actionComboBoxPane);");
+      writer.write(NEWLINE);
+      writer.write("mainPane.add(rulesMainPane);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// Set main window frame properties:");
@@ -574,6 +744,18 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write("else if (source == actionComboBox) {");
+      writer.write(NEWLINE);
+      writer.write("if (actionComboBox.getItemCount() > 0) {");
+      writer.write(NEWLINE);
+      writer.write("refreshRuleLists((String)actionComboBox.getSelectedItem());");
+      writer.write(NEWLINE);
+      writer.write("descriptionArea.setText(\"\");");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
@@ -584,6 +766,36 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("if ((e.getSource() == attributeList) || (e.getSource() == actionList)) {");
       writer.write(NEWLINE);
       writer.write("refreshButtons();");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else if ((e.getSource() == triggerRuleList && !triggerRuleList.isSelectionEmpty())) {");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList.clearSelection();");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList.clearSelection();");
+      writer.write(NEWLINE);
+      writer.write("refreshDescriptionArea((String)triggerRuleList.getSelectedValue());");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else if (e.getSource() == destroyerRuleList && !destroyerRuleList.isSelectionEmpty()) {");
+      writer.write(NEWLINE);
+      writer.write("triggerRuleList.clearSelection();");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList.clearSelection();");
+      writer.write(NEWLINE);
+      writer.write("refreshDescriptionArea((String)destroyerRuleList.getSelectedValue());");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else if (e.getSource() == intermediateRuleList && !intermediateRuleList.isSelectionEmpty()) {");
+      writer.write(NEWLINE);
+      writer.write("triggerRuleList.clearSelection();");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList.clearSelection();");
+      writer.write(NEWLINE);
+      writer.write("refreshDescriptionArea((String)intermediateRuleList.getSelectedValue());");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -659,6 +871,14 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer
           .write("actionList.setToolTipText(\"Choose which actions to graph\");");
       writer.write(NEWLINE);
+      writer.write("actionComboBox.setToolTipText(\"Choose which action to show rules for\");");
+      writer.write(NEWLINE);
+      writer.write("triggerRuleList.setToolTipText(\"Rules that execute at the beginning of the action\");");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList.setToolTipText(\"Rules that execute at the end of the action\");");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList.setToolTipText(\"Rules that execute every clock tick during the life of the action\");");
+      writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       
@@ -696,6 +916,134 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("else { // an action is selected");
       writer.write(NEWLINE);
       writer.write("generateActGraphButton.setEnabled(true);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // "refreshRuleLists" method
+      writer.write("private void refreshRuleLists(String actionName) {");
+      writer.write(NEWLINE);
+      writer.write("triggerRuleList.setListData(new Vector());");
+      writer.write(NEWLINE);
+      writer.write("destroyerRuleList.setListData(new Vector());");
+      writer.write(NEWLINE);
+      writer.write("intermediateRuleList.setListData(new Vector());");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      boolean writeElse = false;
+      for (int i = 0; i < actions.size(); i++) {
+        ActionType action = (ActionType) actions.get(i);
+        if (action.isVisibleInExplanatoryTool()) {
+          if (writeElse) {
+            writer.write("else ");
+          } else {
+            writeElse = true;
+          }
+          writer.write("if (actionName.equals(\"" + getUpperCaseLeading(action.getName()) + "\")) {");
+          writer.write(NEWLINE);
+          Vector trigRules = action.getAllTriggerRules();
+          if (trigRules.size() > 0) {
+            writer.write("String[] trigList = {");
+            writer.write(NEWLINE);
+
+            // go through all trigger rules:
+            for (int j = 0; j < trigRules.size(); j++) {
+              Rule trigRule = (Rule) trigRules.get(j);
+              if (trigRule.isVisibleInExplanatoryTool()) {
+                writer.write("\"" + trigRule.getName() + "\",");
+                writer.write(NEWLINE);
+              }
+            }
+            writer.write("};");
+            writer.write(NEWLINE);
+            writer.write("triggerRuleList.setListData(trigList);");
+            writer.write(NEWLINE);
+          }
+          Vector destRules = action.getAllDestroyerRules();
+          if (destRules.size() > 0) {
+            writer.write("String[] destList = {");
+            writer.write(NEWLINE);
+
+            // go through all destroyer rules:
+            for (int j = 0; j < destRules.size(); j++) {
+              Rule destRule = (Rule) destRules.get(j);
+              if (destRule.isVisibleInExplanatoryTool()) {
+                writer.write("\"" + destRule.getName() + "\",");
+                writer.write(NEWLINE);
+              }
+            }
+            writer.write("};");
+            writer.write(NEWLINE);
+            writer.write("destroyerRuleList.setListData(destList);");
+            writer.write(NEWLINE);
+          }
+          Vector contRules = action.getAllContinuousRules();
+          if (contRules.size() > 0) {
+            writer.write("String[] intList = {");
+            writer.write(NEWLINE);
+
+            // go through all continuous rules:
+            for (int j = 0; j < contRules.size(); j++) {
+              Rule contRule = (Rule) contRules.get(j);
+              if (contRule.isVisibleInExplanatoryTool()) {
+                writer.write("\"" + contRule.getName() + "\",");
+                writer.write(NEWLINE);
+              }
+            }
+            writer.write("};");
+            writer.write(NEWLINE);
+            writer.write("intermediateRuleList.setListData(intList);");
+            writer.write(NEWLINE);
+          }
+          writer.write(CLOSED_BRACK);
+          writer.write(NEWLINE);
+        }
+      }
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      
+      // "refreshDescriptionArea" method:
+      writer.write("// refreshes the description area with the selected rule description");
+      writer.write(NEWLINE);
+      writer.write("private void refreshDescriptionArea(String ruleName) {");
+      writer.write(NEWLINE);
+      writer.write("if (ruleName != null) {");
+      writer.write(NEWLINE);
+      writer.write("String text = \"\";");
+      writer.write(NEWLINE);
+
+      // go through all actions:
+      writeElse = false;
+      for (int i = 0; i < actions.size(); i++) {
+        ActionType action = (ActionType) actions.get(i);
+        if (action.isVisibleInExplanatoryTool()) {
+          // go through all rules:
+          Vector rules = action.getAllRules();
+          for (int j = 0; j < rules.size(); j++) {
+            Rule rule = (Rule) rules.get(j);
+            if (rule.isVisibleInExplanatoryTool()) {
+              if (writeElse) {
+                writer.write("else ");
+              } else {
+                writeElse = true;
+              }
+              writer.write("if (ruleName.equals(\"" + rule.getName() + "\")) {");
+              writer.write(NEWLINE);
+              writer.write("text = RuleDescriptions."
+                  + action.getName().toUpperCase() + "_"
+                  + rule.getName().toUpperCase() + ";");
+              writer.write(NEWLINE);
+              writer.write(CLOSED_BRACK);
+            }
+          }
+        }
+      }
+      writer.write("descriptionArea.setText(text);");
+      writer.write(NEWLINE);
+      writer.write("descriptionArea.setCaretPosition(0);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
