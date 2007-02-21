@@ -415,6 +415,8 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
       }
       writer.write("descriptionArea.setText(text);");
       writer.write(NEWLINE);
+      writer.write("descriptionArea.setCaretPosition(0);");
+      writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);

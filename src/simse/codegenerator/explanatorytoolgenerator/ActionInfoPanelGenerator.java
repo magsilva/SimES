@@ -79,7 +79,7 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
       writer
           .write("private JTextArea descriptionArea; // for displaying a trigger/destroyer description");
       writer.write(NEWLINE);
-      writer.write("private JTextArea actionDescriptionArea; // for displaying the actoin description");
+      writer.write("private JTextArea actionDescriptionArea; // for displaying the action description");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("private final int TRIGGER = 0;");
@@ -336,6 +336,8 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
         }
       }
       writer.write("actionDescriptionArea.setText(text);");
+      writer.write(NEWLINE);
+      writer.write("actionDescriptionArea.setCaretPosition(0);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -618,6 +620,8 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
         }
       }
       writer.write("descriptionArea.setText(text);");
+      writer.write(NEWLINE);
+      writer.write("descriptionArea.setCaretPosition(0);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);

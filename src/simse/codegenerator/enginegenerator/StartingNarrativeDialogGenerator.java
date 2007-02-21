@@ -102,6 +102,8 @@ public class StartingNarrativeDialogGenerator implements CodeGeneratorConstants 
       }
       writer.write("\" + \"\");");
       writer.write(NEWLINE);
+      writer.write("textArea.setCaretPosition(0);");
+      writer.write(NEWLINE);
       writer
           .write("JScrollPane scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);");
       writer.write(NEWLINE);

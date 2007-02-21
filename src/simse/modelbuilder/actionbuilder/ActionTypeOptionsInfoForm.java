@@ -244,6 +244,7 @@ public class ActionTypeOptionsInfoForm extends JDialog implements
         && (actionInFocus.getAnnotation().length() > 0)) // has annotation
     {
       annotationTextArea.setText(actionInFocus.getAnnotation());
+      annotationTextArea.setCaretPosition(0);
     }
     
     // joining:

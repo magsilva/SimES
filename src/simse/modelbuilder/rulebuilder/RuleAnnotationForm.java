@@ -51,6 +51,7 @@ public class RuleAnnotationForm extends JDialog implements ActionListener {
 
     // initialize text if annotation exists
     textArea.setText(rule.getAnnotation());
+    textArea.setCaretPosition(0);
 
     // Set main window frame properties:
     setBackground(Color.black);

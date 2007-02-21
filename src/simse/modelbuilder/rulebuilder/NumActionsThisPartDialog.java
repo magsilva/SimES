@@ -143,9 +143,8 @@ public class NumActionsThisPartDialog extends JDialog implements ActionListener 
     }
   }
 
-  private void setFocusedTextFieldText(String text) // sets both the text fields
-                                                    // passed in to the
-                                                    // specified text
+  private void setFocusedTextFieldText(String text) // sets echoed text field
+                                                    // to the specified text
   {
     echoedField.setText(text);
   }

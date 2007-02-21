@@ -52,6 +52,7 @@ public class NarrativeDialog extends JDialog implements ActionListener {
     // narrative
     {
       textArea.setText(createdObjs.getStartingNarrative());
+      textArea.setCaretPosition(0);
     }
 
     // Set main window frame properties:
