@@ -16,6 +16,7 @@ import simse.codegenerator.explanatorytoolgenerator.TriggerDescriptionsGenerator
 import simse.modelbuilder.objectbuilder.Attribute;
 import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
 import simse.modelbuilder.objectbuilder.NumericalAttribute;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
 import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
 import simse.modelbuilder.startstatebuilder.CreatedObjects;
 import simse.modelbuilder.startstatebuilder.SimSEObject;
@@ -113,6 +114,10 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import javax.swing.*;");
       writer.write(NEWLINE);
+      writer.write("import javax.swing.event.ListSelectionEvent;");
+      writer.write(NEWLINE);
+      writer.write("import javax.swing.event.ListSelectionListener;");
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("import java.awt.event.*;");
       writer.write(NEWLINE);
@@ -126,7 +131,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer
-          .write("public class ExplanatoryTool extends JFrame implements ActionListener {");
+          .write("public class ExplanatoryTool extends JFrame implements ActionListener, ListSelectionListener {");
       writer.write(NEWLINE);
 
       // member variables:
@@ -233,7 +238,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer
           .write("attributeList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);");
       writer.write(NEWLINE);
-      writer.write("refreshAttributeList();");
+      writer.write("attributeList.addListSelectionListener(this);");
       writer.write(NEWLINE);
       writer
           .write("JScrollPane attributeListPane = new JScrollPane(attributeList);");
@@ -290,6 +295,8 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer
           .write("actionList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);");
       writer.write(NEWLINE);
+      writer.write("actionList.addListSelectionListener(this);");
+      writer.write(NEWLINE);
       writer.write("JScrollPane actionListPane = new JScrollPane(actionList);");
       writer.write(NEWLINE);
       writer.write("actionPane.add(actionListPane);");
@@ -324,6 +331,17 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("// set up tool tips:");
       writer.write(NEWLINE);
       writer.write("setUpToolTips();");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("refreshAttributeList();");
+      writer.write(NEWLINE);
+      writer.write("if (actions.length > 0) {");
+      writer.write(NEWLINE);
+      writer.write("actionList.setSelectedIndex(0);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("refreshButtons();");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// Add panes to main pane and main sub-pane:");
@@ -559,6 +577,19 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      
+      // "valueChanged" method:
+      writer.write("public void valueChanged(ListSelectionEvent e) {");
+      writer.write(NEWLINE);
+      writer.write("if ((e.getSource() == attributeList) || (e.getSource() == actionList)) {");
+      writer.write(NEWLINE);
+      writer.write("refreshButtons();");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // "refreshAttributeList" method:
       writer.write("private void refreshAttributeList() {");
@@ -568,43 +599,51 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer
           .write("String selectedObject = (String)objectList.getSelectedItem();");
       writer.write(NEWLINE);
-      for (int i = 0; i < objects.size(); i++) {
-        SimSEObject obj = (SimSEObject) objects.get(i);
+      Vector objectTypes = objTypes.getAllObjectTypes();
+      for (int i = 0; i < objectTypes.size(); i++) {
+        SimSEObjectType objType = (SimSEObjectType) objectTypes.get(i);
         if (i > 0) {
           writer.write("else ");
         }
         writer.write("if (selectedObject.startsWith(\""
-            + getUpperCaseLeading(obj.getSimSEObjectType().getName()) + " "
-            + SimSEObjectTypeTypes.getText(obj.getSimSEObjectType().getType())
+            + getUpperCaseLeading(objType.getName()) + " "
+            + SimSEObjectTypeTypes.getText(objType.getType())
             + "\")) {");
         writer.write(NEWLINE);
         writer.write("String[] attributes = {");
         writer.write(NEWLINE);
-        Vector attributes = obj.getSimSEObjectType().getAllAttributes();
+        Vector attributes = objType.getAllAttributes();
+        int numVisibleNumericalAtts = 0;
         for (int j = 0; j < attributes.size(); j++) {
           Attribute att = (Attribute) attributes.get(j);
           if ((att instanceof NumericalAttribute)
               && ((att.isVisible()) || (att.isVisibleOnCompletion()))) {
             writer.write("\"" + att.getName() + "\",");
             writer.write(NEWLINE);
+            numVisibleNumericalAtts++;
           }
+        }
+        if (numVisibleNumericalAtts == 0) {
+          writer.write("\"(No numerical attributes)\"");
+          writer.write(NEWLINE);
         }
         writer.write("};");
         writer.write(NEWLINE);
         writer.write("attributeList.setListData(attributes);");
         writer.write(NEWLINE);
+        if (numVisibleNumericalAtts == 0) {
+          writer.write("attributeList.setEnabled(false);");
+          writer.write(NEWLINE);
+        }
+        else {
+          writer.write("attributeList.setEnabled(true);");
+          writer.write(NEWLINE);
+          writer.write("attributeList.setSelectedIndex(0);");
+          writer.write(NEWLINE);
+        }
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
       }
-      writer
-          .write("// make first item selected if there is at least one item in the list:");
-      writer.write(NEWLINE);
-      writer.write("if (attributeList.getModel().getSize() > 0) {");
-      writer.write(NEWLINE);
-      writer.write("attributeList.setSelectedIndex(0);");
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
@@ -619,6 +658,46 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer
           .write("actionList.setToolTipText(\"Choose which actions to graph\");");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      
+      // "refreshButtons" method:
+      writer.write("private void refreshButtons() {");
+      writer.write(NEWLINE);
+      writer.write("if (attributeList.isSelectionEmpty()) { // no attributes selected");
+      writer.write(NEWLINE);
+      writer.write("generateObjGraphButton.setEnabled(false);");
+      writer.write(NEWLINE);
+      writer.write("generateCompGraphButton.setEnabled(false);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else { // an attribute is selected");
+      writer.write(NEWLINE);
+      writer.write("generateObjGraphButton.setEnabled(true);");
+      writer.write(NEWLINE);
+      writer.write("if (!actionList.isSelectionEmpty()) { // an action is also selected");
+      writer.write(NEWLINE);
+      writer.write("generateCompGraphButton.setEnabled(true);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("if (actionList.isSelectionEmpty()) { // no actions selected");
+      writer.write(NEWLINE);
+      writer.write("generateActGraphButton.setEnabled(false);");
+      writer.write(NEWLINE);
+      writer.write("generateCompGraphButton.setEnabled(false);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write("else { // an action is selected");
+      writer.write(NEWLINE);
+      writer.write("generateActGraphButton.setEnabled(true);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
