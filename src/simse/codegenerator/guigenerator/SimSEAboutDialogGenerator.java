@@ -36,10 +36,6 @@ public class SimSEAboutDialogGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import java.awt.event.*;");
       writer.write(NEWLINE);
-      writer.write("import java.util.*;");
-      writer.write(NEWLINE);
-      writer.write("import java.io.*;");
-      writer.write(NEWLINE);
       writer.write("import javax.swing.border.*;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
@@ -57,7 +53,7 @@ public class SimSEAboutDialogGenerator implements CodeGeneratorConstants {
       writer.write("private JButton btnOK;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("private String versionNo = \"v1.0\";");
+      writer.write("private String versionNo = \"v2.0\";");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
 
@@ -66,7 +62,7 @@ public class SimSEAboutDialogGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("super(f,\"About Simse\", true);");
+      writer.write("super(f,\"About SimSE\", true);");
       writer.write(NEWLINE);
       writer.write("setDefaultCloseOperation(2);");
       writer.write(NEWLINE);
@@ -159,39 +155,41 @@ public class SimSEAboutDialogGenerator implements CodeGeneratorConstants {
       writer.write("mid.add(lblSpacer);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("JLabel lblTeam = new JLabel(\"Developers:\");");
-      writer.write(NEWLINE);
-      writer.write("JLabel lblAndre = new JLabel(\"  Andre van der Hoek\");");
+      writer.write("JLabel lblLead = new JLabel(\"Lead Developer:\");");
       writer.write(NEWLINE);
       writer.write("JLabel lblEmily = new JLabel(\"  Emily Oh Navarro\");");
       writer.write(NEWLINE);
+      writer.write("JLabel lblCont= new JLabel(\"Contributing Developer:\");");
+      writer.write(NEWLINE);
       writer.write("JLabel lblCalvin = new JLabel(\"  Calvin Lee\");");
       writer.write(NEWLINE);
-      writer.write("JLabel lblBeverly = new JLabel(\"  Beverly Chan\");");
+      writer.write("JLabel lblSup = new JLabel(\"Supervising Faculty:\");");
+      writer.write(NEWLINE);
+      writer.write("JLabel lblAndre = new JLabel(\"  Andre van der Hoek\");");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer
           .write("gbc = new GridBagConstraints(0,4,1,1,1,0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0,10,0,0),0,0);");
       writer.write(NEWLINE);
-      writer.write("gbl.setConstraints(lblTeam,gbc);");
+      writer.write("gbl.setConstraints(lblLead,gbc);");
       writer.write(NEWLINE);
-      writer.write("mid.add(lblTeam);");
+      writer.write("mid.add(lblLead);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer
           .write("gbc = new GridBagConstraints(0,5,1,1,1,0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0,10,0,0),0,0);");
       writer.write(NEWLINE);
-      writer.write("gbl.setConstraints(lblAndre,gbc);");
+      writer.write("gbl.setConstraints(lblEmily,gbc);");
       writer.write(NEWLINE);
-      writer.write("mid.add(lblAndre);");
+      writer.write("mid.add(lblEmily);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer
           .write("gbc = new GridBagConstraints(0,6,1,1,1,0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0,10,0,0),0,0);");
       writer.write(NEWLINE);
-      writer.write("gbl.setConstraints(lblEmily,gbc);");
+      writer.write("gbl.setConstraints(lblCont,gbc);");
       writer.write(NEWLINE);
-      writer.write("mid.add(lblEmily);");
+      writer.write("mid.add(lblCont);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer
@@ -205,9 +203,16 @@ public class SimSEAboutDialogGenerator implements CodeGeneratorConstants {
       writer
           .write("gbc = new GridBagConstraints(0,8,1,1,1,0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0,10,0,0),0,0);");
       writer.write(NEWLINE);
-      writer.write("gbl.setConstraints(lblBeverly,gbc);");
+      writer.write("gbl.setConstraints(lblSup,gbc);");
       writer.write(NEWLINE);
-      writer.write("mid.add(lblBeverly);");
+      writer.write("mid.add(lblSup);");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("gbc = new GridBagConstraints(0,9,1,1,1,0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0,10,0,0),0,0);");
+      writer.write(NEWLINE);
+      writer.write("gbl.setConstraints(lblAndre, gbc);");
+      writer.write(NEWLINE);
+      writer.write("mid.add(lblAndre);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// add the panels");
