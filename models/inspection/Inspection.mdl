@@ -215,6 +215,26 @@ Description
 1
 <endAttribute>
 <beginAttribute>
+MeetingProductivity
+4
+1
+0
+1
+0.0
+100.0
+0
+0
+<endAttribute>
+<beginAttribute>
+MaximumMeetingProductivity
+3
+1
+0
+1
+100
+100
+<endAttribute>
+<beginAttribute>
 Score
 3
 0
@@ -258,6 +278,17 @@ ProductivityModifier
 0
 1.0
 2.0
+boundless
+boundless
+<endAttribute>
+<beginAttribute>
+MaxPossibleProductivityPerTick
+4
+0
+0
+0
+0.0
+boundless
 boundless
 boundless
 <endAttribute>
@@ -963,12 +994,16 @@ ProductivityModifier
 1.0
 <endInstantiatedAttribute>
 <beginInstantiatedAttribute>
-CodeBeingInspected
-None
+MeetingProductivity
+0.0
 <endInstantiatedAttribute>
 <beginInstantiatedAttribute>
-ChecklistBeingUsed
-None
+MaxPossibleProductivityPerTick
+0.31
+<endInstantiatedAttribute>
+<beginInstantiatedAttribute>
+MaximumMeetingProductivity
+100
 <endInstantiatedAttribute>
 <endObject>
 <endCreatedObjects>
@@ -1197,6 +1232,18 @@ Description
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+MeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+MaximumMeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 Score
 <
 <>
@@ -1227,13 +1274,7 @@ ProductivityModifier
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
-CodeBeingInspected
-<
-<>
-false
-<endActionTypeParticipantAttributeConstraint>
-<beginActionTypeParticipantAttributeConstraint>
-ChecklistBeingUsed
+MaxPossibleProductivityPerTick
 <
 <>
 false
@@ -1434,6 +1475,18 @@ Description
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+MeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+MaximumMeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 Score
 <
 <>
@@ -1464,13 +1517,7 @@ ProductivityModifier
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
-CodeBeingInspected
-<
-<>
-false
-<endActionTypeParticipantAttributeConstraint>
-<beginActionTypeParticipantAttributeConstraint>
-ChecklistBeingUsed
+MaxPossibleProductivityPerTick
 <
 <>
 false
@@ -1639,6 +1686,18 @@ Description
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+MeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+MaximumMeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 Score
 <
 <>
@@ -1669,13 +1728,7 @@ ProductivityModifier
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
-CodeBeingInspected
-<
-<>
-false
-<endActionTypeParticipantAttributeConstraint>
-<beginActionTypeParticipantAttributeConstraint>
-ChecklistBeingUsed
+MaxPossibleProductivityPerTick
 <
 <>
 false
@@ -1893,6 +1946,18 @@ Description
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+MeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+MaximumMeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 Score
 <
 <>
@@ -1923,13 +1988,7 @@ ProductivityModifier
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
-CodeBeingInspected
-<
-<>
-false
-<endActionTypeParticipantAttributeConstraint>
-<beginActionTypeParticipantAttributeConstraint>
-ChecklistBeingUsed
+MaxPossibleProductivityPerTick
 <
 <>
 false
@@ -2068,6 +2127,18 @@ Description
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+MeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+MaximumMeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 Score
 <
 <>
@@ -2098,13 +2169,7 @@ ProductivityModifier
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
-CodeBeingInspected
-<
-<>
-false
-<endActionTypeParticipantAttributeConstraint>
-<beginActionTypeParticipantAttributeConstraint>
-ChecklistBeingUsed
+MaxPossibleProductivityPerTick
 <
 <>
 false
@@ -2341,6 +2406,18 @@ Description
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+MeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+MaximumMeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 Score
 <
 <>
@@ -2371,13 +2448,7 @@ ProductivityModifier
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
-CodeBeingInspected
-<
-<>
-false
-<endActionTypeParticipantAttributeConstraint>
-<beginActionTypeParticipantAttributeConstraint>
-ChecklistBeingUsed
+MaxPossibleProductivityPerTick
 <
 <>
 false
@@ -2485,6 +2556,18 @@ Description
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+MeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+MaximumMeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 Score
 <
 <>
@@ -2515,13 +2598,7 @@ ProductivityModifier
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
-CodeBeingInspected
-<
-<>
-false
-<endActionTypeParticipantAttributeConstraint>
-<beginActionTypeParticipantAttributeConstraint>
-ChecklistBeingUsed
+MaxPossibleProductivityPerTick
 <
 <>
 false
@@ -2612,6 +2689,18 @@ Description
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+MeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+MaximumMeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 Score
 <
 <>
@@ -2642,13 +2731,7 @@ ProductivityModifier
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
-CodeBeingInspected
-<
-<>
-false
-<endActionTypeParticipantAttributeConstraint>
-<beginActionTypeParticipantAttributeConstraint>
-ChecklistBeingUsed
+MaxPossibleProductivityPerTick
 <
 <>
 false
@@ -2739,6 +2822,18 @@ Description
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+MeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+MaximumMeetingProductivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 Score
 <
 <>
@@ -2769,13 +2864,7 @@ ProductivityModifier
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
-CodeBeingInspected
-<
-<>
-false
-<endActionTypeParticipantAttributeConstraint>
-<beginActionTypeParticipantAttributeConstraint>
-ChecklistBeingUsed
+MaxPossibleProductivityPerTick
 <
 <>
 false
@@ -2977,11 +3066,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -3136,11 +3229,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -3295,11 +3392,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -3454,11 +3555,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -3613,11 +3718,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -3772,11 +3881,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -3931,11 +4044,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -4090,11 +4207,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -4249,11 +4370,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -4278,6 +4403,169 @@ NumInspectors
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 DiscussionPercentComplete
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<endEffectRule>
+<beginEffectRule>
+UpdateMeetingProductivity
+-1
+InspectCode
+0
+false
+false
+<beginRuleAnnotation>
+
+<endRuleAnnotation>
+<beginParticipantRuleEffect>
+Inspectors
+<beginParticipantTypeRuleEffect>
+1
+SoftwareEngineer
+None
+<beginParticipantAttributeRuleEffect>
+Name
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Energy
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+ProjectExperience
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+ProjectExperienceNumerical
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+InspectionExperience
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+InspectionExperienceNumerical
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Inspecting
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+LookingForBugs
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Discussing
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Productivity
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<beginParticipantRuleEffect>
+Code
+<beginParticipantTypeRuleEffect>
+2
+Code
+None
+<beginParticipantAttributeRuleEffect>
+Description
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+NumberOfLines
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+NumberOfDiscoveredDefects
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+NumberOfUndiscoveredDefects
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+ProgressOnFindingCurrentBug
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+BeingInspected
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+ProductivityModifier
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<beginParticipantRuleEffect>
+Checklist
+<beginParticipantTypeRuleEffect>
+3
+Checklist
+None
+<beginParticipantAttributeRuleEffect>
+Description
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+NumberOfPages
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+ProductivityModifier
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+BeingUsed
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<beginParticipantRuleEffect>
+Proj
+<beginParticipantTypeRuleEffect>
+4
+ScootieSoftwareProject
+None
+<beginParticipantAttributeRuleEffect>
+MaximumMeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Description
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MeetingProductivity
+((((allActive-Inspectors-SoftwareEngineer-Employee:Productivity * all-Code-Code-Artifact:ProductivityModifier * all-Checklist-Checklist-Tool:ProductivityModifier) * .1) * thisScootieSoftwareProject-Project:ProductivityModifier)) /  thisScootieSoftwareProject-Project:MaxPossibleProductivityPerTick * 100 
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Score
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+InspectionStarted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+NumInspectors
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+DiscussionPercentComplete
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+ProductivityModifier
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
@@ -4384,11 +4672,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -4543,11 +4835,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -4702,11 +4998,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -4861,11 +5161,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -5020,11 +5324,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -5179,11 +5487,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -5314,11 +5626,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -5449,11 +5765,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -5584,11 +5904,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -5719,11 +6043,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -5818,11 +6146,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -5905,11 +6237,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -6004,11 +6340,15 @@ Proj
 ScootieSoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
-CodeBeingInspected
+MaximumMeetingProductivity
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
-ChecklistBeingUsed
+MeetingProductivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+MaxPossibleProductivityPerTick
 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
@@ -6187,17 +6527,17 @@ true
 12
 3
 
-- Employee - SoftwareEngineer - Chris J.
+- Employee - SoftwareEngineer - Ping
 true
 true
-2
-5
+10
+7
 
-- Employee - SoftwareEngineer - Scott
+- Employee - SoftwareEngineer - Alex
 true
 true
 4
-1
+7
 
 - Employee - SoftwareEngineer - Anita
 true
@@ -6205,11 +6545,11 @@ true
 6
 7
 
-- Employee - SoftwareEngineer - Ping
+- Employee - SoftwareEngineer - Scott
 true
 true
-10
-7
+4
+1
 
 - Employee - SoftwareEngineer - Andre
 true
@@ -6217,17 +6557,11 @@ true
 6
 1
 
-- Employee - SoftwareEngineer - Emily
+- Employee - SoftwareEngineer - Chris J.
 true
 true
-12
+2
 5
-
-- Employee - SoftwareEngineer - Chris V.
-true
-true
-10
-1
 
 - Employee - SoftwareEngineer - Paul
 true
@@ -6241,17 +6575,23 @@ true
 8
 1
 
+- Employee - SoftwareEngineer - Emily
+true
+true
+12
+5
+
 - Employee - SoftwareEngineer - David
 true
 true
 8
 7
 
-- Employee - SoftwareEngineer - Alex
+- Employee - SoftwareEngineer - Chris V.
 true
 true
-4
-7
+10
+1
 
 <endSOPUsers>
 605
