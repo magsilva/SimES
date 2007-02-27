@@ -40673,7 +40673,7 @@ false
 <beginActionTypeParticipantAttributeConstraint>
 IterationStarted
 =
-<>
+true
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
@@ -42228,7 +42228,7 @@ false
 <beginActionTypeParticipantAttributeConstraint>
 IterationStarted
 =
-<>
+true
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
@@ -42401,7 +42401,7 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 RandomEventFourOccurred
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
@@ -81639,23 +81639,11 @@ use_case_blue.GIF
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Roger
-true
-true
-9
-7
-
-- Employee - SoftwareEngineer - Gretchen
-true
-true
-1
-7
-
-- Employee - SoftwareEngineer - Corey
+- Employee - SoftwareEngineer - Elizabeth
 true
 true
 6
-7
+3
 
 - Employee - SoftwareEngineer - Amalia
 true
@@ -81663,11 +81651,17 @@ true
 12
 2
 
-- Employee - SoftwareEngineer - Tai
+- Employee - SoftwareEngineer - Anne
 true
 true
-14
-8
+1
+2
+
+- Employee - SoftwareEngineer - Gretchen
+true
+true
+1
+7
 
 - Employee - SoftwareEngineer - Paxton
 true
@@ -81675,17 +81669,23 @@ true
 14
 3
 
-- Employee - SoftwareEngineer - Anne
-true
-true
-1
-2
-
 - Employee - SoftwareEngineer - Dwight
 true
 true
 3
 1
+
+- Employee - SoftwareEngineer - Tai
+true
+true
+14
+8
+
+- Employee - SoftwareEngineer - Corey
+true
+true
+6
+7
 
 - Employee - SoftwareEngineer - Erica
 true
@@ -81693,11 +81693,11 @@ true
 9
 0
 
-- Employee - SoftwareEngineer - Elizabeth
+- Employee - SoftwareEngineer - Roger
 true
 true
-6
-3
+9
+7
 
 <endSOPUsers>
 401
