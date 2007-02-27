@@ -32,6 +32,7 @@ public class ActionTypeParticipantTriggerConstraintsInfoForm extends JDialog
   private Vector attributes; // Attributes of the constraint currently in focus
   private Vector radioButts; // radio buttons to indicate whether or not the
                              // attribute corresponds to the score
+  private JDialog owner;
   private ButtonGroup radioButtGroup; // group for above buttons
   private Vector guardComboBoxes; // JComboBoxes of guards for each attribute of
                                   // the constraint currently in focus
@@ -43,14 +44,18 @@ public class ActionTypeParticipantTriggerConstraintsInfoForm extends JDialog
                             // JList
 
   private Box middlePane;
+  private JScrollPane middlePaneMain;
   private JLabel middlePaneTitleLabel;
   private JList typeList; // list of types to define constraints for
   private JButton okButton; // for ok'ing the info entered in this form
   private JButton cancelButton; // for canceling the info entered in this form
+  
+  private static final int PREFERRED_SCROLL_PANE_HEIGHT = 450;
 
   public ActionTypeParticipantTriggerConstraintsInfoForm(JDialog owner,
       ActionTypeParticipantTrigger trig, ActionTypeTrigger outerTrig) {
     super(owner, true);
+    this.owner = owner;
     actualTrigger = trig;
     triggerInFocus = (ActionTypeParticipantTrigger) (actualTrigger.clone());
     participantInFocus = trig.getParticipant();
@@ -110,10 +115,9 @@ public class ActionTypeParticipantTriggerConstraintsInfoForm extends JDialog
 
     middlePane = Box.createHorizontalBox();
     middlePane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    JScrollPane middlePaneMain = new JScrollPane(middlePane,
+    middlePaneMain = new JScrollPane(middlePane,
         JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    middlePaneMain.setMaximumSize(new Dimension(700, 300));
     guardComboBoxes = new Vector();
     radioButts = new Vector();
     radioButtGroup = new ButtonGroup();
@@ -145,13 +149,7 @@ public class ActionTypeParticipantTriggerConstraintsInfoForm extends JDialog
     pack();
     repaint();
     toFront();
-    // Make it show up in the center of the screen:
-    Point ownerLoc = owner.getLocationOnScreen();
-    Point thisLoc = new Point();
-    thisLoc.setLocation((ownerLoc.getX() + (owner.getWidth() / 2) - (this
-        .getWidth() / 2)), (ownerLoc.getY() + (owner.getHeight() / 2) - (this
-        .getHeight() / 2)));
-    setLocation(thisLoc);
+    repositionWindow();
     setVisible(true);
   }
 
@@ -588,8 +586,27 @@ public class ActionTypeParticipantTriggerConstraintsInfoForm extends JDialog
       middlePane.add(guardPanel);
       middlePane.add(valPanel);
     }
+    if (attributes.size() > 17) { // too long, window will get cut off
+      middlePaneMain.setPreferredSize(new Dimension(
+          (int) middlePaneMain.getPreferredSize().getWidth(), 
+          PREFERRED_SCROLL_PANE_HEIGHT));
+    }
+    else {
+      middlePaneMain.setPreferredSize(null);
+    }
     validate();
     pack();
     repaint();
+    repositionWindow();
+  }
+  
+  private void repositionWindow() {
+    // Make it show up in the center of the screen:
+    Point ownerLoc = owner.getLocationOnScreen();
+    Point thisLoc = new Point();
+    thisLoc.setLocation((ownerLoc.getX() + (owner.getWidth() / 2) - (this
+        .getWidth() / 2)), (ownerLoc.getY() + (owner.getHeight() / 2) - (this
+        .getHeight() / 2)));
+    setLocation(thisLoc);
   }
 }

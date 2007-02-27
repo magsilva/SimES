@@ -34,6 +34,7 @@ public class ActionTypeParticipantDestroyerConstraintsInfoForm extends JDialog
   private Vector attributes; // Attributes of the constraint currently in focus
   private Vector radioButts; // radio buttons to indicate whether or not the
                              // attribute corresponds to the score
+  private JDialog owner;
   private ButtonGroup radioButtGroup; // group for above buttons
   private Vector guardComboBoxes; // JComboBoxes of guards for each attribute of
                                   // the constraint currently in focus
@@ -45,14 +46,18 @@ public class ActionTypeParticipantDestroyerConstraintsInfoForm extends JDialog
                             // JList
 
   private Box middlePane;
+  private JScrollPane middlePaneMain;
   private JLabel middlePaneTitleLabel;
   private JList typeList; // list of types to define constraints for
   private JButton okButton; // for ok'ing the info entered in this form
   private JButton cancelButton; // for canceling the info entered in this form
+  
+  private static final int PREFERRED_SCROLL_PANE_HEIGHT = 450;
 
   public ActionTypeParticipantDestroyerConstraintsInfoForm(JDialog owner,
       ActionTypeParticipantDestroyer dest, ActionTypeDestroyer outerDest) {
     super(owner, true);
+    this.owner = owner;
     actualDestroyer = dest;
     destroyerInFocus = (ActionTypeParticipantDestroyer) (actualDestroyer
         .clone());
@@ -113,10 +118,9 @@ public class ActionTypeParticipantDestroyerConstraintsInfoForm extends JDialog
 
     middlePane = Box.createHorizontalBox();
     middlePane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    JScrollPane middlePaneMain = new JScrollPane(middlePane,
+    middlePaneMain = new JScrollPane(middlePane,
         JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    middlePaneMain.setMaximumSize(new Dimension(700, 300));
     guardComboBoxes = new Vector();
     radioButts = new Vector();
     radioButtGroup = new ButtonGroup();
@@ -131,9 +135,6 @@ public class ActionTypeParticipantDestroyerConstraintsInfoForm extends JDialog
     cancelButton = new JButton("Cancel");
     cancelButton.addActionListener(this);
     bottomPane.add(cancelButton);
-
-    // set up tool tips:
-    setUpToolTips();
 
     // Add panes to main pane:
     mainPane.add(topPane);
@@ -151,13 +152,7 @@ public class ActionTypeParticipantDestroyerConstraintsInfoForm extends JDialog
     pack();
     repaint();
     toFront();
-    // Make it show up in the center of the screen:
-    Point ownerLoc = owner.getLocationOnScreen();
-    Point thisLoc = new Point();
-    thisLoc.setLocation((ownerLoc.getX() + (owner.getWidth() / 2) - (this
-        .getWidth() / 2)), (ownerLoc.getY() + (owner.getHeight() / 2) - (this
-        .getHeight() / 2)));
-    setLocation(thisLoc);
+    repositionWindow();
     setVisible(true);
   }
 
@@ -194,10 +189,6 @@ public class ActionTypeParticipantDestroyerConstraintsInfoForm extends JDialog
       setVisible(false);
       dispose();
     }
-  }
-
-  private void setUpToolTips() {
-
   }
 
   private void setupTypeListSelectionListenerStuff() // sets bottom panel to
@@ -598,8 +589,27 @@ public class ActionTypeParticipantDestroyerConstraintsInfoForm extends JDialog
       middlePane.add(guardPanel);
       middlePane.add(valPanel);
     }
+    if (attributes.size() > 17) { // too long, window will get cut off
+      middlePaneMain.setPreferredSize(new Dimension(
+          (int) middlePaneMain.getPreferredSize().getWidth(), 
+          PREFERRED_SCROLL_PANE_HEIGHT));
+    }
+    else {
+      middlePaneMain.setPreferredSize(null);
+    }
     validate();
     pack();
     repaint();
+    repositionWindow();
+  }
+  
+  private void repositionWindow() {
+    // Make it show up in the center of the screen:
+    Point ownerLoc = owner.getLocationOnScreen();
+    Point thisLoc = new Point();
+    thisLoc.setLocation((ownerLoc.getX() + (owner.getWidth() / 2) - (this
+        .getWidth() / 2)), (ownerLoc.getY() + (owner.getHeight() / 2) - (this
+        .getHeight() / 2)));
+    setLocation(thisLoc);
   }
 }
