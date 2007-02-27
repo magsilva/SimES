@@ -11,6 +11,7 @@ import simse.modelbuilder.mapeditor.*;
 import simse.codegenerator.*;
 
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.*;
 import java.io.*;
@@ -385,7 +386,9 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
             getRuleObjsToImages(), map, userDatas);
         
         codeGen.setAllowHireFire(objectBuilder.allowHireFire());
+        mainPane.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         codeGen.generate();
+        mainPane.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
       }
     } else if (source instanceof JMenuItem) {
       JMenuItem mItem = (JMenuItem) source;
