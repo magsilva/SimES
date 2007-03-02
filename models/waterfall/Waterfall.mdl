@@ -23774,7 +23774,8 @@ false
 <endActionTypeTrigger>
 <beginActionTypeDestroyer>
 DestA
-Autonomous
+Timed
+1
 <>
 4
 false
@@ -24221,7 +24222,8 @@ false
 <endActionTypeTrigger>
 <beginActionTypeDestroyer>
 DestA
-Autonomous
+Timed
+1
 Thanks for the bonus!
 3
 false
@@ -25254,7 +25256,8 @@ false
 <endActionTypeTrigger>
 <beginActionTypeDestroyer>
 DestA
-Autonomous
+Timed
+1
 <>
 -1
 false
@@ -37802,6 +37805,12 @@ eddie_murphy.gif
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
+- Employee - SoftwareEngineer - Emily
+true
+true
+13
+2
+
 - Employee - SoftwareEngineer - Pedro
 true
 true
@@ -37814,23 +37823,17 @@ true
 13
 8
 
-- Employee - SoftwareEngineer - Mimi
-true
-true
-2
-7
-
-- Employee - SoftwareEngineer - Emily
-true
-true
-13
-2
-
 - Employee - SoftwareEngineer - Andre
 true
 true
 3
 1
+
+- Employee - SoftwareEngineer - Mimi
+true
+true
+2
+7
 
 - Employee - SoftwareEngineer - Calvin
 true
