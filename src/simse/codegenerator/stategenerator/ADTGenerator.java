@@ -283,7 +283,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("else if(overheadText.indexOf(s) == -1) // overhead text doesn't already contain this string");
+          .write("else if(!overheadText.endsWith(s)) // string has not just been said");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
