@@ -8,15 +8,23 @@
 package simse.codegenerator.logicgenerator;
 
 import simse.codegenerator.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.ActionTypeDestroyer;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+
 import java.io.*;
+import java.util.Vector;
+
 import javax.swing.*;
 
 public class MiscUpdaterGenerator implements CodeGeneratorConstants {
   private File directory; // directory to generate into
   private File muFile; // file to generate
+  private DefinedActionTypes actTypes;
 
-  public MiscUpdaterGenerator(File dir) {
+  public MiscUpdaterGenerator(File dir, DefinedActionTypes actTypes) {
     directory = dir;
+    this.actTypes = actTypes;
   }
 
   public void generate() {
@@ -89,6 +97,34 @@ public class MiscUpdaterGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// decrement time to live for actions w/ timed destroyers:");
+      writer.write(NEWLINE);
+      Vector allActions = actTypes.getAllActionTypes();
+      // make a vector w/ all action types that have timed destroyers:
+      Vector timedActs = new Vector();
+      for (int i = 0; i < allActions.size(); i++) {
+        ActionType act = (ActionType)allActions.elementAt(i);
+        if (act.hasDestroyerOfType(ActionTypeDestroyer.TIMED)) {
+          timedActs.add(act);
+        }
+      }
+      
+      // generate code for action types w/ timed destroyers:
+      for (int i = 0; i < timedActs.size(); i++) {
+        ActionType act = (ActionType)timedActs.elementAt(i);
+        writer.write("Vector " + act.getName().toLowerCase() + "Actions = state.getActionStateRepository().get" + getUpperCaseLeading(act.getName()) + "ActionStateRepository().getAllActions();");
+        writer.write(NEWLINE);
+        writer.write("for (int i = 0; i < " + act.getName().toLowerCase() + "Actions.size(); i++) {");
+        writer.write(NEWLINE);
+        writer.write(getUpperCaseLeading(act.getName()) + "Action act = (" + getUpperCaseLeading(act.getName()) + "Action) " + act.getName().toLowerCase() + "Actions.elementAt(i);");
+        writer.write(NEWLINE);
+        writer.write("act.decrementTimeToLive();");
+        writer.write(NEWLINE);
+        writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
+      }
+      writer.write(NEWLINE);
       writer.write("// update clock:");
       writer.write(NEWLINE);
       writer.write("state.getClock().incrementTime();");
@@ -103,5 +139,9 @@ public class MiscUpdaterGenerator implements CodeGeneratorConstants {
           + muFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
+  }
+  
+  private String getUpperCaseLeading(String s) {
+    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

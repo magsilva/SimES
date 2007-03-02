@@ -50,7 +50,7 @@ public class LogicGenerator implements CodeGeneratorConstants {
   public LogicGenerator(ModelOptions options, DefinedObjectTypes objTypes,
       DefinedActionTypes actTypes) {
     directory = options.getCodeGenerationDestinationDirectory();
-    miscUGen = new MiscUpdaterGenerator(directory);
+    miscUGen = new MiscUpdaterGenerator(directory, actTypes);
     trigGen = new TriggerCheckerGenerator(actTypes, directory);
     destGen = new DestroyerCheckerGenerator(actTypes, directory);
     menuGen = new MenuInputManagerGenerator(options, actTypes, objTypes, 
@@ -134,6 +134,10 @@ public class LogicGenerator implements CodeGeneratorConstants {
       writer
           .write("destChecker = new DestroyerChecker(state, ruleEx, trigChecker);");
       writer.write(NEWLINE);
+      writer.write("ruleEx.setTriggerChecker(trigChecker);");
+      writer.write(NEWLINE);
+      writer.write("ruleEx.setDestroyerChecker(destChecker);");
+      writer.write(NEWLINE);
       writer
           .write("menInputMgr = new MenuInputManager(state, trigChecker, destChecker, ruleEx);");
       writer.write(NEWLINE);
@@ -158,6 +162,14 @@ public class LogicGenerator implements CodeGeneratorConstants {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer.write("return trigChecker;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      
+      // getDestroyerChecker() method:
+      writer.write("public DestroyerChecker getDestroyerChecker() {");
+      writer.write(NEWLINE);
+      writer.write("return destChecker;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);

@@ -786,7 +786,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
             + getUpperCaseLeading(act.getName()) + "Action();");
         writer.write(NEWLINE);
         writer
-            .write("ParticipantSelectionDialogsDriver g = new ParticipantSelectionDialogsDriver(parent, c, d, f, state, ruleExec, e, s);");
+            .write("ParticipantSelectionDialogsDriver g = new ParticipantSelectionDialogsDriver(parent, c, d, f, state, ruleExec, destChecker, e, s);");
         /*
          * if(!moreThan1RoleForSameEmployeeType) // NOT more than one
          * participant role for the same employee SimSEObjectType {

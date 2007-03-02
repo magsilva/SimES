@@ -178,6 +178,10 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants {
               + "ActionStateRepository().remove(("
               + getUpperCaseLeading(tempAct.getName()) + "Action)tempAct);");
           writer.write(NEWLINE);
+          writer.write("trigCheck.update(true, gui);");
+          writer.write(NEWLINE);
+          writer.write("update(false, gui);");
+          writer.write(NEWLINE);
 
           // game-ending:
           if (tempDest.isGameEndingDestroyer()) {
@@ -254,15 +258,15 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants {
 
           writer.write(CLOSED_BRACK);
           writer.write(NEWLINE);
-          writer.write("else");
-          writer.write(NEWLINE);
-          writer.write(OPEN_BRACK);
-          writer.write(NEWLINE);
-          writer.write("((" + getUpperCaseLeading(tempAct.getName())
-              + "Action)tempAct).decrementTimeToLive();");
-          writer.write(NEWLINE);
-          writer.write(CLOSED_BRACK);
-          writer.write(NEWLINE);
+//          writer.write("else");
+//          writer.write(NEWLINE);
+//          writer.write(OPEN_BRACK);
+//          writer.write(NEWLINE);
+//          writer.write("((" + getUpperCaseLeading(tempAct.getName())
+//              + "Action)tempAct).decrementTimeToLive();");
+//          writer.write(NEWLINE);
+//          writer.write(CLOSED_BRACK);
+//          writer.write(NEWLINE);
           writer.write(CLOSED_BRACK);
           writer.write(NEWLINE);
           writer.write(CLOSED_BRACK);
@@ -446,6 +450,10 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants {
                 + getUpperCaseLeading(tempAct.getName())
                 + "ActionStateRepository().remove(("
                 + getUpperCaseLeading(tempAct.getName()) + "Action)tempAct);");
+            writer.write(NEWLINE);
+            writer.write("trigCheck.update(true, gui);");
+            writer.write(NEWLINE);
+            writer.write("update(false, gui);");
             writer.write(NEWLINE);
 
             // game-ending:

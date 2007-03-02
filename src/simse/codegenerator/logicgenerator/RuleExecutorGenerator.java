@@ -76,6 +76,11 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private Random ranNumGen;");
       writer.write(NEWLINE);
+      writer.write("private TriggerChecker triggerChecker;");
+      writer.write(NEWLINE);
+      writer.write("private DestroyerChecker destroyerChecker;");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // constructor:
       writer.write("public RuleExecutor(State s)");
@@ -87,6 +92,24 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
       writer.write("ranNumGen = new Random();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      
+      // setTriggerChecker function:
+      writer.write("public void setTriggerChecker(TriggerChecker t) {");
+      writer.write(NEWLINE);
+      writer.write("triggerChecker = t;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // setDestroyerChecker function:
+      writer.write("public void setDestroyerChecker(DestroyerChecker d) {");
+      writer.write(NEWLINE);
+      writer.write("destroyerChecker = d;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // update function:
@@ -2389,6 +2412,10 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
           writer.write(CLOSED_BRACK);
           writer.write(NEWLINE);
         }
+//        writer.write("triggerChecker.update(false, gui);");
+//        writer.write(NEWLINE);
+//        writer.write("destroyerChecker.update(false, gui);");
+//        writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
         if (rInputs.size() > 0) {
@@ -2581,6 +2608,10 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
         }
         writer.write("((SimSEGUI) gui).forceGUIUpdate();");
         writer.write(NEWLINE);
+//				writer.write("triggerChecker.update(false, gui);");
+//				writer.write(NEWLINE);
+//				writer.write("destroyerChecker.update(false, gui);");
+				writer.write(NEWLINE);
 //        writer.write(CLOSED_BRACK);
 //        writer.write(NEWLINE);
         if ((rule.getTiming() == RuleTiming.TRIGGER)
@@ -2805,6 +2836,10 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
             }
             writer.write("((SimSEGUI) gui).forceGUIUpdate();");
             writer.write(NEWLINE);
+//    				writer.write("triggerChecker.update(false, gui);");
+//    				writer.write(NEWLINE);
+//    				writer.write("destroyerChecker.update(false, gui);");
+    				writer.write(NEWLINE);
             writer.write(CLOSED_BRACK);
             writer.write(NEWLINE);
           }

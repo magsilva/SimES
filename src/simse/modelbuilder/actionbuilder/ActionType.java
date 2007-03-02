@@ -324,6 +324,34 @@ public class ActionType implements Cloneable {
     triggers = newTrigs;
   }
   
+  public boolean hasDestroyerOfType(String destroyerType) {
+    for (int i = 0; i < destroyers.size(); i++) {
+      ActionTypeDestroyer tempDest = 
+        (ActionTypeDestroyer)destroyers.elementAt(i);
+      if (destroyerType.equals(ActionTypeDestroyer.USER)) {
+        if (tempDest instanceof UserActionTypeDestroyer) {
+          return true;
+        }
+      }
+      else if (destroyerType.equals(ActionTypeDestroyer.AUTO)) {
+        if (tempDest instanceof AutonomousActionTypeDestroyer) {
+          return true;
+        }
+      }
+      else if (destroyerType.equals(ActionTypeDestroyer.RANDOM)) {
+        if (tempDest instanceof RandomActionTypeDestroyer) {
+          return true;
+        }
+      }
+      else if (destroyerType.equals(ActionTypeDestroyer.TIMED)) {
+        if (tempDest instanceof TimedActionTypeDestroyer) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  
   public boolean hasTriggerOfType(String triggerType) {
     for (int i = 0; i < triggers.size(); i++) {
       ActionTypeTrigger tempTrig = (ActionTypeTrigger)triggers.elementAt(i);

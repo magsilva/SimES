@@ -73,11 +73,13 @@ public class ParticipantSelectionDialogsDriverGenerator implements
       writer.write(NEWLINE);
       writer.write("private RuleExecutor ruleExec;");
       writer.write(NEWLINE);
+      writer.write("private DestroyerChecker destChecker;");
+      writer.write(NEWLINE);
       writer.write("private String menuText;");
       writer.write(NEWLINE);
       // constructor:
       writer
-          .write("public ParticipantSelectionDialogsDriver(JFrame gui, Vector pNames, Vector parts, simse.adts.actions.Action act, State s, RuleExecutor re, Employee emp, String mText)");
+          .write("public ParticipantSelectionDialogsDriver(JFrame gui, Vector pNames, Vector parts, simse.adts.actions.Action act, State s, RuleExecutor re, DestroyerChecker dc, Employee emp, String mText)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -92,6 +94,8 @@ public class ParticipantSelectionDialogsDriverGenerator implements
       writer.write("selectedEmp = emp;");
       writer.write(NEWLINE);
       writer.write("ruleExec = re;");
+      writer.write(NEWLINE);
+      writer.write("destChecker = dc;");
       writer.write(NEWLINE);
       writer.write("menuText = mText;");
       writer.write(NEWLINE);
@@ -372,6 +376,8 @@ public class ParticipantSelectionDialogsDriverGenerator implements
               + tRule.getName() + "\", action);");
           writer.write(NEWLINE);
         }
+        writer.write("destChecker.update(false, gui);");
+        writer.write(NEWLINE);
 
         // game-ending:
         if (tempAct.hasGameEndingTrigger()) {
