@@ -3,8 +3,8 @@ false
 <endAllowHireFire>
 <beginModelOptions>
 false
-C:\SimSE2-0\Models\OverallModel\icons
-C:\SimSE2-0\Models\InspectionModel\GeneratedCode
+C:\Users\Emily\Documents\Work\SimSE\models\waterfall\icons
+C:\Users\Emily\Documents\workspace\inspectionGame
 <endModelOptions>
 <beginDefinedObjectTypes>
 <beginObjectType>
@@ -6521,16 +6521,28 @@ Generic Project
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Calvin
-true
-true
-12
-3
-
 - Employee - SoftwareEngineer - Ping
 true
 true
 10
+7
+
+- Employee - SoftwareEngineer - Chris V.
+true
+true
+10
+1
+
+- Employee - SoftwareEngineer - Emily
+true
+true
+12
+5
+
+- Employee - SoftwareEngineer - Anita
+true
+true
+6
 7
 
 - Employee - SoftwareEngineer - Alex
@@ -6539,17 +6551,23 @@ true
 4
 7
 
-- Employee - SoftwareEngineer - Anita
+- Employee - SoftwareEngineer - Paul
 true
 true
-6
+2
+3
+
+- Employee - SoftwareEngineer - David
+true
+true
+8
 7
 
-- Employee - SoftwareEngineer - Scott
+- Employee - SoftwareEngineer - Calvin
 true
 true
-4
-1
+12
+3
 
 - Employee - SoftwareEngineer - Andre
 true
@@ -6563,34 +6581,16 @@ true
 2
 5
 
-- Employee - SoftwareEngineer - Paul
+- Employee - SoftwareEngineer - Scott
 true
 true
-2
-3
+4
+1
 
 - Employee - SoftwareEngineer - Beverly
 true
 true
 8
-1
-
-- Employee - SoftwareEngineer - Emily
-true
-true
-12
-5
-
-- Employee - SoftwareEngineer - David
-true
-true
-8
-7
-
-- Employee - SoftwareEngineer - Chris V.
-true
-true
-10
 1
 
 <endSOPUsers>
