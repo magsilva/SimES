@@ -3,7 +3,7 @@ false
 <endAllowHireFire>
 <beginModelOptions>
 true
-C:\Users\Emily\Documents\Work\SimSE\models\waterfall\icons
+C:\Users\Emily\Documents\workspace\res\models\waterfall\icons
 C:\Users\Emily\Documents\workspace\incrementalGame
 <endModelOptions>
 <beginDefinedObjectTypes>
@@ -16898,11 +16898,11 @@ emily.gif
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Lola
+- Employee - SoftwareEngineer - Amy
 true
 true
-1
-6
+10
+3
 
 - Employee - SoftwareEngineer - Bob
 true
@@ -16910,17 +16910,17 @@ true
 12
 2
 
+- Employee - SoftwareEngineer - Lola
+true
+true
+1
+6
+
 - Employee - SoftwareEngineer - Karl
 true
 true
 7
 2
-
-- Employee - SoftwareEngineer - Amy
-true
-true
-10
-3
 
 <endSOPUsers>
 401
