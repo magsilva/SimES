@@ -51,7 +51,8 @@ public class GUIGenerator implements CodeGeneratorConstants {
     imageLoaderGen = new ImageLoaderGenerator(
         options.getCodeGenerationDestinationDirectory());
     tabPanelGen = new TabPanelGenerator(objTypes, allObjsToImages, 
-        options.getCodeGenerationDestinationDirectory());
+        options.getCodeGenerationDestinationDirectory(), 
+        options.getIconDirectory());
     clockPanelGen = new ClockPanelGenerator(
         options.getCodeGenerationDestinationDirectory());
     logoPanelGen = new LogoPanelGenerator(

@@ -1,5 +1,4 @@
 /*
- * This class is responsible for generating all of the code for the attribute
  * panel in the GUI
  */
 
@@ -452,12 +451,14 @@ public class AttributePanelGenerator implements CodeGeneratorConstants {
                 }
                 writer.write("attributes.add(\"<html><font size=2>"
                     + numAtt.getName() + ": \" + numFormat.format(p.get"
-                    + numAtt.getName() + "()) + \"</font></html>\");");
+                    + getUpperCaseLeading(numAtt.getName()) + 
+                    "()) + \"</font></html>\");");
                 writer.write(NEWLINE);
               } else // non-double att -- no formatting required
               {
                 writer.write("attributes.add(\"<html><font size=2>"
-                    + a.getName() + ": \" + p.get" + a.getName()
+                    + a.getName() + ": \" + p.get" + 
+                    getUpperCaseLeading(a.getName())
                     + "() + \"</font></html>\");");
                 writer.write(NEWLINE);
               }

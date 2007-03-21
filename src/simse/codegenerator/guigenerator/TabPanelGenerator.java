@@ -15,14 +15,17 @@ import javax.swing.*;
 
 public class TabPanelGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
+  private File iconDir;
   private DefinedObjectTypes objTypes; // holds all of the defined object types
                                        // from an sso file
   private Hashtable objsToImages; // maps SimSEObjects (keys) to pathname
                                   // (String) of image file (values)
 
-  public TabPanelGenerator(DefinedObjectTypes dots, Hashtable oToI, File dir) {
+  public TabPanelGenerator(DefinedObjectTypes dots, Hashtable oToI, File dir,
+  		File iconDir) {
     objTypes = dots;
     directory = dir;
+    this.iconDir = iconDir;
     objsToImages = oToI;
   }
 
@@ -1232,10 +1235,11 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
               writer.write(NEWLINE);
               writer.write(OPEN_BRACK);
               writer.write(NEWLINE);
-              if (((objsToImages.get(obj)) != null)
-                  && (((String) objsToImages.get(obj)).length() > 0)) {
-                String imagePath = (iconsDirectory + ((String) objsToImages
-                    .get(obj)));
+              String imgFilename = (String) objsToImages.get(obj);
+              if (((imgFilename) != null)
+                  && ((imgFilename).length() > 0) 
+                  && ((new File(iconDir, imgFilename)).exists())) {
+                String imagePath = (iconsDirectory + imgFilename);
                 writer.write("url = \"" + imagePath + "\";");
                 writer.write(NEWLINE);
               }

@@ -352,7 +352,7 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
 	        if (a.getType() == AttributeTypes.STRING) {
 	          writer.write("temp.add(((" + getUpperCaseLeading(type.getName())
 	              + ")" + type.getName().toLowerCase() + "s.elementAt(i)).get"
-	              + a.getName() + "());");
+	              + getUpperCaseLeading(a.getName()) + "());");
 	        } else if (a.getType() == AttributeTypes.BOOLEAN) {
 	          writer.write("temp.add(new Boolean((("
 	              + getUpperCaseLeading(type.getName()) + ")"
