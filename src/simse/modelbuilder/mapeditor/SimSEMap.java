@@ -51,7 +51,7 @@ public class SimSEMap extends JPanel implements MouseListener, ActionListener {
   }
 
   public Vector loadFile(File inputFile) // loads the map from the
-  																			 // input file (.mdl) and
+  										 // input file (.mdl) and
                                          // returns a Vector of
                                          // warning message Strings
   {
@@ -65,7 +65,7 @@ public class SimSEMap extends JPanel implements MouseListener, ActionListener {
         warnings.add("Cannot find icon directory " + 
             iconDir.getAbsolutePath());
       }
-      else {
+      //else {
 		    // load the startstate objects
 		    Enumeration ssObj = startStateObjsToImages.keys();
 		    Enumeration ssImg = startStateObjsToImages.elements();
@@ -121,7 +121,7 @@ public class SimSEMap extends JPanel implements MouseListener, ActionListener {
 		        sopUsers.add(tmpUser);
 		      }
 		    }
-      }
+      //}
       
       // read in the map:
 	    try {

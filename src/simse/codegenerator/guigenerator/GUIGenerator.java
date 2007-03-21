@@ -78,32 +78,46 @@ public class GUIGenerator implements CodeGeneratorConstants {
         options.getCodeGenerationDestinationDirectory());
   }
 
-  public void generate() // causes all of this component's sub-components to
-                         // generate code
+  public boolean generate() // causes all of this component's sub-components to
+                         		// generate code; returns true if no errors, false 
+  													// otherwise
   {
-    copyDir(options.getIconDirectory().getPath(),
-        (options.getCodeGenerationDestinationDirectory().getPath() + 
-            "\\simse\\gui\\" + (new File(options.getIconDirectory().
-                getPath())).getName()));
-
-    ImageLoader.copyImagesToDir(options.getCodeGenerationDestinationDirectory()
-        .getPath() + "\\simse\\gui\\");
-
-    imageLoaderGen.generate();
-    clockPanelGen.generate();
-    tabPanelGen.generate();
-    logoPanelGen.generate();
-    attPanelGen.generate();
-    actPanelGen.generate();
-    popupListGen.generate();
-    dispEmpGen.generate();
-    mapDataGen.generate();
-    ssmGen.generate();
-    worldGen.generate();
-    glanceFramesGen.generate();
-    glanceTblModGen.generate();
-    aboutDialogGen.generate();
-    generateMainGUI();
+	  if (!options.getIconDirectory().exists() || 
+			  !options.getIconDirectory().isDirectory()) { // icon dir doesn't exist
+      Vector warnings = new Vector();
+	  	warnings.add(0, "ERROR! Incomplete simulation generated!!");
+	  	warnings.add("Cannot find icon directory " + 
+	  			options.getIconDirectory().getAbsolutePath());
+      WarningListDialog wld = new WarningListDialog(warnings,
+          "Code Generation Errors");
+      return false;
+	  }
+	  else {
+	    copyDir(options.getIconDirectory().getPath(),
+	        (options.getCodeGenerationDestinationDirectory().getPath() + 
+	            "\\simse\\gui\\" + (new File(options.getIconDirectory().
+	                getPath())).getName()));
+	
+	    ImageLoader.copyImagesToDir(options.getCodeGenerationDestinationDirectory()
+	        .getPath() + "\\simse\\gui\\");
+	
+	    imageLoaderGen.generate();
+	    clockPanelGen.generate();
+	    tabPanelGen.generate();
+	    logoPanelGen.generate();
+	    attPanelGen.generate();
+	    actPanelGen.generate();
+	    popupListGen.generate();
+	    dispEmpGen.generate();
+	    mapDataGen.generate();
+	    ssmGen.generate();
+	    worldGen.generate();
+	    glanceFramesGen.generate();
+	    glanceTblModGen.generate();
+	    aboutDialogGen.generate();
+	    generateMainGUI();
+	    return true;
+	  }
   }
 
   private void generateMainGUI() // generates the SimSEGUI class
