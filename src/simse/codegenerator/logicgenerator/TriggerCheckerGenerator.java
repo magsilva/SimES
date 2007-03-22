@@ -334,7 +334,17 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
               + getUpperCaseLeading(SimSEObjectTypeTypes.getText(part
                   .getSimSEObjectTypeType()))
               + ")"
-              + part.getName().toLowerCase() + "s" + counter + ".remove(0);");
+              + part.getName().toLowerCase() + "s" + counter);
+          if ((part.getSimSEObjectTypeType() == SimSEObjectTypeTypes.ARTIFACT)
+          		|| (part.getSimSEObjectTypeType() == 
+          			SimSEObjectTypeTypes.EMPLOYEE)) { // can't be in more than one 
+          																				// action of the same type 
+          																				// at a time
+          	writer.write(".remove(0);");
+          }
+          else {
+          	writer.write(".elementAt(0);");
+          }
           writer.write(NEWLINE);
           writer.write("a.add" + part.getName() + "(a" + k + ");");
           writer.write(NEWLINE);
