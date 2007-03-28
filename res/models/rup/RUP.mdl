@@ -647,6 +647,17 @@ TestToolPurchased
 1
 <endAttribute>
 <beginAttribute>
+CMToolPurchased
+4
+0
+0
+0
+0.0
+1.0
+boundless
+boundless
+<endAttribute>
+<beginAttribute>
 RandomEventOneOccurred
 2
 0
@@ -792,6 +803,44 @@ PurchasedNum
 0
 0
 1
+<endAttribute>
+<endObjectType>
+<beginObjectType>
+3
+ConfigurationManagementTool
+<beginAttribute>
+Name
+1
+1
+1
+1
+<endAttribute>
+<beginAttribute>
+Cost
+3
+1
+0
+1
+0
+boundless
+<endAttribute>
+<beginAttribute>
+Purchased
+2
+1
+0
+1
+<endAttribute>
+<beginAttribute>
+PurchasedNum
+4
+0
+0
+0
+0.0
+1.0
+boundless
+boundless
 <endAttribute>
 <endObjectType>
 <beginObjectType>
@@ -1967,6 +2016,10 @@ false
 WastedMoney
 0.0
 <endInstantiatedAttribute>
+<beginInstantiatedAttribute>
+CMToolPurchased
+0.0
+<endInstantiatedAttribute>
 <endObject>
 <beginObject>
 3
@@ -2046,6 +2099,26 @@ PurchasedNum
 <beginInstantiatedAttribute>
 Cost
 3650
+<endInstantiatedAttribute>
+<endObject>
+<beginObject>
+3
+ConfigurationManagementTool
+<beginInstantiatedAttribute>
+Name
+ClearQuest
+<endInstantiatedAttribute>
+<beginInstantiatedAttribute>
+Cost
+4535
+<endInstantiatedAttribute>
+<beginInstantiatedAttribute>
+Purchased
+false
+<endInstantiatedAttribute>
+<beginInstantiatedAttribute>
+PurchasedNum
+0.0
 <endInstantiatedAttribute>
 <endObject>
 <beginObject>
@@ -2417,6 +2490,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -2768,6 +2847,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -3166,6 +3251,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -3516,6 +3607,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -3927,6 +4024,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -4301,6 +4404,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -4735,6 +4844,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -5104,6 +5219,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -5519,6 +5640,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -5871,6 +5998,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -6233,6 +6366,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -6590,6 +6729,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -6941,6 +7086,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -7352,6 +7503,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -7726,6 +7883,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -8110,6 +8273,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -8484,6 +8653,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -8868,6 +9043,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -9242,6 +9423,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -9677,6 +9864,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -10045,6 +10238,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -10473,6 +10672,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -10842,6 +11047,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -11270,6 +11481,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -11639,6 +11856,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -12055,6 +12278,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -12405,6 +12634,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -12803,6 +13038,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -13153,6 +13394,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -13564,6 +13811,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -13932,6 +14185,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -14348,6 +14607,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -14698,6 +14963,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -15109,6 +15380,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -15477,6 +15754,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -15906,6 +16189,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -16274,6 +16563,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -16652,6 +16947,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -17020,6 +17321,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -17398,6 +17705,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -17766,6 +18079,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -18144,6 +18463,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -18512,6 +18837,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -18941,6 +19272,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -19309,6 +19646,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -19737,6 +20080,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -20106,6 +20455,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -20534,6 +20889,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -20903,6 +21264,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -21319,6 +21686,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -21669,6 +22042,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -22080,6 +22459,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -22466,6 +22851,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -22913,6 +23304,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -23299,6 +23696,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -23759,6 +24162,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -24181,6 +24590,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -24650,6 +25065,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -25000,6 +25421,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -25397,6 +25824,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -25747,6 +26180,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -26158,6 +26597,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -26526,6 +26971,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -26955,6 +27406,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -27323,6 +27780,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -27701,6 +28164,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -28069,6 +28538,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -28447,6 +28922,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -28815,6 +29296,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -29193,6 +29680,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -29561,6 +30054,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -29939,6 +30438,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -30307,6 +30812,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -30685,6 +31196,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -31053,6 +31570,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -31431,6 +31954,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -31799,6 +32328,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -32177,6 +32712,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -32550,6 +33091,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -32918,6 +33465,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -33360,6 +33913,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -33746,6 +34305,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -34192,6 +34757,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -34561,6 +35132,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -34989,6 +35566,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -35075,6 +35658,7 @@ RequirementsTool
 DesignTool
 ImplementationTool
 TestingTool
+ConfigurationManagementTool
 <endSSObjTypeNames>
 <endActionTypeParticipant>
 <beginActionTypeParticipant>
@@ -35328,6 +35912,33 @@ PurchasedNum
 false
 <endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
+<beginActionTypeParticipantConstraint>
+ConfigurationManagementTool
+<beginActionTypeParticipantAttributeConstraint>
+Name
+=
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+Cost
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+Purchased
+=
+false
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+PurchasedNum
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
 Proj
@@ -35521,6 +36132,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -35795,6 +36412,33 @@ PurchasedNum
 false
 <endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
+<beginActionTypeParticipantConstraint>
+ConfigurationManagementTool
+<beginActionTypeParticipantAttributeConstraint>
+Name
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+Cost
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+Purchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+PurchasedNum
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
 Proj
@@ -35988,6 +36632,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -36321,6 +36971,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -36587,6 +37243,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -36898,6 +37560,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -37164,6 +37832,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -37572,6 +38246,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -37958,6 +38638,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -38402,6 +39088,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -38788,6 +39480,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -39232,6 +39930,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -39618,6 +40322,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -40062,6 +40772,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -40448,6 +41164,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -40892,6 +41614,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -41278,6 +42006,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -41722,6 +42456,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -42108,6 +42848,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -42552,6 +43298,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -42978,6 +43730,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -43382,6 +44140,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -43769,6 +44533,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -44201,6 +44971,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 false
@@ -44552,6 +45328,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -44961,6 +45743,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -45348,6 +46136,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -45793,6 +46587,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -46180,6 +46980,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -46624,6 +47430,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -47010,6 +47822,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -47454,6 +48272,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -47893,6 +48717,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -48279,6 +49109,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -48723,6 +49559,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -49109,6 +49951,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -49553,6 +50401,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -49939,6 +50793,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -50383,6 +51243,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -50769,6 +51635,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -51213,6 +52085,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -51599,6 +52477,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -52043,6 +52927,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -52469,6 +53359,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -52747,6 +53643,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -53214,6 +54116,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -53480,6 +54388,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -53791,6 +54705,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 =
 <>
@@ -54057,6 +54977,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TestToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
 <
 <>
 false
@@ -54452,6 +55378,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -54807,6 +55739,12 @@ TestToolPurchased
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
+CMToolPurchased
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
 <
 <>
@@ -54942,6 +55880,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -55194,6 +56136,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -55444,6 +56390,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -55696,6 +56646,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -55947,6 +56901,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -56112,7 +57070,7 @@ Name
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentComplete
-thisProjectPlan-Artifact:PercentComplete + (((allActive-Emp-SoftwareEngineer-Employee:ProjectManagementProductivity * .6) + (allActive-Emp-SoftwareEngineer-Employee:RequirementsProductivity * .4)) * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * (1 + allActive-Proj-SoftwareProject-Project:ReqToolPurchased) * .5) 
+thisProjectPlan-Artifact:PercentComplete + (((allActive-Emp-SoftwareEngineer-Employee:ProjectManagementProductivity * .6) + (allActive-Emp-SoftwareEngineer-Employee:RequirementsProductivity * .4)) * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * ((1 + allActive-Proj-SoftwareProject-Project:ReqToolPurchased) * .5) * (1 + allActive-Proj-SoftwareProject-Project:CMToolPurchased)) 
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
 <endParticipantRuleEffect>
@@ -56323,6 +57281,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -56595,6 +57557,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -56865,6 +57831,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -57137,6 +58107,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -57407,6 +58381,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -57679,6 +58657,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -57949,6 +58931,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -58221,6 +59207,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -58491,6 +59481,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -58763,6 +59757,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -59029,6 +60027,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -59297,6 +60299,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -59564,6 +60570,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -59814,6 +60824,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -60086,6 +61100,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -60356,6 +61374,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -60628,6 +61650,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -60899,6 +61925,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -61060,7 +62090,7 @@ Phase
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentComplete
-thisPhasePlan-Artifact:PercentComplete + (allActive-Emp-SoftwareEngineer-Employee:ProjectManagementProductivity * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * 2)
+thisPhasePlan-Artifact:PercentComplete + (allActive-Emp-SoftwareEngineer-Employee:ProjectManagementProductivity * ((1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * 2) * (1 + allActive-Proj-SoftwareProject-Project:CMToolPurchased)) 
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
 <endParticipantRuleEffect>
@@ -61165,6 +62195,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -61433,6 +62467,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -61699,6 +62737,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -61967,6 +63009,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -62233,6 +63279,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -62501,6 +63551,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -62751,6 +63805,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -63003,6 +64061,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -63253,6 +64315,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -63505,6 +64571,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -63756,6 +64826,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -64006,6 +65080,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -64460,6 +65538,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -64605,7 +65687,7 @@ ElaborationPhaseOver
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ElicitingRequirementsPercentComplete
-thisSoftwareProject-Project:ElicitingRequirementsPercentComplete + (allActive-Emp-SoftwareEngineer-Employee:RequirementsProductivity * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * (1 + thisSoftwareProject-Project:ReqToolPurchased) * .3) 
+thisSoftwareProject-Project:ElicitingRequirementsPercentComplete + (allActive-Emp-SoftwareEngineer-Employee:RequirementsProductivity * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * ((1 + thisSoftwareProject-Project:ReqToolPurchased) * .3) * (1 + allActive-Proj-SoftwareProject-Project:CMToolPurchased)) 
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
 <endParticipantRuleEffect>
@@ -64710,6 +65792,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -64962,6 +66048,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -65213,6 +66303,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -65463,6 +66557,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -65731,6 +66829,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -65892,7 +66994,7 @@ Name
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentComplete
-thisArchitecturalPrototype-Artifact:PercentComplete + (allActive-Emp-SoftwareEngineer-Employee:ArchitectureProductivity * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * (allActive-Proj-SoftwareProject-Project:ElicitingRequirementsPercentComplete / 100) * (1 + allActive-Proj-SoftwareProject-Project:DesignToolPurchased) * .5) 
+thisArchitecturalPrototype-Artifact:PercentComplete + (allActive-Emp-SoftwareEngineer-Employee:ArchitectureProductivity * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * (allActive-Proj-SoftwareProject-Project:ElicitingRequirementsPercentComplete / 100) * ((1 + allActive-Proj-SoftwareProject-Project:DesignToolPurchased) * .5) * (1 + allActive-Proj-SoftwareProject-Project:CMToolPurchased)) 
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
 <endParticipantRuleEffect>
@@ -65997,6 +67099,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -66265,6 +67371,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -66531,6 +67641,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -66799,6 +67913,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -67049,6 +68167,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -67301,6 +68423,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -67551,6 +68677,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -67803,6 +68933,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -67948,7 +69082,7 @@ ElaborationPhaseOver
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ElicitingRequirementsPercentComplete
-thisSoftwareProject-Project:ElicitingRequirementsPercentComplete + (allActive-Emp-SoftwareEngineer-Employee:RequirementsProductivity * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * (1 + thisSoftwareProject-Project:ReqToolPurchased) * .3) 
+thisSoftwareProject-Project:ElicitingRequirementsPercentComplete + (allActive-Emp-SoftwareEngineer-Employee:RequirementsProductivity * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * ((1 + thisSoftwareProject-Project:ReqToolPurchased) * .3) * (1 + allActive-Proj-SoftwareProject-Project:CMToolPurchased)) 
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
 <endParticipantRuleEffect>
@@ -68256,6 +69390,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -68506,6 +69644,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -68758,6 +69900,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -69008,6 +70154,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -69276,6 +70426,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -69437,7 +70591,7 @@ Name
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentComplete
-thisArchitecturalPrototype-Artifact:PercentComplete + (allActive-Emp-SoftwareEngineer-Employee:ArchitectureProductivity * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * (allActive-Proj-SoftwareProject-Project:ElicitingRequirementsPercentComplete / 100 / 10) * (1 + allActive-Proj-SoftwareProject-Project:DesignToolPurchased) * .5) 
+thisArchitecturalPrototype-Artifact:PercentComplete + (allActive-Emp-SoftwareEngineer-Employee:ArchitectureProductivity * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * (allActive-Proj-SoftwareProject-Project:ElicitingRequirementsPercentComplete / 100 / 10) * ((1 + allActive-Proj-SoftwareProject-Project:DesignToolPurchased) * .5) * (1 + allActive-Proj-SoftwareProject-Project:CMToolPurchased)) 
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
 <endParticipantRuleEffect>
@@ -69542,6 +70696,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -69810,6 +70968,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -70076,6 +71238,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -70344,6 +71510,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -70610,6 +71780,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -70878,6 +72052,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -71144,6 +72322,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -71412,6 +72594,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -71573,7 +72759,7 @@ Phase
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentComplete
-thisPhasePlan-Artifact:PercentComplete + (allActive-Emp-SoftwareEngineer-Employee:ProjectManagementProductivity * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * 2)
+thisPhasePlan-Artifact:PercentComplete + (allActive-Emp-SoftwareEngineer-Employee:ProjectManagementProductivity * ((1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * 2) * (1 + allActive-Proj-SoftwareProject-Project:CMToolPurchased)) 
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
 <endParticipantRuleEffect>
@@ -71678,6 +72864,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -71946,6 +73136,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -72212,6 +73406,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -72480,6 +73678,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -72746,6 +73948,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -73014,6 +74220,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -73264,6 +74474,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -73516,6 +74730,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -73767,6 +74985,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -73936,7 +75158,7 @@ PriorityRiskLevel
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentImplemented
-thisUseCase-Artifact:PercentImplemented + (allActive-Emp-SoftwareEngineer-Employee:DesignAndDevelopmentProductivity * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * (1 + allActive-Proj-SoftwareProject-Project:DesignToolPurchased + allActive-Proj-SoftwareProject-Project:ImplToolPurchased)) 
+thisUseCase-Artifact:PercentImplemented + (allActive-Emp-SoftwareEngineer-Employee:DesignAndDevelopmentProductivity * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * ((1 + allActive-Proj-SoftwareProject-Project:DesignToolPurchased + allActive-Proj-SoftwareProject-Project:ImplToolPurchased))  * (1 + allActive-Proj-SoftwareProject-Project:CMToolPurchased)) 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentIntegrated
@@ -74045,6 +75267,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -74325,6 +75551,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -74603,6 +75833,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -74883,6 +76117,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -75162,6 +76400,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -75335,7 +76577,7 @@ PercentImplemented
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentIntegrated
-thisUseCase-Artifact:PercentIntegrated + (allActive-Emp-SoftwareEngineer-Employee:DesignAndDevelopmentProductivity * 2 * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * (1 + allActive-Proj-SoftwareProject-Project:ImplToolPurchased)) 
+thisUseCase-Artifact:PercentIntegrated + (allActive-Emp-SoftwareEngineer-Employee:DesignAndDevelopmentProductivity * 2 * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * ((1 + allActive-Proj-SoftwareProject-Project:ImplToolPurchased)) * (1 + allActive-Proj-SoftwareProject-Project:CMToolPurchased)) 
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
 <endParticipantRuleEffect>
@@ -75440,6 +76682,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -75720,6 +76966,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -75998,6 +77248,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -76278,6 +77532,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -76557,6 +77815,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -76730,7 +77992,7 @@ PercentIntegrated
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentTested
-thisUseCase-Artifact:PercentTested + (((allActive-Emp-SoftwareEngineer-Employee:TestProductivity * .8) + (allActive-Emp-SoftwareEngineer-Employee:DesignAndDevelopmentProductivity * .2)) * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * (1 + all-Proj-SoftwareProject-Project:TestToolPurchased) * 2) 
+thisUseCase-Artifact:PercentTested + (((allActive-Emp-SoftwareEngineer-Employee:TestProductivity * .8) + (allActive-Emp-SoftwareEngineer-Employee:DesignAndDevelopmentProductivity * .2)) * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * ((1 + all-Proj-SoftwareProject-Project:TestToolPurchased) * 2) * (1 + allActive-Proj-SoftwareProject-Project:CMToolPurchased)) 
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
 <endParticipantRuleEffect>
@@ -76863,6 +78125,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -77171,6 +78437,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -77477,6 +78747,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -77785,6 +79059,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -78091,6 +79369,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -78399,6 +79681,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -78706,6 +79992,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -78956,6 +80246,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -79208,6 +80502,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -79458,6 +80756,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -79710,6 +81012,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -79960,6 +81266,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -80212,6 +81522,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -80462,6 +81776,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -80714,6 +82032,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -80964,6 +82286,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -81216,6 +82542,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -81377,7 +82707,7 @@ Name
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentComplete
-thisUserManuals-Artifact:PercentComplete + allActive-Emp-SoftwareEngineer-Employee:DesignAndDevelopmentProductivity 
+thisUserManuals-Artifact:PercentComplete + (allActive-Emp-SoftwareEngineer-Employee:DesignAndDevelopmentProductivity * (1 + allActive-Proj-SoftwareProject-Project:CMToolPurchased)) 
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
 <endParticipantRuleEffect>
@@ -81482,6 +82812,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -81750,6 +83084,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -82016,6 +83354,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -82284,6 +83626,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -82550,6 +83896,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -82818,6 +84168,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -83084,6 +84438,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -83352,6 +84710,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -83618,6 +84980,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -83886,6 +85252,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -84047,7 +85417,7 @@ Phase
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentComplete
-thisPhasePlan-Artifact:PercentComplete + (allActive-Emp-SoftwareEngineer-Employee:ProjectManagementProductivity * (1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * 2)
+thisPhasePlan-Artifact:PercentComplete + (allActive-Emp-SoftwareEngineer-Employee:ProjectManagementProductivity * ((1 - (.01 * (num-Emp * (num-Emp - 1) / 2))) * 2) * (1 + allActive-Proj-SoftwareProject-Project:CMToolPurchased)) 
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
 <endParticipantRuleEffect>
@@ -84168,6 +85538,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -84452,6 +85826,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -84734,6 +86112,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -85018,6 +86400,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -85284,6 +86670,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -85631,6 +87021,27 @@ Purchased
 true
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
+<beginParticipantTypeRuleEffect>
+3
+ConfigurationManagementTool
+None
+<beginParticipantAttributeRuleEffect>
+Name
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Cost
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Purchased
+true
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+PurchasedNum
+.15 
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
 <endParticipantRuleEffect>
 <beginParticipantRuleEffect>
 Proj
@@ -85638,6 +87049,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -85969,6 +87384,27 @@ PurchasedNum
 
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
+<beginParticipantTypeRuleEffect>
+3
+ConfigurationManagementTool
+None
+<beginParticipantAttributeRuleEffect>
+Name
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Cost
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Purchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+PurchasedNum
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
 <endParticipantRuleEffect>
 <beginParticipantRuleEffect>
 Proj
@@ -85976,6 +87412,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+thisSoftwareProject-Project:CMToolPurchased + allActive-ToolToBuy-ConfigurationManagementTool-Tool:PurchasedNum 
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -86307,6 +87747,27 @@ Cost
 
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
+<beginParticipantTypeRuleEffect>
+3
+ConfigurationManagementTool
+None
+<beginParticipantAttributeRuleEffect>
+Name
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Cost
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Purchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+PurchasedNum
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
 <endParticipantRuleEffect>
 <beginParticipantRuleEffect>
 Proj
@@ -86314,6 +87775,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -86348,7 +87813,7 @@ AllottedTime
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 MoneySpent
-thisSoftwareProject-Project:MoneySpent + allActive-ToolToBuy-RequirementsTool-Tool:Cost + allActive-ToolToBuy-DesignTool-Tool:Cost + allActive-ToolToBuy-ImplementationTool-Tool:Cost + allActive-ToolToBuy-TestingTool-Tool:Cost 
+thisSoftwareProject-Project:MoneySpent + allActive-ToolToBuy-RequirementsTool-Tool:Cost + allActive-ToolToBuy-DesignTool-Tool:Cost + allActive-ToolToBuy-ImplementationTool-Tool:Cost + allActive-ToolToBuy-TestingTool-Tool:Cost + allActive-ToolToBuy-ConfigurationManagementTool-Tool:Cost 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 TimeUsed
@@ -86509,6 +87974,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -86705,6 +88174,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -86900,6 +88373,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -87094,6 +88571,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -87345,6 +88826,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -87625,6 +89110,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -87903,6 +89392,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -88183,6 +89676,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -88461,6 +89958,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -88741,6 +90242,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -89019,6 +90524,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -89299,6 +90808,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -89577,6 +91090,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -89857,6 +91374,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -90135,6 +91656,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -90415,6 +91940,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -90693,6 +92222,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -90973,6 +92506,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -91251,6 +92788,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -91531,6 +93072,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -91809,6 +93354,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -92089,6 +93638,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -92367,6 +93920,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -92647,6 +94204,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -92925,6 +94486,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -93205,6 +94770,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -93483,6 +95052,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -93763,6 +95336,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -94041,6 +95618,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -94321,6 +95902,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -94599,6 +96184,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -94879,6 +96468,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -95157,6 +96750,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -95437,6 +97034,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -95715,6 +97316,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -95995,6 +97600,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -96273,6 +97882,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -96553,6 +98166,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -96831,6 +98448,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -97111,6 +98732,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -97389,6 +99014,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -97669,6 +99298,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -97948,6 +99581,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -98199,6 +99836,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -98449,6 +100090,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -98729,6 +100374,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -99007,6 +100656,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -99287,6 +100940,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -99565,6 +101222,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -99845,6 +101506,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -100123,6 +101788,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -100403,6 +102072,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -100681,6 +102354,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -100961,6 +102638,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -101239,6 +102920,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -101519,6 +103204,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -101797,6 +103486,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -102077,6 +103770,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -102355,6 +104052,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -102635,6 +104336,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -102913,6 +104618,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -103193,6 +104902,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -103471,6 +105184,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -103751,6 +105468,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -104029,6 +105750,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -104309,6 +106034,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -104587,6 +106316,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -104867,6 +106600,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -105145,6 +106882,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -105425,6 +107166,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -105703,6 +107448,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -105983,6 +107732,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -106261,6 +108014,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -106541,6 +108298,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -106819,6 +108580,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -107099,6 +108864,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -107377,6 +109146,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -107657,6 +109430,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -107935,6 +109712,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -108215,6 +109996,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -108493,6 +110278,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -108773,6 +110562,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -109051,6 +110844,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -109331,6 +111128,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Description
 
 <endParticipantAttributeRuleEffect>
@@ -109609,6 +111410,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -109889,6 +111694,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -110167,6 +111976,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -110447,6 +112260,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -110725,6 +112542,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -111005,6 +112826,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -111171,6 +112996,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -111450,6 +113279,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -111758,6 +113591,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -111952,6 +113789,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 WastedMoney
 
@@ -112148,6 +113989,10 @@ Proj
 SoftwareProject
 None
 <beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 WastedMoney
 
 <endParticipantAttributeRuleEffect>
@@ -112342,6 +114187,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -112593,6 +114442,10 @@ Proj
 4
 SoftwareProject
 None
+<beginParticipantAttributeRuleEffect>
+CMToolPurchased
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Description
 
@@ -112861,6 +114714,11 @@ TestingTool
 Rational Test Studio
 5.gif
 
+Tool
+ConfigurationManagementTool
+ClearQuest
+6.gif
+
 Customer
 TheCustomer
 Movie Corner
@@ -112969,12 +114827,6 @@ use_case_blue.GIF
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Erica
-true
-true
-9
-0
-
 - Employee - SoftwareEngineer - Amalia
 true
 true
@@ -112986,6 +114838,24 @@ true
 true
 1
 7
+
+- Employee - SoftwareEngineer - Anne
+true
+true
+1
+2
+
+- Employee - SoftwareEngineer - Paxton
+true
+true
+14
+3
+
+- Employee - SoftwareEngineer - Erica
+true
+true
+9
+0
 
 - Employee - SoftwareEngineer - Dwight
 true
@@ -112999,35 +114869,23 @@ true
 9
 7
 
-- Employee - SoftwareEngineer - Paxton
-true
-true
-14
-3
-
 - Employee - SoftwareEngineer - Corey
 true
 true
 6
 7
 
-- Employee - SoftwareEngineer - Elizabeth
-true
-true
-6
-3
-
-- Employee - SoftwareEngineer - Anne
-true
-true
-1
-2
-
 - Employee - SoftwareEngineer - Tai
 true
 true
 14
 8
+
+- Employee - SoftwareEngineer - Elizabeth
+true
+true
+6
+3
 
 <endSOPUsers>
 401
