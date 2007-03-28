@@ -24304,7 +24304,7 @@ Emp
 Employee
 true
 <beginActionTypeParticipantQuantity>
-exactly
+at least
 1
 <>
 <endActionTypeParticipantQuantity>
@@ -25051,7 +25051,7 @@ Emp
 Employee
 true
 <beginActionTypeParticipantQuantity>
-exactly
+at least
 1
 <>
 <endActionTypeParticipantQuantity>
@@ -25561,7 +25561,7 @@ Proj
 SoftwareProject
 <beginActionTypeParticipantAttributeConstraint>
 Description
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
@@ -25591,19 +25591,19 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 CurrentPhase
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 StaffingChosenThisPhase
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 IterationStarted
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
@@ -25615,13 +25615,13 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 OkToEndIteration
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 MetCustomerThisIteration
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
@@ -25657,13 +25657,13 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 InceptionPhaseOver
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ElaborationPhaseOver
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
@@ -25675,26 +25675,26 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ConstructionPhaseOver
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 FirstPrototypeSubmitted
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 SecondPrototypeSubmitted
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 StopPrototypeSubmission
-<
-<>
+=
+true
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
@@ -25711,7 +25711,7 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 FirstPrototypeAccepted
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
@@ -25723,7 +25723,7 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 SecondPrototypeAccepted
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
@@ -25753,25 +25753,25 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 RandomEventOneOccurred
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 RandomEventTwoOccurred
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 RandomEventThreeOccurred
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 RandomEventFourOccurred
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
@@ -112969,17 +112969,11 @@ use_case_blue.GIF
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Dwight
+- Employee - SoftwareEngineer - Amalia
 true
 true
-3
-1
-
-- Employee - SoftwareEngineer - Gretchen
-true
-true
-1
-7
+12
+2
 
 - Employee - SoftwareEngineer - Roger
 true
@@ -112987,29 +112981,17 @@ true
 9
 7
 
-- Employee - SoftwareEngineer - Corey
-true
-true
-6
-7
-
-- Employee - SoftwareEngineer - Paxton
-true
-true
-14
-3
-
 - Employee - SoftwareEngineer - Erica
 true
 true
 9
 0
 
-- Employee - SoftwareEngineer - Amalia
+- Employee - SoftwareEngineer - Corey
 true
 true
-12
-2
+6
+7
 
 - Employee - SoftwareEngineer - Tai
 true
@@ -113017,17 +112999,35 @@ true
 14
 8
 
-- Employee - SoftwareEngineer - Elizabeth
+- Employee - SoftwareEngineer - Dwight
 true
 true
-6
 3
+1
 
 - Employee - SoftwareEngineer - Anne
 true
 true
 1
 2
+
+- Employee - SoftwareEngineer - Paxton
+true
+true
+14
+3
+
+- Employee - SoftwareEngineer - Gretchen
+true
+true
+1
+7
+
+- Employee - SoftwareEngineer - Elizabeth
+true
+true
+6
+3
 
 <endSOPUsers>
 401
