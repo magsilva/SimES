@@ -86772,7 +86772,7 @@ OverTime
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Score
-(100 * (thisSoftwareProject-Project:NumUseCasesInCurrentSystem / 20)) - (4 * 100 * thisSoftwareProject-Project:OverTime / thisSoftwareProject-Project:AllottedTime) - (4 * 100 * thisSoftwareProject-Project:OverBudget / thisSoftwareProject-Project:Budget) + thisSoftwareProject-Project:ScoreModifier 
+(100 * (thisSoftwareProject-Project:NumUseCasesInCurrentSystem / 20)) - (100 * thisSoftwareProject-Project:OverTime / thisSoftwareProject-Project:AllottedTime) - (100 * thisSoftwareProject-Project:OverBudget / thisSoftwareProject-Project:Budget) + thisSoftwareProject-Project:ScoreModifier 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 InceptionPhaseOver
@@ -114827,24 +114827,6 @@ use_case_blue.GIF
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Amalia
-true
-true
-12
-2
-
-- Employee - SoftwareEngineer - Gretchen
-true
-true
-1
-7
-
-- Employee - SoftwareEngineer - Anne
-true
-true
-1
-2
-
 - Employee - SoftwareEngineer - Paxton
 true
 true
@@ -114857,17 +114839,29 @@ true
 9
 0
 
-- Employee - SoftwareEngineer - Dwight
+- Employee - SoftwareEngineer - Anne
 true
 true
-3
 1
+2
 
 - Employee - SoftwareEngineer - Roger
 true
 true
 9
 7
+
+- Employee - SoftwareEngineer - Gretchen
+true
+true
+1
+7
+
+- Employee - SoftwareEngineer - Amalia
+true
+true
+12
+2
 
 - Employee - SoftwareEngineer - Corey
 true
@@ -114886,6 +114880,12 @@ true
 true
 6
 3
+
+- Employee - SoftwareEngineer - Dwight
+true
+true
+3
+1
 
 <endSOPUsers>
 401
