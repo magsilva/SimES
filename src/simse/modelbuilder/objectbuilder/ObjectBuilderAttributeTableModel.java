@@ -223,24 +223,6 @@ public class ObjectBuilderAttributeTableModel extends AbstractTableModel {
         }
       }
       
-      // Initialize attribute min values:
-      temp = new Vector();
-      for (int i = 0; i < attributes.size(); i++) {
-        Attribute tempAttr = ((Attribute) attributes.elementAt(i));
-        if (tempAttr instanceof NonNumericalAttribute) {
-          temp.add("N/A"); // this field not applicable for non-numerical
-                           // attributes
-        } else // numerical attribute
-        {
-          if (((NumericalAttribute) tempAttr).isMinBoundless()) {
-            temp.add("Boundless");
-          } else {
-            temp.add(numFormat.format(((NumericalAttribute) tempAttr)
-                .getMinValue()));
-          }
-        }
-      }
-      
       if (data.size() < 8) // first-time initialization
       {
         data.add(temp);
