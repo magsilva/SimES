@@ -4,7 +4,7 @@ false
 <beginModelOptions>
 true
 C:\Users\Emily\Documents\workspace\res\models\waterfall\icons
-<>
+C:\Users\Emily\Documents\workspace\rapidPrototypingGame
 <endModelOptions>
 <beginDefinedObjectTypes>
 <beginObjectType>
@@ -21958,7 +21958,7 @@ ScheduleScore
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Score
-(.33 * thisTheProject-Project:ProductCompletenessScore) + (.34 * thisTheProject-Project:ProductCorrectnessScore) + (.33 * thisTheProject-Project:ScheduleScore) 
+100 + -(.5 * (100 - thisTheProject-Project:ProductCompletenessScore)) - (.2 * (100 - thisTheProject-Project:ProductCorrectnessScore)) - (.5 * (100 - thisTheProject-Project:ScheduleScore)) 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 NumRequirementsTotal
@@ -24719,6 +24719,18 @@ Richardson.gif
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
+- Employee - SoftwareEngineer - Anne Marie
+true
+true
+0
+1
+
+- Employee - SoftwareEngineer - Dean
+true
+true
+9
+7
+
 - Employee - SoftwareEngineer - Rowan
 true
 true
@@ -24736,18 +24748,6 @@ true
 true
 15
 8
-
-- Employee - SoftwareEngineer - Dean
-true
-true
-9
-7
-
-- Employee - SoftwareEngineer - Anne Marie
-true
-true
-0
-1
 
 <endSOPUsers>
 -3
