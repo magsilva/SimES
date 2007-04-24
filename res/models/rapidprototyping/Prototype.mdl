@@ -23648,7 +23648,7 @@ Name
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentErroneous
-(allActive-AssociatedRequirements-RequirementsDocument-Artifact:PercentErroneous) + ((((((1 - (allActive-AssociatedRequirements-RequirementsDocument-Artifact:NumRequirementsSpecified / (allActive-AssociatedRequirements-RequirementsDocument-Artifact:NumRequirementsSpecified + allActive-AssociatedRequirements-RequirementsDocument-Artifact:NumRequirementsNotSpecified))) * 100 * .45)) + ((100 - allActive-Prototype-Prototype-Artifact:PercentDiscoveredRequirementsPrototyped) * .025) + ((100 - allActive-Prototype-Prototype-Artifact:PercentEvaluated) * .45)))) + thisDesignDocument-Artifact:ExtraErrors 
+(allActive-AssociatedRequirements-RequirementsDocument-Artifact:PercentErroneous) + ((((((1 - (allActive-AssociatedRequirements-RequirementsDocument-Artifact:NumRequirementsSpecified / (allActive-AssociatedRequirements-RequirementsDocument-Artifact:NumRequirementsSpecified + allActive-AssociatedRequirements-RequirementsDocument-Artifact:NumRequirementsNotSpecified))) * 100 * .5)) + ((100 - allActive-Prototype-Prototype-Artifact:PercentDiscoveredRequirementsPrototyped) * .025) + ((100 - allActive-Prototype-Prototype-Artifact:PercentEvaluated) * .05)))) + thisDesignDocument-Artifact:ExtraErrors 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentComplete
@@ -25067,7 +25067,7 @@ PercentComplete
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentErroneous
-(((allActive-AssociatedRequirements-RequirementsDocument-Artifact:PercentErroneous + allActive-AssoociatedDesign-DesignDocument-Artifact:PercentErroneous))) + ((((1 - ((allActive-AssociatedRequirements-RequirementsDocument-Artifact:NumRequirementsSpecified / (allActive-AssociatedRequirements-RequirementsDocument-Artifact:NumRequirementsSpecified + allActive-AssociatedRequirements-RequirementsDocument-Artifact:NumRequirementsNotSpecified)))) * 100 * .31) + ((100 - allActive-Prototype-Prototype-Artifact:PercentDiscoveredRequirementsPrototyped) * .05) + ((100 - allActive-Prototype-Prototype-Artifact:PercentEvaluated) * .31) + ((100 - allActive-AssoociatedDesign-DesignDocument-Artifact:PercentComplete) * .31))) + allActive-ImplementationLang-LanguageTool-Tool:ImplementationErrorModifier + thisCode-Artifact:ExtraErrors 
+(((allActive-AssociatedRequirements-RequirementsDocument-Artifact:PercentErroneous + allActive-AssoociatedDesign-DesignDocument-Artifact:PercentErroneous))) + ((((1 - ((allActive-AssociatedRequirements-RequirementsDocument-Artifact:NumRequirementsSpecified / (allActive-AssociatedRequirements-RequirementsDocument-Artifact:NumRequirementsSpecified + allActive-AssociatedRequirements-RequirementsDocument-Artifact:NumRequirementsNotSpecified)))) * 100 * .31) + ((100 - allActive-Prototype-Prototype-Artifact:PercentDiscoveredRequirementsPrototyped) * .005) + ((100 - allActive-Prototype-Prototype-Artifact:PercentEvaluated) * .005) + ((100 - allActive-AssoociatedDesign-DesignDocument-Artifact:PercentComplete) * .31))) + allActive-ImplementationLang-LanguageTool-Tool:ImplementationErrorModifier + thisCode-Artifact:ExtraErrors 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 NumRequirementsImplemented
@@ -26037,7 +26037,7 @@ DeliverFinalProduct
 true
 true
 <beginRuleAnnotation>
-Calculates the score for the game, which is weighted equally between three measures: the completeness of the final product (how many requirements were implemented versus how many the customer wanted); the correctness of the final product; and how well the schedule was adhered to.
+Calculates the score for the game, which is weighted most heavily on the completeness of the final product (how many requirements were implemented versus how many the customer wanted); less heavily for how well the schedule was adhered to; and least heavily for the correctness of the final product.
 <endRuleAnnotation>
 <beginParticipantRuleEffect>
 Emp
@@ -26143,7 +26143,7 @@ ScheduleScore
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Score
-100 + -(.5 * (100 - thisTheProject-Project:ProductCompletenessScore)) - (.2 * (100 - thisTheProject-Project:ProductCorrectnessScore)) - (.5 * (100 - thisTheProject-Project:ScheduleScore)) 
+100 - (100 - thisTheProject-Project:ProductCompletenessScore) - (98 - thisTheProject-Project:ProductCorrectnessScore) - (100 - thisTheProject-Project:ScheduleScore) 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 NumRequirementsTotal
@@ -29879,17 +29879,23 @@ Richardson.gif
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Dean
+- Employee - SoftwareEngineer - Rowan
 true
 true
-9
-7
+5
+0
 
 - Employee - SoftwareEngineer - Emily
 true
 true
 15
 8
+
+- Employee - SoftwareEngineer - Dean
+true
+true
+9
+7
 
 - Employee - SoftwareEngineer - Mollie
 true
@@ -29902,12 +29908,6 @@ true
 true
 0
 1
-
-- Employee - SoftwareEngineer - Rowan
-true
-true
-5
-0
 
 <endSOPUsers>
 -3
