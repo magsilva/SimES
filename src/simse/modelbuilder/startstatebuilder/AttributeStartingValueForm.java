@@ -489,12 +489,12 @@ public class AttributeStartingValueForm extends JDialog implements
       {
         char[] cArray = value.toCharArray();
         // Check for length constraints:
-        if ((cArray.length == 0) || (cArray.length > 40)) // user has entered
-                                                          // nothing or a string
-                                                          // longer than 40
-                                                          // chars
+        if ((cArray.length == 0) || (cArray.length > 100)) // user has entered
+                                                           // nothing or a string
+                                                           // longer than 100
+                                                           // chars
         {
-          messages.add(new String("Value must be between 1 and 40 characters"));
+          messages.add(new String("Value must be between 1 and 100 characters"));
         }
       }
 
