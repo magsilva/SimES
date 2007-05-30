@@ -10,8 +10,6 @@ import simse.modelbuilder.actionbuilder.*;
 import simse.codegenerator.*;
 
 import java.util.*;
-import java.awt.BorderLayout;
-import java.awt.Image;
 import java.io.*;
 import javax.swing.*;
 
@@ -311,13 +309,75 @@ public class EmployeeParticipantSelectionDialogGenerator implements
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      
+  		writer.write("else if ((selectedEmp == null) && (participants.size() == minNumParts)) {");
+  		writer.write(NEWLINE);
+  		writer.write("for (int i = 0; i < participants.size(); i++) {");
+  		writer.write(NEWLINE);
+  		writer.write("Employee tempEmp = (Employee) participants.elementAt(i);");
+  		writer.write(NEWLINE);
+      // go through each action type:
+      Vector acts = actTypes.getAllActionTypes();
+      boolean putElse = false;
+      for (int j = 0; j < acts.size(); j++) {
+        ActionType tempAct = (ActionType) acts.elementAt(j);
+        Vector trigs = tempAct.getAllTriggers();
+        // only generate code for actions w/ user triggers:
+        for (int k = 0; k < trigs.size(); k++) {
+          ActionTypeTrigger tempTrig = (ActionTypeTrigger) trigs.elementAt(k);
+          if (tempTrig instanceof UserActionTypeTrigger) {
+            if (putElse) // not on first element
+            {
+              writer.write("else ");
+            } else {
+              putElse = true;
+            }
+            writer.write("if(action instanceof "
+                + getUpperCaseLeading(tempAct.getName()) + "Action)");
+            writer.write(NEWLINE);
+            writer.write(OPEN_BRACK);
+            writer.write(NEWLINE);
+            // go through all participants:
+            Vector participants = tempAct.getAllParticipants();
+            boolean nextOneWriteElse = false;
+            for (int m = 0; m < participants.size(); m++) {
+              ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
+                  .elementAt(m);
+              if (tempPart.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) // Employee
+                                                                                      // participant
+              {
+                if (nextOneWriteElse) // not on first element
+                {
+                  writer.write("else ");
+                }
+                writer.write("if(partName.equals(\"" + tempPart.getName()
+                    + "\"))");
+                writer.write(NEWLINE);
+                writer.write(OPEN_BRACK);
+                writer.write(NEWLINE);
+                writer.write("((" + getUpperCaseLeading(tempAct.getName())
+                    + "Action)action).add" + tempPart.getName()
+                    + "(tempEmp);");
+                writer.write(NEWLINE);
+                writer.write(CLOSED_BRACK);
+                writer.write(NEWLINE);
+                nextOneWriteElse = true;
+              }
+            }
+            writer.write(CLOSED_BRACK);
+            writer.write(NEWLINE);
+          }
+        }
+      }
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
       writer.write("if(selectedEmp != null)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       // go through each action type:
-      Vector acts = actTypes.getAllActionTypes();
-      boolean putElse = false;
+      putElse = false;
       for (int j = 0; j < acts.size(); j++) {
         ActionType tempAct = (ActionType) acts.elementAt(j);
         Vector trigs = tempAct.getAllTriggers();
