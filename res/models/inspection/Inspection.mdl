@@ -6521,23 +6521,11 @@ Generic Project
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Scott
+- Employee - SoftwareEngineer - Chris V.
 true
 true
-4
+10
 1
-
-- Employee - SoftwareEngineer - Andre
-true
-true
-6
-1
-
-- Employee - SoftwareEngineer - David
-true
-true
-8
-7
 
 - Employee - SoftwareEngineer - Chris J.
 true
@@ -6545,29 +6533,17 @@ true
 2
 5
 
+- Employee - SoftwareEngineer - Beverly
+true
+true
+8
+1
+
 - Employee - SoftwareEngineer - Paul
 true
 true
 2
 3
-
-- Employee - SoftwareEngineer - Chris V.
-true
-true
-10
-1
-
-- Employee - SoftwareEngineer - Emily
-true
-true
-12
-5
-
-- Employee - SoftwareEngineer - Alex
-true
-true
-4
-7
 
 - Employee - SoftwareEngineer - Ping
 true
@@ -6581,17 +6557,41 @@ true
 12
 3
 
-- Employee - SoftwareEngineer - Beverly
+- Employee - SoftwareEngineer - Emily
 true
 true
-8
-1
+12
+5
 
 - Employee - SoftwareEngineer - Anita
 true
 true
 6
 7
+
+- Employee - SoftwareEngineer - Alex
+true
+true
+4
+7
+
+- Employee - SoftwareEngineer - David
+true
+true
+8
+7
+
+- Employee - SoftwareEngineer - Scott
+true
+true
+4
+1
+
+- Employee - SoftwareEngineer - Andre
+true
+true
+6
+1
 
 <endSOPUsers>
 605
