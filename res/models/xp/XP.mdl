@@ -21749,9 +21749,9 @@ IncNumErrorsRefactor
 Refactor
 0
 false
-false
+true
 <beginRuleAnnotation>
-
+Employees introduce some new errors into the code as they refactor. The number of errors in the code increases at a rate dependent on the experience of the developers, whether or not the developers who originally developed the code knew the coding standard (coding standard used -> less errors), whether or not a refactoring tool is being used (tool used -> less errors), and the number of errors that currently exist in the code (more existing errors -> more errors introduced as a result of refactoring).
 <endRuleAnnotation>
 <beginParticipantRuleEffect>
 Emp
@@ -21813,7 +21813,7 @@ Description
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentErroneous
-
+thisCode-Artifact:PercentErroneous + (allActive-Emp-SoftwareDeveloper-Employee:Productivity * .0053) + (.7 * (1 - (thisCode-Artifact:SumKnowsCodingStandard / thisCode-Artifact:SumEmpRepNumbers))) + (.7 * (1 - allActive-RefactoringTool-RefactoringTool-Tool:ProductivityIncreaseFactor)) + (.7 * (thisCode-Artifact:PercentErroneous / 100)) 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Completeness
@@ -22135,11 +22135,11 @@ true
 7
 1
 
-- Employee - SoftwareDeveloper - Sigfreido
+- Employee - SoftwareDeveloper - Reda
 true
 true
-13
-2
+3
+7
 
 - Employee - SoftwareDeveloper - Peg
 true
@@ -22147,11 +22147,11 @@ true
 12
 2
 
-- Employee - SoftwareDeveloper - Timothy
+- Employee - CustomerRep - Customer Wayne
 true
 true
-3
-6
+1
+4
 
 - Employee - SoftwareDeveloper - Joyce
 true
@@ -22159,23 +22159,23 @@ true
 10
 5
 
+- Employee - SoftwareDeveloper - Timothy
+true
+true
+3
+6
+
 - Employee - SoftwareDeveloper - Robert
 true
 true
 10
 6
 
-- Employee - SoftwareDeveloper - Reda
+- Employee - SoftwareDeveloper - Sigfreido
 true
 true
-3
-7
-
-- Employee - CustomerRep - Customer Wayne
-true
-true
-1
-4
+13
+2
 
 <endSOPUsers>
 -3
