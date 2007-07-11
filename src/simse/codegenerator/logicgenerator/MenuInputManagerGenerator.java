@@ -703,14 +703,14 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
           }
         }
         writer.write("if(");
-        Vector parts = act.getAllParticipants();
-        for (int j = 0; j < parts.size(); j++) {
+        for (int j = 0; j < triggers.size(); j++) {
+          ActionTypeParticipantTrigger trig = (ActionTypeParticipantTrigger) triggers
+              .elementAt(j);
           if (j > 0) // not on first element
           {
             writer.write(" && ");
           }
-          ActionTypeParticipant part = (ActionTypeParticipant) parts
-              .elementAt(j);
+          ActionTypeParticipant part = trig.getParticipant();
           writer.write("(" + part.getName().toLowerCase() + "s" + j
               + ".size() ");
           if (part.getQuantity().isMinValBoundless() == false) {
@@ -730,9 +730,10 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         // NOTE: this following stuff was commented out because it wasn't
         // working right:
         //boolean moreThan1RoleForSameEmployeeType = false;
-        for (int j = 0; j < parts.size(); j++) {
-          ActionTypeParticipant part = (ActionTypeParticipant) parts
+        for (int j = 0; j < triggers.size(); j++) {
+          ActionTypeParticipantTrigger trig = (ActionTypeParticipantTrigger) triggers
               .elementAt(j);
+          ActionTypeParticipant part = trig.getParticipant();
           writer.write("c.add(\"" + part.getName() + "\");");
           writer.write(NEWLINE);
           /*
@@ -775,9 +776,10 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write("Vector d = new Vector();");
         writer.write(NEWLINE);
 
-        for (int j = 0; j < parts.size(); j++) {
-          ActionTypeParticipant part = (ActionTypeParticipant) parts
-              .elementAt(j);
+        for (int j = 0; j < triggers.size(); j++) {
+          ActionTypeParticipantTrigger trig = (ActionTypeParticipantTrigger) triggers
+          .elementAt(j);
+          ActionTypeParticipant part = trig.getParticipant();
           writer
               .write("d.add(" + part.getName().toLowerCase() + "s" + j + ");");
           writer.write(NEWLINE);
@@ -829,9 +831,10 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
             + getUpperCaseLeading(act.getName()) + "Action)a.elementAt(i);");
         writer.write(NEWLINE);
         // go through all participants:
-        for (int j = 0; j < parts.size(); j++) {
-          ActionTypeParticipant tempPart = (ActionTypeParticipant) parts
-              .elementAt(j);
+        for (int j = 0; j < triggers.size(); j++) {
+          ActionTypeParticipantTrigger trig = (ActionTypeParticipantTrigger) triggers
+          .elementAt(j);
+          ActionTypeParticipant tempPart = trig.getParticipant();
           if (tempPart.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) {
             writer.write("if((c.getAll" + tempPart.getName()
                 + "s().contains(e) == false) && (b.contains(c) == false))");
