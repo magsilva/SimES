@@ -2,7 +2,7 @@
 false
 <endAllowHireFire>
 <beginModelOptions>
-false
+true
 C:\Users\Emily\Documents\workspace\res\models\waterfall\icons
 C:\Users\Emily\Documents\workspace\xpGame
 <endModelOptions>
@@ -29567,7 +29567,7 @@ Prioritized
 IncNumErrorsIntegrateRJ
 35
 IntegrateRobertJoyce
-1
+0
 false
 true
 <beginRuleAnnotation>
@@ -29681,7 +29681,7 @@ Description
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentErroneous
-thisCode-Artifact:PercentErroneous + (.0055 * (allActive-Robert-SoftwareDeveloper-Employee:Productivity + allActive-Joyce-SoftwareDeveloper-Employee:Productivity)) + (thisCode-Artifact:PercentErroneous / 100) + ((100 - thisCode-Artifact:PercentRefactored) / 100) 
+thisCode-Artifact:PercentErroneous + (.0055 * (allActive-Robert-SoftwareDeveloper-Employee:Productivity + allActive-Joyce-SoftwareDeveloper-Employee:Productivity)) + (thisCode-Artifact:PercentErroneous / 100) + ((100 - thisCode-Artifact:PercentRefactored) / 100 * .25) 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Completeness
@@ -30653,7 +30653,7 @@ Description
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentErroneous
-thisCode-Artifact:PercentErroneous + (.0055 * (allActive-Timothy-SoftwareDeveloper-Employee:Productivity + allActive-Reda-SoftwareDeveloper-Employee:Productivity)) + (thisCode-Artifact:PercentErroneous / 100) + ((100 - thisCode-Artifact:PercentRefactored) / 100) 
+thisCode-Artifact:PercentErroneous + (.0055 * (allActive-Timothy-SoftwareDeveloper-Employee:Productivity + allActive-Reda-SoftwareDeveloper-Employee:Productivity)) + (thisCode-Artifact:PercentErroneous / 100) + ((100 - thisCode-Artifact:PercentRefactored) / 100 * .25) 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Completeness
@@ -31625,7 +31625,7 @@ Description
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 PercentErroneous
-thisCode-Artifact:PercentErroneous + (.0055 * (allActive-Peg-SoftwareDeveloper-Employee:Productivity + allActive-Sigfreido-SoftwareDeveloper-Employee:Productivity)) + (thisCode-Artifact:PercentErroneous / 100) + ((100 - thisCode-Artifact:PercentRefactored) / 100) 
+thisCode-Artifact:PercentErroneous + (.0055 * (allActive-Peg-SoftwareDeveloper-Employee:Productivity + allActive-Sigfreido-SoftwareDeveloper-Employee:Productivity)) + (thisCode-Artifact:PercentErroneous / 100) + ((100 - thisCode-Artifact:PercentRefactored) / 100 * .25) 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Completeness
@@ -32244,23 +32244,17 @@ Eclipse
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareDeveloper - Sigfreido
+- Employee - SoftwareDeveloper - Joyce
 true
 true
-13
-2
+10
+5
 
-- Employee - CustomerRep - Customer Wayne
+- Employee - Manager - Chang
 true
 true
+7
 1
-4
-
-- Employee - SoftwareDeveloper - Peg
-true
-true
-12
-2
 
 - Employee - SoftwareDeveloper - Reda
 true
@@ -32268,17 +32262,23 @@ true
 3
 7
 
+- Employee - CustomerRep - Customer Wayne
+true
+true
+1
+4
+
 - Employee - SoftwareDeveloper - Timothy
 true
 true
 3
 6
 
-- Employee - SoftwareDeveloper - Joyce
+- Employee - SoftwareDeveloper - Sigfreido
 true
 true
-10
-5
+13
+2
 
 - Employee - SoftwareDeveloper - Robert
 true
@@ -32286,11 +32286,11 @@ true
 10
 6
 
-- Employee - Manager - Chang
+- Employee - SoftwareDeveloper - Peg
 true
 true
-7
-1
+12
+2
 
 <endSOPUsers>
 -3
