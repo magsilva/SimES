@@ -23,15 +23,15 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
   private File ruleExFile;
   private Vector nonPrioritizedRules;
   private Vector prioritizedRules;
-  private Vector outerVariables; // for keeping track of which variables have
-                                 // been generated
+//  private Vector outerVariables; // for keeping track of which variables have
+//                                 // been generated
   private Vector warnings; // holds warning messages about any errors that are
                            // run into during generation
 
   public RuleExecutorGenerator(DefinedActionTypes dats, File dir) {
     actTypes = dats;
     directory = dir;
-    outerVariables = new Vector();
+//    outerVariables = new Vector();
     warnings = new Vector();
     initializeRuleLists();
   }
@@ -118,18 +118,27 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      // generate prioritized rules:
+      // generate prioritized rule function calls:
       for (int i = 0; i < prioritizedRules.size(); i++) {
-        generateRuleExecutor((Rule) prioritizedRules.elementAt(i));
+        generateRuleExecutorFunctionCall((Rule) prioritizedRules.elementAt(i));
       }
-      // generate non-prioritized rules:
+      // generate non-prioritized rule function calls:
       for (int i = 0; i < nonPrioritizedRules.size(); i++) {
-        generateRuleExecutor((Rule) nonPrioritizedRules.elementAt(i));
+        generateRuleExecutorFunctionCall((Rule) nonPrioritizedRules.elementAt(i));
       }
       writer.write("((SimSEGUI)gui).update();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      
+      // generate rule function bodies:
+      for (int i = 0; i < prioritizedRules.size(); i++) {
+        generateRuleExecutorFunctionBody((Rule) prioritizedRules.elementAt(i));
+      }
+      // generate non-prioritized rule function calls:
+      for (int i = 0; i < nonPrioritizedRules.size(); i++) {
+        generateRuleExecutorFunctionBody((Rule) nonPrioritizedRules.elementAt(i));
+      }
 
       // checkAllMins method:
       writer.write("private void checkAllMins(JFrame parent)");
@@ -371,34 +380,57 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
     }
   }
 
-  private void generateRuleExecutor(Rule rule) {
+  private void generateRuleExecutorFunctionCall(Rule rule) {
+  	try {
+	    writer.write(getLowerCaseLeading(rule.getName()) + "(gui, " +
+	    		"updateInstructions, ruleName, action);");
+	    writer.write(NEWLINE);
+  	} catch (IOException e) {
+      JOptionPane.showMessageDialog(null, ("Error writing file "
+          + ruleExFile.getPath() + ": " + e.toString()), "File IO Error",
+          JOptionPane.WARNING_MESSAGE);
+    }
+  }
+  
+  private void generateRuleExecutorFunctionBody(Rule rule) {
     try {
+      ActionType action = rule.getActionType();
+      writer.write("// " + rule.getName() + " rule (" + action.getName()
+          + " Action):");
+      writer.write(NEWLINE);
+    	writer.write("private void " + getLowerCaseLeading(rule.getName()) + 
+    			"(JFrame gui, int updateInstructions, String ruleName, " + 
+    			"simse.adts.actions.Action action) {");
+    	writer.write(NEWLINE);
+	    writer.write("Vector " + action.getName().toLowerCase()
+	    		+ "Acts = state.getActionStateRepository().get"
+	    		+ getUpperCaseLeading(action.getName())
+	    		+ "ActionStateRepository().getAllActions();");
+	    writer.write(NEWLINE);
       if (rule instanceof EffectRule) // EFFECT RULE
       {
         EffectRule effRule = (EffectRule) rule;
-        ActionType action = rule.getActionType();
-        writer.write("// " + rule.getName() + " rule (" + action.getName()
-            + " Action):");
-        writer.write(NEWLINE);
-        if (vectorContainsString(outerVariables, (action.getName()
-            .toLowerCase() + "Acts")) == false) // this variable has not been
-                                                // generated yet
-        {
-          outerVariables
-              .add(new String(action.getName().toLowerCase() + "Acts")); // add
-                                                                         // the
-                                                                         // variable
-                                                                         // name
-                                                                         // to
-                                                                         // the
-                                                                         // record-keeping
-                                                                         // Vector
-          writer.write("Vector " + action.getName().toLowerCase()
-              + "Acts = state.getActionStateRepository().get"
-              + getUpperCaseLeading(action.getName())
-              + "ActionStateRepository().getAllActions();");
-          writer.write(NEWLINE);
-        }
+//        if (vectorContainsString(outerVariables, (action.getName()
+//            .toLowerCase() + "Acts")) == false) // this variable has not been
+//                                                // generated yet
+//        {
+//          outerVariables
+//              .add(new String(action.getName().toLowerCase() + "Acts")); // add
+//                                                                         // the
+//                                                                         // variable
+//                                                                         // name
+//                                                                         // to
+//                                                                         // the
+//                                                                         // record-keeping
+//                                                                         // Vector
+//          writer.write("Vector " + action.getName().toLowerCase()
+//              + "Acts = state.getActionStateRepository().get"
+//              + getUpperCaseLeading(action.getName())
+//              + "ActionStateRepository().getAllActions();");
+//          writer.write(NEWLINE);
+//        }
+      	
+      	
         writer.write("if((updateInstructions ==");
         if (rule.getTiming() == RuleTiming.CONTINUOUS) // continuous rule
         {
@@ -2431,34 +2463,32 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
+        writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
       }
 
       else if (rule instanceof CreateObjectsRule) // CREATE OBJECTS RULE
       {
         CreateObjectsRule coRule = (CreateObjectsRule) rule;
-        ActionType action = rule.getActionType();
-        writer.write("// " + rule.getName() + " rule (" + action.getName()
-            + " Action):");
-        writer.write(NEWLINE);
-        if (vectorContainsString(outerVariables, (action.getName()
-            .toLowerCase() + "Acts")) == false) // this variable has not been
-                                                // generated yet
-        {
-          outerVariables
-              .add(new String(action.getName().toLowerCase() + "Acts")); // add
-                                                                         // the
-                                                                         // variable
-                                                                         // name
-                                                                         // to
-                                                                         // the
-                                                                         // record-keeping
-                                                                         // Vector
-          writer.write("Vector " + action.getName().toLowerCase()
-              + "Acts = state.getActionStateRepository().get"
-              + getUpperCaseLeading(action.getName())
-              + "ActionStateRepository().getAllActions();");
-          writer.write(NEWLINE);
-        }
+//        if (vectorContainsString(outerVariables, (action.getName()
+//            .toLowerCase() + "Acts")) == false) // this variable has not been
+//                                                // generated yet
+//        {
+//          outerVariables
+//              .add(new String(action.getName().toLowerCase() + "Acts")); // add
+//                                                                         // the
+//                                                                         // variable
+//                                                                         // name
+//                                                                         // to
+//                                                                         // the
+//                                                                         // record-keeping
+//                                                                         // Vector
+//          writer.write("Vector " + action.getName().toLowerCase()
+//              + "Acts = state.getActionStateRepository().get"
+//              + getUpperCaseLeading(action.getName())
+//              + "ActionStateRepository().getAllActions();");
+//          writer.write(NEWLINE);
+//        }
         writer.write("if((updateInstructions ==");
         if (rule.getTiming() == RuleTiming.CONTINUOUS) // continuous rule
         {
@@ -2625,34 +2655,32 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
+        writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
       }
 
       else if (rule instanceof DestroyObjectsRule) // DESTROY OBJECTS RULE
       {
         DestroyObjectsRule doRule = (DestroyObjectsRule) rule;
-        ActionType action = rule.getActionType();
-        writer.write("// " + rule.getName() + " rule (" + action.getName()
-            + " Action):");
-        writer.write(NEWLINE);
-        if (vectorContainsString(outerVariables, (action.getName()
-            .toLowerCase() + "Acts")) == false) // this variable has not been
-                                                // generated yet
-        {
-          outerVariables
-              .add(new String(action.getName().toLowerCase() + "Acts")); // add
-                                                                         // the
-                                                                         // variable
-                                                                         // name
-                                                                         // to
-                                                                         // the
-                                                                         // record-keeping
-                                                                         // Vector
-          writer.write("Vector " + action.getName().toLowerCase()
-              + "Acts = state.getActionStateRepository().get"
-              + getUpperCaseLeading(action.getName())
-              + "ActionStateRepository().getAllActions();");
-          writer.write(NEWLINE);
-        }
+//        if (vectorContainsString(outerVariables, (action.getName()
+//            .toLowerCase() + "Acts")) == false) // this variable has not been
+//                                                // generated yet
+//        {
+//          outerVariables
+//              .add(new String(action.getName().toLowerCase() + "Acts")); // add
+//                                                                         // the
+//                                                                         // variable
+//                                                                         // name
+//                                                                         // to
+//                                                                         // the
+//                                                                         // record-keeping
+//                                                                         // Vector
+//          writer.write("Vector " + action.getName().toLowerCase()
+//              + "Acts = state.getActionStateRepository().get"
+//              + getUpperCaseLeading(action.getName())
+//              + "ActionStateRepository().getAllActions();");
+//          writer.write(NEWLINE);
+//        }
         writer.write("if((updateInstructions ==");
         if (rule.getTiming() == RuleTiming.CONTINUOUS) // continuous rule
         {
@@ -2869,6 +2897,10 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
 
   private String getUpperCaseLeading(String s) {
     return (s.substring(0, 1).toUpperCase() + s.substring(1));
+  }
+  
+  private String getLowerCaseLeading(String s) {
+  	return (s.substring(0, 1).toLowerCase() + s.substring(1));
   }
 
   private boolean vectorContainsString(Vector v, String s) {
