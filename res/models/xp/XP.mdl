@@ -408,6 +408,15 @@ AcceptanceTesting
 0
 1
 <endAttribute>
+<beginAttribute>
+TimeSinceLastRelease
+3
+1
+0
+1
+0
+boundless
+<endAttribute>
 <endObjectType>
 <beginObjectType>
 2
@@ -1146,6 +1155,10 @@ NumActivitiesOccurring
 AcceptanceTesting
 false
 <endInstantiatedAttribute>
+<beginInstantiatedAttribute>
+TimeSinceLastRelease
+0
+<endInstantiatedAttribute>
 <endObject>
 <beginObject>
 2
@@ -1606,6 +1619,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <endActionTypeTrigger>
@@ -1855,6 +1874,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -2251,6 +2276,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <endActionTypeTrigger>
@@ -2548,6 +2579,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -2852,6 +2889,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -3290,6 +3333,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -3570,7 +3619,7 @@ true
 In iteration planning meeting
 true
 <beginActionTypeAnnotation>
-In an iteration planning meeting, two major activities are performed: (1) User stories to be developed in the current iteration are chosen (ideally, with the customer). (2) The developers then break the user stories into programming tasks and sign up for specific tasks.
+In an iteration planning meeting, two major activities are performed: (1) User stories to be developed in the current iteration are chosen with the customer. (2) The developers then break the user stories into programming tasks and sign up for specific tasks.
 <endActionTypeAnnotation>
 false
 <beginActionTypeParticipant>
@@ -3591,8 +3640,8 @@ CustomerRep
 Employee
 true
 <beginActionTypeParticipantQuantity>
-at least
-<>
+exactly
+1
 <>
 <endActionTypeParticipantQuantity>
 <beginSSObjTypeNames>
@@ -3848,6 +3897,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -3882,7 +3937,7 @@ false
 <endActionTypeParticipantTrigger>
 <endActionTypeTrigger>
 <beginActionTypeDestroyer>
-AutoDest
+CustInvolvedReleasePlanningMtg
 Autonomous
 We have completed the iteration plan and adjourned the meeting.
 1
@@ -4089,6 +4144,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -4097,7 +4158,7 @@ ReleasePlan
 ReleasePlan
 <beginActionTypeParticipantAttributeConstraint>
 Name
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
@@ -4115,8 +4176,255 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 CustomerInvolved
+=
+1
+false
+<endActionTypeParticipantAttributeConstraint>
+<endActionTypeParticipantConstraint>
+<endActionTypeParticipantDestroyer>
+<endActionTypeDestroyer>
+<beginActionTypeDestroyer>
+CustNotInvolvedReleasePlanMtg
+Autonomous
+We have completed the iteration plan and adjourned the meeting. It took longer than expected because the customer was not involved in the release planning meeting, so we had a lot of issues to hash out in this meeting.
+-1
+false
+<beginActionTypeParticipantDestroyer>
+Developer
+<beginActionTypeParticipantConstraint>
+SoftwareDeveloper
+<beginActionTypeParticipantAttributeConstraint>
+Name
 <
 <>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+SoftwareDevelopmentExperience
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+SoftwareDevelopmentExperienceNumerical
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+InIterationPlanningMeeting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+Productivity
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+KnowsCodingStandard
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+KnowsCodingStandardNumerical
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+Programming
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+Integrating
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+NumProgrammingActions
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+RepNumber
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<endActionTypeParticipantConstraint>
+<endActionTypeParticipantDestroyer>
+<beginActionTypeParticipantDestroyer>
+CustomerRep
+<beginActionTypeParticipantConstraint>
+CustomerRep
+<beginActionTypeParticipantAttributeConstraint>
+Name
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+RepNumber
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+InIterationPlanningMeeting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<endActionTypeParticipantConstraint>
+<endActionTypeParticipantDestroyer>
+<beginActionTypeParticipantDestroyer>
+IterationPlan
+<beginActionTypeParticipantConstraint>
+CurrentIterationPlan
+<beginActionTypeParticipantAttributeConstraint>
+Name
+=
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+Completeness
+=
+100.0
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CustomerInvolved
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<endActionTypeParticipantConstraint>
+<endActionTypeParticipantDestroyer>
+<beginActionTypeParticipantDestroyer>
+Proj
+<beginActionTypeParticipantConstraint>
+TheProject
+<beginActionTypeParticipantAttributeConstraint>
+Name
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CurrentIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+IterationStarted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+UserStoriesChosenForThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+ProgrammingTasksAssignedThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+IterationPlanningMeetingStarted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+AcceptanceTestsCreatedThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+UnitTestsCreatedThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+RobertAndJoycePairProgThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimothyAndRedaPairProgThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+PegAndSigfreidoPairProgThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+NumActivitiesOccurring
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<endActionTypeParticipantConstraint>
+<endActionTypeParticipantDestroyer>
+<beginActionTypeParticipantDestroyer>
+ReleasePlan
+<beginActionTypeParticipantConstraint>
+ReleasePlan
+<beginActionTypeParticipantAttributeConstraint>
+Name
+=
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+Completeness
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+ManagementInvolved
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+CustomerInvolved
+=
+0
 false
 <endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
@@ -4366,6 +4674,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -4600,6 +4914,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -4907,6 +5227,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -5048,7 +5374,7 @@ Proj
 TheProject
 <beginActionTypeParticipantAttributeConstraint>
 Name
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
@@ -5060,25 +5386,25 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 IterationStarted
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 UserStoriesChosenForThisIteration
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ProgrammingTasksAssignedThisIteration
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 IterationPlanningMeetingStarted
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
@@ -5096,19 +5422,19 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 RobertAndJoycePairProgThisIteration
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 TimothyAndRedaPairProgThisIteration
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 PegAndSigfreidoPairProgThisIteration
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
@@ -5120,6 +5446,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+=
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -5132,7 +5464,7 @@ ReleasePlan
 ReleasePlan
 <beginActionTypeParticipantAttributeConstraint>
 Name
-<
+=
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
@@ -5454,6 +5786,12 @@ AcceptanceTesting
 false
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -5703,6 +6041,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -6020,6 +6364,12 @@ AcceptanceTesting
 false
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -6310,6 +6660,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -6595,6 +6951,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -6990,6 +7352,12 @@ AcceptanceTesting
 false
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -7239,6 +7607,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -7493,6 +7867,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -7777,6 +8157,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <endActionTypeTrigger>
@@ -7959,6 +8345,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <endActionTypeDestroyer>
@@ -8136,6 +8528,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -8527,6 +8925,12 @@ AcceptanceTesting
 false
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -8890,6 +9294,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -9258,6 +9668,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -9830,6 +10246,12 @@ AcceptanceTesting
 false
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -10265,6 +10687,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -10705,6 +11133,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -11277,6 +11711,12 @@ AcceptanceTesting
 false
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -11712,6 +12152,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -12152,6 +12598,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -12724,6 +13176,12 @@ AcceptanceTesting
 false
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -13159,6 +13617,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -13599,6 +14063,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -14055,6 +14525,12 @@ AcceptanceTesting
 false
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -14370,6 +14846,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -14690,6 +15172,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -15051,6 +15539,12 @@ AcceptanceTesting
 false
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -15306,6 +15800,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -15566,6 +16066,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -15917,6 +16423,12 @@ false
 AcceptanceTesting
 =
 false
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
 false
 <endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
@@ -16370,6 +16882,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -16746,6 +17264,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -17219,6 +17743,12 @@ AcceptanceTesting
 false
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -17594,6 +18124,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -17974,6 +18510,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -18447,6 +18989,12 @@ AcceptanceTesting
 false
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -18822,6 +19370,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -19202,6 +19756,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -19590,6 +20150,12 @@ AcceptanceTesting
 false
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -19898,6 +20464,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -20201,6 +20773,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -20729,6 +21307,12 @@ AcceptanceTesting
 false
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -21080,6 +21664,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -21440,6 +22030,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -21791,6 +22387,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -22150,6 +22752,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -22505,6 +23113,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -22771,6 +23385,12 @@ false
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
 =
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
@@ -23100,6 +23720,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -23367,6 +23993,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -23655,6 +24287,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <endActionTypeTrigger>
@@ -23777,6 +24415,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -23921,7 +24565,7 @@ CustomerRep
 RandomTrig
 Random
 1.0
-Management says our release plan is all wrong, and we have to redo it immediately, before any more progress is made!
+Management found out that we held the release planning meeting without them. They say our release plan is all wrong, and we must be redone immediately, before any more progress is made!
 -1
 false
 <beginActionTypeParticipantTrigger>
@@ -24074,6 +24718,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -24291,6 +24941,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 AcceptanceTesting
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
 <
 <>
 false
@@ -24587,6 +25243,12 @@ AcceptanceTesting
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeSinceLastRelease
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <endActionTypeTrigger>
@@ -24729,6 +25391,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -24920,6 +25586,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -25152,6 +25822,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -25382,6 +26056,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -25614,6 +26292,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -25845,6 +26527,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -25967,6 +26653,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -26303,6 +26993,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -26637,6 +27331,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -26973,6 +27671,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -27240,6 +27942,345 @@ false
 <endParticipantRuleEffect>
 <endEffectRule>
 <beginEffectRule>
+ResetTimeSinceLastRelease
+-1
+StartIteration
+1
+false
+false
+<beginRuleAnnotation>
+
+<endRuleAnnotation>
+<beginParticipantRuleEffect>
+Emp
+<beginParticipantTypeRuleEffect>
+1
+SoftwareDeveloper
+None
+<beginParticipantAttributeRuleEffect>
+Name
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+SoftwareDevelopmentExperience
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+SoftwareDevelopmentExperienceNumerical
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+InIterationPlanningMeeting
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Productivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+KnowsCodingStandard
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+KnowsCodingStandardNumerical
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Programming
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Integrating
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+NumProgrammingActions
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+RepNumber
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<beginParticipantRuleEffect>
+Proj
+<beginParticipantTypeRuleEffect>
+4
+TheProject
+None
+<beginParticipantAttributeRuleEffect>
+Name
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+CurrentIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+IterationStarted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+UserStoriesChosenForThisIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+ProgrammingTasksAssignedThisIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+IterationPlanningMeetingStarted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+AcceptanceTestsCreatedThisIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+UnitTestsCreatedThisIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+RobertAndJoycePairProgThisIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+TimothyAndRedaPairProgThisIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+PegAndSigfreidoPairProgThisIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+NumActivitiesOccurring
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+AcceptanceTesting
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+0
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<beginParticipantRuleEffect>
+ReleasePlan
+<beginParticipantTypeRuleEffect>
+2
+ReleasePlan
+None
+<beginParticipantAttributeRuleEffect>
+Name
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Completeness
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+ManagementInvolved
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+CustomerInvolved
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<beginParticipantRuleEffect>
+UserStories
+<beginParticipantTypeRuleEffect>
+2
+UserStories
+None
+<beginParticipantAttributeRuleEffect>
+Name
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+NumUserStoriesSpecified
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Prioritized
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+NumUserStoriesImplemented
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+SpecificationCompleteness
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+ImplementationCompleteness
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+NumUserStoriesIntegrated
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+NumUSIntegratedBeginningOfIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+PercentErroneous
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+PercentErroneousBeginningOfIteration
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<beginParticipantRuleEffect>
+IterationPlan
+<beginParticipantTypeRuleEffect>
+2
+CurrentIterationPlan
+None
+<beginParticipantAttributeRuleEffect>
+Name
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Completeness
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+CustomerInvolved
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<beginParticipantRuleEffect>
+Design
+<beginParticipantTypeRuleEffect>
+2
+Design
+None
+<beginParticipantAttributeRuleEffect>
+Description
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+NumCRCCardsCompleted
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<beginParticipantRuleEffect>
+UnitTests
+<beginParticipantTypeRuleEffect>
+2
+UnitTests
+None
+<beginParticipantAttributeRuleEffect>
+Description
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Completeness
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+TestingToolUsedInCreation
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<beginParticipantRuleEffect>
+AcceptanceTests
+<beginParticipantTypeRuleEffect>
+2
+AcceptanceTests
+None
+<beginParticipantAttributeRuleEffect>
+Description
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Completeness
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+CustomerInvolvedInCreation
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+TestsRun
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+TestsFailed
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<beginParticipantRuleEffect>
+Code
+<beginParticipantTypeRuleEffect>
+2
+Code
+None
+<beginParticipantAttributeRuleEffect>
+Description
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+PercentErroneous
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Completeness
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+SumEmpRepNumbers
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+SumKnowsCodingStandard
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+PercentRefactored
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+PercentIntegrated
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<beginParticipantRuleEffect>
+CustomerRep
+<beginParticipantTypeRuleEffect>
+1
+CustomerRep
+None
+<beginParticipantAttributeRuleEffect>
+Name
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+RepNumber
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+InIterationPlanningMeeting
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<endEffectRule>
+<beginEffectRule>
 SetIterationPlanningMeetingStarted
 -1
 IterationPlanningMeeting
@@ -27347,6 +28388,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -27535,6 +28580,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -27722,6 +28771,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -27886,6 +28939,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -27992,7 +29049,7 @@ ChooseUserStoriesForIteration
 false
 true
 <beginRuleAnnotation>
-The completeness of the iteration plan increases at a rate dependent on the developers' experience. If the customer is involved in this iteration planning meeting, this speed of completion increases.
+The completeness of the iteration plan increases at a rate dependent on the developers' experience. If the customer was involved in the release planning meeting, this speed of completion increases, as much of the iteration plan will have already been hashed out between the customers and the develoeprs in the release planning meeting.
 <endRuleAnnotation>
 <beginParticipantRuleEffect>
 Emp
@@ -28070,6 +29127,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -28135,7 +29196,7 @@ Name
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Completeness
-thisCurrentIterationPlan-Artifact:Completeness + (allActive-Emp-SoftwareDeveloper-Employee:Productivity * .05) + (allActive-Emp-CustomerRep-Employee:RepNumber * .5)
+thisCurrentIterationPlan-Artifact:Completeness + (allActive-Emp-SoftwareDeveloper-Employee:Productivity * .05) + (allActive-ReleasePlan-ReleasePlan-Artifact:CustomerInvolved * 1.68) 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 CustomerInvolved
@@ -28257,6 +29318,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -28343,7 +29408,7 @@ CreateProgrammingTasks
 false
 true
 <beginRuleAnnotation>
-The completeness of the iteration plan increases at a rate dependent on the experience of the developers.
+The completeness of the iteration plan increases at a rate dependent on the developers' experience. If the customer was involved in the release planning meeting, this speed of completion increases, as much of the iteration plan will have already been hashed out between the customers and the develoeprs in the release planning meeting.
 <endRuleAnnotation>
 <beginParticipantRuleEffect>
 Emp
@@ -28409,7 +29474,7 @@ Name
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Completeness
-thisCurrentIterationPlan-Artifact:Completeness + (allActive-Emp-SoftwareDeveloper-Employee:Productivity * .05) 
+thisCurrentIterationPlan-Artifact:Completeness + (allActive-Emp-SoftwareDeveloper-Employee:Productivity * .05) + (allActive-ReleasePlan-ReleasePlan-Artifact:CustomerInvolved * 1.68) 
 <endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 CustomerInvolved
@@ -28423,6 +29488,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -28619,6 +29688,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -28813,6 +29886,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -29009,6 +30086,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -29203,6 +30284,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -29399,6 +30484,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -29573,6 +30662,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -29797,6 +30890,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -30019,6 +31116,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -30251,6 +31352,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -30449,6 +31554,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -30649,6 +31758,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -30847,6 +31960,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -31047,6 +32164,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -31226,6 +32347,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -31364,6 +32489,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -31575,6 +32704,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -31859,6 +32992,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -32141,6 +33278,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -32425,6 +33566,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -32707,6 +33852,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -32991,6 +34140,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -33273,6 +34426,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -33557,6 +34714,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -33839,6 +35000,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -34175,6 +35340,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -34509,6 +35678,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -34845,6 +36018,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -35179,6 +36356,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -35515,6 +36696,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -35849,6 +37034,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -36185,6 +37374,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -36519,6 +37712,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -36855,6 +38052,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -37189,6 +38390,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -37525,6 +38730,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -37859,6 +39068,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -38195,6 +39408,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -38529,6 +39746,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -38865,6 +40086,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -39199,6 +40424,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -39535,6 +40764,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -39869,6 +41102,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -40205,6 +41442,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -40539,6 +41780,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -40875,6 +42120,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -41209,6 +42458,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -41545,6 +42798,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -41879,6 +43136,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -42215,6 +43476,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -42549,6 +43814,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -42885,6 +44154,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -43219,6 +44492,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -43555,6 +44832,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -43890,6 +45171,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -44157,6 +45442,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -44403,6 +45692,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -44651,6 +45944,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -44898,6 +46195,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -45109,6 +46410,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -45307,6 +46612,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -45507,6 +46816,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -45705,6 +47018,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -45956,6 +47273,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -46240,6 +47561,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -46522,6 +47847,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -46806,6 +48135,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -47088,6 +48421,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -47372,6 +48709,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -47654,6 +48995,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -47938,6 +49283,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -48220,6 +49569,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -48504,6 +49857,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -48786,6 +50143,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -49070,6 +50431,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -49352,6 +50717,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -49636,6 +51005,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -49918,6 +51291,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -50202,6 +51579,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -50484,6 +51865,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -50768,6 +52153,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -51050,6 +52439,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -51334,6 +52727,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -51617,6 +53014,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -51847,6 +53248,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -52079,6 +53484,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -52309,6 +53718,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -52541,6 +53954,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -52771,6 +54188,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -53003,6 +54424,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -53233,6 +54658,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -53553,6 +54982,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -53823,6 +55256,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -54095,6 +55532,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -54365,6 +55806,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -54637,6 +56082,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -54907,6 +56356,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -55179,6 +56632,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -55362,6 +56819,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+0
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -55533,6 +56994,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -55687,6 +57152,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
@@ -55877,6 +57346,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -55948,6 +57421,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 AcceptanceTesting
 
 <endParticipantAttributeRuleEffect>
@@ -55998,6 +57475,133 @@ PegAndSigfreidoPairProgThisIteration
 <beginParticipantAttributeRuleEffect>
 NumActivitiesOccurring
 numActionsThis-Proj-TheProject-Project:CreateUserStories + numActionsThis-Proj-TheProject-Project:ReleasePlanningMeeting + numActionsThis-Proj-TheProject-Project:IterationPlanningMeeting + numActionsThis-Proj-TheProject-Project:CreateAcceptanceTests + numActionsThis-Proj-TheProject-Project:Design + numActionsThis-Proj-TheProject-Project:CreateUnitTests + numActionsThis-Proj-TheProject-Project:LearnCodingStandard + numActionsThis-Proj-TheProject-Project:Program + numActionsThis-Proj-TheProject-Project:PairProgramRobertJoyce + numActionsThis-Proj-TheProject-Project:PairProgramTimothyReda + numActionsThis-Proj-TheProject-Project:PairProgramPegSigfreido + numActionsThis-Proj-TheProject-Project:UnitTestingAndFixing + numActionsThis-Proj-TheProject-Project:Refactor + numActionsThis-Proj-TheProject-Project:IntegrateRobertJoyce + numActionsThis-Proj-TheProject-Project:IntegrateTimothyReda + numActionsThis-Proj-TheProject-Project:IntegratePegSigfreido + numActionsThis-Proj-TheProject-Project:Integrate 
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<beginParticipantRuleEffect>
+Emp
+<beginParticipantTypeRuleEffect>
+1
+SoftwareDeveloper
+None
+<beginParticipantAttributeRuleEffect>
+Name
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+SoftwareDevelopmentExperience
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+SoftwareDevelopmentExperienceNumerical
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+InIterationPlanningMeeting
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Productivity
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+KnowsCodingStandard
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+KnowsCodingStandardNumerical
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Programming
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+Integrating
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+NumProgrammingActions
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+RepNumber
+
+<endParticipantAttributeRuleEffect>
+<endParticipantTypeRuleEffect>
+<endParticipantRuleEffect>
+<endEffectRule>
+<beginEffectRule>
+UpdateTimeSinceLastRelease
+-1
+UpdateProjectAttributes
+0
+false
+false
+<beginRuleAnnotation>
+
+<endRuleAnnotation>
+<beginParticipantRuleEffect>
+Proj
+<beginParticipantTypeRuleEffect>
+4
+TheProject
+None
+<beginParticipantAttributeRuleEffect>
+Name
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+CurrentIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+IterationStarted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+UserStoriesChosenForThisIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+ProgrammingTasksAssignedThisIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+IterationPlanningMeetingStarted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+AcceptanceTestsCreatedThisIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+UnitTestsCreatedThisIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+RobertAndJoycePairProgThisIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+TimothyAndRedaPairProgThisIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+PegAndSigfreidoPairProgThisIteration
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+NumActivitiesOccurring
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+AcceptanceTesting
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+thisTheProject-Project:TimeSinceLastRelease + 1 
 <endParticipantAttributeRuleEffect>
 <endParticipantTypeRuleEffect>
 <endParticipantRuleEffect>
@@ -56122,6 +57726,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -56315,6 +57923,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -56490,6 +58102,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeSinceLastRelease
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -56699,29 +58315,17 @@ Eclipse
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareDeveloper - Reda
-true
-true
-3
-7
-
-- Employee - SoftwareDeveloper - Robert
-true
-true
-10
-6
-
-- Employee - CustomerRep - Customer Wayne
-true
-true
-1
-4
-
 - Employee - Manager - Chang
 true
 true
 7
 1
+
+- Employee - SoftwareDeveloper - Reda
+true
+true
+3
+7
 
 - Employee - SoftwareDeveloper - Joyce
 true
@@ -56729,16 +58333,10 @@ true
 10
 5
 
-- Employee - SoftwareDeveloper - Peg
+- Employee - SoftwareDeveloper - Robert
 true
 true
-12
-2
-
-- Employee - SoftwareDeveloper - Timothy
-true
-true
-3
+10
 6
 
 - Employee - SoftwareDeveloper - Sigfreido
@@ -56746,6 +58344,24 @@ true
 true
 13
 2
+
+- Employee - SoftwareDeveloper - Peg
+true
+true
+12
+2
+
+- Employee - CustomerRep - Customer Wayne
+true
+true
+1
+4
+
+- Employee - SoftwareDeveloper - Timothy
+true
+true
+3
+6
 
 <endSOPUsers>
 -3
