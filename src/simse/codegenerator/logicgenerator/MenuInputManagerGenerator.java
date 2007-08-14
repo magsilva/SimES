@@ -569,7 +569,8 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         }
         
         // triggers requiring confirmation:
-        if (((UserActionTypeTrigger)outerTrig).requiresConfirmation()) {
+        if (((UserActionTypeTrigger)outerTrig).requiresConfirmation() && 
+        		!((UserActionTypeTrigger)outerTrig).isGameEndingTrigger()) {
           writer
           .write("int choice = JOptionPane.showConfirmDialog(null, (\"Are you sure?\"), \"Confirm Action\", JOptionPane.YES_NO_OPTION);");
           writer.write(NEWLINE);

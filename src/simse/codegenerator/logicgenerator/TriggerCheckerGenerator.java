@@ -502,6 +502,8 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             writer.write(CLOSED_BRACK);
             writer.write(NEWLINE);
+            writer.write(CLOSED_BRACK);
+            writer.write(NEWLINE);
           }
         }
 
