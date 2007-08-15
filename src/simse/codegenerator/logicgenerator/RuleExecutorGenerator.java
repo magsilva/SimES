@@ -2887,6 +2887,8 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
+        writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
       }
     } catch (IOException e) {
       JOptionPane.showMessageDialog(null, ("Error writing file "
