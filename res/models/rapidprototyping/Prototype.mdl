@@ -1673,7 +1673,7 @@ ChoosePrototypingLanguage
 false
 true
 <beginActionTypeAnnotation>
-A language to be used in building the prototype is chosen.
+A language to be used for building the prototype is chosen.
 <endActionTypeAnnotation>
 false
 <beginActionTypeParticipant>
@@ -29879,17 +29879,17 @@ Richardson.gif
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Rowan
-true
-true
-5
-0
-
 - Employee - SoftwareEngineer - Emily
 true
 true
 15
 8
+
+- Employee - SoftwareEngineer - Rowan
+true
+true
+5
+0
 
 - Employee - SoftwareEngineer - Dean
 true
@@ -29897,16 +29897,16 @@ true
 9
 7
 
-- Employee - SoftwareEngineer - Mollie
-true
-true
-12
-1
-
 - Employee - SoftwareEngineer - Anne Marie
 true
 true
 0
+1
+
+- Employee - SoftwareEngineer - Mollie
+true
+true
+12
 1
 
 <endSOPUsers>

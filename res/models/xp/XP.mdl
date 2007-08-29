@@ -80792,29 +80792,11 @@ Eclipse
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareDeveloper - Sigfreido
+- Employee - SoftwareDeveloper - Reda
 true
 true
-13
-2
-
-- Employee - SoftwareDeveloper - Joyce
-true
-true
-10
-5
-
-- Employee - SoftwareDeveloper - Robert
-true
-true
-10
-6
-
-- Employee - CustomerRep - Customer Wayne
-true
-true
-1
-4
+3
+7
 
 - Employee - Manager - Chang
 true
@@ -80822,11 +80804,11 @@ true
 7
 1
 
-- Employee - SoftwareDeveloper - Timothy
+- Employee - CustomerRep - Customer Wayne
 true
 true
-3
-6
+1
+4
 
 - Employee - SoftwareDeveloper - Peg
 true
@@ -80834,11 +80816,29 @@ true
 12
 2
 
-- Employee - SoftwareDeveloper - Reda
+- Employee - SoftwareDeveloper - Sigfreido
+true
+true
+13
+2
+
+- Employee - SoftwareDeveloper - Timothy
 true
 true
 3
-7
+6
+
+- Employee - SoftwareDeveloper - Robert
+true
+true
+10
+6
+
+- Employee - SoftwareDeveloper - Joyce
+true
+true
+10
+5
 
 <endSOPUsers>
 -3
@@ -80882,7 +80882,7 @@ true
 402
 -1
 403
--1
+5
 -3
 104
 -3
