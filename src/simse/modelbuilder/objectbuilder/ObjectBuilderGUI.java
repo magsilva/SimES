@@ -43,7 +43,7 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
   private JButton renameObjectButton; // button for renaming an existing object
   private AttributeInfoForm aInfo; // form for entering attribute info
 
-  private JCheckBox allowHireAndFireCheckBox;
+  //private JCheckBox allowHireAndFireCheckBox;
   private WarningListPane warningPane;
 
   public ObjectBuilderGUI(ModelBuilderGUI owner) {
@@ -58,11 +58,11 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
     // Create "define object" pane:
     JPanel defineObjectPane = new JPanel();
 
-    allowHireAndFireCheckBox = new JCheckBox(
-        "Allow Hiring and Firing of Employees");
-    allowHireAndFireCheckBox.setEnabled(false);
-    allowHireAndFireCheckBox.addActionListener(this);
-    defineObjectPane.add(allowHireAndFireCheckBox);
+//    allowHireAndFireCheckBox = new JCheckBox(
+//        "Allow Hiring and Firing of Employees");
+//    allowHireAndFireCheckBox.setEnabled(false);
+//    allowHireAndFireCheckBox.addActionListener(this);
+//    defineObjectPane.add(allowHireAndFireCheckBox);
 
     defineObjectPane.add(new JLabel("Define New Object Type:"));
 
@@ -255,8 +255,9 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
   }
 
   public boolean allowHireFire() {
-    return allowHireAndFireCheckBox != null
-        && allowHireAndFireCheckBox.isSelected();
+//    return allowHireAndFireCheckBox != null
+//        && allowHireAndFireCheckBox.isSelected();
+  	return false;
   }
 
   public void actionPerformed(ActionEvent evt) // handles user actions
@@ -367,91 +368,91 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
       }
     }
 
-    else if (source == allowHireAndFireCheckBox) {
-      boolean warningAdded = false;
-      Vector warnings = new Vector();
-
-      if (allowHireAndFireCheckBox.isSelected()) {
-        Vector objs = objects.getAllObjectTypes();
-        for (int i = 0; i < objs.size(); i++) {
-          SimSEObjectType tmpObj = (SimSEObjectType) objs.get(i);
-          // find all the employee types and remove the hired attribute
-          if (tmpObj.getType() == SimSEObjectTypeTypes.EMPLOYEE) {
-            boolean found = false;
-            Vector attribs = tmpObj.getAllAttributes();
-            for (int j = 0; j < attribs.size(); j++) {
-              Attribute at = (Attribute) attribs.get(j);
-
-              if (at.getName().equalsIgnoreCase("Hired"))
-                found = true;
-            }
-            if (!found) {
-              if (!warningAdded) {
-                warnings
-                    .add("Employees will not appear in game unless their Hired attribute is assigned a value");
-                warningAdded = true;
-              }
-
-              NonNumericalAttribute a = new NonNumericalAttribute("Hired",
-                  AttributeTypes.BOOLEAN, true, attribs.size() == 0, true);
-              tmpObj.addAttribute(a);
-            }
-          }
-        }
-
-        generateWarnings(warnings);
-
-      } else // unchecking of hire and fire, confirm it
-      {
-        int choice = JOptionPane
-            .showConfirmDialog(
-                null,
-                ("By unchecking this option, All Employee Objects will lose their \"hired\" attribute.  Do you wish to Continue? "),
-                "Confirm Attribute Removal", JOptionPane.YES_NO_OPTION);
-        if (choice == JOptionPane.YES_OPTION) {
-          Vector objs = objects.getAllObjectTypes();
-          for (int i = 0; i < objs.size(); i++) {
-            SimSEObjectType tmpObj = (SimSEObjectType) objs.get(i);
-
-            // find all the employee types and remove the hired attribute
-            if (tmpObj.getType() == SimSEObjectTypeTypes.EMPLOYEE) {
-              Vector attribs = tmpObj.getAllAttributes();
-              for (int j = 0; j < attribs.size(); j++) {
-                Attribute at = (Attribute) attribs.get(j);
-
-                if (at.getName().equalsIgnoreCase("Hired")) {
-                  tmpObj.removeAttribute(at.getName());
-
-                  if (at.isKey()) {
-                    if (attribs.size() >= 1) {
-                      //set key
-                      at = (Attribute) attribs.get(0);
-                      at.setKey(true);
-
-                      warnings.add("Key removed for "
-                          + SimSEObjectTypeTypes.getText(tmpObj.getType())
-                          + " " + tmpObj.getName()
-                          + ": added to next available Attribute "
-                          + at.getName());
-                    } else {
-                      warnings.add(SimSEObjectTypeTypes.getText(tmpObj
-                          .getType())
-                          + " " + tmpObj.getName() + " has no key attribute");
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          generateWarnings(warnings);
-        }
-      }
-
-      // refresh the data
-      if (attTblMod.getObjectInFocus() != null)
-        attTblMod.refreshData();
-    }
+//    else if (source == allowHireAndFireCheckBox) {
+//      boolean warningAdded = false;
+//      Vector warnings = new Vector();
+//
+//      if (allowHireAndFireCheckBox.isSelected()) {
+//        Vector objs = objects.getAllObjectTypes();
+//        for (int i = 0; i < objs.size(); i++) {
+//          SimSEObjectType tmpObj = (SimSEObjectType) objs.get(i);
+//          // find all the employee types and remove the hired attribute
+//          if (tmpObj.getType() == SimSEObjectTypeTypes.EMPLOYEE) {
+//            boolean found = false;
+//            Vector attribs = tmpObj.getAllAttributes();
+//            for (int j = 0; j < attribs.size(); j++) {
+//              Attribute at = (Attribute) attribs.get(j);
+//
+//              if (at.getName().equalsIgnoreCase("Hired"))
+//                found = true;
+//            }
+//            if (!found) {
+//              if (!warningAdded) {
+//                warnings
+//                    .add("Employees will not appear in game unless their Hired attribute is assigned a value");
+//                warningAdded = true;
+//              }
+//
+//              NonNumericalAttribute a = new NonNumericalAttribute("Hired",
+//                  AttributeTypes.BOOLEAN, true, attribs.size() == 0, true);
+//              tmpObj.addAttribute(a);
+//            }
+//          }
+//        }
+//
+//        generateWarnings(warnings);
+//
+//      } else // unchecking of hire and fire, confirm it
+//      {
+//        int choice = JOptionPane
+//            .showConfirmDialog(
+//                null,
+//                ("By unchecking this option, All Employee Objects will lose their \"hired\" attribute.  Do you wish to Continue? "),
+//                "Confirm Attribute Removal", JOptionPane.YES_NO_OPTION);
+//        if (choice == JOptionPane.YES_OPTION) {
+//          Vector objs = objects.getAllObjectTypes();
+//          for (int i = 0; i < objs.size(); i++) {
+//            SimSEObjectType tmpObj = (SimSEObjectType) objs.get(i);
+//
+//            // find all the employee types and remove the hired attribute
+//            if (tmpObj.getType() == SimSEObjectTypeTypes.EMPLOYEE) {
+//              Vector attribs = tmpObj.getAllAttributes();
+//              for (int j = 0; j < attribs.size(); j++) {
+//                Attribute at = (Attribute) attribs.get(j);
+//
+//                if (at.getName().equalsIgnoreCase("Hired")) {
+//                  tmpObj.removeAttribute(at.getName());
+//
+//                  if (at.isKey()) {
+//                    if (attribs.size() >= 1) {
+//                      //set key
+//                      at = (Attribute) attribs.get(0);
+//                      at.setKey(true);
+//
+//                      warnings.add("Key removed for "
+//                          + SimSEObjectTypeTypes.getText(tmpObj.getType())
+//                          + " " + tmpObj.getName()
+//                          + ": added to next available Attribute "
+//                          + at.getName());
+//                    } else {
+//                      warnings.add(SimSEObjectTypeTypes.getText(tmpObj
+//                          .getType())
+//                          + " " + tmpObj.getName() + " has no key attribute");
+//                    }
+//                  }
+//                }
+//              }
+//            }
+//          }
+//
+//          generateWarnings(warnings);
+//        }
+//      }
+//
+//      // refresh the data
+//      if (attTblMod.getObjectInFocus() != null)
+//        attTblMod.refreshData();
+//    }
   }
 
   private void renameObject(SimSEObjectType obj)
@@ -899,18 +900,18 @@ public class ObjectBuilderGUI extends JPanel implements ActionListener,
     updateDefinedObjectsList();
     defineObjectList.setEnabled(false);
     okDefineObjectButton.setEnabled(false);
-    allowHireAndFireCheckBox.setEnabled(false);
+//    allowHireAndFireCheckBox.setEnabled(false);
   }
 
   public void setNewOpenFile(File f) {
     clearObjectInFocus();
     objects.clearAll();
-    allowHireAndFireCheckBox.setEnabled(true);
+//    allowHireAndFireCheckBox.setEnabled(true);
     if (f.exists()) // file has been saved before
     {
       fileManip.loadFile(f);
 
-      allowHireAndFireCheckBox.setSelected(fileManip.isAllowHireFireChecked());
+//      allowHireAndFireCheckBox.setSelected(fileManip.isAllowHireFireChecked());
     }
     updateDefinedObjectsList();
     defineObjectList.setEnabled(true);

@@ -31,7 +31,7 @@ public class CodeGenerator {
   private GUIGenerator guiGen; // generates the GUI component
   private ExplanatoryToolGenerator expToolGen; // generates the explanatory tool
   private IDGeneratorGenerator idGen; // generates the IDGenerator
-  public static boolean allowHireFire = true;
+  public static boolean allowHireFire = false;
 
   public CodeGenerator(ModelOptions options, DefinedObjectTypes objTypes, 
       CreatedObjects objs, DefinedActionTypes actTypes, Hashtable 
@@ -49,7 +49,7 @@ public class CodeGenerator {
   }
 
   public void setAllowHireFire(boolean b) {
-    allowHireFire = b;
+    allowHireFire = false;
   }
 
   public void generate() // causes all of this component's sub-components to

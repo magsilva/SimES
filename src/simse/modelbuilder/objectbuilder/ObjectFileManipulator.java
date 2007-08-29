@@ -29,7 +29,7 @@ public class ObjectFileManipulator {
   }
 
   public boolean isAllowHireFireChecked() {
-    return allowHireFire;
+    return false;
   }
 
   public void loadFile(File inputFile) // loads the mdl file into memory,
@@ -46,6 +46,7 @@ public class ObjectFileManipulator {
         if (currentLine.equals(BEGIN_ALLOW_HIRE_FIRE_TAG)) {
           allowHireFire = reader.readLine().equals("true");
           reader.readLine(); // remove the end allowHireFire tag
+          allowHireFire = false; // removed this functionality, always false now
         }
 
         if (currentLine.equals(BEGIN_OBJECT_TYPES_TAG)) // beginning of object
