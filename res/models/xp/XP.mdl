@@ -458,6 +458,15 @@ ReleaseMadeThisIteration
 0
 0
 <endAttribute>
+<beginAttribute>
+TimeAllotted
+3
+1
+0
+1
+0
+boundless
+<endAttribute>
 <endObjectType>
 <beginObjectType>
 2
@@ -1256,6 +1265,10 @@ TimeElapsed
 ReleaseMadeThisIteration
 false
 <endInstantiatedAttribute>
+<beginInstantiatedAttribute>
+TimeAllotted
+1800
+<endInstantiatedAttribute>
 <endObject>
 <beginObject>
 2
@@ -1752,6 +1765,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <endActionTypeTrigger>
@@ -2037,6 +2056,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -2469,6 +2494,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <endActionTypeTrigger>
@@ -2802,6 +2833,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -3142,6 +3179,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -3612,6 +3655,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -4210,6 +4259,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -4487,6 +4542,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -4760,6 +4821,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -5077,6 +5144,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -5347,6 +5420,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -5690,6 +5769,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -5939,6 +6024,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -6309,6 +6400,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -6594,6 +6691,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -6947,6 +7050,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -7273,6 +7382,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -7594,6 +7709,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -8025,6 +8146,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -8310,6 +8437,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -8600,6 +8733,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -8920,6 +9059,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <endActionTypeTrigger>
@@ -9138,6 +9283,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <endActionTypeDestroyer>
@@ -9351,6 +9502,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -9778,6 +9935,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -10177,6 +10340,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -10581,6 +10750,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -11195,6 +11370,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -11672,6 +11853,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -12154,6 +12341,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -12768,6 +12961,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -13245,6 +13444,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -13727,6 +13932,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -14341,6 +14552,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -14818,6 +15035,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -15300,6 +15523,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -15792,6 +16021,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -16143,6 +16378,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -16499,6 +16740,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -16896,6 +17143,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -17187,6 +17440,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -17483,6 +17742,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -17868,6 +18133,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -18371,6 +18642,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -18789,6 +19066,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -19304,6 +19587,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -19721,6 +20010,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -20143,6 +20438,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -20658,6 +20959,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -21075,6 +21382,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -21501,6 +21814,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -21921,6 +22240,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -22265,6 +22590,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -22604,6 +22935,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -23168,6 +23505,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -23555,6 +23898,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -23951,6 +24300,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -24338,6 +24693,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -24733,6 +25094,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -25124,6 +25491,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <beginActionTypeParticipantDestroyer>
@@ -25440,6 +25813,12 @@ false
 ReleaseMadeThisIteration
 =
 false
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
 false
 <endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
@@ -25866,6 +26245,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -26237,6 +26622,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -26557,6 +26948,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <endActionTypeTrigger>
@@ -26709,6 +27106,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -27052,6 +27455,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -27301,6 +27710,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -27539,6 +27954,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <endActionTypeTrigger>
@@ -27681,6 +28102,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -27919,6 +28346,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <endActionTypeTrigger>
@@ -28119,6 +28552,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantDestroyer>
 <endActionTypeDestroyer>
@@ -28314,6 +28753,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -28614,6 +29059,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -28954,6 +29405,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <endActionTypeTrigger>
@@ -29150,6 +29607,12 @@ false
 <endActionTypeParticipantAttributeConstraint>
 <beginActionTypeParticipantAttributeConstraint>
 ReleaseMadeThisIteration
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
 <
 <>
 false
@@ -29401,6 +29864,12 @@ ReleaseMadeThisIteration
 <>
 false
 <endActionTypeParticipantAttributeConstraint>
+<beginActionTypeParticipantAttributeConstraint>
+TimeAllotted
+<
+<>
+false
+<endActionTypeParticipantAttributeConstraint>
 <endActionTypeParticipantConstraint>
 <endActionTypeParticipantTrigger>
 <beginActionTypeParticipantTrigger>
@@ -29613,6 +30082,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -29829,6 +30302,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -30043,6 +30520,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -30259,6 +30740,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -30473,6 +30958,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -30729,6 +31218,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -30983,6 +31476,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -31239,6 +31736,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -31493,6 +31994,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -31749,6 +32254,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -32003,6 +32512,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -32259,6 +32772,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -32405,6 +32922,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 false
@@ -32765,6 +33286,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -33123,6 +33648,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -33483,6 +34012,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -33841,6 +34374,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -34241,6 +34778,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -34451,6 +34992,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -34663,6 +35208,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -34873,6 +35422,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -35085,6 +35638,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -35296,6 +35853,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -35483,6 +36044,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -35691,6 +36256,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -35903,6 +36472,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -36093,6 +36666,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -36313,6 +36890,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -36531,6 +37112,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -36751,6 +37336,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -36969,6 +37558,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -37189,6 +37782,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -37407,6 +38004,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -37627,6 +38228,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -37846,6 +38451,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -38044,6 +38653,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -38292,6 +38905,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -38538,6 +39155,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -38786,6 +39407,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -39033,6 +39658,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -39279,6 +39908,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -39535,6 +40168,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -39757,6 +40394,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -39981,6 +40622,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -40203,6 +40848,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -40427,6 +41076,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -40649,6 +41302,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -40873,6 +41530,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -41096,6 +41757,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -41299,6 +41964,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -41461,6 +42130,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -41625,6 +42298,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -41788,6 +42465,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -41950,6 +42631,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -42185,6 +42870,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -42493,6 +43182,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -42799,6 +43492,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -43107,6 +43804,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -43413,6 +44114,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -43721,6 +44426,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -44027,6 +44736,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -44335,6 +45048,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -44641,6 +45358,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -44949,6 +45670,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -45256,6 +45981,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -45562,6 +46291,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -45926,6 +46659,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -46288,6 +47025,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -46652,6 +47393,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -47014,6 +47759,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -47378,6 +48127,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -47740,6 +48493,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -48104,6 +48861,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -48466,6 +49227,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -48830,6 +49595,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -49192,6 +49961,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -49556,6 +50329,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -49918,6 +50695,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -50282,6 +51063,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -50644,6 +51429,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -51008,6 +51797,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -51370,6 +52163,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -51734,6 +52531,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -52096,6 +52897,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -52460,6 +53265,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -52822,6 +53631,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -53186,6 +53999,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -53548,6 +54365,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -53912,6 +54733,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -54274,6 +55099,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -54638,6 +55467,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -55000,6 +55833,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -55364,6 +56201,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -55726,6 +56567,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -56090,6 +56935,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -56452,6 +57301,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -56816,6 +57669,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -57178,6 +58035,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -57542,6 +58403,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -57904,6 +58769,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -58268,6 +59137,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -58630,6 +59503,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -58994,6 +59871,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -59356,6 +60237,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -59720,6 +60605,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -60011,6 +60900,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -60281,6 +61174,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -60553,6 +61450,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -60823,6 +61724,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -61095,6 +62000,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -61365,6 +62274,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -61637,6 +62550,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -61872,6 +62789,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -62094,6 +63015,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -62318,6 +63243,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -62540,6 +63469,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -62764,6 +63697,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -62987,6 +63924,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -63209,6 +64150,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -63488,6 +64433,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -63800,6 +64749,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -64110,6 +65063,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -64422,6 +65379,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -64732,6 +65693,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -65044,6 +66009,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -65354,6 +66323,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -65666,6 +66639,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -65976,6 +66953,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -66288,6 +67269,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -66598,6 +67583,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -66910,6 +67899,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -67220,6 +68213,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -67532,6 +68529,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -67842,6 +68843,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -68154,6 +69159,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -68464,6 +69473,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -68776,6 +69789,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -69086,6 +70103,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -69398,6 +70419,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -69708,6 +70733,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -70020,6 +71049,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -70330,6 +71363,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -70642,6 +71679,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -70952,6 +71993,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -71264,6 +72309,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -71574,6 +72623,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -71886,6 +72939,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -72196,6 +73253,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -72508,6 +73569,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -72762,6 +73827,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -73018,6 +74087,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -73272,6 +74345,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -73528,6 +74605,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -73782,6 +74863,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -74038,6 +75123,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -74292,6 +75381,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -74548,6 +75641,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -74803,6 +75900,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -75057,6 +76158,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -75401,6 +76506,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -75695,6 +76804,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -75991,6 +77104,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -76285,6 +77402,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -76581,6 +77702,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -76875,6 +78000,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -77171,6 +78300,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -77465,6 +78598,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 Name
 
@@ -77761,6 +78898,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -78056,6 +79197,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 Name
 
 <endParticipantAttributeRuleEffect>
@@ -78262,6 +79407,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 true
@@ -78502,6 +79651,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -78676,6 +79829,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -78890,6 +80047,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -78980,6 +80141,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -79128,6 +80293,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -79274,6 +80443,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -79477,6 +80650,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -79694,6 +80871,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -79894,6 +81075,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -80049,6 +81234,10 @@ Proj
 TheProject
 None
 <beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
+<beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
 <endParticipantAttributeRuleEffect>
@@ -80159,6 +81348,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -80336,6 +81529,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -80559,6 +81756,10 @@ Proj
 4
 TheProject
 None
+<beginParticipantAttributeRuleEffect>
+TimeAllotted
+
+<endParticipantAttributeRuleEffect>
 <beginParticipantAttributeRuleEffect>
 ReleaseMadeThisIteration
 
@@ -80792,41 +81993,17 @@ Eclipse
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareDeveloper - Reda
-true
-true
-3
-7
-
 - Employee - Manager - Chang
 true
 true
 7
 1
 
-- Employee - CustomerRep - Customer Wayne
-true
-true
-1
-4
-
-- Employee - SoftwareDeveloper - Peg
-true
-true
-12
-2
-
 - Employee - SoftwareDeveloper - Sigfreido
 true
 true
 13
 2
-
-- Employee - SoftwareDeveloper - Timothy
-true
-true
-3
-6
 
 - Employee - SoftwareDeveloper - Robert
 true
@@ -80839,6 +82016,30 @@ true
 true
 10
 5
+
+- Employee - SoftwareDeveloper - Reda
+true
+true
+3
+7
+
+- Employee - SoftwareDeveloper - Peg
+true
+true
+12
+2
+
+- Employee - SoftwareDeveloper - Timothy
+true
+true
+3
+6
+
+- Employee - CustomerRep - Customer Wayne
+true
+true
+1
+4
 
 <endSOPUsers>
 -3
