@@ -291,6 +291,14 @@ public class EngineGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      
+      // getTimer method
+    	writer.write("public javax.swing.Timer getTimer() {");
+    	writer.write(NEWLINE);
+    	writer.write("return timer;");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+      
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.close();
