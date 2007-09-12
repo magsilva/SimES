@@ -69,6 +69,8 @@ public class CompositeGraphGenerator implements CodeGeneratorConstants {
       // member variables:
       writer.write("private ActionGraph actGraph;");
       writer.write(NEWLINE);
+      writer.write("private ObjectGraph objGraph;");
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // constructor:
@@ -79,6 +81,8 @@ public class CompositeGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("this.actGraph = actGraph;");
+      writer.write(NEWLINE);
+      writer.write("this.objGraph = objGraph;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// parent plot:");
@@ -149,6 +153,17 @@ public class CompositeGraphGenerator implements CodeGeneratorConstants {
       writer.write("public void chartMouseMoved(ChartMouseEvent event) {}");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      
+      // "update" method:
+    	writer.write("public void update() {");
+    	writer.write(NEWLINE);
+    	writer.write("actGraph.update();");
+    	writer.write(NEWLINE);
+    	writer.write("objGraph.update();");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
 
       // ExitListener class:
       writer.write("public class ExitListener extends WindowAdapter {");

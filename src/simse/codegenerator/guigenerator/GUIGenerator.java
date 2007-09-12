@@ -188,6 +188,9 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private World world;");
       writer.write(NEWLINE);
+      writer.write("private ExplanatoryTool expTool;");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       // constructor:
       writer.write("public SimSEGUI(Engine e, State s, Logic l)");
@@ -230,14 +233,16 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("analyzeMenu = new JMenu(\"Analyze\"); // \"Analyze\" menu");
       writer.write(NEWLINE);
-      writer.write("analyzeMenu.setEnabled(false); // disable menu");
-      writer.write(NEWLINE);
       writer.write("analyzeSimItem = new JMenuItem(\"Analyze Simulation\");");
       writer.write(NEWLINE);
       writer.write("analyzeMenu.add(analyzeSimItem);");
       writer.write(NEWLINE);
       writer.write("analyzeSimItem.addActionListener(this);");
       writer.write(NEWLINE);
+      if (!options.getExplanatoryToolAccessOption()) {
+      	writer.write("analyzeMenu.setEnabled(false);");
+      	writer.write(NEWLINE);
+      }
       writer.write("menuBar.add(analyzeMenu);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
@@ -295,7 +300,23 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("if (source == analyzeSimItem) {");
       writer.write(NEWLINE);
-      writer.write("ExplanatoryTool expTool = new ExplanatoryTool(this, state.getLogger().getLog());");
+			writer.write("if (expTool == null) { // explanatory tool has not been started yet");
+			writer.write(NEWLINE);
+			writer.write("expTool = new ExplanatoryTool(this, state.getLogger().getLog());");
+			writer.write(NEWLINE);
+			writer.write(CLOSED_BRACK);
+			writer.write(NEWLINE);
+			writer.write("else { // explanatory tool has already been started");
+			writer.write(NEWLINE);
+			writer.write("if (expTool.getState() == Frame.ICONIFIED) {");
+			writer.write(NEWLINE);
+			writer.write("expTool.setState(Frame.NORMAL);");
+			writer.write(NEWLINE);
+			writer.write(CLOSED_BRACK);
+			writer.write(NEWLINE);
+			writer.write("expTool.setVisible(true);");
+			writer.write(NEWLINE);
+			writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -390,12 +411,20 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("actionPanel.update();");
       writer.write(NEWLINE);
-      writer.write("if (state.getClock().isStopped()) {");
-      writer.write(NEWLINE);
-      writer.write("analyzeMenu.setEnabled(true);");
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
+      if (!options.getExplanatoryToolAccessOption()) {
+      	writer.write("if (!analyzeMenu.isEnabled() && state.getClock().isStopped()) {");
+      	writer.write(NEWLINE);
+      	writer.write("analyzeMenu.setEnabled(true);");
+      	writer.write(NEWLINE);
+      	writer.write(CLOSED_BRACK);
+      	writer.write(NEWLINE);
+      }
+  		writer.write("if (expTool != null) {");
+  		writer.write(NEWLINE);
+  		writer.write("expTool.update();");
+  		writer.write(NEWLINE);
+  		writer.write(CLOSED_BRACK);
+  		writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);

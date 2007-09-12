@@ -17,6 +17,7 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
   private ModelOptions options; // options being edited/viewed
 
   private JCheckBox everyoneStopCheckBox; 
+  private JCheckBox expToolAccessCheckBox;
   private JTextField iconDirField;
   private JButton iconBrowseButton;
   private JFileChooser iconDirFileChooser;
@@ -56,6 +57,15 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
     		"user-destroyable actions</html>");
     everyoneStopPane.add(everyoneStopCheckBox);
     mainPane.add(everyoneStopPane);
+    
+    // Create explToolAccess panel:
+    JPanel explToolAccessPane = new JPanel();
+    expToolAccessCheckBox = new JCheckBox("Allow explanatory tool access " +
+    		"during the game");
+    expToolAccessCheckBox.setToolTipText("<html>Allow access to the " +
+    		"explanatory tool during the game,<br>not just at the end</html>");
+    explToolAccessPane.add(expToolAccessCheckBox);
+    mainPane.add(explToolAccessPane);
     
     JSeparator separator1 = new JSeparator();
     separator1.setMaximumSize(new Dimension(2900, 1));
@@ -133,6 +143,8 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
     {
       if (inputValid()) {
         options.setEveryoneStopOption(everyoneStopCheckBox.isSelected());
+        options.setExplanatoryToolAccessOption(
+        		expToolAccessCheckBox.isSelected());
         if (hasNonBlankEntry(iconDirField)) {
           options.setIconDirectory(new File(iconDirField.getText()));
         }
@@ -207,6 +219,7 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
    */
   private void initializeForm() {
     everyoneStopCheckBox.setSelected(options.getEveryoneStopOption());
+    expToolAccessCheckBox.setSelected(options.getExplanatoryToolAccessOption());
     File iconDir = options.getIconDirectory();
     if (iconDir != null) {
       iconDirField.setText(iconDir.getAbsolutePath());
@@ -245,7 +258,7 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
     return valid;
   }
   
-  boolean hasNonBlankEntry(JTextField field) {
+  private boolean hasNonBlankEntry(JTextField field) {
     String text = field.getText();
     if ((text != null) && (text.length() != 0) && (!text.matches("\\s+"))) {
       return true;

@@ -106,12 +106,16 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // member variables:
-      writer.write("private State[] log;");
+      writer.write("private ArrayList<State> log;");
       writer.write(NEWLINE);
       writer.write("private String[] actionNames;");
       writer.write(NEWLINE);
       writer.write("private JFreeChart chart; // chart object");
       writer.write(NEWLINE);
+    	writer.write("private ChartPanel chartPanel;");
+    	writer.write(NEWLINE);
+    	writer.write("private XYSeriesCollection dataset;");
+    	writer.write(NEWLINE);
       writer
           .write("private Hashtable series = new Hashtable(); // a Hashtable to map action ids to XYSeries");
       writer.write(NEWLINE);
@@ -145,17 +149,11 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
 
       // constructor:
       writer
-          .write("public ActionGraph(ArrayList log, String[] actionNames, boolean showChart) {");
+          .write("public ActionGraph(ArrayList<State> log, String[] actionNames, boolean showChart) {");
       writer.write(NEWLINE);
       writer.write("super(\"Action Graph\");");
       writer.write(NEWLINE);
-      writer.write("this.log = new State[log.size()];");
-      writer.write(NEWLINE);
-      writer.write("for (int i = 0; i < log.size(); i++) {");
-      writer.write(NEWLINE);
-      writer.write("this.log[i] = (State) log.get(i);");
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
+      writer.write("this.log = log;");
       writer.write(NEWLINE);
       writer.write("this.actionNames = actionNames;");
       writer.write(NEWLINE);
@@ -172,9 +170,14 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
         }
       }
       writer.write(NEWLINE);
-      writer.write("XYDataset dataset = createDataset();");
       writer.write(NEWLINE);
-      writer.write("chart = createChart(dataset);");
+      writer.write("// create dataset:");
+      writer.write(NEWLINE);
+      writer.write("dataset = new XYSeriesCollection();");
+      writer.write(NEWLINE);
+      writer.write("XYDataset xydataset = createDataset();");
+      writer.write(NEWLINE);
+      writer.write("chart = createChart(xydataset);");
       writer.write(NEWLINE);
       writer.write("ChartPanel chartPanel = new ChartPanel(chart);");
       writer.write(NEWLINE);
@@ -226,9 +229,9 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
           writer.write("// go through the " + uCaseName
               + "ActionStateRepository for each clock tick:");
           writer.write(NEWLINE);
-          writer.write("for (int j = 0; j < log.length; j++) {");
+          writer.write("for (int j = 0; j < log.size(); j++) {");
           writer.write(NEWLINE);
-          writer.write("State state = log[j];");
+          writer.write("State state = log.get(j);");
           writer.write(NEWLINE);
           writer.write("Vector " + lCaseName
               + "Actions = state.getActionStateRepository().get" + uCaseName
@@ -257,22 +260,6 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
         }
       }
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write(NEWLINE);
-      writer.write("// create dataset:");
-      writer.write(NEWLINE);
-      writer.write("XYSeriesCollection dataset = new XYSeriesCollection();");
-      writer.write(NEWLINE);
-      writer.write(NEWLINE);
-      writer.write("// add all series to the dataset:");
-      writer.write(NEWLINE);
-      writer.write("Enumeration e = series.elements();");
-      writer.write(NEWLINE);
-      writer.write("while (e.hasMoreElements()) {");
-      writer.write(NEWLINE);
-      writer.write("dataset.addSeries((XYSeries) e.nextElement());");
-      writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write("return dataset;");
@@ -402,6 +389,8 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("indices.add(actionIndex, newSeriesName);");
       writer.write(NEWLINE);
+      writer.write("dataset.addSeries(newSeries);");
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// update the index for the next new action:");
       writer.write(NEWLINE);
@@ -488,7 +477,7 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write("if (actionId > -1) { // valid action");
       writer.write(NEWLINE);
       writer
-          .write("Action action = log[xVal].getActionStateRepository().getActionWithId(actionId);");
+          .write("Action action = log.get(xVal).getActionStateRepository().getActionWithId(actionId);");
       writer.write(NEWLINE);
       writer.write("if (action != null) {");
       writer.write("// bring up ActionInfo window:");
@@ -535,6 +524,69 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write("return -1;");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // "update" method:
+    	writer.write("public void update() {");
+    	writer.write(NEWLINE);
+    	writer.write("if ((log.size() > 0) && (log.get(log.size() - 1) != null)) { // there is a log that has not been graphed yet");
+    	writer.write(NEWLINE);
+    	writer.write("// add a new end data point for each series:");
+    	writer.write(NEWLINE);
+    	writer.write("// go through each action:");
+    	writer.write(NEWLINE);
+    	writer.write("for (int i = 0; i < actionNames.length; i++) {");
+    	writer.write(NEWLINE);
+
+    	// go through each action and generate code for it:
+      writeElse = false;
+      for (int i = 0; i < actions.size(); i++) {
+        ActionType act = (ActionType) actions.get(i);
+        String uCaseName = getUpperCaseLeading(act.getName());
+        String lCaseName = act.getName().toLowerCase();
+        if (act.isVisibleInExplanatoryTool()) {
+          if (writeElse) {
+            writer.write("else ");
+          } else {
+            writeElse = true;
+          }
+          writer.write("if (actionNames[i].equals(\"" + uCaseName + "\")) {");
+          writer.write(NEWLINE);
+          writer.write("// get the " + uCaseName
+              + "ActionStateRepository for the last clock tick:");
+          writer.write(NEWLINE);
+          writer.write("State state = log.get(log.size() - 1);");
+          writer.write(NEWLINE);
+          writer.write("Vector " + lCaseName
+              + "Actions = state.getActionStateRepository().get" + uCaseName
+              + "ActionStateRepository().getAllActions();");
+          writer.write(NEWLINE);
+          writer.write(NEWLINE);
+          writer.write("// go through each " + uCaseName + "Action:");
+          writer.write(NEWLINE);
+          writer.write("for (int k = 0; k < " + lCaseName
+              + "Actions.size(); k++) {");
+          writer.write(NEWLINE);
+          writer.write(uCaseName + "Action action = (" + uCaseName + "Action)"
+              + lCaseName + "Actions.get(k);");
+          writer.write(NEWLINE);
+          writer.write(NEWLINE);
+          writer.write("// update series:");
+          writer.write(NEWLINE);
+          writer.write("updateSeries(action, (log.size() - 1));");
+          writer.write(NEWLINE);
+          writer.write(CLOSED_BRACK);
+          writer.write(NEWLINE);
+          writer.write(CLOSED_BRACK);
+          writer.write(NEWLINE);
+        }
+      }
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);

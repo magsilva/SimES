@@ -113,6 +113,9 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("package simse.explanatorytool;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      writer.write("import simse.state.State;");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
       writer.write("import javax.swing.*;");
       writer.write(NEWLINE);
       writer.write("import javax.swing.event.ListSelectionEvent;");
@@ -138,8 +141,10 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // member variables:
-      writer.write("private ArrayList log; // log for current simulation");
+      writer.write("private ArrayList<State> log; // log for current simulation");
       writer.write(NEWLINE);
+    	writer.write("private ArrayList<JFrame> visibleGraphs; // holds all of the currently visible graphs");
+    	writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer
           .write("private JComboBox objectList; // for choosing an object whose attributes to graph");
@@ -176,11 +181,13 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // constructor:
-      writer.write("public ExplanatoryTool(JFrame owner, ArrayList log) {");
+      writer.write("public ExplanatoryTool(JFrame owner, ArrayList<State> log) {");
       writer.write(NEWLINE);
       writer.write("super(\"Explanatory Tool\");");
       writer.write(NEWLINE);
       writer.write("this.log = log;");
+      writer.write(NEWLINE);
+      writer.write("this.visibleGraphs = new ArrayList<JFrame>();");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// Create main panel (box):");
@@ -641,6 +648,8 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer
           .write("ObjectGraph graph = new ObjectGraph(title, log, objTypeType, objType, keyAttVal, attributes, true);");
       writer.write(NEWLINE);
+      writer.write("visibleGraphs.add(graph);");
+      writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write("else {");
@@ -670,6 +679,8 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
           .write("if (actions.length > 0) { // at least one attribute is selected");
       writer.write(NEWLINE);
       writer.write("ActionGraph graph = new ActionGraph(log, actions, true);");
+      writer.write(NEWLINE);
+      writer.write("visibleGraphs.add(graph);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -744,6 +755,8 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer
           .write("CompositeGraph compGraph = new CompositeGraph(objGraph, actGraph);");
+      writer.write(NEWLINE);
+      writer.write("visibleGraphs.add(compGraph);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -831,6 +844,47 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      
+      // "update" method:
+    	writer.write("// Updates all of the visible graphs");
+    	writer.write(NEWLINE);
+    	writer.write("public void update() {");
+    	writer.write(NEWLINE);
+    	writer.write("for (int i = 0; i < visibleGraphs.size(); i++) {");
+    	writer.write(NEWLINE);
+    	writer.write("JFrame graph = visibleGraphs.get(i);");
+    	writer.write(NEWLINE);
+    	writer.write("// remove graphs whose windows have been closed from visibleGraphs:");
+    	writer.write(NEWLINE);
+    	writer.write("if (!graph.isShowing()) {");
+    	writer.write(NEWLINE);
+    	writer.write("visibleGraphs.remove(graph);");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write("else if (graph instanceof ObjectGraph) {");
+    	writer.write(NEWLINE);
+    	writer.write("((ObjectGraph)graph).update();");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write("else if (graph instanceof ActionGraph) {");
+    	writer.write(NEWLINE);
+    	writer.write("((ActionGraph)graph).update();");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write("else if (graph instanceof CompositeGraph) {");
+    	writer.write(NEWLINE);
+    	writer.write("((CompositeGraph)graph).update();");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
 
       // "refreshAttributeList" method:
       writer.write("private void refreshAttributeList() {");

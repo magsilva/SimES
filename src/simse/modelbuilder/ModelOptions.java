@@ -11,17 +11,25 @@ public class ModelOptions {
   boolean includeEveryoneStopOption; // whether or not to include an
   																	 // "everyone stop what you're doing"
   	 																 // option on the employees' menus
+  boolean expToolAccessibleDuringGame; // whether or not to make the 
+  																		 // explanatory tool accessible during
+  																		 // the game
   File iconDirectory; // directory containing icons for this model
   File codeGenerationDestinationDirectory; // directory to generate code into
 
-  public ModelOptions(boolean everyoneStop, File iconDir, File codeGenDir) {
-    includeEveryoneStopOption = everyoneStop;
-    iconDirectory = iconDir;
-    codeGenerationDestinationDirectory = codeGenDir;
+  public ModelOptions(boolean includeEveryoneStopOption, 
+  		boolean expToolAccessibleDuringGame, File iconDirectory, 
+  		File codeGenerationDestinationDirectory) {
+    this.includeEveryoneStopOption = includeEveryoneStopOption;
+    this.expToolAccessibleDuringGame = expToolAccessibleDuringGame;
+    this.iconDirectory = iconDirectory;
+    this.codeGenerationDestinationDirectory = 
+    	codeGenerationDestinationDirectory;
   }
 
   public ModelOptions() {
     includeEveryoneStopOption = false;
+    expToolAccessibleDuringGame = false;
   }
 
   public boolean getEveryoneStopOption() 
@@ -31,6 +39,15 @@ public class ModelOptions {
 
   public void setEveryoneStopOption(boolean everyoneStop) {
     includeEveryoneStopOption = everyoneStop;
+  }
+  
+  public boolean getExplanatoryToolAccessOption() 
+  {
+    return expToolAccessibleDuringGame;
+  }
+
+  public void setExplanatoryToolAccessOption(boolean option) {
+    expToolAccessibleDuringGame = option;
   }
   
   public File getIconDirectory() {
@@ -54,6 +71,7 @@ public class ModelOptions {
    */
   public void clearAll() {
     includeEveryoneStopOption = false;
+    expToolAccessibleDuringGame = false;
     iconDirectory = null;
     codeGenerationDestinationDirectory = null;
   }

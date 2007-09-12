@@ -200,6 +200,9 @@ public class ModelFileManipulator {
         writer.write(EMPTY_VALUE);
       }
       writer.write(NEWLINE);
+      // explanatory tool access option:
+      writer.write(String.valueOf(options.getExplanatoryToolAccessOption()));
+      writer.write(NEWLINE);
       writer.write(END_MODEL_OPTIONS_TAG);
       writer.write(NEWLINE);
 

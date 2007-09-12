@@ -93,7 +93,7 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // member variables:
-      writer.write("private State[] log;");
+      writer.write("private ArrayList<State> log;");
       writer.write(NEWLINE);
       writer.write("private String objTypeType;");
       writer.write(NEWLINE);
@@ -105,21 +105,19 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private JFreeChart chart; // chart object");
       writer.write(NEWLINE);
+    	writer.write("private ChartPanel chartPanel;");
+    	writer.write(NEWLINE);
+    	writer.write("private XYSeries[] series;");
+    	writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // constructor:
       writer
-          .write("public ObjectGraph(String title, ArrayList log, String objTypeType, String objType, String keyAttVal, String[] attributes, boolean showChart) {");
+          .write("public ObjectGraph(String title, ArrayList<State> log, String objTypeType, String objType, String keyAttVal, String[] attributes, boolean showChart) {");
       writer.write(NEWLINE);
       writer.write("super(title);");
       writer.write(NEWLINE);
-      writer.write("this.log = new State[log.size()];");
-      writer.write(NEWLINE);
-      writer.write("for (int i = 0; i < log.size(); i++) {");
-      writer.write(NEWLINE);
-      writer.write("this.log[i] = (State)log.get(i);");
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
+      writer.write("this.log = log;");
       writer.write(NEWLINE);
       writer.write("this.objTypeType = objTypeType;");
       writer.write(NEWLINE);
@@ -133,7 +131,7 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("chart = createChart(dataset);");
       writer.write(NEWLINE);
-      writer.write("ChartPanel chartPanel = new ChartPanel(chart);");
+      writer.write("chartPanel = new ChartPanel(chart);");
       writer.write(NEWLINE);
       writer
           .write("chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));");
@@ -155,7 +153,7 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private XYDataset createDataset() {");
       writer.write(NEWLINE);
-      writer.write("XYSeries[] series = new XYSeries[attributes.length];");
+      writer.write("series = new XYSeries[attributes.length];");
       writer.write(NEWLINE);
       writer.write("for (int i = 0; i < attributes.length; i++) {");
       writer.write(NEWLINE);
@@ -164,7 +162,7 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("for (int i = 0; i < log.length; i++) {");
+      writer.write("for (int i = 0; i < log.size(); i++) {");
       writer.write(NEWLINE);
       writer.write("for (int j = 0; j < attributes.length; j++) {");
       writer.write(NEWLINE);
@@ -195,7 +193,7 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
           writer.write("if (keyAttVal.equals(\""
               + obj.getKey().getValue().toString() + "\")) {");
           writer.write(NEWLINE);
-          writer.write(lCaseName + " = log[i].get"
+          writer.write(lCaseName + " = log.get(i).get"
               + SimSEObjectTypeTypes.getText(type.getType())
               + "StateRepository().get" + uCaseName + "StateRepository().get(");
           if (obj.getKey().getAttribute().getType() == AttributeTypes.STRING) { // String
@@ -299,6 +297,91 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
       writer.write("return chart;");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // "update" method:
+    	writer.write("public void update() {");
+    	writer.write(NEWLINE);
+    	writer.write("if ((log.size() > 0) && (log.get(log.size() - 1) != null)) { // there is a log that has not been graphed yet");
+    	writer.write(NEWLINE);
+ 			writer.write("// add a new end data point for each series/attribute");
+ 			writer.write(NEWLINE);
+    	writer.write("for (int j = 0; j < attributes.length; j++) {");
+    	writer.write(NEWLINE);
+      // go through all object types and generate code for them:
+      for (int i = 0; i < types.size(); i++) {
+        SimSEObjectType type = (SimSEObjectType) types.get(i);
+        String uCaseName = getUpperCaseLeading(type.getName());
+        String lCaseName = type.getName().toLowerCase();
+        if (i > 0) {
+          writer.write("else ");
+        }
+        writer.write("if (objTypeType.equals(\""
+            + SimSEObjectTypeTypes.getText(type.getType())
+            + "\") && objType.equals(\"" + uCaseName + "\")) {");
+        writer.write(NEWLINE);
+        writer.write(uCaseName + " " + lCaseName + " = null;");
+        writer.write(NEWLINE);
+
+        // go through each created object of that type and generate code for it:
+        Vector objsOfType = objects.getAllObjectsOfType(type);
+        for (int j = 0; j < objsOfType.size(); j++) {
+          SimSEObject obj = (SimSEObject) objsOfType.get(j);
+          if (j > 0) {
+            writer.write("else ");
+          }
+          writer.write("if (keyAttVal.equals(\""
+              + obj.getKey().getValue().toString() + "\")) {");
+          writer.write(NEWLINE);
+          writer.write(lCaseName + " = log.get(log.size() - 1).get"
+              + SimSEObjectTypeTypes.getText(type.getType())
+              + "StateRepository().get" + uCaseName + "StateRepository().get(");
+          if (obj.getKey().getAttribute().getType() == AttributeTypes.STRING) { // String
+            // attribute
+            writer.write("\"" + obj.getKey().getValue().toString() + "\");");
+          } else { // non-String attribute
+            writer.write(obj.getKey().getValue().toString() + ");");
+          }
+          writer.write(NEWLINE);
+          writer.write(CLOSED_BRACK);
+          writer.write(NEWLINE);
+        }
+        writer.write("if (" + lCaseName + " != null) {");
+        writer.write(NEWLINE);
+
+        // go through each attribute for this type and generate code for it:
+        Vector atts = type.getAllAttributes();
+        boolean writeElse = false;
+        for (int j = 0; j < atts.size(); j++) {
+          Attribute att = (Attribute) atts.get(j);
+          if ((att instanceof NumericalAttribute)
+              && (att.isVisible() || att.isVisibleOnCompletion())) {
+            if (writeElse) {
+              writer.write("else ");
+            }
+            writer.write("if (attributes[j].equals(\""
+                + getUpperCaseLeading(att.getName()) + "\")) {");
+            writer.write(NEWLINE);
+            writer.write("series[j].add(log.size(), " + lCaseName + ".get"
+                + getUpperCaseLeading(att.getName()) + "());");
+            writer.write(NEWLINE);
+            writer.write(CLOSED_BRACK);
+            writer.write(NEWLINE);
+            writeElse = true;
+          }
+        }
+        writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
+        writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
+      }
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "getXYPlot" method:

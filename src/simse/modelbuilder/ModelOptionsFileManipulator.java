@@ -53,6 +53,15 @@ public class ModelOptionsFileManipulator {
               options.setCodeGenerationDestinationDirectory(
                   new File(currentLine));
             }
+            
+            currentLine = reader.readLine();
+            if (currentLine.equals(END_MODEL_OPTIONS_TAG)) { // old format
+              break;
+            }
+            else { // new format 9/12/07 that includes expl tool access option
+            	options.setExplanatoryToolAccessOption((
+            			Boolean.parseBoolean(currentLine)));
+            }
           }
         }
       }
