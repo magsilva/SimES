@@ -5,6 +5,7 @@ false
 true
 C:\Users\Emily\Documents\workspace\res\models\waterfall\icons
 C:\Users\Emily\Documents\workspace\waterfallGame
+true
 <endModelOptions>
 <beginDefinedObjectTypes>
 <beginObjectType>
@@ -43441,17 +43442,23 @@ eddie_murphy.gif
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Andre
-true
-true
-3
-1
-
 - Employee - SoftwareEngineer - Roger
 true
 true
 5
 8
+
+- Employee - SoftwareEngineer - Emily
+true
+true
+13
+2
+
+- Employee - SoftwareEngineer - Andre
+true
+true
+3
+1
 
 - Employee - SoftwareEngineer - Pedro
 true
@@ -43465,23 +43472,17 @@ true
 2
 7
 
-- Employee - SoftwareEngineer - Anita
-true
-true
-13
-8
-
-- Employee - SoftwareEngineer - Emily
-true
-true
-13
-2
-
 - Employee - SoftwareEngineer - Calvin
 true
 true
 9
 4
+
+- Employee - SoftwareEngineer - Anita
+true
+true
+13
+8
 
 <endSOPUsers>
 401

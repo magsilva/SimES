@@ -5,6 +5,7 @@ false
 false
 C:\Users\Emily\Documents\workspace\res\models\waterfall\icons
 C:\Users\Emily\Documents\workspace\rupGame
+true
 <endModelOptions>
 <beginDefinedObjectTypes>
 <beginObjectType>
@@ -137898,41 +137899,11 @@ use_case_blue.GIF
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Gretchen
-true
-true
-1
-7
-
-- Employee - SoftwareEngineer - Anne
-true
-true
-1
-2
-
 - Employee - SoftwareEngineer - Dwight
 true
 true
 3
 1
-
-- Employee - SoftwareEngineer - Elizabeth
-true
-true
-6
-3
-
-- Employee - SoftwareEngineer - Erica
-true
-true
-9
-0
-
-- Employee - SoftwareEngineer - Amalia
-true
-true
-12
-2
 
 - Employee - SoftwareEngineer - Paxton
 true
@@ -137952,11 +137923,41 @@ true
 14
 8
 
+- Employee - SoftwareEngineer - Amalia
+true
+true
+12
+2
+
+- Employee - SoftwareEngineer - Erica
+true
+true
+9
+0
+
+- Employee - SoftwareEngineer - Elizabeth
+true
+true
+6
+3
+
 - Employee - SoftwareEngineer - Roger
 true
 true
 9
 7
+
+- Employee - SoftwareEngineer - Gretchen
+true
+true
+1
+7
+
+- Employee - SoftwareEngineer - Anne
+true
+true
+1
+2
 
 <endSOPUsers>
 401
