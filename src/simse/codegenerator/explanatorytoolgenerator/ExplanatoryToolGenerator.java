@@ -178,12 +178,26 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private Box mainPane;");
       writer.write(NEWLINE);
+      writer.write("private String branchName;");
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // constructor:
-      writer.write("public ExplanatoryTool(JFrame owner, ArrayList<State> log) {");
+      writer.write("public ExplanatoryTool(JFrame owner, ArrayList<State> log, String branchName) {");
       writer.write(NEWLINE);
-      writer.write("super(\"Explanatory Tool\");");
+  		writer.write("super();");
+  		writer.write(NEWLINE);
+  		writer.write("this.branchName = branchName;");
+  		writer.write(NEWLINE);
+  		writer.write("String title = \"Explanatory Tool\";");
+  		writer.write(NEWLINE);
+  		writer.write("if (branchName != null) {");
+  		writer.write(NEWLINE);
+  		writer.write("title = title.concat(\" - \" + branchName);");
+  		writer.write(NEWLINE);
+  		writer.write(CLOSED_BRACK);
+  		writer.write(NEWLINE);
+  		writer.write("setTitle(title);");
       writer.write(NEWLINE);
       writer.write("this.log = log;");
       writer.write(NEWLINE);
@@ -646,7 +660,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
           .write("if (attributes.length > 0) { // at least one attribute is selected");
       writer.write(NEWLINE);
       writer
-          .write("ObjectGraph graph = new ObjectGraph(title, log, objTypeType, objType, keyAttVal, attributes, true);");
+          .write("ObjectGraph graph = new ObjectGraph(title, log, objTypeType, objType, keyAttVal, attributes, true, branchName);");
       writer.write(NEWLINE);
       writer.write("visibleGraphs.add(graph);");
       writer.write(NEWLINE);
@@ -678,7 +692,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer
           .write("if (actions.length > 0) { // at least one attribute is selected");
       writer.write(NEWLINE);
-      writer.write("ActionGraph graph = new ActionGraph(log, actions, true);");
+      writer.write("ActionGraph graph = new ActionGraph(log, actions, true, branchName);");
       writer.write(NEWLINE);
       writer.write("visibleGraphs.add(graph);");
       writer.write(NEWLINE);
@@ -730,7 +744,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
           .write("if (attributes.length > 0) { // at least one attribute is selected");
       writer.write(NEWLINE);
       writer
-          .write("ObjectGraph objGraph = new ObjectGraph(title, log, objTypeType, objType, keyAttVal, attributes, false);");
+          .write("ObjectGraph objGraph = new ObjectGraph(title, log, objTypeType, objType, keyAttVal, attributes, false, branchName);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer
@@ -748,7 +762,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
           .write("if (actions.length > 0) { // at least one attribute is selected");
       writer.write(NEWLINE);
       writer
-          .write("ActionGraph actGraph = new ActionGraph(log, actions, false);");
+          .write("ActionGraph actGraph = new ActionGraph(log, actions, false, branchName);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// generate composite graph:");

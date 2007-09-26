@@ -544,6 +544,15 @@ public class AttributePanelGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      
+      // getClockPanel function:
+    	writer.write("public ClockPanel getClockPanel() {");
+    	writer.write(NEWLINE);
+    	writer.write("return clockPane;");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
 
       // setIcon function:
       writer.write("public void setIcon(Icon img)");

@@ -6,6 +6,7 @@
 package simse.codegenerator.stategenerator;
 
 import java.io.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -44,7 +45,7 @@ public class LoggerGenerator implements CodeGeneratorConstants {
       // member variables:
       writer.write("private State state; // current state");
       writer.write(NEWLINE);
-      writer.write("private ArrayList log; // an array list of states for the current simulation");
+      writer.write("private ArrayList<State> log; // an array list of states for the current simulation");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
 
@@ -53,16 +54,27 @@ public class LoggerGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("this.state = state;");
       writer.write(NEWLINE);
-      writer.write("log = new ArrayList();");
+      writer.write("log = new ArrayList<State>();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      
+      // constructor #2:
+    	writer.write("public Logger(State state, ArrayList<State> log) {");
+    	writer.write(NEWLINE);
+    	writer.write("this.state = state;");
+    	writer.write(NEWLINE);
+    	writer.write("this.log = log;");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
 
-      // "getLogFile" method:
+      // "getLog" method:
       writer.write("// returns the state log");
       writer.write(NEWLINE);
-      writer.write("public ArrayList getLog() {");
+      writer.write("public ArrayList<State> getLog() {");
       writer.write(NEWLINE);
       writer.write("return log;");
       writer.write(NEWLINE);

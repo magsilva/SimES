@@ -67,8 +67,32 @@ public class ClockGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      
+      // constructor #2:
+    	writer.write("public Clock(Logger logger, int time) {");
+    	writer.write(NEWLINE);
+    	writer.write("this.time = time;");
+    	writer.write(NEWLINE);
+    	writer.write("stopped = false;");
+    	writer.write(NEWLINE);
+    	writer.write("gui = null;");
+    	writer.write(NEWLINE);
+    	writer.write("this.logger = logger;");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
 
       // methods:
+      // "setTime" method: 
+    	writer.write("public void setTime(int time) {");
+    	writer.write(NEWLINE);
+    	writer.write("this.time = time;");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
+      
       // "incrementTime" method:
       writer.write("public void incrementTime()");
       writer.write(NEWLINE);
@@ -125,7 +149,6 @@ public class ClockGenerator implements CodeGeneratorConstants {
       writer.write("gui.forceGUIUpdate();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       writer.write(CLOSED_BRACK);

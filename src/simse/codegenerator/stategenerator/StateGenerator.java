@@ -124,6 +124,8 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("cl.actsr = (ActionStateRepository) (actsr.clone());");
       writer.write(NEWLINE);
+			writer.write("cl.actsr.refetchParticipants(cl.asr, cl.csr, cl.esr, cl.psr, cl.tsr);");
+			writer.write(NEWLINE);
       writer.write("cl.clock = null;");
       writer.write(NEWLINE);
       writer.write("cl.logger = null;");
@@ -221,6 +223,15 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      
+      // setClock method:
+    	writer.write("public void setClock(Clock clock) {");
+    	writer.write(NEWLINE);
+    	writer.write("this.clock = clock;");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
 
       // getLogger() method:
       writer.write("public Logger getLogger()");
@@ -232,6 +243,14 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+
+      // setLogger method:
+    	writer.write("public void setLogger(Logger logger) {");
+    	writer.write(NEWLINE);
+    	writer.write("this.logger = logger;");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
 
       writer.write(CLOSED_BRACK);
       writer.close();

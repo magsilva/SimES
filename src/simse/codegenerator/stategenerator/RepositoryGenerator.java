@@ -360,6 +360,33 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       
+      // refetchParticipants method:
+    	writer.write("/*");
+    	writer.write(NEWLINE);
+    	writer.write("* Replaces all the participants in each action with their equivalent objects");
+    	writer.write(NEWLINE);
+    	writer.write("* in the current state. Calling this function solves the problem that");
+    	writer.write(NEWLINE);
+    	writer.write("* happens when you clone actions -- their hashtables point to participant");
+    	writer.write(NEWLINE);
+    	writer.write("* objects that were part of the previous, non-cloned state.");
+    	writer.write(NEWLINE);
+    	writer.write("* Hence, this function should be called after this object is cloned.");
+    	writer.write(NEWLINE);
+    	writer.write("*/");
+    	writer.write(NEWLINE);
+    	writer.write("public void refetchParticipants(ArtifactStateRepository artifactRep, CustomerStateRepository customerRep, EmployeeStateRepository employeeRep, ProjectStateRepository projectRep, ToolStateRepository toolRep) {");
+    	writer.write(NEWLINE);
+      for (int i = 0; i < acts.size(); i++) {
+        ActionType tempAct = (ActionType) acts.elementAt(i);
+        writer.write(tempAct.getName().substring(0, 1).toLowerCase() + i +
+        		".refetchParticipants(artifactRep, customerRep, employeeRep, " +
+        		"projectRep, toolRep);");
+        writer.write(NEWLINE);
+      }
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      
       writer.write(CLOSED_BRACK);
       writer.close();
     } catch (IOException e) {
@@ -730,6 +757,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import java.util.*;");
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
       writer.write("public class " + uCaseName
           + "ActionStateRepository implements Cloneable");
       writer.write(NEWLINE);
@@ -984,6 +1012,36 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      
+      // refetchParticipants method:
+    	writer.write("/*");
+    	writer.write(NEWLINE);
+    	writer.write("* Replaces all the participants in each action with their equivalent objects");
+    	writer.write(NEWLINE);
+    	writer.write("* in the current state. Calling this function solves the problem that");
+    	writer.write(NEWLINE);
+    	writer.write("* happens when you clone actions -- their hashtables point to participant");
+    	writer.write(NEWLINE);
+    	writer.write("* objects that were part of the previous, non-cloned state.");
+    	writer.write(NEWLINE);
+    	writer.write("* Hence, this function should be called after this object is cloned.");
+    	writer.write(NEWLINE);
+    	writer.write("*/");
+    	writer.write(NEWLINE);
+    	writer.write("public void refetchParticipants(ArtifactStateRepository artifactRep, CustomerStateRepository customerRep, EmployeeStateRepository employeeRep, ProjectStateRepository projectRep, ToolStateRepository toolRep) {");
+    	writer.write(NEWLINE);
+    	writer.write("for (int i = 0; i < actions.size(); i++) {");
+    	writer.write(NEWLINE);
+    	writer.write(getUpperCaseLeading(actType.getName()) + "Action act = (" +
+    			getUpperCaseLeading(actType.getName()) + 
+    			"Action)actions.elementAt(i);");
+    	writer.write(NEWLINE);
+    	writer.write("act.refetchParticipants(artifactRep, customerRep, employeeRep, projectRep, toolRep);");
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
 
       writer.write(CLOSED_BRACK);
       writer.close();

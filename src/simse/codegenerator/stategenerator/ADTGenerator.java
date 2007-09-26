@@ -900,6 +900,16 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import simse.adts.objects.*;");
       writer.write(NEWLINE);
+      writer.write("import simse.state.ArtifactStateRepository;");
+      writer.write(NEWLINE);
+      writer.write("import simse.state.CustomerStateRepository;");
+      writer.write(NEWLINE);
+      writer.write("import simse.state.EmployeeStateRepository;");
+      writer.write(NEWLINE);
+      writer.write("import simse.state.ProjectStateRepository;");
+      writer.write(NEWLINE);
+      writer.write("import simse.state.ToolStateRepository;");
+      writer.write(NEWLINE);
       writer.write("import java.util.*;");
       writer.write(NEWLINE);
       writer.write("public class " + getUpperCaseLeading(actType.getName())
@@ -913,7 +923,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       for (int i = 0; i < participants.size(); i++) {
         ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
             .elementAt(i);
-        writer.write("private Hashtable " + tempPart.getName().toLowerCase()
+        writer.write("private Hashtable<" + SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType()) + ", Boolean> " + tempPart.getName().toLowerCase()
             + "s;");
         writer.write(NEWLINE);
       }
@@ -945,7 +955,10 @@ public class ADTGenerator implements CodeGeneratorConstants {
       for (int i = 0; i < participants.size(); i++) {
         ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
             .elementAt(i);
-        writer.write(tempPart.getName().toLowerCase() + "s = new Hashtable();");
+        writer.write(tempPart.getName().toLowerCase() + 
+        		"s = new Hashtable<" + 
+        		SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType()) +
+        		", Boolean>();");
         writer.write(NEWLINE);
       }
       if (hasTimedDestroyer) // timed destroyer
@@ -977,8 +990,11 @@ public class ADTGenerator implements CodeGeneratorConstants {
       for (int i = 0; i < participants.size(); i++) {
         ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
             .elementAt(i);
-        writer.write("Hashtable cloned" + tempPart.getName().toLowerCase() 
-            + "s = new Hashtable();");
+        String typeString = new String("<" + 
+        		SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType()) +
+        		", Boolean>");
+        writer.write("Hashtable" + typeString + " cloned" + 
+        		tempPart.getName().toLowerCase() + "s = new Hashtable();");
         writer.write(NEWLINE);
         writer.write("cloned" + tempPart.getName().toLowerCase() + "s.putAll(" +
             tempPart.getName().toLowerCase() + "s);");
@@ -1027,11 +1043,11 @@ public class ADTGenerator implements CodeGeneratorConstants {
       }
 
       // "getAllParticipants" method:
-      writer.write("public Vector getAllParticipants()");
+      writer.write("public Vector<SSObject> getAllParticipants()");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector all = new Vector();");
+      writer.write("Vector<SSObject> all = new Vector<SSObject>();");
       writer.write(NEWLINE);
       for (int i = 0; i < participants.size(); i++) {
         ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
@@ -1045,11 +1061,11 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // "getAllActiveParticipants" method:
-      writer.write("public Vector getAllActiveParticipants()");
+      writer.write("public Vector<SSObject> getAllActiveParticipants()");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector all = new Vector();");
+      writer.write("Vector<SSObject> all = new Vector<SSObject>();");
       writer.write(NEWLINE);
       for (int i = 0; i < participants.size(); i++) {
         ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
@@ -1064,11 +1080,11 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // "getAllInactiveParticipants" method:
-      writer.write("public Vector getAllInactiveParticipants()");
+      writer.write("public Vector<SSObject> getAllInactiveParticipants()");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector all = new Vector();");
+      writer.write("Vector<SSObject> all = new Vector<SSObject>();");
       writer.write(NEWLINE);
       for (int i = 0; i < participants.size(); i++) {
         ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
@@ -1085,25 +1101,28 @@ public class ADTGenerator implements CodeGeneratorConstants {
       for (int i = 0; i < participants.size(); i++) {
         ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
             .elementAt(i);
+        String vectorTypeString = new String("<" + 
+        		SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType()) + 
+        		">");
 
         // "getAll[Participant]s" method:
-        writer.write("public Vector getAll" + tempPart.getName() + "s()");
+        writer.write("public Vector" + vectorTypeString + " getAll" + 
+        		tempPart.getName() + "s()");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("Vector a = new Vector();");
+        writer.write("Vector" + vectorTypeString + "a = new Vector" + 
+        		vectorTypeString + "();");
         writer.write(NEWLINE);
-        writer.write("Enumeration e = " + tempPart.getName().toLowerCase()
-            + "s.keys();");
+        writer.write("Enumeration" + vectorTypeString + " e = " + 
+        		tempPart.getName().toLowerCase() + "s.keys();");
         writer.write(NEWLINE);
         writer.write("for(int i=0; i<" + tempPart.getName().toLowerCase()
             + "s.size(); i++)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("a.add(("
-            + SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType())
-            + ")e.nextElement());");
+        writer.write("a.add(e.nextElement());");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
@@ -1114,14 +1133,16 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
 
         // "getAllActive[Participant]s" method:
-        writer.write("public Vector getAllActive" + tempPart.getName() + "s()");
+        writer.write("public Vector" + vectorTypeString + " getAllActive" + 
+        		tempPart.getName() + "s()");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("Vector a = new Vector();");
+        writer.write("Vector" + vectorTypeString + " a = new Vector" + 
+        		vectorTypeString + "();");
         writer.write(NEWLINE);
-        writer.write("Enumeration e = " + tempPart.getName().toLowerCase()
-            + "s.keys();");
+        writer.write("Enumeration" + vectorTypeString + " e = " + 
+        		tempPart.getName().toLowerCase() + "s.keys();");
         writer.write(NEWLINE);
         writer.write("for(int i=0; i<" + tempPart.getName().toLowerCase()
             + "s.size(); i++)");
@@ -1130,12 +1151,10 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(SimSEObjectTypeTypes.getText(tempPart
             .getSimSEObjectTypeType())
-            + " key = ("
-            + SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType())
-            + ")e.nextElement();");
+            + " key = e.nextElement();");
         writer.write(NEWLINE);
-        writer.write("if(((Boolean)(" + tempPart.getName().toLowerCase()
-            + "s.get(key))).booleanValue() == true)");
+        writer.write("if((" + tempPart.getName().toLowerCase()
+            + "s.get(key)).booleanValue() == true)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -1152,15 +1171,16 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
 
         // "getAllInactive[Participant]s" method:
-        writer.write("public Vector getAllInactive" + tempPart.getName()
-            + "s()");
+        writer.write("public Vector" + vectorTypeString + " getAllInactive" + 
+        		tempPart.getName() + "s()");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("Vector a = new Vector();");
+        writer.write("Vector" + vectorTypeString + " a = new Vector" +
+        		vectorTypeString + "();");
         writer.write(NEWLINE);
-        writer.write("Enumeration e = " + tempPart.getName().toLowerCase()
-            + "s.keys();");
+        writer.write("Enumeration" + vectorTypeString + " e = " + 
+        		tempPart.getName().toLowerCase() + "s.keys();");
         writer.write(NEWLINE);
         writer.write("for(int i=0; i<" + tempPart.getName().toLowerCase()
             + "s.size(); i++)");
@@ -1169,12 +1189,10 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(SimSEObjectTypeTypes.getText(tempPart
             .getSimSEObjectTypeType())
-            + " key = ("
-            + SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType())
-            + ")e.nextElement();");
+            + " key = e.nextElement();");
         writer.write(NEWLINE);
-        writer.write("if(((Boolean)(" + tempPart.getName().toLowerCase()
-            + "s.get(key))).booleanValue() == false)");
+        writer.write("if((" + tempPart.getName().toLowerCase()
+            + "s.get(key)).booleanValue() == false)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -1336,6 +1354,94 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
       }
+      
+      // "refetchParticipants" method:
+    	writer.write("/*");
+    	writer.write(NEWLINE);
+    	writer.write("* Replaces all the participants in this action with their equivalent objects");
+    	writer.write(NEWLINE);
+    	writer.write("* in the current state. Calling this function solves the problem that happens");
+    	writer.write(NEWLINE);
+    	writer.write("* when you clone actions -- their hashtables point to participant objects");
+    	writer.write(NEWLINE);
+    	writer.write("* that were part of the previous, non-cloned state. Hence, this function");
+    	writer.write(NEWLINE);
+    	writer.write("* should be called after this object is cloned.");
+    	writer.write(NEWLINE);
+    	writer.write("*/");
+    	writer.write(NEWLINE);
+    	writer.write("public void refetchParticipants(ArtifactStateRepository artifactRep, CustomerStateRepository customerRep, EmployeeStateRepository employeeRep, ProjectStateRepository projectRep, ToolStateRepository toolRep) {");
+    	writer.write(NEWLINE);
+    	
+    	// go through each participant:
+      for (int i = 0; i < participants.size(); i++) {
+        ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
+            .elementAt(i);
+        String metaType = SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType());
+        String hashtableTypeString = new String("<" + metaType + ", Boolean>");
+        String partNameLowerCase = tempPart.getName().toLowerCase();
+        writer.write("// " + partNameLowerCase + " participants:");
+        writer.write(NEWLINE);
+    		writer.write("Hashtable" + hashtableTypeString + " new" + 
+    				getUpperCaseLeading(tempPart.getName()) + "s = new Hashtable" + 
+    				hashtableTypeString + "();");
+    		writer.write(NEWLINE);
+    		writer.write("Iterator<Map.Entry" + hashtableTypeString + "> " + 
+    				partNameLowerCase + "sIterator = " + partNameLowerCase + 
+    				"s.entrySet().iterator();");
+    		writer.write(NEWLINE);
+    		writer.write("while (" + partNameLowerCase + "sIterator.hasNext()) {");
+    		writer.write(NEWLINE);
+    		writer.write("Map.Entry" + hashtableTypeString + " entry = " +
+    				partNameLowerCase + "sIterator.next();");
+    		writer.write(NEWLINE);
+    		writer.write(metaType + " old" + 
+    				getUpperCaseLeading(tempPart.getName()) + " = entry.getKey();");
+    		writer.write(NEWLINE);
+    		
+    		// go through all allowable types for this participant:
+        Vector types = tempPart.getAllSimSEObjectTypes();
+        for (int j = 0; j < types.size(); j++) {
+          if (j > 0) // not on first element
+          {
+            writer.write("else ");
+          }
+          writer.write("if (");
+          SimSEObjectType tempType = (SimSEObjectType) types.elementAt(j);
+          writer.write("old" + getUpperCaseLeading(tempPart.getName()) + 
+          		" instanceof " + getUpperCaseLeading(tempType.getName()) + 
+          		") {");
+          writer.write(NEWLINE);
+          writer.write(metaType + " new" + 
+          		getUpperCaseLeading(tempPart.getName()) + " = " + 
+          		metaType.toLowerCase() + "Rep.get" + 
+          		getUpperCaseLeading(tempType.getName()) + 
+          		"StateRepository().get(((" + 
+          		getUpperCaseLeading(tempType.getName()) + ")old" +
+          		getUpperCaseLeading(tempPart.getName()) + ").get" +
+          		getUpperCaseLeading(tempType.getKey().getName()) + "());");
+          writer.write(NEWLINE);
+          writer.write("Boolean activeStatus = " + partNameLowerCase + 
+          		"s.get(old" + getUpperCaseLeading(tempPart.getName()) + ");");
+          writer.write(NEWLINE);
+          writer.write("new" + getUpperCaseLeading(tempPart.getName()) + 
+          		"s.put(new" + getUpperCaseLeading(tempPart.getName()) +
+          		", activeStatus);");
+          writer.write(NEWLINE);
+          writer.write(CLOSED_BRACK);
+          writer.write(NEWLINE);
+        }
+        writer.write(CLOSED_BRACK);
+        writer.write(NEWLINE);
+        writer.write(partNameLowerCase + "s.clear();");
+        writer.write(NEWLINE);
+        writer.write(partNameLowerCase + "s.putAll(new" + getUpperCaseLeading(tempPart.getName()) + "s);");
+        writer.write(NEWLINE);
+        writer.write(NEWLINE);
+      }
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
+      
       writer.write(CLOSED_BRACK);
       writer.close();
     } catch (IOException e) {

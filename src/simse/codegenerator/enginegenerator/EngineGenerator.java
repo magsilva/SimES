@@ -13,6 +13,7 @@ import simse.modelbuilder.startstatebuilder.*;
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
+import javax.swing.Timer;
 
 public class EngineGenerator implements CodeGeneratorConstants {
   private File directory; // directory to generate into
@@ -56,6 +57,9 @@ public class EngineGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import java.awt.event.*;");
       writer.write(NEWLINE);
+      writer.write("import javax.swing.Timer;");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
 
       writer.write("public class Engine implements ActionListener");
       writer.write(NEWLINE);
@@ -69,13 +73,13 @@ public class EngineGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private SimSEGUI gui;");
       writer.write(NEWLINE);
-      writer.write("private static int numSteps;");
+      writer.write("private int numSteps;");
       writer.write(NEWLINE);
       writer.write("private boolean stopClock;");
       writer.write(NEWLINE);
       writer.write("private boolean stopAtEvents;");
       writer.write(NEWLINE);
-      writer.write("private javax.swing.Timer timer;");
+      writer.write("private Timer timer;");
       writer.write(NEWLINE);
 
       // constructor:
@@ -87,6 +91,8 @@ public class EngineGenerator implements CodeGeneratorConstants {
       writer.write("logic = l;");
       writer.write(NEWLINE);
       writer.write("state = s;");
+      writer.write(NEWLINE);
+      writer.write("timer = new Timer(50, this);");
       writer.write(NEWLINE);
       // startup script: go through each objects in the start state, create it,
       // and add it to the simulation:
@@ -161,7 +167,7 @@ public class EngineGenerator implements CodeGeneratorConstants {
       writer.write("gui = g;");
       writer.write(NEWLINE);
       writer
-          .write("StartingNarrativeDialog snd = new StartingNarrativeDialog(gui);");
+          .write("new StartingNarrativeDialog(gui);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -176,7 +182,7 @@ public class EngineGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("ClockPanel.setAdvClockImage();");
+      writer.write("gui.getAttributePanel().getClockPanel().setAdvClockImage();");
       writer.write(NEWLINE);
       writer.write("if(state.getClock().isStopped())");
       writer.write(NEWLINE);
@@ -219,7 +225,7 @@ public class EngineGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("ClockPanel.resetAdvClockImage();");
+      writer.write("gui.getAttributePanel().getClockPanel().resetAdvClockImage();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -256,17 +262,10 @@ public class EngineGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("if(timer == null)");
-      writer.write(NEWLINE);
-      writer.write(OPEN_BRACK);
-      writer.write(NEWLINE);
-      writer.write("timer = new javax.swing.Timer(50,this);");
-      writer.write(NEWLINE);
-      writer.write("timer.start();");
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write("numSteps += ns;");
+  		writer.write("timer.restart();");
+  		writer.write(NEWLINE);
+  		writer.write("numSteps += ns;");
+  		writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
@@ -277,6 +276,8 @@ public class EngineGenerator implements CodeGeneratorConstants {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer.write("numSteps = 0;");
+      writer.write(NEWLINE);
+      writer.write("timer.stop();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -293,7 +294,7 @@ public class EngineGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       
       // getTimer method
-    	writer.write("public javax.swing.Timer getTimer() {");
+    	writer.write("public Timer getTimer() {");
     	writer.write(NEWLINE);
     	writer.write("return timer;");
     	writer.write(NEWLINE);

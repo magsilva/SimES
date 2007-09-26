@@ -74,15 +74,15 @@ public class ClockPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private JTextField txtAdvClock;");
       writer.write(NEWLINE);
-      writer.write("private static JLabel btnAdvClock;");
+      writer.write("private JLabel btnAdvClock;");
       writer.write(NEWLINE);
-      writer.write("private static JLabel btnNextEvent;");
+      writer.write("private JLabel btnNextEvent;");
       writer.write(NEWLINE);
       writer.write("private JLabel lblTimeElapsed;");
       writer.write(NEWLINE);
       writer.write("private Image[] timeElapsedDigits;");
       writer.write(NEWLINE);
-      writer.write("private static JCheckBox stopCBox;");
+      writer.write("private JCheckBox stopCBox;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("private boolean cursorDisplayed;");
@@ -201,7 +201,7 @@ public class ClockPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // resetAdvClockImage function
-      writer.write("public static void resetAdvClockImage()");
+      writer.write("public void resetAdvClockImage()");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -214,7 +214,7 @@ public class ClockPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // setAdvClockImage function
-      writer.write("public static void setAdvClockImage()");
+      writer.write("public void setAdvClockImage()");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -260,7 +260,6 @@ public class ClockPanelGenerator implements CodeGeneratorConstants {
       writer.write("else");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
-      writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("int ticks = 0;");
       writer.write(NEWLINE);

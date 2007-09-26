@@ -400,7 +400,6 @@ public class LogoPanelGenerator implements CodeGeneratorConstants {
       writer.write("Object source = me.getSource();");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-
       writer.write("if (source.equals(aboutButton))");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
@@ -422,7 +421,7 @@ public class LogoPanelGenerator implements CodeGeneratorConstants {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("StartingNarrativeDialog snd = new StartingNarrativeDialog(gui);");
+          .write("new StartingNarrativeDialog(gui);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);

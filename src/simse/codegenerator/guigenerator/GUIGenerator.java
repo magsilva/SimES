@@ -136,6 +136,8 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("package simse.gui;");
       writer.write(NEWLINE);
+      writer.write("import simse.SimSE;");
+      writer.write(NEWLINE);
       writer.write("import simse.state.*;");
       writer.write(NEWLINE);
       writer.write("import simse.logic.*;");
@@ -164,8 +166,6 @@ public class GUIGenerator implements CodeGeneratorConstants {
       // member variables:
       writer.write("private TabPanel tabPanel;");
       writer.write(NEWLINE);
-      writer.write("private ClockPanel clockPanel;");
-      writer.write(NEWLINE);
       writer.write("private AttributePanel attribPanel;");
       writer.write(NEWLINE);
       writer.write("private ActionPanel actionPanel;");
@@ -190,12 +190,16 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private ExplanatoryTool expTool;");
       writer.write(NEWLINE);
+      writer.write("private String branchName; // name of this particular game");
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // constructor:
-      writer.write("public SimSEGUI(Engine e, State s, Logic l)");
+      writer.write("public SimSEGUI(Engine e, State s, Logic l, String branchName)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
+      writer.write(NEWLINE);
+      writer.write("this.branchName = branchName;");
       writer.write(NEWLINE);
       writer.write("reset(e,s,l);");
       writer.write(NEWLINE);
@@ -224,7 +228,15 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("// Set window title:");
       writer.write(NEWLINE);
-      writer.write("setTitle(\"SimSE\");");
+  		writer.write("String title = \"SimSE\";");
+  		writer.write(NEWLINE);
+  		writer.write("if (branchName != null) {");
+  		writer.write(NEWLINE);
+  		writer.write("title = title.concat(\" - \" + branchName);");
+  		writer.write(NEWLINE);
+  		writer.write(CLOSED_BRACK);
+  		writer.write(NEWLINE);
+  		writer.write("setTitle(title);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("menuBar = new JMenuBar();");
@@ -302,7 +314,7 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 			writer.write("if (expTool == null) { // explanatory tool has not been started yet");
 			writer.write(NEWLINE);
-			writer.write("expTool = new ExplanatoryTool(this, state.getLogger().getLog());");
+			writer.write("expTool = new ExplanatoryTool(this, state.getLogger().getLog(), branchName);");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
@@ -438,7 +450,13 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
+      writer.write("SimSE.decrementNumBranches();");
+      writer.write(NEWLINE);
+      writer.write("if (SimSE.getNumBranches() == 0) {");
+      writer.write(NEWLINE);
       writer.write("System.exit(0);");
+      writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);

@@ -222,33 +222,78 @@ public class CodeGenerator {
 	      writer.write(OPEN_BRACK);
 	      writer.write(NEWLINE);
 	      
+	      // member variables:
+	      writer.write("private static int numBranches = 0;");
+	      writer.write(NEWLINE);
+	      
 	      // constructor:
 	      writer.write("public SimSE(){}");
 	      writer.write(NEWLINE);
+	      writer.write(NEWLINE);
+	      
+	      // startNewBranch method:
+	    	writer.write("public static void startNewBranch(State state, String branchName) {");
+	    	writer.write(NEWLINE);
+	    	writer.write("Logic logic = new Logic(state);");
+	    	writer.write(NEWLINE);
+	    	writer.write("Engine engine = new Engine(logic, state);");
+	    	writer.write(NEWLINE);
+	    	writer.write("SimSEGUI gui = new SimSEGUI(engine, state, logic, branchName);");
+	    	writer.write(NEWLINE);
+	    	writer.write("state.getClock().setGUI(gui);");
+	    	writer.write(NEWLINE);
+	    	writer.write("gui.setBounds(0, 0, 1024, 744);");
+	    	writer.write(NEWLINE);
+	    	writer.write("engine.giveGUI(gui);");
+	    	writer.write(NEWLINE);
+	    	writer.write("logic.getTriggerChecker().update(false, gui);");
+	    	writer.write(NEWLINE);
+	    	writer.write("numBranches++;");
+	    	writer.write(NEWLINE);
+	    	writer.write(CLOSED_BRACK);
+	    	writer.write(NEWLINE);
+	    	writer.write(NEWLINE);
+	    	
+	    	// "getNumBranches" method:
+	    	writer.write("public static int getNumBranches() {");
+	    	writer.write(NEWLINE);
+	    	writer.write("return numBranches;");
+	    	writer.write(NEWLINE);
+	    	writer.write(CLOSED_BRACK);
+	    	writer.write(NEWLINE);
+	    	writer.write(NEWLINE);
+	    	
+	    	// "incrementNumBranches" method:
+	    	writer.write("public static void incrementNumBranches() {");
+	    	writer.write(NEWLINE);
+	    	writer.write("numBranches++;");
+	    	writer.write(NEWLINE);
+	    	writer.write(CLOSED_BRACK);
+	    	writer.write(NEWLINE);
+	    	writer.write(NEWLINE);
+	    	
+	    	// "decrementNumBranches" method:
+	    	writer.write("public static void decrementNumBranches() {");
+	    	writer.write(NEWLINE);
+	    	writer.write("if (numBranches > 0) {");
+	    	writer.write(NEWLINE);
+	    	writer.write("numBranches--;");
+	    	writer.write(NEWLINE);
+	    	writer.write(CLOSED_BRACK);
+	    	writer.write(NEWLINE);
+	    	writer.write(CLOSED_BRACK);
+	    	writer.write(NEWLINE);
+	    	writer.write(NEWLINE);
 	      
 	      // main method:
 	      writer.write("public static void main(String args[])");
 	      writer.write(NEWLINE);
 	      writer.write(OPEN_BRACK);
 	      writer.write(NEWLINE);
-	      writer.write("State s = new State();");
-	      writer.write(NEWLINE);
-	      writer.write("Logic l = new Logic(s);");
-	      writer.write(NEWLINE);
-	      writer.write("Engine e = new Engine(l, s);");
-	      writer.write(NEWLINE);
-	      writer.write("SimSEGUI gui = new SimSEGUI(e, s, l);");
-	      writer.write(NEWLINE);
-	      writer.write("s.getClock().setGUI(gui);");
-	      writer.write(NEWLINE);
-	      writer.write("gui.setBounds(0,0,1024,744);");
-	      writer.write(NEWLINE);
-	      writer.write("e.giveGUI(gui);");
-	      writer.write(NEWLINE);
-	      writer.write("l.getTriggerChecker().update(false, gui);");
-	      writer.write(NEWLINE);
+	      writer.write("startNewBranch(new State(), null);");
 	      writer.write(CLOSED_BRACK);
 	      writer.write(NEWLINE);
+	      
 	      writer.write(CLOSED_BRACK);
 	      writer.close();
 	    } catch (IOException e) {

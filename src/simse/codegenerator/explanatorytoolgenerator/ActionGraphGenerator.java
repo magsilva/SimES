@@ -39,6 +39,12 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import simse.adts.actions.*;");
       writer.write(NEWLINE);
+      writer.write("import simse.SimSE;");
+      writer.write(NEWLINE);
+      writer.write("import simse.state.Clock;");
+      writer.write(NEWLINE);
+      writer.write("import simse.state.logger.Logger;");
+      writer.write(NEWLINE);
       writer.write("import simse.state.State;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
@@ -49,6 +55,8 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write("import org.jfree.chart.ChartMouseListener;");
       writer.write(NEWLINE);
       writer.write("import org.jfree.chart.ChartPanel;");
+      writer.write(NEWLINE);
+      writer.write("import org.jfree.chart.ChartRenderingInfo;");
       writer.write(NEWLINE);
       writer.write("import org.jfree.chart.JFreeChart;");
       writer.write(NEWLINE);
@@ -72,6 +80,8 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer
           .write("import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;");
       writer.write(NEWLINE);
+      writer.write("import org.jfree.data.Range;");
+      writer.write(NEWLINE);
       writer.write("import org.jfree.data.xy.XYDataItem;");
       writer.write(NEWLINE);
       writer.write("import org.jfree.data.xy.XYDataset;");
@@ -80,12 +90,28 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import org.jfree.data.xy.XYSeriesCollection;");
       writer.write(NEWLINE);
+      writer.write("import org.jfree.ui.RectangleEdge;");
+      writer.write(NEWLINE);
       writer.write("import org.jfree.ui.RectangleInsets;");
       writer.write(NEWLINE);
       writer.write("import org.jfree.ui.RefineryUtilities;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("import java.awt.Color;");
+      writer.write(NEWLINE);
+      writer.write("import java.awt.event.ActionEvent;");
+      writer.write(NEWLINE);
+      writer.write("import java.awt.event.ActionListener;");
+      writer.write(NEWLINE);
+      writer.write("import java.awt.event.MouseEvent;");
+      writer.write(NEWLINE);
+      writer.write("import java.awt.event.MouseListener;");
+      writer.write(NEWLINE);
+      writer.write("import java.awt.geom.Point2D;");
+      writer.write(NEWLINE);
+      writer.write("import java.awt.geom.Rectangle2D;");
+      writer.write(NEWLINE);
+      writer.write("import java.awt.Point;");
       writer.write(NEWLINE);
       writer.write("import java.util.ArrayList;");
       writer.write(NEWLINE);
@@ -100,9 +126,15 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import javax.swing.JFrame;");
       writer.write(NEWLINE);
+      writer.write("import javax.swing.JMenuItem;");
+      writer.write(NEWLINE);
+      writer.write("import javax.swing.JOptionPane;");
+      writer.write(NEWLINE);
+      writer.write("import javax.swing.JSeparator;");
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer
-          .write("public class ActionGraph extends JFrame implements ChartMouseListener {");
+          .write("public class ActionGraph extends JFrame implements ChartMouseListener, MouseListener, ActionListener {");
       writer.write(NEWLINE);
 
       // member variables:
@@ -113,6 +145,12 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write("private JFreeChart chart; // chart object");
       writer.write(NEWLINE);
     	writer.write("private ChartPanel chartPanel;");
+    	writer.write(NEWLINE);
+    	writer.write("private JMenuItem newBranchItem;");
+    	writer.write(NEWLINE);
+    	writer.write("private JSeparator separator;");
+    	writer.write(NEWLINE);
+    	writer.write("private int lastRightClickedX; // last x-val that was right-clicked on");
     	writer.write(NEWLINE);
     	writer.write("private XYSeriesCollection dataset;");
     	writer.write(NEWLINE);
@@ -149,13 +187,25 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
 
       // constructor:
       writer
-          .write("public ActionGraph(ArrayList<State> log, String[] actionNames, boolean showChart) {");
+          .write("public ActionGraph(ArrayList<State> log, String[] actionNames, boolean showChart, STring branchName) {");
       writer.write(NEWLINE);
-      writer.write("super(\"Action Graph\");");
+      writer.write("super();");
+      writer.write(NEWLINE);
+  		writer.write("String title = \"Action Graph\";");
+  		writer.write(NEWLINE);
+  		writer.write("if (branchName != null) {");
+  		writer.write(NEWLINE);
+  		writer.write("title = title.concat(\" - \" + branchName);");
+  		writer.write(NEWLINE);
+  		writer.write(CLOSED_BRACK);
+  		writer.write(NEWLINE);
+  		writer.write("setTitle(title);");
       writer.write(NEWLINE);
       writer.write("this.log = log;");
       writer.write(NEWLINE);
       writer.write("this.actionNames = actionNames;");
+      writer.write(NEWLINE);
+      writer.write("lastRightClickedX = 0;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer
@@ -179,15 +229,23 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("chart = createChart(xydataset);");
       writer.write(NEWLINE);
-      writer.write("ChartPanel chartPanel = new ChartPanel(chart);");
+      writer.write("chartPanel = new ChartPanel(chart);");
       writer.write(NEWLINE);
       writer.write("chartPanel.addChartMouseListener(this);");
+      writer.write(NEWLINE);
+      writer.write("chartPanel.addMouseListener(this);");
       writer.write(NEWLINE);
       writer
           .write("chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));");
       writer.write(NEWLINE);
       writer.write("setContentPane(chartPanel);");
       writer.write(NEWLINE);
+  		writer.write("newBranchItem = new JMenuItem(\"Start new branch from here\");");
+  		writer.write(NEWLINE);
+  		writer.write("newBranchItem.addActionListener(this);");
+  		writer.write(NEWLINE);
+  		writer.write("separator = new JSeparator();");
+  		writer.write(NEWLINE);
       writer.write("pack();");
       writer.write(NEWLINE);
       writer.write("RefineryUtilities.centerFrameOnScreen(this);");
@@ -440,10 +498,12 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // "chartMouseClicked" method:
-      writer.write("// responds to mouse clicks on the chart");
+      writer.write("// responds to LEFT mouse clicks on the chart");
       writer.write(NEWLINE);
       writer.write("public void chartMouseClicked(ChartMouseEvent event) {");
       writer.write(NEWLINE);
+  		writer.write("if (event.getTrigger().getButton() == MouseEvent.BUTTON1) { // left-click");
+  		writer.write(NEWLINE);
       writer.write("ChartEntity entity = event.getEntity();");
       writer.write(NEWLINE);
       writer
@@ -452,16 +512,16 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write("XYItemEntity xyEntity = (XYItemEntity) entity;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("// get the y-value of the action (action index):");
-      writer.write(NEWLINE);
-      writer
-          .write("int yVal = (int) xyEntity.getDataset().getYValue(xyEntity.getSeriesIndex(), xyEntity.getItem());");
-      writer.write(NEWLINE);
-      writer.write(NEWLINE);
       writer.write("// get the x-value of the action (clock tick):");
       writer.write(NEWLINE);
       writer
           .write("int xVal = (int) xyEntity.getDataset().getXValue(xyEntity.getSeriesIndex(), xyEntity.getItem());");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("// get the y-value of the action (action index):");
+      writer.write(NEWLINE);
+      writer
+          .write("int yVal = (int) xyEntity.getDataset().getYValue(xyEntity.getSeriesIndex(), xyEntity.getItem());");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// get the series name of the action:");
@@ -493,12 +553,128 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write(CLOSED_BRACK);
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "chartMouseMoved" method:
       writer.write("public void chartMouseMoved(ChartMouseEvent event) {}");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      
+      // "mouseReleased" method:
+    	writer.write("// responds to RIGHT-clicks on the chart");
+    	writer.write(NEWLINE);
+    	writer.write("public void mouseReleased(MouseEvent me) {");
+    	writer.write(NEWLINE);
+    	writer.write("if (me.getButton() != MouseEvent.BUTTON1) { // not left-click");
+    	writer.write(NEWLINE);
+    	writer.write("XYPlot plot = chart.getXYPlot();");
+    	writer.write(NEWLINE);
+    	writer.write("Range domainRange = plot.getDataRange(plot.getDomainAxis());");
+    	writer.write(NEWLINE);
+    	writer.write("if (domainRange != null) { // chart is not blank");
+    	writer.write(NEWLINE);
+    	writer.write("Point2D pt = chartPanel.translateScreenToJava2D(new Point(me.getX(), me.getY()));");
+    	writer.write(NEWLINE);
+    	writer.write("ChartRenderingInfo info = this.chartPanel.getChartRenderingInfo();");
+    	writer.write(NEWLINE);
+    	writer.write("Rectangle2D dataArea = info.getPlotInfo().getDataArea();");
+    	writer.write(NEWLINE);
+    	writer.write("NumberAxis domainAxis = (NumberAxis)plot.getDomainAxis();");
+    	writer.write(NEWLINE);
+    	writer.write("RectangleEdge domainAxisEdge = plot.getDomainAxisEdge();");
+    	writer.write(NEWLINE);
+    	writer.write("double chartX = domainAxis.java2DToValue(pt.getX(), dataArea, domainAxisEdge);");
+    	writer.write(NEWLINE);
+    	writer.write("lastRightClickedX = (int)Math.rint(chartX);");
+    	writer.write(NEWLINE);
+    	writer.write("if (domainRange != null && lastRightClickedX >= domainRange.getLowerBound() && lastRightClickedX <= domainRange.getUpperBound()) { // clicked within domain range");
+    	writer.write(NEWLINE);
+    	writer.write("if (chartPanel.getPopupMenu().getComponentIndex(newBranchItem) == -1) { // no new branch item on menu currently");
+    	writer.write(NEWLINE);
+    	writer.write("chartPanel.getPopupMenu().add(separator);");
+    	writer.write(NEWLINE);
+    	writer.write("chartPanel.getPopupMenu().add(newBranchItem);");
+    	writer.write(NEWLINE);
+    	writer.write("chartPanel.getPopupMenu().pack();");
+    	writer.write(NEWLINE);
+    	writer.write("chartPanel.getPopupMenu().repaint();");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write("else { // clicked outside of domain range");
+    	writer.write(NEWLINE);
+    	writer.write("if (chartPanel.getPopupMenu().getComponentIndex(newBranchItem) >= 0) { // new branch item currently on menu");
+    	writer.write(NEWLINE);
+    	writer.write("chartPanel.getPopupMenu().remove(newBranchItem);");
+    	writer.write(NEWLINE);
+    	writer.write("if (chartPanel.getPopupMenu().getComponentIndex(separator) >= 0) { // has separator");
+    	writer.write(NEWLINE);
+    	writer.write("chartPanel.getPopupMenu().remove(separator);");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write("chartPanel.getPopupMenu().pack();");
+    	writer.write(NEWLINE);
+    	writer.write("chartPanel.getPopupMenu().repaint();");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
+    	
+    	// other MouseListener methods:
+    	writer.write("public void mousePressed(MouseEvent me) {}");
+    	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
+    	writer.write("public void mouseClicked(MouseEvent me) {}");
+    	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
+    	writer.write("public void mouseEntered(MouseEvent me) {}");
+    	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
+    	writer.write("public void mouseExited(MouseEvent me) {}");
+    	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
+    	
+    	// "actionPerformed" method:
+    	writer.write("public void actionPerformed(ActionEvent e) {");
+    	writer.write(NEWLINE);
+    	writer.write("if (e.getSource() == newBranchItem) {");
+    	writer.write(NEWLINE);
+			writer.write("String newBranchName = JOptionPane.showInputDialog(null, \"Please name this new game:\", \"Name New Game\",  JOptionPane.QUESTION_MESSAGE);");
+			writer.write(NEWLINE);
+			writer.write("if (newBranchName != null) {");
+			writer.write(NEWLINE);
+			writer.write("State tempState = (State) log.get(lastRightClickedX).clone();");
+			writer.write(NEWLINE);
+			writer.write("Logger tempLogger = new Logger(tempState, new ArrayList<State>(log.subList(0, lastRightClickedX)));");
+			writer.write(NEWLINE);
+			writer.write("Clock tempClock = new Clock(tempLogger, lastRightClickedX);");
+			writer.write(NEWLINE);
+			writer.write("tempState.setClock(tempClock);");
+			writer.write(NEWLINE);
+			writer.write("tempState.setLogger(tempLogger);");
+			writer.write(NEWLINE);
+			writer.write("SimSE.startNewBranch(tempState, newBranchName);");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
 
       // "getIdOfActionWithSeriesName" method:
       writer
