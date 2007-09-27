@@ -768,7 +768,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("// generate composite graph:");
       writer.write(NEWLINE);
       writer
-          .write("CompositeGraph compGraph = new CompositeGraph(objGraph, actGraph);");
+          .write("CompositeGraph compGraph = new CompositeGraph(objGraph, actGraph, branchName);");
       writer.write(NEWLINE);
       writer.write("visibleGraphs.add(compGraph);");
       writer.write(NEWLINE);

@@ -187,7 +187,7 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
 
       // constructor:
       writer
-          .write("public ActionGraph(ArrayList<State> log, String[] actionNames, boolean showChart, STring branchName) {");
+          .write("public ActionGraph(ArrayList<State> log, String[] actionNames, boolean showChart, String branchName) {");
       writer.write(NEWLINE);
       writer.write("super();");
       writer.write(NEWLINE);

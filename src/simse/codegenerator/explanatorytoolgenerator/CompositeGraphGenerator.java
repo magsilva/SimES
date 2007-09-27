@@ -327,7 +327,7 @@ public class CompositeGraphGenerator implements CodeGeneratorConstants {
 			writer.write(NEWLINE);
 			writer.write("tempState.setLogger(tempLogger);");
 			writer.write(NEWLINE);
-			writer.write("SimSE.startNewBranch(tempState);");
+			writer.write("SimSE.startNewBranch(tempState, newBranchName);");
     	writer.write(NEWLINE);
     	writer.write(CLOSED_BRACK);
     	writer.write(NEWLINE);
