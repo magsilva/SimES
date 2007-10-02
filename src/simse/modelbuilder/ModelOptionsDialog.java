@@ -65,7 +65,6 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
     		"during the game");
     expToolAccessCheckBox.setToolTipText("<html>Allow access to the " +
     		"explanatory tool during the game,<br>not just at the end</html>");
-    expToolAccessCheckBox.addActionListener(this);
     explToolAccessPane.add(expToolAccessCheckBox);
     mainPane.add(explToolAccessPane);
     
@@ -223,17 +222,6 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
           genDirField.setText(f.getAbsolutePath());
         }
       }
-    }
-    
-    else if (source == expToolAccessCheckBox) {
-    	// only allow branching if explanatory tool access is enabled
-    	if (expToolAccessCheckBox.isSelected()) {
-    		branchingCheckBox.setEnabled(true);
-    	}
-    	else { // de-selected
-    		branchingCheckBox.setSelected(false);
-    		branchingCheckBox.setEnabled(false);
-    	}
     }
   }
   
