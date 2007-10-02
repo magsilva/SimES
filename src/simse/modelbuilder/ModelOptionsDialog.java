@@ -71,8 +71,7 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
     
     // Create branching panel:
     JPanel branchingPane = new JPanel();
-    branchingCheckBox = new JCheckBox("Allow player to start multiple " +
-    		"branches during the game");
+    branchingCheckBox = new JCheckBox("Allow multiple game branches");
     branchingCheckBox.setToolTipText("<html>Allow player to start multiple" +
     		" simultaneous branches of the game <br> from any previous point in " +
     		"time</html>");
@@ -244,13 +243,8 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
   private void initializeForm() {
     everyoneStopCheckBox.setSelected(options.getEveryoneStopOption());
     expToolAccessCheckBox.setSelected(options.getExplanatoryToolAccessOption());
-    if (expToolAccessCheckBox.isSelected()) {
-    	branchingCheckBox.setEnabled(true);
-    	branchingCheckBox.setSelected(options.getAllowBranchingOption());
-    }
-    else {
-    	branchingCheckBox.setEnabled(false);
-    }
+    branchingCheckBox.setSelected(options.getAllowBranchingOption());
+
     File iconDir = options.getIconDirectory();
     if (iconDir != null) {
       iconDirField.setText(iconDir.getAbsolutePath());
