@@ -15,9 +15,7 @@ public class ModelOptions {
   																		 // explanatory tool accessible during
   																		 // the game
   private boolean allowBranching; // whether or not to allow branching multiple
-  															  // games through the explanatory tool (this 
-  																// can only be true if 
-  																// expToolAccessibleDuringGame == true 
+  															  // games through the explanatory tool
   private File iconDirectory; // directory containing icons for this model
   private File codeGenerationDestinationDirectory; // directory to generate code into
 
