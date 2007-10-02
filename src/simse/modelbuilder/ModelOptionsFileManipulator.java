@@ -62,6 +62,15 @@ public class ModelOptionsFileManipulator {
             	options.setExplanatoryToolAccessOption((
             			Boolean.parseBoolean(currentLine)));
             }
+            
+            currentLine = reader.readLine();
+            if (currentLine.equals(END_MODEL_OPTIONS_TAG)) { // old format
+              break;
+            }
+            else { // new format 10/2/07 that includes branching option
+            	options.setAllowBranchingOption((
+            			Boolean.parseBoolean(currentLine)));
+            }
           }
         }
       }

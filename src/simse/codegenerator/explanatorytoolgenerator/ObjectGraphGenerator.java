@@ -6,6 +6,7 @@
 package simse.codegenerator.explanatorytoolgenerator;
 
 import simse.codegenerator.CodeGeneratorConstants;
+import simse.modelbuilder.ModelOptions;
 import simse.modelbuilder.objectbuilder.Attribute;
 import simse.modelbuilder.objectbuilder.AttributeTypes;
 import simse.modelbuilder.objectbuilder.NumericalAttribute;
@@ -24,12 +25,14 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
   private DefinedObjectTypes objTypes;
   private CreatedObjects objects;
+  private ModelOptions options;
 
   public ObjectGraphGenerator(DefinedObjectTypes objTypes, CreatedObjects objs,
-      File dir) {
+      File dir, ModelOptions options) {
     this.objTypes = objTypes;
     this.objects = objs;
     directory = dir;
+    this.options = options;
   }
 
   public void generate() {
@@ -443,68 +446,70 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
     	writer.write(NEWLINE);
     	writer.write("public void mouseReleased(MouseEvent me) {");
     	writer.write(NEWLINE);
-    	writer.write("if (me.getButton() != MouseEvent.BUTTON1) { // not left-click");
-    	writer.write(NEWLINE);
-    	writer.write("XYPlot plot = chart.getXYPlot();");
-    	writer.write(NEWLINE);
-    	writer.write("Range domainRange = plot.getDataRange(plot.getDomainAxis());");
-    	writer.write(NEWLINE);
-    	writer.write("if (domainRange != null) { // chart is not blank");
-    	writer.write(NEWLINE);
-    	writer.write("Point2D pt = chartPanel.translateScreenToJava2D(new Point(me.getX(), me.getY()));");
-    	writer.write(NEWLINE);
-    	writer.write("ChartRenderingInfo info = this.chartPanel.getChartRenderingInfo();");
-    	writer.write(NEWLINE);
-    	writer.write("Rectangle2D dataArea = info.getPlotInfo().getDataArea();");
-    	writer.write(NEWLINE);
-    	writer.write("NumberAxis domainAxis = (NumberAxis)plot.getDomainAxis();");
-    	writer.write(NEWLINE);
-    	writer.write("RectangleEdge domainAxisEdge = plot.getDomainAxisEdge();");
-    	writer.write(NEWLINE);
-    	writer.write("double chartX = domainAxis.java2DToValue(pt.getX(), dataArea, domainAxisEdge);");
-    	writer.write(NEWLINE);
-    	writer.write("lastRightClickedX = (int)Math.rint(chartX);");
-    	writer.write(NEWLINE);
-    	writer.write("if (domainRange != null && lastRightClickedX >= domainRange.getLowerBound() && lastRightClickedX <= domainRange.getUpperBound()) { // clicked within domain range");
-    	writer.write(NEWLINE);
-    	writer.write("if (chartPanel.getPopupMenu().getComponentIndex(newBranchItem) == -1) { // no new branch item on menu currently");
-    	writer.write(NEWLINE);
-    	writer.write("chartPanel.getPopupMenu().add(separator);");
-    	writer.write(NEWLINE);
-    	writer.write("chartPanel.getPopupMenu().add(newBranchItem);");
-    	writer.write(NEWLINE);
-    	writer.write("chartPanel.getPopupMenu().pack();");
-    	writer.write(NEWLINE);
-    	writer.write("chartPanel.getPopupMenu().repaint();");
-    	writer.write(NEWLINE);
-    	writer.write(CLOSED_BRACK);
-    	writer.write(NEWLINE);
-    	writer.write(CLOSED_BRACK);
-    	writer.write(NEWLINE);
-    	writer.write("else { // clicked outside of domain range");
-    	writer.write(NEWLINE);
-    	writer.write("if (chartPanel.getPopupMenu().getComponentIndex(newBranchItem) >= 0) { // new branch item currently on menu");
-    	writer.write(NEWLINE);
-    	writer.write("chartPanel.getPopupMenu().remove(newBranchItem);");
-    	writer.write(NEWLINE);
-    	writer.write("if (chartPanel.getPopupMenu().getComponentIndex(separator) >= 0) { // has separator");
-    	writer.write(NEWLINE);
-    	writer.write("chartPanel.getPopupMenu().remove(separator);");
-    	writer.write(NEWLINE);
-    	writer.write(CLOSED_BRACK);
-    	writer.write(NEWLINE);
-    	writer.write("chartPanel.getPopupMenu().pack();");
-    	writer.write(NEWLINE);
-    	writer.write("chartPanel.getPopupMenu().repaint();");
-    	writer.write(NEWLINE);
-    	writer.write(CLOSED_BRACK);
-    	writer.write(NEWLINE);
-    	writer.write(CLOSED_BRACK);
-    	writer.write(NEWLINE);
-    	writer.write(CLOSED_BRACK);
-    	writer.write(NEWLINE);
-    	writer.write(CLOSED_BRACK);
-    	writer.write(NEWLINE);
+    	if (options.getAllowBranchingOption()) {
+	    	writer.write("if (me.getButton() != MouseEvent.BUTTON1) { // not left-click");
+	    	writer.write(NEWLINE);
+	    	writer.write("XYPlot plot = chart.getXYPlot();");
+	    	writer.write(NEWLINE);
+	    	writer.write("Range domainRange = plot.getDataRange(plot.getDomainAxis());");
+	    	writer.write(NEWLINE);
+	    	writer.write("if (domainRange != null) { // chart is not blank");
+	    	writer.write(NEWLINE);
+	    	writer.write("Point2D pt = chartPanel.translateScreenToJava2D(new Point(me.getX(), me.getY()));");
+	    	writer.write(NEWLINE);
+	    	writer.write("ChartRenderingInfo info = this.chartPanel.getChartRenderingInfo();");
+	    	writer.write(NEWLINE);
+	    	writer.write("Rectangle2D dataArea = info.getPlotInfo().getDataArea();");
+	    	writer.write(NEWLINE);
+	    	writer.write("NumberAxis domainAxis = (NumberAxis)plot.getDomainAxis();");
+	    	writer.write(NEWLINE);
+	    	writer.write("RectangleEdge domainAxisEdge = plot.getDomainAxisEdge();");
+	    	writer.write(NEWLINE);
+	    	writer.write("double chartX = domainAxis.java2DToValue(pt.getX(), dataArea, domainAxisEdge);");
+	    	writer.write(NEWLINE);
+	    	writer.write("lastRightClickedX = (int)Math.rint(chartX);");
+	    	writer.write(NEWLINE);
+	    	writer.write("if (domainRange != null && lastRightClickedX >= domainRange.getLowerBound() && lastRightClickedX <= domainRange.getUpperBound()) { // clicked within domain range");
+	    	writer.write(NEWLINE);
+	    	writer.write("if (chartPanel.getPopupMenu().getComponentIndex(newBranchItem) == -1) { // no new branch item on menu currently");
+	    	writer.write(NEWLINE);
+	    	writer.write("chartPanel.getPopupMenu().add(separator);");
+	    	writer.write(NEWLINE);
+	    	writer.write("chartPanel.getPopupMenu().add(newBranchItem);");
+	    	writer.write(NEWLINE);
+	    	writer.write("chartPanel.getPopupMenu().pack();");
+	    	writer.write(NEWLINE);
+	    	writer.write("chartPanel.getPopupMenu().repaint();");
+	    	writer.write(NEWLINE);
+	    	writer.write(CLOSED_BRACK);
+	    	writer.write(NEWLINE);
+	    	writer.write(CLOSED_BRACK);
+	    	writer.write(NEWLINE);
+	    	writer.write("else { // clicked outside of domain range");
+	    	writer.write(NEWLINE);
+	    	writer.write("if (chartPanel.getPopupMenu().getComponentIndex(newBranchItem) >= 0) { // new branch item currently on menu");
+	    	writer.write(NEWLINE);
+	    	writer.write("chartPanel.getPopupMenu().remove(newBranchItem);");
+	    	writer.write(NEWLINE);
+	    	writer.write("if (chartPanel.getPopupMenu().getComponentIndex(separator) >= 0) { // has separator");
+	    	writer.write(NEWLINE);
+	    	writer.write("chartPanel.getPopupMenu().remove(separator);");
+	    	writer.write(NEWLINE);
+	    	writer.write(CLOSED_BRACK);
+	    	writer.write(NEWLINE);
+	    	writer.write("chartPanel.getPopupMenu().pack();");
+	    	writer.write(NEWLINE);
+	    	writer.write("chartPanel.getPopupMenu().repaint();");
+	    	writer.write(NEWLINE);
+	    	writer.write(CLOSED_BRACK);
+	    	writer.write(NEWLINE);
+	    	writer.write(CLOSED_BRACK);
+	    	writer.write(NEWLINE);
+	    	writer.write(CLOSED_BRACK);
+	    	writer.write(NEWLINE);
+	    	writer.write(CLOSED_BRACK);
+	    	writer.write(NEWLINE);
+    	}
     	writer.write(CLOSED_BRACK);
     	writer.write(NEWLINE);
     	

@@ -18,6 +18,7 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
 
   private JCheckBox everyoneStopCheckBox; 
   private JCheckBox expToolAccessCheckBox;
+  private JCheckBox branchingCheckBox;
   private JTextField iconDirField;
   private JButton iconBrowseButton;
   private JFileChooser iconDirFileChooser;
@@ -64,8 +65,19 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
     		"during the game");
     expToolAccessCheckBox.setToolTipText("<html>Allow access to the " +
     		"explanatory tool during the game,<br>not just at the end</html>");
+    expToolAccessCheckBox.addActionListener(this);
     explToolAccessPane.add(expToolAccessCheckBox);
     mainPane.add(explToolAccessPane);
+    
+    // Create branching panel:
+    JPanel branchingPane = new JPanel();
+    branchingCheckBox = new JCheckBox("Allow player to start multiple " +
+    		"branches during the game");
+    branchingCheckBox.setToolTipText("<html>Allow player to start multiple" +
+    		" simultaneous branches of the game <br> from any previous point in " +
+    		"time</html>");
+    branchingPane.add(branchingCheckBox);
+    mainPane.add(branchingPane);
     
     JSeparator separator1 = new JSeparator();
     separator1.setMaximumSize(new Dimension(2900, 1));
@@ -145,6 +157,7 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
         options.setEveryoneStopOption(everyoneStopCheckBox.isSelected());
         options.setExplanatoryToolAccessOption(
         		expToolAccessCheckBox.isSelected());
+        options.setAllowBranchingOption(branchingCheckBox.isSelected());
         if (hasNonBlankEntry(iconDirField)) {
           options.setIconDirectory(new File(iconDirField.getText()));
         }
@@ -212,6 +225,17 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
         }
       }
     }
+    
+    else if (source == expToolAccessCheckBox) {
+    	// only allow branching if explanatory tool access is enabled
+    	if (expToolAccessCheckBox.isSelected()) {
+    		branchingCheckBox.setEnabled(true);
+    	}
+    	else { // de-selected
+    		branchingCheckBox.setSelected(false);
+    		branchingCheckBox.setEnabled(false);
+    	}
+    }
   }
   
   /*
@@ -220,6 +244,13 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
   private void initializeForm() {
     everyoneStopCheckBox.setSelected(options.getEveryoneStopOption());
     expToolAccessCheckBox.setSelected(options.getExplanatoryToolAccessOption());
+    if (expToolAccessCheckBox.isSelected()) {
+    	branchingCheckBox.setEnabled(true);
+    	branchingCheckBox.setSelected(options.getAllowBranchingOption());
+    }
+    else {
+    	branchingCheckBox.setEnabled(false);
+    }
     File iconDir = options.getIconDirectory();
     if (iconDir != null) {
       iconDirField.setText(iconDir.getAbsolutePath());

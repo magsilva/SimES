@@ -8,20 +8,25 @@ package simse.modelbuilder;
 import java.io.File;
 
 public class ModelOptions {
-  boolean includeEveryoneStopOption; // whether or not to include an
+  private boolean includeEveryoneStopOption; // whether or not to include an
   																	 // "everyone stop what you're doing"
   	 																 // option on the employees' menus
-  boolean expToolAccessibleDuringGame; // whether or not to make the 
+  private boolean expToolAccessibleDuringGame; // whether or not to make the 
   																		 // explanatory tool accessible during
   																		 // the game
-  File iconDirectory; // directory containing icons for this model
-  File codeGenerationDestinationDirectory; // directory to generate code into
+  private boolean allowBranching; // whether or not to allow branching multiple
+  															  // games through the explanatory tool (this 
+  																// can only be true if 
+  																// expToolAccessibleDuringGame == true 
+  private File iconDirectory; // directory containing icons for this model
+  private File codeGenerationDestinationDirectory; // directory to generate code into
 
   public ModelOptions(boolean includeEveryoneStopOption, 
-  		boolean expToolAccessibleDuringGame, File iconDirectory, 
-  		File codeGenerationDestinationDirectory) {
+  		boolean expToolAccessibleDuringGame, boolean allowBranching, 
+  		File iconDirectory, File codeGenerationDestinationDirectory) {
     this.includeEveryoneStopOption = includeEveryoneStopOption;
     this.expToolAccessibleDuringGame = expToolAccessibleDuringGame;
+    this.allowBranching = allowBranching;
     this.iconDirectory = iconDirectory;
     this.codeGenerationDestinationDirectory = 
     	codeGenerationDestinationDirectory;
@@ -30,6 +35,7 @@ public class ModelOptions {
   public ModelOptions() {
     includeEveryoneStopOption = false;
     expToolAccessibleDuringGame = false;
+    allowBranching = false;
   }
 
   public boolean getEveryoneStopOption() 
@@ -48,6 +54,14 @@ public class ModelOptions {
 
   public void setExplanatoryToolAccessOption(boolean option) {
     expToolAccessibleDuringGame = option;
+  }
+  
+  public boolean getAllowBranchingOption() {
+  	return allowBranching;
+  }
+  
+  public void setAllowBranchingOption(boolean option) {
+  	allowBranching = option;
   }
   
   public File getIconDirectory() {
@@ -72,6 +86,7 @@ public class ModelOptions {
   public void clearAll() {
     includeEveryoneStopOption = false;
     expToolAccessibleDuringGame = false;
+    allowBranching = false;
     iconDirectory = null;
     codeGenerationDestinationDirectory = null;
   }

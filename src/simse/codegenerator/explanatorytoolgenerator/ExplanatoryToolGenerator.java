@@ -60,11 +60,11 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
     this.objs = objs;
     this.acts = acts;
     objGraphGen = new ObjectGraphGenerator(objTypes, objs, 
-        options.getCodeGenerationDestinationDirectory());
+        options.getCodeGenerationDestinationDirectory(), options);
     actGraphGen = new ActionGraphGenerator(acts, 
-        options.getCodeGenerationDestinationDirectory());
+        options.getCodeGenerationDestinationDirectory(), options);
     compGraphGen = new CompositeGraphGenerator(
-        options.getCodeGenerationDestinationDirectory());
+        options.getCodeGenerationDestinationDirectory(), options);
     actInfoPanelGen = new ActionInfoPanelGenerator(acts, 
         options.getCodeGenerationDestinationDirectory());
     ruleInfoPanelGen = new RuleInfoPanelGenerator(acts, 
