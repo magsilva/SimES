@@ -6,6 +6,7 @@ true
 C:\Users\Emily\Documents\workspace\res\models\waterfall\icons
 C:\Users\Emily\Documents\workspace\incrementalGame
 true
+true
 <endModelOptions>
 <beginDefinedObjectTypes>
 <beginObjectType>
@@ -16899,6 +16900,12 @@ emily.gif
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
+- Employee - SoftwareEngineer - Karl
+true
+true
+7
+2
+
 - Employee - SoftwareEngineer - Lola
 true
 true
@@ -16916,12 +16923,6 @@ true
 true
 10
 3
-
-- Employee - SoftwareEngineer - Karl
-true
-true
-7
-2
 
 <endSOPUsers>
 401

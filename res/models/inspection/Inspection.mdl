@@ -6,6 +6,7 @@ false
 C:\Users\Emily\Documents\workspace\res\models\waterfall\icons
 C:\Users\Emily\Documents\workspace\inspectionGame
 true
+true
 <endModelOptions>
 <beginDefinedObjectTypes>
 <beginObjectType>
@@ -6522,22 +6523,22 @@ Generic Project
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Anita
+- Employee - SoftwareEngineer - Chris J.
 true
 true
-6
+2
+5
+
+- Employee - SoftwareEngineer - Alex
+true
+true
+4
 7
 
-- Employee - SoftwareEngineer - Calvin
+- Employee - SoftwareEngineer - Beverly
 true
 true
-12
-3
-
-- Employee - SoftwareEngineer - Andre
-true
-true
-6
+8
 1
 
 - Employee - SoftwareEngineer - Paul
@@ -6546,40 +6547,28 @@ true
 2
 3
 
-- Employee - SoftwareEngineer - Emily
-true
-true
-12
-5
-
-- Employee - SoftwareEngineer - Beverly
-true
-true
-8
-1
-
-- Employee - SoftwareEngineer - Chris V.
-true
-true
-10
-1
-
-- Employee - SoftwareEngineer - Chris J.
-true
-true
-2
-5
-
 - Employee - SoftwareEngineer - Scott
 true
 true
 4
 1
 
-- Employee - SoftwareEngineer - Ping
+- Employee - SoftwareEngineer - Calvin
 true
 true
-10
+12
+3
+
+- Employee - SoftwareEngineer - Emily
+true
+true
+12
+5
+
+- Employee - SoftwareEngineer - Anita
+true
+true
+6
 7
 
 - Employee - SoftwareEngineer - David
@@ -6588,10 +6577,22 @@ true
 8
 7
 
-- Employee - SoftwareEngineer - Alex
+- Employee - SoftwareEngineer - Andre
 true
 true
-4
+6
+1
+
+- Employee - SoftwareEngineer - Chris V.
+true
+true
+10
+1
+
+- Employee - SoftwareEngineer - Ping
+true
+true
+10
 7
 
 <endSOPUsers>
