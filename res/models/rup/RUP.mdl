@@ -137900,11 +137900,23 @@ use_case_blue.GIF
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Tai
+- Employee - SoftwareEngineer - Roger
 true
 true
-14
-8
+9
+7
+
+- Employee - SoftwareEngineer - Gretchen
+true
+true
+1
+7
+
+- Employee - SoftwareEngineer - Elizabeth
+true
+true
+6
+3
 
 - Employee - SoftwareEngineer - Dwight
 true
@@ -137918,29 +137930,23 @@ true
 6
 7
 
-- Employee - SoftwareEngineer - Anne
-true
-true
-1
-2
-
-- Employee - SoftwareEngineer - Paxton
-true
-true
-14
-3
-
 - Employee - SoftwareEngineer - Amalia
 true
 true
 12
 2
 
-- Employee - SoftwareEngineer - Elizabeth
+- Employee - SoftwareEngineer - Anne
 true
 true
-6
-3
+1
+2
+
+- Employee - SoftwareEngineer - Tai
+true
+true
+14
+8
 
 - Employee - SoftwareEngineer - Erica
 true
@@ -137948,17 +137954,11 @@ true
 9
 0
 
-- Employee - SoftwareEngineer - Gretchen
+- Employee - SoftwareEngineer - Paxton
 true
 true
-1
-7
-
-- Employee - SoftwareEngineer - Roger
-true
-true
-9
-7
+14
+3
 
 <endSOPUsers>
 401

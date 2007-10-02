@@ -81995,29 +81995,11 @@ Eclipse
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareDeveloper - Peg
-true
-true
-12
-2
-
 - Employee - Manager - Chang
 true
 true
 7
 1
-
-- Employee - CustomerRep - Customer Wayne
-true
-true
-1
-4
-
-- Employee - SoftwareDeveloper - Sigfreido
-true
-true
-13
-2
 
 - Employee - SoftwareDeveloper - Robert
 true
@@ -82025,11 +82007,17 @@ true
 10
 6
 
-- Employee - SoftwareDeveloper - Joyce
+- Employee - SoftwareDeveloper - Timothy
 true
 true
-10
-5
+3
+6
+
+- Employee - SoftwareDeveloper - Sigfreido
+true
+true
+13
+2
 
 - Employee - SoftwareDeveloper - Reda
 true
@@ -82037,11 +82025,23 @@ true
 3
 7
 
-- Employee - SoftwareDeveloper - Timothy
+- Employee - CustomerRep - Customer Wayne
 true
 true
-3
-6
+1
+4
+
+- Employee - SoftwareDeveloper - Peg
+true
+true
+12
+2
+
+- Employee - SoftwareDeveloper - Joyce
+true
+true
+10
+5
 
 <endSOPUsers>
 -3
