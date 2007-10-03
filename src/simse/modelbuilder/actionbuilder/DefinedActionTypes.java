@@ -5,16 +5,16 @@
 
 package simse.modelbuilder.actionbuilder;
 
-import java.util.*;
+import java.util.Vector;
 
 public class DefinedActionTypes {
-  Vector actions; // vector of ActionTypes that holds defined action types
+  Vector<ActionType> actions; 
 
   public DefinedActionTypes() {
-    actions = new Vector();
+    actions = new Vector<ActionType>();
   }
 
-  public Vector getAllActionTypes() {
+  public Vector<ActionType> getAllActionTypes() {
     return actions;
   }
 
@@ -22,8 +22,8 @@ public class DefinedActionTypes {
                                                      // with the specified name
   {
     for (int i = 0; i < actions.size(); i++) {
-      ActionType tempAct = (ActionType) (actions.elementAt(i));
-      if (tempAct.getName().equals(actionName)) {
+      ActionType tempAct = actions.elementAt(i);
+      if (actions.elementAt(i).getName().equals(actionName)) {
         return tempAct;
       }
     }
@@ -67,8 +67,7 @@ public class DefinedActionTypes {
   public int removeActionType(String name)
   {
     for (int i = 0; i < actions.size(); i++) {
-      ActionType tempAct = (ActionType) (actions.elementAt(i));
-      if (tempAct.getName().equals(name)) {
+      if (actions.elementAt(i).getName().equals(name)) {
         actions.removeElementAt(i);
         return i;
       }
@@ -79,9 +78,8 @@ public class DefinedActionTypes {
   
   public int getIndexOf(ActionType type) {
     for (int i = 0; i < actions.size(); i++) {
-      ActionType actType = (ActionType) actions.elementAt(i);
-      if (actType.getName().equals(type.getName())) {
-        return actions.indexOf(actType);
+      if (actions.elementAt(i).getName().equals(type.getName())) {
+        return i;
       }
     }
     return -1;
@@ -107,8 +105,7 @@ public class DefinedActionTypes {
   public void removeAllRules() // removes all rules from all action types
   {
     for (int i = 0; i < actions.size(); i++) {
-      ActionType tempAct = (ActionType) actions.elementAt(i);
-      tempAct.removeAllRules();
+      actions.elementAt(i).removeAllRules();
     }
   }
 }

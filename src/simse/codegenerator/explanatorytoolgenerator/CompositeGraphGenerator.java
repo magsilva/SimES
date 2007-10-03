@@ -8,7 +8,9 @@ package simse.codegenerator.explanatorytoolgenerator;
 import simse.codegenerator.CodeGeneratorConstants;
 import simse.modelbuilder.ModelOptions;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
@@ -16,8 +18,8 @@ public class CompositeGraphGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
   private ModelOptions options;
 
-  public CompositeGraphGenerator(File dir, ModelOptions options) {
-    directory = dir;
+  public CompositeGraphGenerator(File directory, ModelOptions options) {
+    this.directory = directory;
     this.options = options;
   }
 

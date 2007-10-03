@@ -11,7 +11,6 @@ import java.awt.Point;
 import java.io.File;
 import javax.swing.*;
 
-import simse.modelbuilder.graphicsbuilder.DirectoryFileFilter;
 
 public class ModelOptionsDialog extends JDialog implements ActionListener {
   private ModelOptions options; // options being edited/viewed

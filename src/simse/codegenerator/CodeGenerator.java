@@ -8,17 +8,24 @@ import simse.codegenerator.guigenerator.GUIGenerator;
 import simse.codegenerator.logicgenerator.LogicGenerator;
 import simse.codegenerator.stategenerator.StateGenerator;
 import simse.codegenerator.utilgenerator.IDGeneratorGenerator;
-import simse.modelbuilder.*;
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import simse.modelbuilder.startstatebuilder.*;
-import simse.modelbuilder.mapeditor.*;
+import simse.modelbuilder.ModelOptions;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.startstatebuilder.CreatedObjects;
+import simse.modelbuilder.startstatebuilder.SimSEObject;
+import simse.modelbuilder.mapeditor.TileData;
+import simse.modelbuilder.mapeditor.UserData;
 
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import javax.swing.JOptionPane;
 
 public class CodeGenerator {
+	public static boolean allowHireFire = false;
+	
   private final char NEWLINE = '\n';
   private final char OPEN_BRACK = '{';
   private final char CLOSED_BRACK = '}';
@@ -29,14 +36,15 @@ public class CodeGenerator {
   private LogicGenerator logicGen; // generates the logic component
   private EngineGenerator engineGen; // generates the engine component
   private GUIGenerator guiGen; // generates the GUI component
-  private ExplanatoryToolGenerator expToolGen; // generates the explanatory tool
+  private ExplanatoryToolGenerator expToolGen; // generates the explanatory 
+  																						 // tool
   private IDGeneratorGenerator idGen; // generates the IDGenerator
-  public static boolean allowHireFire = false;
 
   public CodeGenerator(ModelOptions options, DefinedObjectTypes objTypes, 
-      CreatedObjects objs, DefinedActionTypes actTypes, Hashtable 
-      stsObjsToImages, Hashtable ruleObjsToImages, TileData[][] map,
-      ArrayList userDatas) {
+      CreatedObjects objs, DefinedActionTypes actTypes, 
+      Hashtable<SimSEObject, String> stsObjsToImages, 
+      Hashtable<SimSEObject, String> ruleObjsToImages, TileData[][] map,
+      ArrayList<UserData> userDatas) {
     this.options = options;
     stateGen = new StateGenerator(options, objTypes, actTypes);
     logicGen = new LogicGenerator(options, objTypes, actTypes);
@@ -52,25 +60,25 @@ public class CodeGenerator {
     allowHireFire = false;
   }
 
-  public void generate() // causes all of this component's sub-components to
-  // generate code
-  {
+  /*
+   * causes all of this component's sub-components to generate code
+   */
+  public void generate() {
     File codeGenDir = options.getCodeGenerationDestinationDirectory();
     if ((codeGenDir != null) && 
         ((!codeGenDir.exists()) || (!codeGenDir.isDirectory()))) {
       JOptionPane.showMessageDialog(null, ("Cannot find code generation" +
       		" destination directory " + codeGenDir.getAbsolutePath()), 
       		"File Not Found Error", JOptionPane.ERROR_MESSAGE);
-    }
-    else {
+    } else {
 	    // generate directory structure:
 	    File simse = new File(options.getCodeGenerationDestinationDirectory(), 
 	        "simse");
 	    // if directory already exists, delete all files in it:
 	    if (simse.exists() && simse.isDirectory()) {
 	      File[] files = simse.listFiles();
-	      for (int i = 0; i < files.length; i++) {
-	        files[i].delete();
+	      for (File f : files) {
+	        f.delete();
 	      }
 	    }
 	    simse.mkdir();
@@ -80,8 +88,8 @@ public class CodeGenerator {
 	    // if directory already exists, delete all files in it:
 	    if (lib.exists() && lib.isDirectory()) {
 	      File[] files = lib.listFiles();
-	      for (int i = 0; i < files.length; i++) {
-	        files[i].delete();
+	      for (File f : files) {
+	        f.delete();
 	      }
 	    }
 	    lib.mkdir();
@@ -90,8 +98,8 @@ public class CodeGenerator {
 	    // if directory already exists, delete all files in it:
 	    if (adts.exists() && adts.isDirectory()) {
 	      File[] files = adts.listFiles();
-	      for (int i = 0; i < files.length; i++) {
-	        files[i].delete();
+	      for (File f : files) {
+	        f.delete();
 	      }
 	    }
 	    adts.mkdir();
@@ -100,8 +108,8 @@ public class CodeGenerator {
 	    // if directory already exists, delete all files in it:
 	    if (objects.exists() && objects.isDirectory()) {
 	      File[] files = objects.listFiles();
-	      for (int i = 0; i < files.length; i++) {
-	        files[i].delete();
+	      for (File f : files) {
+	        f.delete();
 	      }
 	    }
 	    objects.mkdir();
@@ -110,8 +118,8 @@ public class CodeGenerator {
 	    // if directory already exists, delete all files in it:
 	    if (actions.exists() && actions.isDirectory()) {
 	      File[] files = actions.listFiles();
-	      for (int i = 0; i < files.length; i++) {
-	        files[i].delete();
+	      for (File f : files) {
+	        f.delete();
 	      }
 	    }
 	    actions.mkdir();
@@ -120,8 +128,8 @@ public class CodeGenerator {
 	    // if directory already exists, delete all files in it:
 	    if (state.exists() && state.isDirectory()) {
 	      File[] files = state.listFiles();
-	      for (int i = 0; i < files.length; i++) {
-	        files[i].delete();
+	      for (File f : files) {
+	        f.delete();
 	      }
 	    }
 	    state.mkdir();
@@ -130,8 +138,8 @@ public class CodeGenerator {
 	    // if directory already exists, delete all files in it:
 	    if (logger.exists() && logger.isDirectory()) {
 	      File[] files = logger.listFiles();
-	      for (int i = 0; i < files.length; i++) {
-	        files[i].delete();
+	      for (File f : files) {
+	        f.delete();
 	      }
 	    }
 	    logger.mkdir();
@@ -140,8 +148,8 @@ public class CodeGenerator {
 	    // if directory already exists, delete all files in it:
 	    if (logic.exists() && logic.isDirectory()) {
 	      File[] files = logic.listFiles();
-	      for (int i = 0; i < files.length; i++) {
-	        files[i].delete();
+	      for (File f : files) {
+	        f.delete();
 	      }
 	    }
 	    logic.mkdir();
@@ -150,8 +158,8 @@ public class CodeGenerator {
 	    // if directory already exists, delete all files in it:
 	    if (dialogs.exists() && dialogs.isDirectory()) {
 	      File[] files = dialogs.listFiles();
-	      for (int i = 0; i < files.length; i++) {
-	        files[i].delete();
+	      for (File f : files) {
+	        f.delete();
 	      }
 	    }
 	    dialogs.mkdir();
@@ -160,8 +168,8 @@ public class CodeGenerator {
 	    // if directory already exists, delete all files in it:
 	    if (engine.exists() && engine.isDirectory()) {
 	      File[] files = engine.listFiles();
-	      for (int i = 0; i < files.length; i++) {
-	        files[i].delete();
+	      for (File f : files) {
+	        f.delete();
 	      }
 	    }
 	    engine.mkdir();
@@ -170,8 +178,8 @@ public class CodeGenerator {
 	    // if directory already exists, delete all files in it:
 	    if (gui.exists() && gui.isDirectory()) {
 	      File[] files = gui.listFiles();
-	      for (int i = 0; i < files.length; i++) {
-	        files[i].delete();
+	      for (File f : files) {
+	        f.delete();
 	      }
 	    }
 	    gui.mkdir();
@@ -180,8 +188,8 @@ public class CodeGenerator {
 	    // if directory already exists, delete all files in it:
 	    if (expTool.exists() && expTool.isDirectory()) {
 	      File[] files = expTool.listFiles();
-	      for (int i = 0; i < files.length; i++) {
-	        files[i].delete();
+	      for (File f : files) {
+	        f.delete();
 	      }
 	    }
 	    expTool.mkdir();
@@ -190,8 +198,8 @@ public class CodeGenerator {
 	    // if directory already exists, delete all files in it:
 	    if (util.exists() && util.isDirectory()) {
 	      File[] files = util.listFiles();
-	      for (int i = 0; i < files.length; i++) {
-	        files[i].delete();
+	      for (File f : files) {
+	        f.delete();
 	      }
 	    }
 	    util.mkdir();

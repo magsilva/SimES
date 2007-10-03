@@ -280,7 +280,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
       for (int i = 0; i < userTrigActs.size(); i++) {
         ActionType tempAct = (ActionType) userTrigActs.elementAt(i);
         writer.write("if(action instanceof "
-            + getUpperCaseLeading(tempAct.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -332,7 +332,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
-            writer.write("((" + getUpperCaseLeading(tempAct.getName())
+            writer.write("((" + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
                 + "Action)action).add" + part.getName() + "(emp);");
             writer.write(NEWLINE);
 
@@ -380,7 +380,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
           writer.write("else ");
         }
         writer.write("if(action instanceof "
-            + getUpperCaseLeading(tempAct.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -430,7 +430,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
-            writer.write("((" + getUpperCaseLeading(tempAct.getName())
+            writer.write("((" + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
                 + "Action)action).add" + part.getName() + "(emp);");
             writer.write(NEWLINE);
 
@@ -468,9 +468,5 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
           + crtpdFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

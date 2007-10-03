@@ -5,15 +5,36 @@
 
 package simse.codegenerator.logicgenerator;
 
-import simse.modelbuilder.*;
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import simse.modelbuilder.rulebuilder.*;
-import simse.codegenerator.*;
+import simse.codegenerator.CodeGenerator;
+import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
+import simse.modelbuilder.ModelOptions;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.ActionTypeDestroyer;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantAttributeConstraint;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantConstraint;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantDestroyer;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantTrigger;
+import simse.modelbuilder.actionbuilder.ActionTypeTrigger;
+import simse.modelbuilder.actionbuilder.AttributeGuard;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.actionbuilder.UserActionTypeDestroyer;
+import simse.modelbuilder.actionbuilder.UserActionTypeTrigger;
+import simse.modelbuilder.objectbuilder.AttributeTypes;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+import simse.modelbuilder.rulebuilder.Rule;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 public class MenuInputManagerGenerator implements CodeGeneratorConstants {
   private File directory; // directory to generate into
@@ -22,22 +43,25 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
   private ModelOptions options;
   private DefinedActionTypes actTypes; // holds all of the defined action types
                                        // from an ssa file
-  private Vector vectors; // for keeping track of which vectors are being used
-                          // in generated code so that you don't generate the
-  // same ones more than once -- e.g., Vector programmers =
-  // state.getEmployeeStateRepository().getProgrammerStateRepository().getAll()
-  // will be generated more than once if you
-  // don't keep track of this.
+  private Vector<String> vectors; // for keeping track of which vectors are 
+  																// being used in generated code so that you 
+  																// don't generate the same ones more than once
+  																// -- e.g., Vector programmers = 
+  																// state.getEmployeeStateRepository().
+  																// getProgrammerStateRepository().getAll()
+  																// will be generated more than once if you
+  																// don't keep track of this.
 
   private DefinedObjectTypes objTypes;
 
-  public MenuInputManagerGenerator(ModelOptions opts, DefinedActionTypes acts,
-      DefinedObjectTypes obj, File dir) {
-    options = opts;
-    directory = dir;
-    actTypes = acts;
-    objTypes = obj;
-    vectors = new Vector();
+  public MenuInputManagerGenerator(ModelOptions options, 
+  		DefinedActionTypes actTypes, DefinedObjectTypes objTypes, 
+  		File directory) {
+    this.options = options;
+    this.directory = directory;
+    this.actTypes = actTypes;
+    this.objTypes = objTypes;
+    vectors = new Vector<String>();
   }
 
   public void generate() {
@@ -184,13 +208,11 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write("e.setHired(false);");
         writer.write(NEWLINE);
 
-        Vector vEmp1 = objTypes
+        Vector<SimSEObjectType> vEmp1 = objTypes
             .getAllObjectTypesOfType(SimSEObjectTypeTypes.EMPLOYEE);
-
         for (int i = 0; i < vEmp1.size(); i++) {
-          SimSEObjectType sso = (SimSEObjectType) vEmp1.elementAt(i);
-          String name = getUpperCaseLeading(sso.getName());
-
+          SimSEObjectType sso = vEmp1.elementAt(i);
+          String name = CodeGeneratorUtils.getUpperCaseLeading(sso.getName());
           if (i > 0) {
             writer.write("else ");
           }
@@ -232,31 +254,30 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	
 	      // user destroyers:
 	      // make a Vector of all the user destroyers:
-	      Vector userDests = new Vector();
-	      Vector actions = actTypes.getAllActionTypes();
+	      Vector<UserActionTypeDestroyer> userDests = 
+	      	new Vector<UserActionTypeDestroyer>();
+	      Vector<ActionType> actions = actTypes.getAllActionTypes();
 	      for (int j = 0; j < actions.size(); j++) {
-	        ActionType act = (ActionType) actions.elementAt(j);
-	        Vector allDests = act.getAllDestroyers();
+	        ActionType act = actions.elementAt(j);
+	        Vector<ActionTypeDestroyer> allDests = act.getAllDestroyers();
 	        for (int k = 0; k < allDests.size(); k++) {
-	          ActionTypeDestroyer tempDest = (ActionTypeDestroyer) allDests
-	              .elementAt(k);
+	          ActionTypeDestroyer tempDest = allDests.elementAt(k);
 	          if (tempDest instanceof UserActionTypeDestroyer) {
-	            userDests.add(tempDest);
+	            userDests.add((UserActionTypeDestroyer)tempDest);
 	          }
 	        }
 	      }
 	
 	      // go through each destroyer and generate code for it:
 	      for (int j = 0; j < userDests.size(); j++) {
-	        ActionTypeDestroyer outerDest = (ActionTypeDestroyer) userDests
-	            .elementAt(j);
+	        UserActionTypeDestroyer outerDest = userDests.elementAt(j);
 	        ActionType act = outerDest.getActionType();
 	        writer.write("// "
-	            + ((UserActionTypeDestroyer) outerDest).getMenuText() + ":");
+	            + outerDest.getMenuText() + ":");
 	        writer.write(NEWLINE);
 	        writer.write("Vector allActions" + j
 	            + " = state.getActionStateRepository().get"
-	            + getUpperCaseLeading(act.getName())
+	            + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
 	            + "ActionStateRepository().getAllActions();");
 	        writer.write(NEWLINE);
 	        writer.write("int a" + j + " = 0;");
@@ -265,9 +286,10 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	        writer.write(NEWLINE);
 	        writer.write(OPEN_BRACK);
 	        writer.write(NEWLINE);
-	        writer.write(getUpperCaseLeading(act.getName()) + "Action b" + j
-	            + " = (" + getUpperCaseLeading(act.getName()) + "Action)allActions"
-	            + j + ".elementAt(i);");
+	        writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+	        		"Action b" + j + " = (" + 
+	        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+	        		"Action)allActions" + j + ".elementAt(i);");
 	        writer.write(NEWLINE);
 	        writer.write("if(b" + j + ".getAllParticipants().contains(emp))");
 	        writer.write(NEWLINE);
@@ -287,30 +309,26 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	        writer.write(NEWLINE);
 	        writer.write(OPEN_BRACK);
 	        writer.write(NEWLINE);
-	        writer.write(getUpperCaseLeading(act.getName()) + "Action b" + j
-	            + " = (" + getUpperCaseLeading(act.getName()) + "Action)allActions"
-	            + j + ".elementAt(i);");
+	        writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+	        		"Action b" + j + " = (" + 
+	        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+	        		"Action)allActions" + j + ".elementAt(i);");
 	        writer.write(NEWLINE);
 	        // go through all participants:
-	        Vector parts = act.getAllParticipants();
+	        Vector<ActionTypeParticipant> parts = act.getAllParticipants();
 	        for (int k = 0; k < parts.size(); k++) {
-	          ActionTypeParticipant tempPart = (ActionTypeParticipant) parts
-	              .elementAt(k);
-	          if (tempPart.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) // participant
-	                                                                                  // is
-	                                                                                  // of
-	                                                                                  // employee
-	                                                                                  // type
-	          {
+	          ActionTypeParticipant tempPart = parts.elementAt(k);
+	          if (tempPart.getSimSEObjectTypeType() == 
+	          	SimSEObjectTypeTypes.EMPLOYEE) { 
 	            writer.write("if(b" + j + ".getAll" + tempPart.getName()
 	                + "s().contains(emp))");
 	            writer.write(NEWLINE);
 	            writer.write(OPEN_BRACK);
 	            writer.write(NEWLINE);
 	
-	            Vector destRules = act.getAllDestroyerRules();
+	            Vector<Rule> destRules = act.getAllDestroyerRules();
 	            for (int i = 0; i < destRules.size(); i++) {
-	              Rule dRule = (Rule) destRules.elementAt(i);
+	              Rule dRule = destRules.elementAt(i);
 	              writer
 	                  .write("ruleExec.update(parent, RuleExecutor.UPDATE_ONE, \""
 	                      + dRule.getName() + "\", b" + j + ");");
@@ -322,24 +340,23 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	            if ((outerDest.getDestroyerText() != null)
 	                && (outerDest.getDestroyerText().length() > 0)) {
 	              writer.write("emp.setOverheadText(\""
-	                  + ((UserActionTypeDestroyer) outerDest).getDestroyerText()
-	                  + "\");");
+	                  + outerDest.getDestroyerText() + "\");");
 	              writer.write(NEWLINE);
 	            }
 	            writer.write("if(b" + j + ".getAll" + tempPart.getName()
 	                + "s().size() < ");
-	            if (tempPart.getQuantity().isMinValBoundless()) // no minimum
-	            {
+	            if (tempPart.getQuantity().isMinValBoundless()) { // no minimum
 	              writer.write("0)");
-	            } else // has a minimum
-	            {
-	              writer.write(tempPart.getQuantity().getMinVal().intValue() + ")");
+	            } else { // has a minimum
+	              writer.write(tempPart.getQuantity().getMinVal().intValue() + 
+	              		")");
 	            }
 	            writer.write(NEWLINE);
 	            writer.write(OPEN_BRACK);
 	            writer.write(NEWLINE);
 	            writer
-	                .write("Vector c" + j + " = b" + j + ".getAllParticipants();");
+	                .write("Vector c" + j + " = b" + j + 
+	                		".getAllParticipants();");
 	            writer.write(NEWLINE);
 	            writer.write("for(int j=0; j<c" + j + ".size(); j++)");
 	            writer.write(NEWLINE);
@@ -355,8 +372,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	            if ((outerDest.getDestroyerText() != null)
 	                && (outerDest.getDestroyerText().length() > 0)) {
 	              writer.write("((Employee)d" + j + ").setOverheadText(\""
-	                  + ((UserActionTypeDestroyer) outerDest).getDestroyerText()
-	                  + "\");");
+	                  + outerDest.getDestroyerText() + "\");");
 	              writer.write(NEWLINE);
 	            }
 	            writer.write(CLOSED_BRACK);
@@ -368,8 +384,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	            if ((outerDest.getDestroyerText() != null)
 	                && (outerDest.getDestroyerText().length() > 0)) {
 	              writer.write("((Customer)d" + j + ").setOverheadText(\""
-	                  + ((UserActionTypeDestroyer) outerDest).getDestroyerText()
-	                  + "\");");
+	                  + outerDest.getDestroyerText() + "\");");
 	              writer.write(NEWLINE);
 	            }
 	            writer.write(CLOSED_BRACK);
@@ -379,7 +394,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	
 	            // remove action from repository:
 	            writer.write("state.getActionStateRepository().get"
-	                + getUpperCaseLeading(act.getName())
+	                + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
 	                + "ActionStateRepository().remove(b" + j + ");");
 	            writer.write(NEWLINE);
 	
@@ -387,24 +402,28 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	            if (outerDest.isGameEndingDestroyer()) {
 	              writer.write("// stop game and give score:");
 	              writer.write(NEWLINE);
-	              writer.write(getUpperCaseLeading(act.getName()) + "Action t111"
-	                  + j + " = (" + getUpperCaseLeading(act.getName())
-	                  + "Action)b" + j + ";");
+	              writer.write(
+	              		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+	              		"Action t111" + j + " = (" + 
+	              		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+	              		"Action)b" + j + ";");
 	              writer.write(NEWLINE);
 	              // find the scoring attribute:
 	              ActionTypeParticipantDestroyer scoringPartDest = null;
 	              ActionTypeParticipantConstraint scoringPartConst = null;
 	              ActionTypeParticipantAttributeConstraint scoringAttConst = null;
-	              Vector partDests = outerDest.getAllParticipantDestroyers();
+	              Vector<ActionTypeParticipantDestroyer> partDests = 
+	              	outerDest.getAllParticipantDestroyers();
 	              for (int m = 0; m < partDests.size(); m++) {
-	                ActionTypeParticipantDestroyer partDest = (ActionTypeParticipantDestroyer) partDests
-	                    .elementAt(m);
-	                Vector partConsts = partDest.getAllConstraints();
+	                ActionTypeParticipantDestroyer partDest = 
+	                	partDests.elementAt(m);
+	                Vector<ActionTypeParticipantConstraint> partConsts = 
+	                	partDest.getAllConstraints();
 	                for (int n = 0; n < partConsts.size(); n++) {
-	                  ActionTypeParticipantConstraint partConst = (ActionTypeParticipantConstraint) partConsts
-	                      .elementAt(n);
-	                  ActionTypeParticipantAttributeConstraint[] attConsts = partConst
-	                      .getAllAttributeConstraints();
+	                  ActionTypeParticipantConstraint partConst = 
+	                  	partConsts.elementAt(n);
+	                  ActionTypeParticipantAttributeConstraint[] attConsts = 
+	                  	partConst.getAllAttributeConstraints();
 	                  for (int p = 0; p < attConsts.length; p++) {
 	                    if (attConsts[p].isScoringAttribute()) {
 	                      scoringAttConst = attConsts[p];
@@ -423,30 +442,30 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	                writer.write(NEWLINE);
 	                writer.write(OPEN_BRACK);
 	                writer.write(NEWLINE);
-	                writer.write(getUpperCaseLeading(scoringPartConst
-	                    .getSimSEObjectType().getName())
-	                    + " t"
-	                    + j
-	                    + " = ("
-	                    + getUpperCaseLeading(scoringPartConst.getSimSEObjectType()
-	                        .getName())
-	                    + ")(t111"
-	                    + j
-	                    + ".getAll"
-	                    + scoringPartDest.getParticipant().getName()
-	                    + "s().elementAt(0));");
+	                writer.write(CodeGeneratorUtils.getUpperCaseLeading(
+	                		scoringPartConst.getSimSEObjectType().getName()) + " t" + 
+	                		j + " = (" + 
+	                		CodeGeneratorUtils.getUpperCaseLeading(
+	                				scoringPartConst.getSimSEObjectType().getName()) + 
+	                				")(t111" + j + ".getAll" + 
+	                				scoringPartDest.getParticipant().getName() + 
+	                				"s().elementAt(0));");
 	                writer.write(NEWLINE);
 	                writer.write("if(t" + j + " != null)");
 	                writer.write(NEWLINE);
 	                writer.write(OPEN_BRACK);
 	                writer.write(NEWLINE);
-	                if (scoringAttConst.getAttribute().getType() == AttributeTypes.INTEGER) {
+	                if (scoringAttConst.getAttribute().getType() == 
+	                	AttributeTypes.INTEGER) {
 	                  writer.write("int");
-	                } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.DOUBLE) {
+	                } else if (scoringAttConst.getAttribute().getType() == 
+	                	AttributeTypes.DOUBLE) {
 	                  writer.write("double");
-	                } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.STRING) {
+	                } else if (scoringAttConst.getAttribute().getType() == 
+	                	AttributeTypes.STRING) {
 	                  writer.write("String");
-	                } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.BOOLEAN) {
+	                } else if (scoringAttConst.getAttribute().getType() == 
+	                	AttributeTypes.BOOLEAN) {
 	                  writer.write("boolean");
 	                }
 	                writer.write(" v" + j + " = t" + j + ".get"
@@ -488,15 +507,16 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	        writer.write(NEWLINE);
 	        writer.write(OPEN_BRACK);
 	        writer.write(NEWLINE);
-	        writer.write(getUpperCaseLeading(act.getName()) + "Action c" + j
-	            + " = (" + getUpperCaseLeading(act.getName()) + "Action)allActions"
-	            + j + ".elementAt(i);");
+	        writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+	        		"Action c" + j + " = (" + 
+	        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+	        		"Action)allActions" + j + ".elementAt(i);");
 	        writer.write(NEWLINE);
 	        // go through all participants:
 	        for (int k = 0; k < parts.size(); k++) {
-	          ActionTypeParticipant tempPart = (ActionTypeParticipant) parts
-	              .elementAt(k);
-	          if (tempPart.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) {
+	          ActionTypeParticipant tempPart = parts.elementAt(k);
+	          if (tempPart.getSimSEObjectTypeType() == 
+	          	SimSEObjectTypeTypes.EMPLOYEE) {
 	            writer
 	                .write("if((c" + j + ".getAll" + tempPart.getName()
 	                    + "s().contains(emp)) && (!(b" + j + ".contains(c" + j
@@ -528,31 +548,29 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
       }
 
       // make a Vector of all the user triggers:
-      Vector userTrigs = new Vector();
-      Vector actions = actTypes.getAllActionTypes();
+      Vector<UserActionTypeTrigger> userTrigs = 
+      	new Vector<UserActionTypeTrigger>();
+      Vector<ActionType> actions = actTypes.getAllActionTypes();
       for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.elementAt(i);
-        Vector allTrigs = act.getAllTriggers();
+        ActionType act = actions.elementAt(i);
+        Vector<ActionTypeTrigger> allTrigs = act.getAllTriggers();
         for (int j = 0; j < allTrigs.size(); j++) {
-          ActionTypeTrigger tempTrig = (ActionTypeTrigger) allTrigs
-              .elementAt(j);
+          ActionTypeTrigger tempTrig = allTrigs.elementAt(j);
           if (tempTrig instanceof UserActionTypeTrigger) {
-            userTrigs.add(tempTrig);
+            userTrigs.add((UserActionTypeTrigger)tempTrig);
           }
         }
       }
       // go through each trigger and generate code for it:
       for (int i = 0; i < userTrigs.size(); i++) {
         vectors.removeAllElements(); // clear vector
-        ActionTypeTrigger outerTrig = (ActionTypeTrigger) userTrigs
-            .elementAt(i);
+        UserActionTypeTrigger outerTrig = 
+        	(UserActionTypeTrigger) userTrigs.elementAt(i);
         ActionType act = outerTrig.getActionType();
-        if (i > 0) // not on first element
-        {
+        if (i > 0) { // not on first element
           writer.write("else ");
         }
-        writer.write("if(s.equals(\""
-            + ((UserActionTypeTrigger) outerTrig).getMenuText() + "\"))");
+        writer.write("if(s.equals(\"" + outerTrig.getMenuText() + "\"))");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -569,8 +587,8 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         }
         
         // triggers requiring confirmation:
-        if (((UserActionTypeTrigger)outerTrig).requiresConfirmation() && 
-        		!((UserActionTypeTrigger)outerTrig).isGameEndingTrigger()) {
+        if (outerTrig.requiresConfirmation() && 
+        		!outerTrig.isGameEndingTrigger()) {
           writer
           .write("int choice = JOptionPane.showConfirmDialog(null, (\"Are you sure?\"), \"Confirm Action\", JOptionPane.YES_NO_OPTION);");
           writer.write(NEWLINE);
@@ -580,35 +598,31 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
         }
 
-        Vector triggers = outerTrig.getAllParticipantTriggers();
+        Vector<ActionTypeParticipantTrigger> triggers = 
+        	outerTrig.getAllParticipantTriggers();
         for (int j = 0; j < triggers.size(); j++) {
-          ActionTypeParticipantTrigger trig = (ActionTypeParticipantTrigger) triggers
-              .elementAt(j);
+          ActionTypeParticipantTrigger trig = triggers.elementAt(j);
           writer.write("Vector "
               + trig.getParticipant().getName().toLowerCase() + "s" + j
               + " = new Vector();");
           writer.write(NEWLINE);
-          Vector constraints = trig.getAllConstraints();
+          Vector<ActionTypeParticipantConstraint> constraints = 
+          	trig.getAllConstraints();
           for (int k = 0; k < constraints.size(); k++) {
-            ActionTypeParticipantConstraint constraint = (ActionTypeParticipantConstraint) constraints
-                .elementAt(k);
+            ActionTypeParticipantConstraint constraint = 
+            	constraints.elementAt(k);
             String objTypeName = constraint.getSimSEObjectType().getName();
-            if (vectorContainsString(vectors, (objTypeName.toLowerCase() + "s")) == false) // this
-                                                                                           // vector
-                                                                                           // has
-                                                                                           // not
-                                                                                           // been
-                                                                                           // generated
-                                                                                           // already
-            {
+            if (vectorContainsString(vectors, (objTypeName.toLowerCase() + "s"))
+            		== false) { // this vector has not been generated already
               writer.write("Vector "
                   + objTypeName.toLowerCase()
                   + "s = state.get"
-                  + getUpperCaseLeading(SimSEObjectTypeTypes.getText(constraint
-                      .getSimSEObjectType().getType()))
-                  + "StateRepository().get" + getUpperCaseLeading(objTypeName)
-                  + "StateRepository().getAll();");
-              // generate it
+                  + CodeGeneratorUtils.getUpperCaseLeading(
+                  		SimSEObjectTypeTypes.getText(
+                  				constraint.getSimSEObjectType().getType())) + 
+                  				"StateRepository().get" + 
+                  				CodeGeneratorUtils.getUpperCaseLeading(objTypeName) +
+                  				"StateRepository().getAll();");
               vectors.add(objTypeName.toLowerCase() + "s"); // add it to the
                                                             // list
               writer.write(NEWLINE);
@@ -618,13 +632,14 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
-            writer.write(getUpperCaseLeading(objTypeName) + " a = ("
-                + getUpperCaseLeading(objTypeName) + ")"
-                + objTypeName.toLowerCase() + "s.elementAt(i);");
+            writer.write(CodeGeneratorUtils.getUpperCaseLeading(objTypeName) + 
+            		" a = (" + CodeGeneratorUtils.getUpperCaseLeading(objTypeName) +
+            		")" + objTypeName.toLowerCase() + "s.elementAt(i);");
             writer.write(NEWLINE);
 
             if (CodeGenerator.allowHireFire
-                && constraint.getSimSEObjectType().getType() == SimSEObjectTypeTypes.EMPLOYEE) {
+                && constraint.getSimSEObjectType().getType() == 
+                	SimSEObjectTypeTypes.EMPLOYEE) {
               // if the action involves Employees, only add those that are hired
               writer.write("if (!a.getHired())");
               writer.write(NEWLINE);
@@ -634,25 +649,25 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 
             writer.write("boolean alreadyInAction = false;");
             writer.write(NEWLINE);
-            if ((trig.getParticipant().getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE)
-                || (trig.getParticipant().getSimSEObjectTypeType() == SimSEObjectTypeTypes.ARTIFACT)) // employees
-                                                                                                      // and
-                                                                                                      // artifacts
-                                                                                                      // can
-            //only be in one of these actions in this role at a time
-            {
+            if ((trig.getParticipant().getSimSEObjectTypeType() == 
+            	SimSEObjectTypeTypes.EMPLOYEE) || 
+            	(trig.getParticipant().getSimSEObjectTypeType() == 
+            		SimSEObjectTypeTypes.ARTIFACT)) { // employees only be in one 
+            																			// of these actions in this 
+            																			// role at a time
               writer
                   .write("Vector allActions = state.getActionStateRepository().get"
-                      + getUpperCaseLeading(act.getName())
+                      + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
                       + "ActionStateRepository().getAllActions(a);");
               writer.write(NEWLINE);
               writer.write("for(int j=0; j<allActions.size(); j++)");
               writer.write(NEWLINE);
               writer.write(OPEN_BRACK);
               writer.write(NEWLINE);
-              writer.write(getUpperCaseLeading(act.getName()) + "Action b = ("
-                  + getUpperCaseLeading(act.getName())
-                  + "Action)allActions.elementAt(j);");
+              writer.write(CodeGeneratorUtils.getUpperCaseLeading(
+              		act.getName()) + "Action b = (" + 
+              		CodeGeneratorUtils.getUpperCaseLeading(act.getName())+ 
+              		"Action)allActions.elementAt(j);");
               writer.write(NEWLINE);
               writer.write("if(b.getAll" + trig.getParticipant().getName()
                   + "s().contains(a))");
@@ -669,20 +684,22 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
               writer.write(NEWLINE);
             }
             writer.write("if((alreadyInAction == false)");
-            ActionTypeParticipantAttributeConstraint[] attConstraints = constraint
-                .getAllAttributeConstraints();
+            ActionTypeParticipantAttributeConstraint[] attConstraints = 
+            	constraint.getAllAttributeConstraints();
             for (int m = 0; m < attConstraints.length; m++) {
-              ActionTypeParticipantAttributeConstraint attConst = attConstraints[m];
+              ActionTypeParticipantAttributeConstraint attConst = 
+              	attConstraints[m];
               if (attConst.isConstrained()) {
                 writer.write(" && (a.get"
-                    + getUpperCaseLeading(attConst.getAttribute().getName())
-                    + "() ");
+                    + CodeGeneratorUtils.getUpperCaseLeading(
+                    		attConst.getAttribute().getName()) + "() ");
                 if (attConst.getGuard().equals(AttributeGuard.EQUALS)) {
                   writer.write("== ");
                 } else {
                   writer.write(attConst.getGuard() + " ");
                 }
-                if (attConst.getAttribute().getType() == AttributeTypes.STRING) {
+                if (attConst.getAttribute().getType() == 
+                	AttributeTypes.STRING) {
                   writer.write("\"" + attConst.getValue().toString() + "\"");
                 } else {
                   writer.write(attConst.getValue().toString());
@@ -705,10 +722,8 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         }
         writer.write("if(");
         for (int j = 0; j < triggers.size(); j++) {
-          ActionTypeParticipantTrigger trig = (ActionTypeParticipantTrigger) triggers
-              .elementAt(j);
-          if (j > 0) // not on first element
-          {
+          ActionTypeParticipantTrigger trig = triggers.elementAt(j);
+          if (j > 0) { // not on first element
             writer.write(" && ");
           }
           ActionTypeParticipant part = trig.getParticipant();
@@ -716,8 +731,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
               + ".size() ");
           if (part.getQuantity().isMinValBoundless() == false) {
             writer.write(">= " + part.getQuantity().getMinVal() + ")");
-          } else // min val boundless
-          {
+          } else { // min val boundless
             writer.write(">= 0)");
           }
         }
@@ -732,8 +746,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         // working right:
         //boolean moreThan1RoleForSameEmployeeType = false;
         for (int j = 0; j < triggers.size(); j++) {
-          ActionTypeParticipantTrigger trig = (ActionTypeParticipantTrigger) triggers
-              .elementAt(j);
+          ActionTypeParticipantTrigger trig = triggers.elementAt(j);
           ActionTypeParticipant part = trig.getParticipant();
           writer.write("c.add(\"" + part.getName() + "\");");
           writer.write(NEWLINE);
@@ -778,15 +791,15 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
 
         for (int j = 0; j < triggers.size(); j++) {
-          ActionTypeParticipantTrigger trig = (ActionTypeParticipantTrigger) triggers
-          .elementAt(j);
+          ActionTypeParticipantTrigger trig = triggers.elementAt(j);
           ActionTypeParticipant part = trig.getParticipant();
           writer
               .write("d.add(" + part.getName().toLowerCase() + "s" + j + ");");
           writer.write(NEWLINE);
         }
-        writer.write(getUpperCaseLeading(act.getName()) + "Action f = new "
-            + getUpperCaseLeading(act.getName()) + "Action();");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+        		"Action f = new " + CodeGeneratorUtils.getUpperCaseLeading(
+        				act.getName()) + "Action();");
         writer.write(NEWLINE);
         writer
             .write("ParticipantSelectionDialogsDriver g = new ParticipantSelectionDialogsDriver(parent, c, d, f, state, ruleExec, destChecker, e, s);");
@@ -802,9 +815,8 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
 
         if (outerTrig.isGameEndingTrigger() || 
-            (((UserActionTypeTrigger)outerTrig).requiresConfirmation())) 
+            outerTrig.requiresConfirmation()) { 
           	// add extra closed brack
-        {
           writer.write(CLOSED_BRACK);
           writer.write(NEWLINE);
         }
@@ -813,13 +825,13 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
 
         // JOINING existing actions:
-        writer.write("else if(s.equals(\"JOIN "
-            + ((UserActionTypeTrigger) outerTrig).getMenuText() + "\"))");
+        writer.write("else if(s.equals(\"JOIN " + outerTrig.getMenuText() + 
+        		"\"))");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
         writer.write("Vector a = state.getActionStateRepository().get"
-            + getUpperCaseLeading(act.getName())
+            + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
             + "ActionStateRepository().getAllActions();");
         writer.write(NEWLINE);
         writer.write("Vector b = new Vector();");
@@ -828,15 +840,16 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(act.getName()) + "Action c = ("
-            + getUpperCaseLeading(act.getName()) + "Action)a.elementAt(i);");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+        		"Action c = (" + CodeGeneratorUtils.getUpperCaseLeading(
+        				act.getName()) + "Action)a.elementAt(i);");
         writer.write(NEWLINE);
         // go through all participants:
         for (int j = 0; j < triggers.size(); j++) {
-          ActionTypeParticipantTrigger trig = (ActionTypeParticipantTrigger) triggers
-          .elementAt(j);
+          ActionTypeParticipantTrigger trig = triggers.elementAt(j);
           ActionTypeParticipant tempPart = trig.getParticipant();
-          if (tempPart.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) {
+          if (tempPart.getSimSEObjectTypeType() == 
+          	SimSEObjectTypeTypes.EMPLOYEE) {
             writer.write("if((c.getAll" + tempPart.getName()
                 + "s().contains(e) == false) && (b.contains(c) == false))");
             writer.write(NEWLINE);
@@ -852,39 +865,36 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer
             .write("ChooseActionToJoinDialog catjd = new ChooseActionToJoinDialog(parent, b, e, state, \""
-                + ((UserActionTypeTrigger) outerTrig).getMenuText()
-                + "\", ruleExec);");
+                + outerTrig.getMenuText() + "\", ruleExec);");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
       }
 
       // make a Vector of all the user destroyers:
-      Vector userDests = new Vector();
+      Vector<UserActionTypeDestroyer> userDests = 
+      	new Vector<UserActionTypeDestroyer>();
       for (int j = 0; j < actions.size(); j++) {
-        ActionType act = (ActionType) actions.elementAt(j);
-        Vector allDests = act.getAllDestroyers();
+        ActionType act = actions.elementAt(j);
+        Vector<ActionTypeDestroyer> allDests = act.getAllDestroyers();
         for (int k = 0; k < allDests.size(); k++) {
-          ActionTypeDestroyer tempDest = (ActionTypeDestroyer) allDests
-              .elementAt(k);
+          ActionTypeDestroyer tempDest = allDests.elementAt(k);
           if (tempDest instanceof UserActionTypeDestroyer) {
-            userDests.add(tempDest);
+            userDests.add((UserActionTypeDestroyer)tempDest);
           }
         }
       }
       
       // go through each destroyer and generate code for it:
       for (int j = 0; j < userDests.size(); j++) {
-        ActionTypeDestroyer outerDest = (ActionTypeDestroyer) userDests
-            .elementAt(j);
+        UserActionTypeDestroyer outerDest = userDests.elementAt(j);
         ActionType act = outerDest.getActionType();
-        writer.write("else if(s.equals(\""
-            + ((UserActionTypeDestroyer) outerDest).getMenuText() + "\"))");
+        writer.write("else if(s.equals(\"" + outerDest.getMenuText() + "\"))");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
         writer.write("Vector allActions = state.getActionStateRepository().get"
-            + getUpperCaseLeading(act.getName())
+            + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
             + "ActionStateRepository().getAllActions();");
         writer.write(NEWLINE);
         writer.write("int a = 0;");
@@ -893,9 +903,10 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(act.getName()) + "Action b = ("
-            + getUpperCaseLeading(act.getName())
-            + "Action)allActions.elementAt(i);");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+        		"Action b = (" + 
+        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+        		"Action)allActions.elementAt(i);");
         writer.write(NEWLINE);
         writer.write("if(b.getAllParticipants().contains(e))");
         writer.write(NEWLINE);
@@ -915,21 +926,16 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(act.getName()) + "Action b = ("
-            + getUpperCaseLeading(act.getName())
-            + "Action)allActions.elementAt(i);");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+        		"Action b = (" + CodeGeneratorUtils.getUpperCaseLeading(
+        				act.getName()) + "Action)allActions.elementAt(i);");
         writer.write(NEWLINE);
         // go through all participants:
-        Vector parts = act.getAllParticipants();
+        Vector<ActionTypeParticipant> parts = act.getAllParticipants();
         for (int k = 0; k < parts.size(); k++) {
-          ActionTypeParticipant tempPart = (ActionTypeParticipant) parts
-              .elementAt(k);
-          if (tempPart.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) // participant
-                                                                                  // is
-                                                                                  // of
-                                                                                  // employee
-                                                                                  // type
-          {
+          ActionTypeParticipant tempPart = parts.elementAt(k);
+          if (tempPart.getSimSEObjectTypeType() == 
+          	SimSEObjectTypeTypes.EMPLOYEE) { // participant is of employee type
             writer.write("if(b.getAll" + tempPart.getName()
                 + "s().contains(e))");
             writer.write(NEWLINE);
@@ -937,9 +943,9 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
 
             // execute all destroyer rules that have executeOnJoins == true:
-            Vector destRules = act.getAllDestroyerRules();
+            Vector<Rule> destRules = act.getAllDestroyerRules();
             for (int i = 0; i < destRules.size(); i++) {
-              Rule dRule = (Rule) destRules.elementAt(i);
+              Rule dRule = destRules.elementAt(i);
               if (dRule.getExecuteOnJoins() == true) {
                 writer
                     .write("ruleExec.update(parent, RuleExecutor.UPDATE_ONE, \""
@@ -952,17 +958,14 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             if ((outerDest.getDestroyerText() != null)
                 && (outerDest.getDestroyerText().length() > 0)) {
-              writer.write("e.setOverheadText(\""
-                  + ((UserActionTypeDestroyer) outerDest).getDestroyerText()
-                  + "\");");
+              writer.write("e.setOverheadText(\"" + 
+              		outerDest.getDestroyerText() + "\");");
               writer.write(NEWLINE);
             }
             writer.write("if(b.getAll" + tempPart.getName() + "s().size() < ");
-            if (tempPart.getQuantity().isMinValBoundless()) // no minimum
-            {
+            if (tempPart.getQuantity().isMinValBoundless()) { // no minimum
               writer.write("0)");
-            } else // has a minimum
-            {
+            } else { // has a minimum
               writer.write(tempPart.getQuantity().getMinVal().intValue() + ")");
             }
             writer.write(NEWLINE);
@@ -983,8 +986,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
             if ((outerDest.getDestroyerText() != null)
                 && (outerDest.getDestroyerText().length() > 0)) {
               writer.write("((Employee)d).setOverheadText(\""
-                  + ((UserActionTypeDestroyer) outerDest).getDestroyerText()
-                  + "\");");
+                  + outerDest.getDestroyerText() + "\");");
               writer.write(NEWLINE);
             }
             writer.write(CLOSED_BRACK);
@@ -996,8 +998,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
             if ((outerDest.getDestroyerText() != null)
                 && (outerDest.getDestroyerText().length() > 0)) {
               writer.write("((Customer)d).setOverheadText(\""
-                  + ((UserActionTypeDestroyer) outerDest).getDestroyerText()
-                  + "\");");
+                  + outerDest.getDestroyerText() + "\");");
               writer.write(NEWLINE);
             }
             writer.write(CLOSED_BRACK);
@@ -1007,7 +1008,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 
             // remove action from repository:
             writer.write("state.getActionStateRepository().get"
-                + getUpperCaseLeading(act.getName())
+                + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
                 + "ActionStateRepository().remove(b);");
             writer.write(NEWLINE);
 
@@ -1015,24 +1016,27 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
             if (outerDest.isGameEndingDestroyer()) {
               writer.write("// stop game and give score:");
               writer.write(NEWLINE);
-              writer.write(getUpperCaseLeading(act.getName())
-                  + "Action t111 = (" + getUpperCaseLeading(act.getName())
-                  + "Action)b;");
+              writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName())
+                  + "Action t111 = (" + 
+                  CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+                  "Action)b;");
               writer.write(NEWLINE);
               // find the scoring attribute:
               ActionTypeParticipantDestroyer scoringPartDest = null;
               ActionTypeParticipantConstraint scoringPartConst = null;
               ActionTypeParticipantAttributeConstraint scoringAttConst = null;
-              Vector partDests = outerDest.getAllParticipantDestroyers();
+              Vector<ActionTypeParticipantDestroyer> partDests = 
+              	outerDest.getAllParticipantDestroyers();
               for (int m = 0; m < partDests.size(); m++) {
-                ActionTypeParticipantDestroyer partDest = (ActionTypeParticipantDestroyer) partDests
-                    .elementAt(m);
-                Vector partConsts = partDest.getAllConstraints();
+                ActionTypeParticipantDestroyer partDest = 
+                	partDests.elementAt(m);
+                Vector<ActionTypeParticipantConstraint> partConsts = 
+                	partDest.getAllConstraints();
                 for (int n = 0; n < partConsts.size(); n++) {
-                  ActionTypeParticipantConstraint partConst = (ActionTypeParticipantConstraint) partConsts
-                      .elementAt(n);
-                  ActionTypeParticipantAttributeConstraint[] attConsts = partConst
-                      .getAllAttributeConstraints();
+                  ActionTypeParticipantConstraint partConst = 
+                  	partConsts.elementAt(n);
+                  ActionTypeParticipantAttributeConstraint[] attConsts = 
+                  	partConst.getAllAttributeConstraints();
                   for (int p = 0; p < attConsts.length; p++) {
                     if (attConsts[p].isScoringAttribute()) {
                       scoringAttConst = attConsts[p];
@@ -1051,26 +1055,30 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
                 writer.write(NEWLINE);
                 writer.write(OPEN_BRACK);
                 writer.write(NEWLINE);
-                writer.write(getUpperCaseLeading(scoringPartConst
-                    .getSimSEObjectType().getName())
-                    + " t = ("
-                    + getUpperCaseLeading(scoringPartConst.getSimSEObjectType()
-                        .getName())
-                    + ")(t111.getAll"
-                    + scoringPartDest.getParticipant().getName()
-                    + "s().elementAt(0));");
+                writer.write(CodeGeneratorUtils.getUpperCaseLeading(
+                		scoringPartConst.getSimSEObjectType().getName()) + 
+                		" t = (" + 
+                		CodeGeneratorUtils.getUpperCaseLeading(
+                				scoringPartConst.getSimSEObjectType().getName()) + 
+                				")(t111.getAll" + 
+                				scoringPartDest.getParticipant().getName() + 
+                				"s().elementAt(0));");
                 writer.write(NEWLINE);
                 writer.write("if(t != null)");
                 writer.write(NEWLINE);
                 writer.write(OPEN_BRACK);
                 writer.write(NEWLINE);
-                if (scoringAttConst.getAttribute().getType() == AttributeTypes.INTEGER) {
+                if (scoringAttConst.getAttribute().getType() == 
+                	AttributeTypes.INTEGER) {
                   writer.write("int");
-                } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.DOUBLE) {
+                } else if (scoringAttConst.getAttribute().getType() == 
+                	AttributeTypes.DOUBLE) {
                   writer.write("double");
-                } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.STRING) {
+                } else if (scoringAttConst.getAttribute().getType() == 
+                	AttributeTypes.STRING) {
                   writer.write("String");
-                } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.BOOLEAN) {
+                } else if (scoringAttConst.getAttribute().getType() == 
+                	AttributeTypes.BOOLEAN) {
                   writer.write("boolean");
                 }
                 writer.write(" v = t.get"
@@ -1110,15 +1118,16 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(act.getName()) + "Action c = ("
-            + getUpperCaseLeading(act.getName())
-            + "Action)allActions.elementAt(i);");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+        		"Action c = (" + 
+        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+        		"Action)allActions.elementAt(i);");
         writer.write(NEWLINE);
         // go through all participants:
         for (int k = 0; k < parts.size(); k++) {
-          ActionTypeParticipant tempPart = (ActionTypeParticipant) parts
-              .elementAt(k);
-          if (tempPart.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) {
+          ActionTypeParticipant tempPart = parts.elementAt(k);
+          if (tempPart.getSimSEObjectTypeType() == 
+          	SimSEObjectTypeTypes.EMPLOYEE) {
             writer.write("if((c.getAll" + tempPart.getName()
                 + "s().contains(e)) && (!(b.contains(c))))");
             writer.write(NEWLINE);
@@ -1179,13 +1188,9 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
     }
   }
 
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
-  }
-
-  private boolean vectorContainsString(Vector v, String s) {
+  private boolean vectorContainsString(Vector<String> v, String s) {
     for (int i = 0; i < v.size(); i++) {
-      String temp = (String) v.elementAt(i);
+      String temp = v.elementAt(i);
       if (temp.equals(s)) {
         return true;
       }

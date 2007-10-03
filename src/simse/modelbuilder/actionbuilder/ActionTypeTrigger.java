@@ -6,7 +6,7 @@ import java.util.*;
 
 public abstract class ActionTypeTrigger implements Cloneable {
   private String name;
-  private Vector participantTriggers; // vector of ActionTypeParticipantTriggers
+  private Vector<ActionTypeParticipantTrigger> participantTriggers; // vector of ActionTypeParticipantTriggers
                                       // for this action type trigger
   private String triggerText; // text that shows up over the head of an employee
                               // participant when this is triggered
@@ -22,7 +22,7 @@ public abstract class ActionTypeTrigger implements Cloneable {
 
   public ActionTypeTrigger(String n, ActionType a) {
     name = n;
-    participantTriggers = new Vector();
+    participantTriggers = new Vector<ActionTypeParticipantTrigger>();
     triggerText = new String();
     priority = -1;
     gameEnding = false;
@@ -33,11 +33,10 @@ public abstract class ActionTypeTrigger implements Cloneable {
     try {
       ActionTypeTrigger cl = (ActionTypeTrigger) (super.clone());
       cl.name = name;
-      Vector clonedTriggers = new Vector();
+      Vector<ActionTypeParticipantTrigger> clonedTriggers = new Vector<ActionTypeParticipantTrigger>();
       for (int i = 0; i < participantTriggers.size(); i++) {
         clonedTriggers
-            .add((ActionTypeParticipantTrigger) (((ActionTypeParticipantTrigger) (participantTriggers
-                .elementAt(i))).clone()));
+            .add((ActionTypeParticipantTrigger) ((participantTriggers.elementAt(i)).clone()));
       }
       cl.participantTriggers = clonedTriggers;
       cl.triggerText = triggerText;
@@ -85,7 +84,7 @@ public abstract class ActionTypeTrigger implements Cloneable {
     gameEnding = val;
   }
 
-  public Vector getAllParticipantTriggers() {
+  public Vector<ActionTypeParticipantTrigger> getAllParticipantTriggers() {
     return participantTriggers;
   }
 
@@ -94,8 +93,8 @@ public abstract class ActionTypeTrigger implements Cloneable {
                               // participant
   {
     for (int i = 0; i < participantTriggers.size(); i++) {
-      ActionTypeParticipantTrigger tempTrig = (ActionTypeParticipantTrigger) (participantTriggers
-          .elementAt(i));
+      ActionTypeParticipantTrigger tempTrig = participantTriggers
+          .elementAt(i);
       if (tempTrig.getParticipant().getName().equals(participantName)) {
         return tempTrig;
       }
@@ -115,8 +114,7 @@ public abstract class ActionTypeTrigger implements Cloneable {
   {
     boolean notFound = true;
     for (int i = 0; i < participantTriggers.size(); i++) {
-      ActionTypeParticipantTrigger tempTrig = (ActionTypeParticipantTrigger) (participantTriggers
-          .elementAt(i));
+      ActionTypeParticipantTrigger tempTrig = participantTriggers.elementAt(i);
       if (tempTrig.getParticipant().getName().equals(
           newTrig.getParticipant().getName())) // trigger for this participant
                                                // already
@@ -141,8 +139,7 @@ public abstract class ActionTypeTrigger implements Cloneable {
   // new trigger replaces it.
   {
     for (int i = 0; i < participantTriggers.size(); i++) {
-      ActionTypeParticipantTrigger tempTrig = (ActionTypeParticipantTrigger) (participantTriggers
-          .elementAt(i));
+      ActionTypeParticipantTrigger tempTrig = participantTriggers.elementAt(i);
       if (tempTrig.getParticipant().getName().equals(part.getName())) // trigger
                                                                       // for
                                                                       // this
@@ -164,15 +161,14 @@ public abstract class ActionTypeTrigger implements Cloneable {
                                              // name
   {
     for (int i = 0; i < participantTriggers.size(); i++) {
-      ActionTypeParticipantTrigger tempTrig = (ActionTypeParticipantTrigger) (participantTriggers
-          .elementAt(i));
+      ActionTypeParticipantTrigger tempTrig = participantTriggers.elementAt(i);
       if (tempTrig.getParticipant().getName().equals(partName)) {
         participantTriggers.removeElementAt(i);
       }
     }
   }
 
-  public void setTriggers(Vector newTriggers) {
+  public void setTriggers(Vector<ActionTypeParticipantTrigger> newTriggers) {
     participantTriggers = newTriggers;
   }
 

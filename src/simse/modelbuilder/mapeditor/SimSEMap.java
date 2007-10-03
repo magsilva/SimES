@@ -23,7 +23,7 @@ public class SimSEMap extends JPanel implements MouseListener, ActionListener {
   protected Hashtable ruleObjsToImages;
 
   protected TileData[][] mapRep;
-  protected ArrayList sopUsers;
+  protected ArrayList<UserData> sopUsers;
   protected int ssObjCount;
 
   // map constants:
@@ -47,7 +47,7 @@ public class SimSEMap extends JPanel implements MouseListener, ActionListener {
       }
     }
 
-    sopUsers = new ArrayList();
+    sopUsers = new ArrayList<UserData>();
   }
 
   public Vector loadFile(File inputFile) // loads the map from the
@@ -55,7 +55,7 @@ public class SimSEMap extends JPanel implements MouseListener, ActionListener {
                                          // returns a Vector of
                                          // warning message Strings
   {
-    Vector warnings = new Vector(); // vector of warning messages
+    Vector<String> warnings = new Vector<String>(); // vector of warning messages
     sopUsers.clear();
     
     // try loading the icon directory:

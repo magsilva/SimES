@@ -6,7 +6,7 @@ import java.util.*;
 
 public abstract class ActionTypeDestroyer implements Cloneable {
   private String name;
-  private Vector participantDestroyers; // vector of
+  private Vector<ActionTypeParticipantDestroyer> participantDestroyers; // vector of
                                         // ActionTypeParticipantDestroyers for
                                         // this action type destroyer
   private String destroyerText; // text that shows up over the head of an
@@ -24,7 +24,7 @@ public abstract class ActionTypeDestroyer implements Cloneable {
 
   public ActionTypeDestroyer(String n, ActionType a) {
     name = n;
-    participantDestroyers = new Vector();
+    participantDestroyers = new Vector<ActionTypeParticipantDestroyer>();
     destroyerText = new String();
     priority = -1;
     gameEnding = false;
@@ -35,11 +35,10 @@ public abstract class ActionTypeDestroyer implements Cloneable {
     try {
       ActionTypeDestroyer cl = (ActionTypeDestroyer) (super.clone());
       cl.name = name;
-      Vector clonedDestroyers = new Vector();
+      Vector<ActionTypeParticipantDestroyer> clonedDestroyers = new Vector<ActionTypeParticipantDestroyer>();
       for (int i = 0; i < participantDestroyers.size(); i++) {
         clonedDestroyers
-            .add((ActionTypeParticipantDestroyer) (((ActionTypeParticipantDestroyer) (participantDestroyers
-                .elementAt(i))).clone()));
+            .add((ActionTypeParticipantDestroyer) ((participantDestroyers.elementAt(i)).clone()));
       }
       cl.participantDestroyers = clonedDestroyers;
       cl.destroyerText = destroyerText;
@@ -88,7 +87,7 @@ public abstract class ActionTypeDestroyer implements Cloneable {
     gameEnding = val;
   }
 
-  public Vector getAllParticipantDestroyers() {
+  public Vector<ActionTypeParticipantDestroyer> getAllParticipantDestroyers() {
     return participantDestroyers;
   }
 
@@ -97,7 +96,7 @@ public abstract class ActionTypeDestroyer implements Cloneable {
   // participant
   {
     for (int i = 0; i < participantDestroyers.size(); i++) {
-      ActionTypeParticipantDestroyer tempDest = (ActionTypeParticipantDestroyer) (participantDestroyers
+      ActionTypeParticipantDestroyer tempDest = (participantDestroyers
           .elementAt(i));
       if (tempDest.getParticipant().getName().equals(participantName)) {
         return tempDest;
@@ -118,8 +117,7 @@ public abstract class ActionTypeDestroyer implements Cloneable {
   {
     boolean notFound = true;
     for (int i = 0; i < participantDestroyers.size(); i++) {
-      ActionTypeParticipantDestroyer tempDest = (ActionTypeParticipantDestroyer) (participantDestroyers
-          .elementAt(i));
+      ActionTypeParticipantDestroyer tempDest = participantDestroyers.elementAt(i);
       if (tempDest.getParticipant().getName().equals(
           newDest.getParticipant().getName())) // destroyer for this participant
                                                // already
@@ -144,8 +142,7 @@ public abstract class ActionTypeDestroyer implements Cloneable {
   // the new destroyer replaces it.
   {
     for (int i = 0; i < participantDestroyers.size(); i++) {
-      ActionTypeParticipantDestroyer tempDest = (ActionTypeParticipantDestroyer) (participantDestroyers
-          .elementAt(i));
+      ActionTypeParticipantDestroyer tempDest = participantDestroyers.elementAt(i);
       if (tempDest.getParticipant().getName().equals(part.getName())) // destroyer
                                                                       // for
                                                                       // this
@@ -167,15 +164,14 @@ public abstract class ActionTypeDestroyer implements Cloneable {
                                                // name
   {
     for (int i = 0; i < participantDestroyers.size(); i++) {
-      ActionTypeParticipantDestroyer tempDest = (ActionTypeParticipantDestroyer) (participantDestroyers
-          .elementAt(i));
+      ActionTypeParticipantDestroyer tempDest = participantDestroyers.elementAt(i);
       if (tempDest.getParticipant().getName().equals(partName)) {
         participantDestroyers.removeElementAt(i);
       }
     }
   }
 
-  public void setDestroyers(Vector newDestroyers) {
+  public void setDestroyers(Vector<ActionTypeParticipantDestroyer> newDestroyers) {
     participantDestroyers = newDestroyers;
   }
 

@@ -5,28 +5,43 @@
 
 package simse.codegenerator.guigenerator;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.startstatebuilder.*;
-import simse.codegenerator.*;
+import simse.codegenerator.CodeGenerator;
+import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
+import simse.modelbuilder.objectbuilder.AttributeTypes;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+import simse.modelbuilder.startstatebuilder.InstantiatedAttribute;
+import simse.modelbuilder.startstatebuilder.SimSEObject;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 public class TabPanelGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
   private File iconDir;
   private DefinedObjectTypes objTypes; // holds all of the defined object types
                                        // from an sso file
-  private Hashtable objsToImages; // maps SimSEObjects (keys) to pathname
-                                  // (String) of image file (values)
+  private Hashtable<SimSEObject, String> objsToImages; // maps SimSEObjects
+																												// (keys) to pathname
+																												// (String) of image
+																												// file (values)
 
-  public TabPanelGenerator(DefinedObjectTypes dots, Hashtable oToI, File dir,
-  		File iconDir) {
-    objTypes = dots;
-    directory = dir;
+  public TabPanelGenerator(DefinedObjectTypes objTypes, Hashtable<SimSEObject, 
+  		String> objsToImages, File directory, File iconDir) {
+    this.objTypes = objTypes;
+    this.directory = directory;
     this.iconDir = iconDir;
-    objsToImages = oToI;
+    this.objsToImages = objsToImages;
   }
 
   public void generate() {
@@ -199,7 +214,6 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
       }
       writer.write(NEWLINE);
-      ;
       writer.write("border = ImageLoader.getImageFromURL(\"" + imagesDirectory
           + "layout/border.gif\");");
       writer.write(NEWLINE);
@@ -1172,43 +1186,42 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       // go through all object types:
-      Vector ssObjTypes = objTypes.getAllObjectTypes();
+      Vector<SimSEObjectType> ssObjTypes = objTypes.getAllObjectTypes();
       for (int j = 0; j < ssObjTypes.size(); j++) {
-        SimSEObjectType tempType = (SimSEObjectType) ssObjTypes.elementAt(j);
-        if (j > 0) // not on first element
-        {
+        SimSEObjectType tempType = ssObjTypes.elementAt(j);
+        if (j > 0) { // not on first element
           writer.write("else ");
         }
         writer.write("if(obj instanceof "
-            + getUpperCaseLeading(tempType.getName()) + ")");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(tempType.getName()) + " p = ("
-            + getUpperCaseLeading(tempType.getName()) + ")obj;");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) 
+        		+ " p = (" + 
+        		CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + 
+        		")obj;");
         writer.write(NEWLINE);
 
-        // go through all of the created objects (and objects created by create
-        // objects rules) with matching type and metatype:
-        Enumeration createdObjects = objsToImages.keys();
+        /*
+         * go through all of the created objects (and objects created by create
+         * objects rules) with matching type and metatype:
+         */ 
+        Enumeration<SimSEObject> createdObjects = objsToImages.keys();
         boolean putElse = false;
         for (int k = 0; k < objsToImages.size(); k++) {
-          SimSEObject obj = (SimSEObject) createdObjects.nextElement();
-          if (obj.getName().equals(tempType.getName())) // same type
-          {
+          SimSEObject obj = createdObjects.nextElement();
+          if (obj.getName().equals(tempType.getName())) { // same type
             boolean allAttValuesInit = true; // whether or not all this object's
                                              // attribute values are initialized
-            Vector atts = obj.getAllAttributes();
+            Vector<InstantiatedAttribute> atts = obj.getAllAttributes();
             if (atts.size() < obj.getSimSEObjectType().getAllAttributes()
-                .size()) // not all atts instantiated
-            {
+                .size()) { // not all atts instantiated
               allAttValuesInit = false;
             } else {
               for (int m = 0; m < atts.size(); m++) {
-                InstantiatedAttribute att = (InstantiatedAttribute) atts
-                    .elementAt(m);
-                if (att.isInstantiated() == false) // not instantiated
-                {
+                InstantiatedAttribute att = atts.elementAt(m);
+                if (att.isInstantiated() == false) { // not instantiated
                   allAttValuesInit = false;
                   break;
                 }
@@ -1221,15 +1234,13 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
                 putElse = true;
               }
               writer.write("if(p.get"
-                  + getUpperCaseLeading(obj.getKey().getAttribute().getName())
-                  + "()");
-              if (obj.getKey().getAttribute().getType() == AttributeTypes.STRING) // string
-                                                                                  // att
-              {
+                  + CodeGeneratorUtils.getUpperCaseLeading(
+                  		obj.getKey().getAttribute().getName()) + "()");
+              if (obj.getKey().getAttribute().getType() == 
+              	AttributeTypes.STRING) {
                 writer.write(".equals(\"" + obj.getKey().getValue().toString()
                     + "\"))");
-              } else // integer, double, or boolean att
-              {
+              } else { // integer, double, or boolean att
                 writer.write(" == " + obj.getKey().getValue().toString() + ")");
               }
               writer.write(NEWLINE);
@@ -1262,9 +1273,5 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
           + tabPanelFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

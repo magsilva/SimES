@@ -6,6 +6,7 @@
 package simse.codegenerator.explanatorytoolgenerator;
 
 import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 import simse.modelbuilder.actionbuilder.ActionType;
 import simse.modelbuilder.actionbuilder.ActionTypeDestroyer;
 import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
@@ -16,18 +17,20 @@ import simse.modelbuilder.objectbuilder.AttributeTypes;
 import simse.modelbuilder.objectbuilder.SimSEObjectType;
 import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
   private DefinedActionTypes actTypes;
 
-  public ActionInfoPanelGenerator(DefinedActionTypes actTypes, File dir) {
+  public ActionInfoPanelGenerator(DefinedActionTypes actTypes, File directory) {
     this.actTypes = actTypes;
-    directory = dir;
+    this.directory = directory;
   }
 
   public void generate() {
@@ -315,12 +318,12 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       
       // go through all actions:
-      Vector actions = actTypes.getAllActionTypes();
+      Vector<ActionType> actions = actTypes.getAllActionTypes();
       boolean writeElse = false;
-      for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.get(i);
+      for (ActionType act : actions) {
         if (act.isVisibleInExplanatoryTool()) {
-          String uCaseName = getUpperCaseLeading(act.getName());
+          String uCaseName = 
+          	CodeGeneratorUtils.getUpperCaseLeading(act.getName());
           if (writeElse) {
             writer.write("else ");
           } else {
@@ -351,10 +354,10 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
 
       // go through all actions:
       writeElse = false;
-      for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.get(i);
+      for (ActionType act : actions) {
         if (act.isVisibleInExplanatoryTool()) {
-          String uCaseName = getUpperCaseLeading(act.getName());
+          String uCaseName = 
+          	CodeGeneratorUtils.getUpperCaseLeading(act.getName());
           if (writeElse) {
             writer.write("else ");
           } else {
@@ -364,9 +367,8 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
           writer.write("String [] list = {");
           writer.write(NEWLINE);
-          Vector triggers = act.getAllTriggers();
-          for (int j = 0; j < triggers.size(); j++) {
-            ActionTypeTrigger trigger = (ActionTypeTrigger) triggers.get(j);
+          Vector<ActionTypeTrigger> triggers = act.getAllTriggers();
+          for (ActionTypeTrigger trigger : triggers) {
             writer.write("\"" + trigger.getName() + "\",");
             writer.write(NEWLINE);
           }
@@ -390,10 +392,10 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
 
       // go through all actions:
       writeElse = false;
-      for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.get(i);
+      for (ActionType act : actions) {
         if (act.isVisibleInExplanatoryTool()) {
-          String uCaseName = getUpperCaseLeading(act.getName());
+          String uCaseName = 
+          	CodeGeneratorUtils.getUpperCaseLeading(act.getName());
           if (writeElse) {
             writer.write("else ");
           } else {
@@ -403,10 +405,8 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
           writer.write("String [] list = {");
           writer.write(NEWLINE);
-          Vector destroyers = act.getAllDestroyers();
-          for (int j = 0; j < destroyers.size(); j++) {
-            ActionTypeDestroyer destroyer = (ActionTypeDestroyer) destroyers
-                .get(j);
+          Vector<ActionTypeDestroyer> destroyers = act.getAllDestroyers();
+          for (ActionTypeDestroyer destroyer : destroyers) {
             writer.write("\"" + destroyer.getName() + "\",");
             writer.write(NEWLINE);
           }
@@ -436,9 +436,9 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
 
       // go through all actions:
       writeElse = false;
-      for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.get(i);
-        String uCaseName = getUpperCaseLeading(act.getName());
+      for (ActionType act : actions) {
+        String uCaseName = 
+        	CodeGeneratorUtils.getUpperCaseLeading(act.getName());
         if (act.isVisibleInExplanatoryTool()) {
           if (writeElse) {
             writer.write("else ");
@@ -450,10 +450,8 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
 
           // go through all participants:
-          Vector participants = act.getAllParticipants();
-          for (int j = 0; j < participants.size(); j++) {
-            ActionTypeParticipant part = (ActionTypeParticipant) participants
-                .get(j);
+          Vector<ActionTypeParticipant> participants = act.getAllParticipants();
+          for (ActionTypeParticipant part : participants) {
             String lCasePartName = part.getName().toLowerCase();
             writer.write(" // " + part.getName() + " participant:");
             writer.write(NEWLINE);
@@ -476,10 +474,11 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
 
             // go through all allowable SimSEObjectTypes:
-            Vector types = part.getAllSimSEObjectTypes();
+            Vector<SimSEObjectType> types = part.getAllSimSEObjectTypes();
             for (int k = 0; k < types.size(); k++) {
-              SimSEObjectType type = (SimSEObjectType) types.get(k);
-              String uCaseTypeName = getUpperCaseLeading(type.getName());
+              SimSEObjectType type = types.get(k);
+              String uCaseTypeName = 
+              	CodeGeneratorUtils.getUpperCaseLeading(type.getName());
               if (k < 0) {
                 writer.write("else ");
               }
@@ -487,7 +486,8 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
                   + uCaseTypeName + ") {");
               writer.write(NEWLINE);
               Attribute keyAtt = type.getKey();
-              String uCaseAttName = getUpperCaseLeading(keyAtt.getName());
+              String uCaseAttName = 
+              	CodeGeneratorUtils.getUpperCaseLeading(keyAtt.getName());
               writer.write("data[index][1] = \"" + type.getName() + " "
                   + metaType + " \" + ((" + uCaseTypeName + ")" + lCasePartName
                   + ").get" + uCaseAttName + "();");
@@ -564,9 +564,9 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
 
       // go through all actions:
       writeElse = false;
-      for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.get(i);
-        String uCaseName = getUpperCaseLeading(act.getName());
+      for (ActionType act : actions) {
+        String uCaseName = 
+        	CodeGeneratorUtils.getUpperCaseLeading(act.getName());
         String capsName = act.getName().toUpperCase();
         if (act.isVisibleInExplanatoryTool()) {
           if (writeElse) {
@@ -580,9 +580,9 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
 
           // go through all triggers:
-          Vector triggers = act.getAllTriggers();
+          Vector<ActionTypeTrigger> triggers = act.getAllTriggers();
           for (int j = 0; j < triggers.size(); j++) {
-            ActionTypeTrigger trigger = (ActionTypeTrigger) triggers.get(j);
+            ActionTypeTrigger trigger = triggers.get(j);
             String triggerCapsName = trigger.getName().toUpperCase();
             if (j > 0) {
               writer.write("else ");
@@ -598,9 +598,9 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
           }
 
           // go through all destroyers:
-          Vector destroyers = act.getAllDestroyers();
+          Vector<ActionTypeDestroyer> destroyers = act.getAllDestroyers();
           for (int j = 0; j < destroyers.size(); j++) {
-            ActionTypeDestroyer destroyer = (ActionTypeDestroyer) destroyers
+            ActionTypeDestroyer destroyer = destroyers
                 .get(j);
             String destroyerCapsName = destroyer.getName().toUpperCase();
             if (j > 0) {
@@ -635,9 +635,5 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
           + actInfoFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

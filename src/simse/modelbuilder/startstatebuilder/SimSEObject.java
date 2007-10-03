@@ -7,21 +7,21 @@ import java.util.*;
 
 public class SimSEObject implements Cloneable {
   SimSEObjectType objType; // SimSEObjectType that this object is instantiating
-  Vector instantiatedAttributes; // instantiated attributes of this object
+  Vector<InstantiatedAttribute> instantiatedAttributes; // instantiated attributes of this object
 
-  public SimSEObject(Vector attrs, SimSEObjectType t) {
+  public SimSEObject(Vector<InstantiatedAttribute> attrs, SimSEObjectType t) {
     instantiatedAttributes = attrs;
     objType = t;
   }
 
   public SimSEObject(SimSEObjectType t) {
-    instantiatedAttributes = new Vector();
+    instantiatedAttributes = new Vector<InstantiatedAttribute>();
     objType = t;
-    Vector atts = objType.getAllAttributes();
-    for (int i = 0; i < atts.size(); i++) {
-      Attribute a = (Attribute) atts.elementAt(i);
-      InstantiatedAttribute newInstAtt = new InstantiatedAttribute(a);
-    }
+//    Vector<Attribute> atts = objType.getAllAttributes();
+//    for (int i = 0; i < atts.size(); i++) {
+//      Attribute a = atts.elementAt(i);
+//      InstantiatedAttribute newInstAtt = new InstantiatedAttribute(a);
+//    }
   }
 
   public SimSEObject() {
@@ -31,11 +31,10 @@ public class SimSEObject implements Cloneable {
     try {
       SimSEObject cl = (SimSEObject) (super.clone());
       cl.objType = (SimSEObjectType) (objType.clone());
-      Vector clonedAtts = new Vector();
+      Vector<InstantiatedAttribute> clonedAtts = new Vector<InstantiatedAttribute>();
       for (int i = 0; i < instantiatedAttributes.size(); i++) {
         clonedAtts
-            .add((InstantiatedAttribute) (((InstantiatedAttribute) (instantiatedAttributes
-                .elementAt(i))).clone()));
+            .add((InstantiatedAttribute) ((instantiatedAttributes.elementAt(i)).clone()));
       }
       cl.instantiatedAttributes = clonedAtts;
       return cl;
@@ -49,7 +48,7 @@ public class SimSEObject implements Cloneable {
     return objType.getName();
   }
 
-  public Vector getAllAttributes() // returns a Vector of InstantiatedAttributes
+  public Vector<InstantiatedAttribute> getAllAttributes() // returns a Vector of InstantiatedAttributes
   {
     return instantiatedAttributes;
   }
@@ -64,8 +63,7 @@ public class SimSEObject implements Cloneable {
   // be unique
   {
     for (int i = 0; i < instantiatedAttributes.size(); i++) {
-      InstantiatedAttribute tempAttr = (InstantiatedAttribute) (instantiatedAttributes
-          .elementAt(i));
+      InstantiatedAttribute tempAttr = instantiatedAttributes.elementAt(i);
       if (tempAttr.getAttribute().isKey()) {
         return tempAttr;
       }
@@ -73,7 +71,7 @@ public class SimSEObject implements Cloneable {
     return null;
   }
 
-  public void setInstantiatedAttributes(Vector attrs) {
+  public void setInstantiatedAttributes(Vector<InstantiatedAttribute> attrs) {
     instantiatedAttributes = attrs;
   }
 
@@ -89,8 +87,7 @@ public class SimSEObject implements Cloneable {
                                                          // specified name
   {
     for (int i = 0; i < instantiatedAttributes.size(); i++) {
-      InstantiatedAttribute a = (InstantiatedAttribute) instantiatedAttributes
-          .elementAt(i);
+      InstantiatedAttribute a = instantiatedAttributes.elementAt(i);
       if (a.getAttribute().getName().equals(name)) {
         return a;
       }
@@ -115,8 +112,7 @@ public class SimSEObject implements Cloneable {
   // attribute, false otherwise
   {
     for (int i = 0; i < instantiatedAttributes.size(); i++) {
-      InstantiatedAttribute instAtt = (InstantiatedAttribute) instantiatedAttributes
-          .elementAt(i);
+      InstantiatedAttribute instAtt = instantiatedAttributes.elementAt(i);
       if ((instAtt.getAttribute().getName().equals(att.getName())))// &&
                                                                    // (instAtt.getAttribute().getType()
                                                                    // ==
@@ -133,9 +129,9 @@ public class SimSEObject implements Cloneable {
                                              // a corresponding instantiated
   // attribute in this SimSEObject, and if not, creates one for it
   {
-    Vector atts = objType.getAllAttributes();
+    Vector<Attribute> atts = objType.getAllAttributes();
     for (int i = 0; i < atts.size(); i++) {
-      Attribute a = (Attribute) atts.elementAt(i);
+      Attribute a = atts.elementAt(i);
       if (!hasAttribute(a)) // doesn't have this attribute
       {
         instantiatedAttributes.add(new InstantiatedAttribute(a));

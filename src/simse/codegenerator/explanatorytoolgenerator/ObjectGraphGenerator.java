@@ -6,20 +6,23 @@
 package simse.codegenerator.explanatorytoolgenerator;
 
 import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 import simse.modelbuilder.ModelOptions;
 import simse.modelbuilder.objectbuilder.Attribute;
 import simse.modelbuilder.objectbuilder.AttributeTypes;
-import simse.modelbuilder.objectbuilder.NumericalAttribute;
 import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.NumericalAttribute;
 import simse.modelbuilder.objectbuilder.SimSEObjectType;
 import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
 import simse.modelbuilder.startstatebuilder.CreatedObjects;
 import simse.modelbuilder.startstatebuilder.SimSEObject;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 public class ObjectGraphGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
@@ -28,10 +31,10 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
   private ModelOptions options;
 
   public ObjectGraphGenerator(DefinedObjectTypes objTypes, CreatedObjects objs,
-      File dir, ModelOptions options) {
+      File directory, ModelOptions options) {
     this.objTypes = objTypes;
     this.objects = objs;
-    directory = dir;
+    this.directory = directory;
     this.options = options;
   }
 
@@ -225,10 +228,11 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // go through all object types and generate code for them:
-      Vector types = objTypes.getAllObjectTypes();
+      Vector<SimSEObjectType> types = objTypes.getAllObjectTypes();
       for (int i = 0; i < types.size(); i++) {
-        SimSEObjectType type = (SimSEObjectType) types.get(i);
-        String uCaseName = getUpperCaseLeading(type.getName());
+        SimSEObjectType type = types.get(i);
+        String uCaseName = 
+        	CodeGeneratorUtils.getUpperCaseLeading(type.getName());
         String lCaseName = type.getName().toLowerCase();
         if (i > 0) {
           writer.write("else ");
@@ -241,9 +245,9 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
 
         // go through each created object of that type and generate code for it:
-        Vector objsOfType = objects.getAllObjectsOfType(type);
+        Vector<SimSEObject> objsOfType = objects.getAllObjectsOfType(type);
         for (int j = 0; j < objsOfType.size(); j++) {
-          SimSEObject obj = (SimSEObject) objsOfType.get(j);
+          SimSEObject obj = objsOfType.get(j);
           if (j > 0) {
             writer.write("else ");
           }
@@ -253,8 +257,7 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
           writer.write(lCaseName + " = log.get(i).get"
               + SimSEObjectTypeTypes.getText(type.getType())
               + "StateRepository().get" + uCaseName + "StateRepository().get(");
-          if (obj.getKey().getAttribute().getType() == AttributeTypes.STRING) { // String
-            // attribute
+          if (obj.getKey().getAttribute().getType() == AttributeTypes.STRING) { 
             writer.write("\"" + obj.getKey().getValue().toString() + "\");");
           } else { // non-String attribute
             writer.write(obj.getKey().getValue().toString() + ");");
@@ -267,20 +270,21 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
 
         // go through each attribute for this type and generate code for it:
-        Vector atts = type.getAllAttributes();
+        Vector<Attribute> atts = type.getAllAttributes();
         boolean writeElse = false;
-        for (int j = 0; j < atts.size(); j++) {
-          Attribute att = (Attribute) atts.get(j);
+        for (Attribute att : atts) {
           if ((att instanceof NumericalAttribute)
               && (att.isVisible() || att.isVisibleOnCompletion())) {
             if (writeElse) {
               writer.write("else ");
             }
             writer.write("if (attributes[j].equals(\""
-                + getUpperCaseLeading(att.getName()) + "\")) {");
+                + CodeGeneratorUtils.getUpperCaseLeading(att.getName()) + 
+                "\")) {");
             writer.write(NEWLINE);
             writer.write("series[j].add(i, " + lCaseName + ".get"
-                + getUpperCaseLeading(att.getName()) + "());");
+                + CodeGeneratorUtils.getUpperCaseLeading(att.getName()) + 
+                "());");
             writer.write(NEWLINE);
             writer.write(CLOSED_BRACK);
             writer.write(NEWLINE);
@@ -368,8 +372,9 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
     	writer.write(NEWLINE);
       // go through all object types and generate code for them:
       for (int i = 0; i < types.size(); i++) {
-        SimSEObjectType type = (SimSEObjectType) types.get(i);
-        String uCaseName = getUpperCaseLeading(type.getName());
+        SimSEObjectType type = types.get(i);
+        String uCaseName = 
+        	CodeGeneratorUtils.getUpperCaseLeading(type.getName());
         String lCaseName = type.getName().toLowerCase();
         if (i > 0) {
           writer.write("else ");
@@ -382,9 +387,9 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
 
         // go through each created object of that type and generate code for it:
-        Vector objsOfType = objects.getAllObjectsOfType(type);
+        Vector<SimSEObject> objsOfType = objects.getAllObjectsOfType(type);
         for (int j = 0; j < objsOfType.size(); j++) {
-          SimSEObject obj = (SimSEObject) objsOfType.get(j);
+          SimSEObject obj = objsOfType.get(j);
           if (j > 0) {
             writer.write("else ");
           }
@@ -394,8 +399,7 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
           writer.write(lCaseName + " = log.get(log.size() - 1).get"
               + SimSEObjectTypeTypes.getText(type.getType())
               + "StateRepository().get" + uCaseName + "StateRepository().get(");
-          if (obj.getKey().getAttribute().getType() == AttributeTypes.STRING) { // String
-            // attribute
+          if (obj.getKey().getAttribute().getType() == AttributeTypes.STRING) {
             writer.write("\"" + obj.getKey().getValue().toString() + "\");");
           } else { // non-String attribute
             writer.write(obj.getKey().getValue().toString() + ");");
@@ -408,20 +412,21 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
 
         // go through each attribute for this type and generate code for it:
-        Vector atts = type.getAllAttributes();
+        Vector<Attribute> atts = type.getAllAttributes();
         boolean writeElse = false;
-        for (int j = 0; j < atts.size(); j++) {
-          Attribute att = (Attribute) atts.get(j);
+        for (Attribute att : atts) {
           if ((att instanceof NumericalAttribute)
               && (att.isVisible() || att.isVisibleOnCompletion())) {
             if (writeElse) {
               writer.write("else ");
             }
             writer.write("if (attributes[j].equals(\""
-                + getUpperCaseLeading(att.getName()) + "\")) {");
+                + CodeGeneratorUtils.getUpperCaseLeading(att.getName()) + 
+                "\")) {");
             writer.write(NEWLINE);
             writer.write("series[j].add(log.size(), " + lCaseName + ".get"
-                + getUpperCaseLeading(att.getName()) + "());");
+                + CodeGeneratorUtils.getUpperCaseLeading(att.getName()) + 
+                "());");
             writer.write(NEWLINE);
             writer.write(CLOSED_BRACK);
             writer.write(NEWLINE);
@@ -601,9 +606,5 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
           + objGraphFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

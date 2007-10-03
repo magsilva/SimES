@@ -148,11 +148,11 @@ public class ChooseActionToJoinDialogGenerator implements
           writer.write("else ");
         }
         writer.write("if(tempAct instanceof "
-            + getUpperCaseLeading(act.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("actionName = \"" + getUpperCaseLeading(act.getName())
+        writer.write("actionName = \"" + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
             + "\";");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
@@ -170,7 +170,7 @@ public class ChooseActionToJoinDialogGenerator implements
           writer.write("else ");
         }
         writer.write("if(tempAct instanceof "
-            + getUpperCaseLeading(act.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -178,8 +178,8 @@ public class ChooseActionToJoinDialogGenerator implements
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(act.getName()) + "Action act = ("
-            + getUpperCaseLeading(act.getName())
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action act = ("
+            + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
             + "Action)actions.elementAt(i);");
         writer.write(NEWLINE);
         writer.write("StringBuffer label = new StringBuffer(\"<html>\");");
@@ -228,13 +228,13 @@ public class ChooseActionToJoinDialogGenerator implements
               writer.write("else ");
             }
             writer.write("if(a instanceof "
-                + getUpperCaseLeading(tempType.getName()) + ")");
+                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")");
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
             writer.write("label.append(\"" + tempType.getName() + "(\" + (("
-                + getUpperCaseLeading(tempType.getName()) + ")a).get"
-                + getUpperCaseLeading(tempType.getKey().getName())
+                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")a).get"
+                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getKey().getName())
                 + "() + \")\");");
             writer.write(NEWLINE);
             writer.write(CLOSED_BRACK);
@@ -407,7 +407,7 @@ public class ChooseActionToJoinDialogGenerator implements
           writer.write("else ");
         }
         writer.write("if(tempAct instanceof "
-            + getUpperCaseLeading(tempAct.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -421,7 +421,7 @@ public class ChooseActionToJoinDialogGenerator implements
                                                                               // participant
           {
             writer.write("Vector all" + part.getName() + "s = (("
-                + getUpperCaseLeading(tempAct.getName())
+                + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
                 + "Action)tempAct).getAll" + part.getName() + "s();");
             writer.write(NEWLINE);
             writer.write("if((all" + part.getName()
@@ -472,7 +472,7 @@ public class ChooseActionToJoinDialogGenerator implements
                   writer.write("else ");
                 }
                 writer.write("if((emp instanceof "
-                    + getUpperCaseLeading(type.getName()) + ")");
+                    + CodeGeneratorUtils.getUpperCaseLeading(type.getName()) + ")");
 
                 // go through all attribute constraints:
                 ActionTypeParticipantAttributeConstraint[] attConstraints = userTrig
@@ -483,9 +483,9 @@ public class ChooseActionToJoinDialogGenerator implements
                   if (attConst.isConstrained()) {
                     writer
                         .write(" && ((("
-                            + getUpperCaseLeading(type.getName())
+                            + CodeGeneratorUtils.getUpperCaseLeading(type.getName())
                             + ")emp).get"
-                            + getUpperCaseLeading(attConst.getAttribute()
+                            + CodeGeneratorUtils.getUpperCaseLeading(attConst.getAttribute()
                                 .getName()) + "() ");
                     if (attConst.getAttribute().getType() == AttributeTypes.STRING) {
                       writer.write(".equals(" + "\""
@@ -506,7 +506,7 @@ public class ChooseActionToJoinDialogGenerator implements
                 writer.write(OPEN_BRACK);
                 writer.write(NEWLINE);
                 writer.write("participantNames.add(\""
-                    + getUpperCaseLeading(part.getName()) + "\");");
+                    + CodeGeneratorUtils.getUpperCaseLeading(part.getName()) + "\");");
                 writer.write(NEWLINE);
                 writer.write(CLOSED_BRACK);
                 writer.write(NEWLINE);
@@ -567,7 +567,7 @@ public class ChooseActionToJoinDialogGenerator implements
           writer.write("else ");
         }
         writer.write("if(tempAct instanceof "
-            + getUpperCaseLeading(tempAct.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -581,7 +581,7 @@ public class ChooseActionToJoinDialogGenerator implements
                                                                               // participant
           {
             writer.write("Vector all" + part.getName() + "s = (("
-                + getUpperCaseLeading(tempAct.getName())
+                + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
                 + "Action)tempAct).getAll" + part.getName() + "s();");
             writer.write(NEWLINE);
             writer.write("if((all" + part.getName()
@@ -632,7 +632,7 @@ public class ChooseActionToJoinDialogGenerator implements
                   writer.write("else ");
                 }
                 writer.write("if((emp instanceof "
-                    + getUpperCaseLeading(type.getName()) + ")");
+                    + CodeGeneratorUtils.getUpperCaseLeading(type.getName()) + ")");
 
                 // go through all attribute constraints:
                 ActionTypeParticipantAttributeConstraint[] attConstraints = userTrig
@@ -643,9 +643,9 @@ public class ChooseActionToJoinDialogGenerator implements
                   if (attConst.isConstrained()) {
                     writer
                         .write(" && ((("
-                            + getUpperCaseLeading(type.getName())
+                            + CodeGeneratorUtils.getUpperCaseLeading(type.getName())
                             + ")emp).get"
-                            + getUpperCaseLeading(attConst.getAttribute()
+                            + CodeGeneratorUtils.getUpperCaseLeading(attConst.getAttribute()
                                 .getName()) + "() ");
                     if (attConst.getAttribute().getType() == AttributeTypes.STRING) {
                       writer.write(".equals(" + "\""
@@ -666,7 +666,7 @@ public class ChooseActionToJoinDialogGenerator implements
                 writer.write(OPEN_BRACK);
                 writer.write(NEWLINE);
                 writer.write("participantNames.add(\""
-                    + getUpperCaseLeading(part.getName()) + "\");");
+                    + CodeGeneratorUtils.getUpperCaseLeading(part.getName()) + "\");");
                 writer.write(NEWLINE);
                 writer.write(CLOSED_BRACK);
                 writer.write(NEWLINE);
@@ -701,9 +701,5 @@ public class ChooseActionToJoinDialogGenerator implements
           + catjdFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

@@ -5,24 +5,28 @@
 
 package simse.codegenerator.enginegenerator;
 
-import simse.modelbuilder.startstatebuilder.*;
+import simse.modelbuilder.startstatebuilder.CreatedObjects;
 
-import java.io.*;
-import javax.swing.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.JOptionPane;
 
 import simse.codegenerator.*;
 
-public class StartingNarrativeDialogGenerator implements CodeGeneratorConstants {
+public class StartingNarrativeDialogGenerator 
+implements CodeGeneratorConstants {
   private File directory; // directory to generate into
   private CreatedObjects createdObjs; // start state objects
 
-  public StartingNarrativeDialogGenerator(CreatedObjects cObjs, File dir) {
-    directory = dir;
-    createdObjs = cObjs;
+  public StartingNarrativeDialogGenerator(CreatedObjects createdObjs, 
+  		File directory) {
+    this.directory = directory;
+    this.createdObjs = createdObjs;
   }
 
-  public void generate() // causes the class to be generated
-  {
+  // causes the class to be generated
+  public void generate() {
     File snFile = new File(directory,
         ("simse\\engine\\StartingNarrativeDialog.java"));
     if (snFile.exists()) {
@@ -91,8 +95,8 @@ public class StartingNarrativeDialogGenerator implements CodeGeneratorConstants 
       writer.write("textArea.setEditable(false);");
       writer.write(NEWLINE);
       writer.write("textArea.setText(\"");
-      char[] startNarrChars = createdObjs.getStartingNarrative().replaceAll("\n", "\\\\n").
-      		replaceAll("\"", "\\\\\"").toCharArray();
+      char[] startNarrChars = createdObjs.getStartingNarrative().
+      	replaceAll("\n", "\\\\n").replaceAll("\"", "\\\\\"").toCharArray();
       for (int i = 0; i < startNarrChars.length; i++) {
         if (startNarrChars[i] == '\n') {
           writer.write("\" + \'\\n\' + \"");

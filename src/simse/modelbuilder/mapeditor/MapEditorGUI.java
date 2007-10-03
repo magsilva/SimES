@@ -44,7 +44,7 @@ public class MapEditorGUI extends JPanel {
     repaint();
   }
 
-  public ArrayList getUserDatas() {
+  public ArrayList<UserData> getUserDatas() {
     return map.getUserDatas();
   }
 

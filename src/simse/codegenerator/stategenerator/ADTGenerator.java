@@ -625,7 +625,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
 
   private void generateObjectADT(SimSEObjectType objType) {
     File adtFile = new File(options.getCodeGenerationDestinationDirectory(), 
-        ("simse\\adts\\objects\\" + getUpperCaseLeading(objType.getName()) + 
+        ("simse\\adts\\objects\\" + CodeGeneratorUtils.getUpperCaseLeading(objType.getName()) + 
             ".java"));
     if (adtFile.exists()) {
       adtFile.delete(); // delete old version of file
@@ -643,7 +643,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write("import java.util.Vector;");
         writer.write(NEWLINE);
       }
-      writer.write("public class " + getUpperCaseLeading(objType.getName())
+      writer.write("public class " + CodeGeneratorUtils.getUpperCaseLeading(objType.getName())
           + " extends " + SimSEObjectTypeTypes.getText(objType.getType()) +
           " implements Cloneable");
       writer.write(NEWLINE);
@@ -666,7 +666,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // constructor:
-      writer.write("public " + getUpperCaseLeading(objType.getName()) + "(");
+      writer.write("public " + CodeGeneratorUtils.getUpperCaseLeading(objType.getName()) + "(");
       for (int i = 0; i < attributes.size(); i++) {
         Attribute att = (Attribute) attributes.elementAt(i);
         writer.write(getTypeAsString(att) + " ");
@@ -686,7 +686,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       // assignments:
       for (int i = 0; i < attributes.size(); i++) {
         Attribute att = (Attribute) attributes.elementAt(i);
-        writer.write("set" + getUpperCaseLeading(att.getName()) + "("
+        writer.write("set" + CodeGeneratorUtils.getUpperCaseLeading(att.getName()) + "("
             + (att.getName().substring(0, 1).toLowerCase() + i) + ");");
         writer.write(NEWLINE);
       }
@@ -697,8 +697,8 @@ public class ADTGenerator implements CodeGeneratorConstants {
       // "clone" method:
       writer.write("public Object clone() {");
       writer.write(NEWLINE);
-      writer.write(getUpperCaseLeading(objType.getName()) + " cl = (" +
-          getUpperCaseLeading(objType.getName()) + ")(super.clone());");
+      writer.write(CodeGeneratorUtils.getUpperCaseLeading(objType.getName()) + " cl = (" +
+      		CodeGeneratorUtils.getUpperCaseLeading(objType.getName()) + ")(super.clone());");
       writer.write(NEWLINE);
       for (int i = 0; i < attributes.size(); i++) {
         Attribute att = (Attribute)attributes.elementAt(i);
@@ -719,7 +719,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         // "get" method:
         writer.write("public ");
         writer.write(getTypeAsString(att) + " ");
-        writer.write("get" + getUpperCaseLeading(att.getName()) + "()");
+        writer.write("get" + CodeGeneratorUtils.getUpperCaseLeading(att.getName()) + "()");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -730,7 +730,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         
         // "set" method:
-        writer.write("public void set" + getUpperCaseLeading(att.getName())
+        writer.write("public void set" + CodeGeneratorUtils.getUpperCaseLeading(att.getName())
             + "(");
         writer.write(getTypeAsString(att) + " a)");
         writer.write(NEWLINE);
@@ -840,7 +840,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
         writer.write("v.add(\"Fire Employee - \" + get"
-            + getUpperCaseLeading(keyAtt.getName()) + "());");
+            + CodeGeneratorUtils.getUpperCaseLeading(keyAtt.getName()) + "());");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
@@ -851,7 +851,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write("v = new Vector();");
         writer.write(NEWLINE);
         writer.write("v.add(\"Hire Employee - \" + get"
-            + getUpperCaseLeading(keyAtt.getName()) + "());");
+            + CodeGeneratorUtils.getUpperCaseLeading(keyAtt.getName()) + "());");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
@@ -886,7 +886,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
 
   private void generateActionADT(ActionType actType) {
     File adtFile = new File(options.getCodeGenerationDestinationDirectory(), 
-        ("simse\\adts\\actions\\" + getUpperCaseLeading(actType.getName()) + 
+        ("simse\\adts\\actions\\" + CodeGeneratorUtils.getUpperCaseLeading(actType.getName()) + 
             "Action.java"));
     if (adtFile.exists()) {
       adtFile.delete(); // delete old version of file
@@ -912,7 +912,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import java.util.*;");
       writer.write(NEWLINE);
-      writer.write("public class " + getUpperCaseLeading(actType.getName())
+      writer.write("public class " + CodeGeneratorUtils.getUpperCaseLeading(actType.getName())
           + "Action extends Action implements Cloneable");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
@@ -947,7 +947,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
       }
 
       // constructor:
-      writer.write("public " + getUpperCaseLeading(actType.getName())
+      writer.write("public " + CodeGeneratorUtils.getUpperCaseLeading(actType.getName())
           + "Action()");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
@@ -984,8 +984,8 @@ public class ADTGenerator implements CodeGeneratorConstants {
       // "clone" method:
       writer.write("public Object clone() {");
       writer.write(NEWLINE);
-      writer.write(getUpperCaseLeading(actType.getName()) + "Action cl = (" +
-          getUpperCaseLeading(actType.getName()) + "Action)(super.clone());");
+      writer.write(CodeGeneratorUtils.getUpperCaseLeading(actType.getName()) + "Action cl = (" +
+      		CodeGeneratorUtils.getUpperCaseLeading(actType.getName()) + "Action)(super.clone());");
       writer.write(NEWLINE);
       for (int i = 0; i < participants.size(); i++) {
         ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
@@ -1241,7 +1241,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
           }
           SimSEObjectType tempType = (SimSEObjectType) types.elementAt(j);
           writer.write(" ((a instanceof "
-              + getUpperCaseLeading(tempType.getName()) + ") == false)");
+              + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ") == false)");
         }
         if (types.size() > 0) {
           writer.write(")");
@@ -1383,7 +1383,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write("// " + partNameLowerCase + " participants:");
         writer.write(NEWLINE);
     		writer.write("Hashtable" + hashtableTypeString + " new" + 
-    				getUpperCaseLeading(tempPart.getName()) + "s = new Hashtable" + 
+    				CodeGeneratorUtils.getUpperCaseLeading(tempPart.getName()) + "s = new Hashtable" + 
     				hashtableTypeString + "();");
     		writer.write(NEWLINE);
     		writer.write("Iterator<Map.Entry" + hashtableTypeString + "> " + 
@@ -1396,7 +1396,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
     				partNameLowerCase + "sIterator.next();");
     		writer.write(NEWLINE);
     		writer.write(metaType + " old" + 
-    				getUpperCaseLeading(tempPart.getName()) + " = entry.getKey();");
+    				CodeGeneratorUtils.getUpperCaseLeading(tempPart.getName()) + " = entry.getKey();");
     		writer.write(NEWLINE);
     		
     		// go through all allowable types for this participant:
@@ -1408,24 +1408,24 @@ public class ADTGenerator implements CodeGeneratorConstants {
           }
           writer.write("if (");
           SimSEObjectType tempType = (SimSEObjectType) types.elementAt(j);
-          writer.write("old" + getUpperCaseLeading(tempPart.getName()) + 
-          		" instanceof " + getUpperCaseLeading(tempType.getName()) + 
+          writer.write("old" + CodeGeneratorUtils.getUpperCaseLeading(tempPart.getName()) + 
+          		" instanceof " + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + 
           		") {");
           writer.write(NEWLINE);
           writer.write(metaType + " new" + 
-          		getUpperCaseLeading(tempPart.getName()) + " = " + 
+          		CodeGeneratorUtils.getUpperCaseLeading(tempPart.getName()) + " = " + 
           		metaType.toLowerCase() + "Rep.get" + 
-          		getUpperCaseLeading(tempType.getName()) + 
+          		CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + 
           		"StateRepository().get(((" + 
-          		getUpperCaseLeading(tempType.getName()) + ")old" +
-          		getUpperCaseLeading(tempPart.getName()) + ").get" +
-          		getUpperCaseLeading(tempType.getKey().getName()) + "());");
+          		CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")old" +
+          		CodeGeneratorUtils.getUpperCaseLeading(tempPart.getName()) + ").get" +
+          		CodeGeneratorUtils.getUpperCaseLeading(tempType.getKey().getName()) + "());");
           writer.write(NEWLINE);
           writer.write("Boolean activeStatus = " + partNameLowerCase + 
-          		"s.get(old" + getUpperCaseLeading(tempPart.getName()) + ");");
+          		"s.get(old" + CodeGeneratorUtils.getUpperCaseLeading(tempPart.getName()) + ");");
           writer.write(NEWLINE);
-          writer.write("new" + getUpperCaseLeading(tempPart.getName()) + 
-          		"s.put(new" + getUpperCaseLeading(tempPart.getName()) +
+          writer.write("new" + CodeGeneratorUtils.getUpperCaseLeading(tempPart.getName()) + 
+          		"s.put(new" + CodeGeneratorUtils.getUpperCaseLeading(tempPart.getName()) +
           		", activeStatus);");
           writer.write(NEWLINE);
           writer.write(CLOSED_BRACK);
@@ -1435,7 +1435,7 @@ public class ADTGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(partNameLowerCase + "s.clear();");
         writer.write(NEWLINE);
-        writer.write(partNameLowerCase + "s.putAll(new" + getUpperCaseLeading(tempPart.getName()) + "s);");
+        writer.write(partNameLowerCase + "s.putAll(new" + CodeGeneratorUtils.getUpperCaseLeading(tempPart.getName()) + "s);");
         writer.write(NEWLINE);
         writer.write(NEWLINE);
       }
@@ -1449,9 +1449,5 @@ public class ADTGenerator implements CodeGeneratorConstants {
           + adtFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

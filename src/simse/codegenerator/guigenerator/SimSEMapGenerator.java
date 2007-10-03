@@ -5,34 +5,57 @@
 
 package simse.codegenerator.guigenerator;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.startstatebuilder.*;
-import simse.modelbuilder.mapeditor.*;
-import simse.codegenerator.*;
+import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
+import simse.modelbuilder.mapeditor.MapData;
+import simse.modelbuilder.mapeditor.TileData;
+import simse.modelbuilder.mapeditor.UserData;
+import simse.modelbuilder.objectbuilder.AttributeTypes;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+import simse.modelbuilder.startstatebuilder.InstantiatedAttribute;
+import simse.modelbuilder.startstatebuilder.SimSEObject;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 public class SimSEMapGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
   private DefinedObjectTypes objTypes; // holds all of the defined object types
                                        // from an sso file
-  private Hashtable objsToImages; // maps SimSEObjects (keys) to pathname
-                                  // (String) of image file (values)
-  private Hashtable objsToXYLocs; // maps SimSEObjects (keys) to XYLocations
-                                  // (Vectors) of employees (values)
+  private Hashtable<SimSEObject, String> objsToImages; // maps SimSEObjects
+																												// (keys) to pathname
+																												// (String) of image
+																												// file (values)
+  private Hashtable<SimSEObject, Vector<Integer>> objsToXYLocs; // maps
+																																// SimSEObjects
+																																// (keys) to
+																																// XYLocations
+																																// (Vectors) of
+																																// employees
+																																// (values)
   private TileData[][] mapRep; // representation of map
-  private ArrayList userDatas; // array list of UserDatas
+  private ArrayList<UserData> userDatas; // array list of UserDatas
 
-  public SimSEMapGenerator(DefinedObjectTypes dots, Hashtable oToI,
-      TileData[][] map, ArrayList users, File dir) {
-    objTypes = dots;
-    objsToImages = oToI;
-    mapRep = map;
-    userDatas = users;
-    objsToXYLocs = new Hashtable();
-    directory = dir;
+  public SimSEMapGenerator(DefinedObjectTypes objTypes, Hashtable<SimSEObject, 
+  		String> objsToImages, TileData[][] mapRep, ArrayList<UserData> userDatas, 
+  		File directory) {
+    this.objTypes = objTypes;
+    this.objsToImages = objsToImages;
+    this.mapRep = mapRep;
+    this.userDatas = userDatas;
+    objsToXYLocs = new Hashtable<SimSEObject, Vector<Integer>>();
+    this.directory = directory;
   }
 
   public void generate() {
@@ -154,35 +177,35 @@ public class SimSEMapGenerator implements CodeGeneratorConstants {
 
       // go through all user datas:
       for (int i = 0; i < userDatas.size(); i++) {
-        UserData tmpUser = (UserData) userDatas.get(i);
+        UserData tmpUser = userDatas.get(i);
         if (i > 0) {
           writer.write("else ");
         }
-        writer.write("if((user.getEmployee() instanceof "
-            + getUpperCaseLeading(tmpUser.getSimSEObject().getSimSEObjectType()
-                .getName())
-            + ") && ((("
-            + getUpperCaseLeading(tmpUser.getSimSEObject().getSimSEObjectType()
-                .getName()) + ")user.getEmployee()).get");
+        writer.write("if((user.getEmployee() instanceof " + 
+        		CodeGeneratorUtils.getUpperCaseLeading(
+        				tmpUser.getSimSEObject().getSimSEObjectType().getName()) + 
+        				") && (((" + 
+        				CodeGeneratorUtils.getUpperCaseLeading(
+        						tmpUser.getSimSEObject().getSimSEObjectType().getName()) + 
+        						")user.getEmployee()).get");
         SimSEObjectType objType = tmpUser.getSimSEObject().getSimSEObjectType();
-        writer.write(getUpperCaseLeading(objType.getKey().getName()) + "()");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(
+        		objType.getKey().getName()) + "()");
 
         if ((tmpUser.getSimSEObject().getKey() != null)
-            && (tmpUser.getSimSEObject().getKey().isInstantiated())) // key is
-                                                                     // instantiated
-        {
+            && (tmpUser.getSimSEObject().getKey().isInstantiated())) { // key
+																																			 // is
+																																			 // instantiated
           Object keyAttVal = tmpUser.getSimSEObject().getKey().getValue();
-          if (objType.getKey().getType() == AttributeTypes.STRING) // string
-                                                                   // attribute
-          {
+          if (objType.getKey().getType() == AttributeTypes.STRING) { // string
+                                                                   	 // attribute
             writer.write(".equals(\"" + keyAttVal.toString() + "\")))");
-          } else // non-string attribute
-          {
+          } else { // non-string attribute
             writer.write(" == " + keyAttVal.toString() + "))");
           }
 
           // x y locations:
-          Vector xys = new Vector();
+          Vector<Integer> xys = new Vector<Integer>();
           xys.add(new Integer(tmpUser.getXLocation()));
           xys.add(new Integer(tmpUser.getYLocation()));
           objsToXYLocs.put(tmpUser.getSimSEObject(), xys);
@@ -197,12 +220,11 @@ public class SimSEMapGenerator implements CodeGeneratorConstants {
           writer.write(CLOSED_BRACK);
           writer.write(NEWLINE);
         } else {
-          JOptionPane.showMessageDialog(null, "Generator exception: "
-              + objType.getName()
-              + " "
-              + (SimSEObjectTypeTypes.getText(tmpUser.getSimSEObject()
-                  .getSimSEObjectType().getType()))
-              + " object has no key attribute value.");
+          JOptionPane.showMessageDialog(null, "Generator exception: " + 
+          		objType.getName() + " " + 
+          		(SimSEObjectTypeTypes.getText(
+          				tmpUser.getSimSEObject().getSimSEObjectType().getType())) + 
+          				" object has no key attribute value.");
         }
       }
       writer.write(CLOSED_BRACK);
@@ -250,51 +272,50 @@ public class SimSEMapGenerator implements CodeGeneratorConstants {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       // go through all object types:
-      Vector types = objTypes.getAllObjectTypes();
+      Vector<SimSEObjectType> types = objTypes.getAllObjectTypes();
       // Make a vector of only the employee types:
-      Vector empTypes = new Vector();
+      Vector<SimSEObjectType> empTypes = new Vector<SimSEObjectType>();
       for (int i = 0; i < types.size(); i++) {
-        SimSEObjectType temp = (SimSEObjectType) types.elementAt(i);
+        SimSEObjectType temp = types.elementAt(i);
         if (temp.getType() == SimSEObjectTypeTypes.EMPLOYEE) {
           empTypes.add(temp);
         }
       }
       // go through all employee types:
       for (int i = 0; i < empTypes.size(); i++) {
-        SimSEObjectType tempType = (SimSEObjectType) empTypes.elementAt(i);
-        if (i > 0) // not on first element
-        {
+        SimSEObjectType tempType = empTypes.elementAt(i);
+        if (i > 0) { // not on first element
           writer.write("else ");
         }
         writer.write("if(e instanceof "
-            + getUpperCaseLeading(tempType.getName()) + ")");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(tempType.getName()) + " p = ("
-            + getUpperCaseLeading(tempType.getName()) + ")e;");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) 
+        		+ " p = (" + 
+        		CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")e;");
         writer.write(NEWLINE);
 
-        // go through all of the Employee created objects (and objects created
-        // by create objects rules):
-        Enumeration createdObjects = objsToImages.keys();
+        /*
+         * go through all of the Employee created objects (and objects created
+         * by create objects rules):
+         */
+        Enumeration<SimSEObject> createdObjects = objsToImages.keys();
         boolean putElse = false;
         for (int k = 0; k < objsToImages.size(); k++) {
-          SimSEObject obj = (SimSEObject) createdObjects.nextElement();
+          SimSEObject obj = createdObjects.nextElement();
           if (obj.getSimSEObjectType().getName().equals(tempType.getName())) {
             boolean allAttValuesInit = true; // whether or not all this object's
                                              // attribute values are initialized
-            Vector atts = obj.getAllAttributes();
+            Vector<InstantiatedAttribute> atts = obj.getAllAttributes();
             if (atts.size() < obj.getSimSEObjectType().getAllAttributes()
-                .size()) // not all atts instantiated
-            {
+                .size()) { // not all atts instantiated
               allAttValuesInit = false;
             } else {
               for (int m = 0; m < atts.size(); m++) {
-                InstantiatedAttribute att = (InstantiatedAttribute) atts
-                    .elementAt(m);
-                if (att.isInstantiated() == false) // not instantiated
-                {
+                InstantiatedAttribute att = atts.elementAt(m);
+                if (att.isInstantiated() == false) { // not instantiated
                   allAttValuesInit = false;
                   break;
                 }
@@ -306,16 +327,15 @@ public class SimSEMapGenerator implements CodeGeneratorConstants {
               } else {
                 putElse = true;
               }
-              writer.write("if(p.get"
-                  + getUpperCaseLeading(obj.getKey().getAttribute().getName())
-                  + "()");
-              if (obj.getKey().getAttribute().getType() == AttributeTypes.STRING) // string
-                                                                                  // att
-              {
-                writer.write(".equals(\"" + obj.getKey().getValue().toString()
-                    + "\"))");
-              } else // integer, double, or boolean att
-              {
+              writer.write("if(p.get" + 
+              		CodeGeneratorUtils.getUpperCaseLeading(
+              				obj.getKey().getAttribute().getName()) + 
+              				"()");
+              if (obj.getKey().getAttribute().getType() == 
+              	AttributeTypes.STRING) { // string att
+                writer.write(".equals(\"" + obj.getKey().getValue().toString() +
+                		"\"))");
+              } else { // integer, double, or boolean att
                 writer.write(" == " + obj.getKey().getValue().toString() + ")");
               }
               writer.write(NEWLINE);
@@ -352,58 +372,53 @@ public class SimSEMapGenerator implements CodeGeneratorConstants {
 
       // go through all employee types:
       for (int i = 0; i < empTypes.size(); i++) {
-        SimSEObjectType tempType = (SimSEObjectType) empTypes.elementAt(i);
-        if (i > 0) // not on first element
-        {
+        SimSEObjectType tempType = empTypes.elementAt(i);
+        if (i > 0) { // not on first element
           writer.write("else ");
         }
         writer.write("if(emp instanceof "
-            + getUpperCaseLeading(tempType.getName()) + ")");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(tempType.getName()) + " p = ("
-            + getUpperCaseLeading(tempType.getName()) + ")emp;");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) 
+        		+ " p = (" + CodeGeneratorUtils.getUpperCaseLeading(
+        				tempType.getName()) + ")emp;");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
 
         // go through all of the Employees:
-        Enumeration employees = objsToXYLocs.keys();
+        Enumeration<SimSEObject> employees = objsToXYLocs.keys();
         boolean putElse = false;
         for (int k = 0; k < objsToXYLocs.size(); k++) {
-          SimSEObject obj = (SimSEObject) employees.nextElement();
-          if (obj.getSimSEObjectType().getName().equals(tempType.getName())) // matching
-                                                                             // type
-          {
+          SimSEObject obj = employees.nextElement();
+          if (obj.getSimSEObjectType().getName().equals(tempType.getName())) { // matching
+                                                                             	 // type
             if (putElse) {
               writer.write("else ");
             } else {
               putElse = true;
             }
-            writer.write("if(p.get"
-                + getUpperCaseLeading(obj.getKey().getAttribute().getName())
-                + "()");
+            writer.write("if(p.get" + 
+            		CodeGeneratorUtils.getUpperCaseLeading(
+            				obj.getKey().getAttribute().getName()) + "()");
             if (obj.getKey().isInstantiated()) {
-              if (obj.getKey().getAttribute().getType() == AttributeTypes.STRING) // string
-                                                                                  // att
-              {
+              if (obj.getKey().getAttribute().getType() == 
+              	AttributeTypes.STRING) { // string att
                 writer.write(".equals(\"" + obj.getKey().getValue().toString()
                     + "\"))");
-              } else // integer, double, or boolean att
-              {
+              } else { // integer, double, or boolean att
                 writer.write(" == " + obj.getKey().getValue().toString() + ")");
               }
             }
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
-            if (((objsToXYLocs.get(obj)) != null)
-                && (((Vector) objsToXYLocs.get(obj)).size() >= 2)) {
-              int x = ((Integer) (((Vector) objsToXYLocs.get(obj)).elementAt(0)))
-                  .intValue();
-              int y = ((Integer) (((Vector) objsToXYLocs.get(obj)).elementAt(1)))
-                  .intValue();
+            if ((objsToXYLocs.get(obj) != null)
+                && (objsToXYLocs.get(obj).size() >= 2)) {
+              int x = objsToXYLocs.get(obj).elementAt(0).intValue();
+              int y = objsToXYLocs.get(obj).elementAt(1).intValue();
               writer.write("xys[0] = " + x + ";");
               writer.write(NEWLINE);
               writer.write("xys[1] = " + y + ";");
@@ -507,9 +522,5 @@ public class SimSEMapGenerator implements CodeGeneratorConstants {
           + ssmFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

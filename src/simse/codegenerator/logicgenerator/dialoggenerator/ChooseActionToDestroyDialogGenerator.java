@@ -146,11 +146,11 @@ public class ChooseActionToDestroyDialogGenerator implements
           writer.write("else ");
         }
         writer.write("if(tempAct instanceof "
-            + getUpperCaseLeading(act.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("actionName = \"" + getUpperCaseLeading(act.getName())
+        writer.write("actionName = \"" + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
             + "\";");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
@@ -168,7 +168,7 @@ public class ChooseActionToDestroyDialogGenerator implements
           writer.write("else ");
         }
         writer.write("if(tempAct instanceof "
-            + getUpperCaseLeading(act.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -176,8 +176,8 @@ public class ChooseActionToDestroyDialogGenerator implements
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(act.getName()) + "Action act = ("
-            + getUpperCaseLeading(act.getName())
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action act = ("
+            + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
             + "Action)actions.elementAt(i);");
         writer.write(NEWLINE);
         writer.write("if(act.getAllParticipants().contains(emp))");
@@ -230,14 +230,14 @@ public class ChooseActionToDestroyDialogGenerator implements
               writer.write("else ");
             }
             writer.write("if(a instanceof "
-                + getUpperCaseLeading(tempType.getName()) + ")");
+                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")");
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
             writer.write("label.append(\""
-                + getUpperCaseLeading(tempType.getName()) + "(\" + (("
-                + getUpperCaseLeading(tempType.getName()) + ")a).get"
-                + getUpperCaseLeading(tempType.getKey().getName())
+                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + "(\" + (("
+                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")a).get"
+                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getKey().getName())
                 + "() + \")\");");
             writer.write(NEWLINE);
             writer.write(CLOSED_BRACK);
@@ -387,13 +387,13 @@ public class ChooseActionToDestroyDialogGenerator implements
           writer.write("else ");
         }
         writer.write("if(tempAct instanceof "
-            + getUpperCaseLeading(tempAct.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(tempAct.getName()) + "Action "
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action "
             + tempAct.getName().toLowerCase() + "Act = ("
-            + getUpperCaseLeading(tempAct.getName()) + "Action)tempAct;");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)tempAct;");
         writer.write(NEWLINE);
         // go through all participants:
         Vector parts = tempAct.getAllParticipants();
@@ -557,7 +557,7 @@ public class ChooseActionToDestroyDialogGenerator implements
             writer.write(NEWLINE);
           }
           writer.write("state.getActionStateRepository().get"
-              + getUpperCaseLeading(tempAct.getName())
+              + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
               + "ActionStateRepository().remove("
               + tempAct.getName().toLowerCase() + "Act);");
           writer.write(NEWLINE);
@@ -585,9 +585,9 @@ public class ChooseActionToDestroyDialogGenerator implements
                 writer.write(NEWLINE);
                 writer.write("// stop game and give score:");
                 writer.write(NEWLINE);
-                writer.write(getUpperCaseLeading(tempAct.getName())
+                writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
                     + "Action t111 = ("
-                    + getUpperCaseLeading(tempAct.getName()) + "Action)"
+                    + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)"
                     + tempAct.getName().toLowerCase() + "Act;");
                 writer.write(NEWLINE);
                 // find the scoring attribute:
@@ -622,10 +622,10 @@ public class ChooseActionToDestroyDialogGenerator implements
                   writer.write(NEWLINE);
                   writer.write(OPEN_BRACK);
                   writer.write(NEWLINE);
-                  writer.write(getUpperCaseLeading(scoringPartConst
+                  writer.write(CodeGeneratorUtils.getUpperCaseLeading(scoringPartConst
                       .getSimSEObjectType().getName())
                       + " t = ("
-                      + getUpperCaseLeading(scoringPartConst
+                      + CodeGeneratorUtils.getUpperCaseLeading(scoringPartConst
                           .getSimSEObjectType().getName())
                       + ")(t111.getAll"
                       + scoringPartDest.getParticipant().getName()
@@ -692,9 +692,5 @@ public class ChooseActionToDestroyDialogGenerator implements
           + catddFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

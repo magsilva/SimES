@@ -6,10 +6,10 @@ import java.util.*;
 
 public class SimSEObjectType implements Cloneable {
   String name; // name of the object
-  Vector attributes; // attributes of this object
+  Vector<Attribute> attributes; // attributes of this object
   int type; // type of object (see SimSEObjectTypeTypes class)
 
-  public SimSEObjectType(Vector attrs, int t, String n) {
+  public SimSEObjectType(Vector<Attribute> attrs, int t, String n) {
     attributes = attrs;
     type = t;
     name = n;
@@ -18,7 +18,7 @@ public class SimSEObjectType implements Cloneable {
   public SimSEObjectType(int t, String n) {
     type = t;
     name = n;
-    attributes = new Vector();
+    attributes = new Vector<Attribute>();
   }
 
   public SimSEObjectType() {
@@ -32,10 +32,9 @@ public class SimSEObjectType implements Cloneable {
     try {
       SimSEObjectType cl = (SimSEObjectType) super.clone();
       cl.name = name;
-      Vector clonedAtts = new Vector();
+      Vector<Attribute> clonedAtts = new Vector<Attribute>();
       for (int i = 0; i < attributes.size(); i++) {
-        clonedAtts.addElement((Attribute) (((Attribute) (attributes
-            .elementAt(i))).clone()));
+        clonedAtts.addElement((Attribute) (attributes.elementAt(i).clone()));
       }
       cl.attributes = clonedAtts;
       return cl;
@@ -45,15 +44,15 @@ public class SimSEObjectType implements Cloneable {
     return null;
   }
 
-  public Vector getAllAttributes() // returns a Vector of Attributes
+  public Vector<Attribute> getAllAttributes() // returns a Vector of Attributes
   {
     return attributes;
   }
   
-  public Vector getAllVisibleAttributes() {
-    Vector visibleAtts = new Vector();
+  public Vector<Attribute> getAllVisibleAttributes() {
+    Vector<Attribute> visibleAtts = new Vector<Attribute>();
     for (int i=0; i<attributes.size(); i++) {
-      Attribute att = (Attribute)attributes.get(i);
+      Attribute att = attributes.get(i);
       if (att.isVisible()) {
         visibleAtts.add(att);
       }
@@ -61,10 +60,10 @@ public class SimSEObjectType implements Cloneable {
     return visibleAtts;
   }
   
-  public Vector getAllVisibleOnCompletionAttributes() {
-    Vector visibleAtts = new Vector();
+  public Vector<Attribute> getAllVisibleOnCompletionAttributes() {
+    Vector<Attribute> visibleAtts = new Vector<Attribute>();
     for (int i=0; i<attributes.size(); i++) {
-      Attribute att = (Attribute)attributes.get(i);
+      Attribute att = attributes.get(i);
       if (att.isVisibleOnCompletion()) {
         visibleAtts.add(att);
       }
@@ -72,10 +71,11 @@ public class SimSEObjectType implements Cloneable {
     return visibleAtts;
   }
   
+  // CHANGE THESE SO YOU JUST CALL THE PREVIOUS FUNCTIONS AND GET THE SIZES OF THOSE!!!
   public int getNumVisibleAttributes() {
     int numVisibleAtts = 0;
     for (int i=0; i<attributes.size(); i++) {
-      Attribute att = (Attribute)attributes.get(i);
+      Attribute att = attributes.get(i);
       if (att.isVisible()) {
         numVisibleAtts++;
       }
@@ -86,7 +86,7 @@ public class SimSEObjectType implements Cloneable {
   public int getNumVisibleOnCompletionAttributes() {
     int numVisibleAtts = 0;
     for (int i=0; i<attributes.size(); i++) {
-      Attribute att = (Attribute)attributes.get(i);
+      Attribute att = attributes.get(i);
       if (att.isVisibleOnCompletion()) {
         numVisibleAtts++;
       }
@@ -102,7 +102,7 @@ public class SimSEObjectType implements Cloneable {
   // object -- the attribute that must be unique
   {
     for (int i = 0; i < attributes.size(); i++) {
-      Attribute tempAttr = (Attribute) (attributes.elementAt(i));
+      Attribute tempAttr = (attributes.elementAt(i));
       if (tempAttr.isKey()) {
         return tempAttr;
       }
@@ -114,7 +114,7 @@ public class SimSEObjectType implements Cloneable {
   // otherwise
   {
     for (int i = 0; i < attributes.size(); i++) {
-      Attribute tempAttr = (Attribute) (attributes.elementAt(i));
+      Attribute tempAttr = (attributes.elementAt(i));
       if (tempAttr.isKey()) {
         return true;
       }
@@ -126,7 +126,7 @@ public class SimSEObjectType implements Cloneable {
     name = newName;
   }
 
-  public void setAttributes(Vector attrs) {
+  public void setAttributes(Vector<Attribute> attrs) {
     attributes = attrs;
   }
 
@@ -149,7 +149,7 @@ public class SimSEObjectType implements Cloneable {
   // position it removed it from
   {
     for (int i = 0; i < attributes.size(); i++) {
-      Attribute a = (Attribute) attributes.elementAt(i);
+      Attribute a = attributes.elementAt(i);
       if (a.getName().equals(name)) {
         int index = attributes.indexOf(a);
         attributes.remove(a);
@@ -165,7 +165,7 @@ public class SimSEObjectType implements Cloneable {
   public int getAttributeIndex(String name) 
   {
     for (int i = 0; i < attributes.size(); i++) {
-      Attribute a = (Attribute) attributes.elementAt(i);
+      Attribute a = attributes.elementAt(i);
       if (a.getName().equals(name)) {
         int index = attributes.indexOf(a);
         return index;
@@ -184,7 +184,7 @@ public class SimSEObjectType implements Cloneable {
   // specified name
   {
     for (int i = 0; i < attributes.size(); i++) {
-      Attribute a = (Attribute) attributes.elementAt(i);
+      Attribute a = attributes.elementAt(i);
       if (a.getName().equals(name)) {
         return a;
       }

@@ -184,15 +184,15 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
           writer.write("else ");
         }
         writer.write("if(tempObj instanceof "
-            + getUpperCaseLeading(tempType.getName()) + ")");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
         writer
-            .write("label = (\"" + getUpperCaseLeading(tempType.getName())
-                + " (\" + ((" + getUpperCaseLeading(tempType.getName())
+            .write("label = (\"" + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName())
+                + " (\" + ((" + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName())
                 + ")tempObj).get"
-                + getUpperCaseLeading(tempType.getKey().getName())
+                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getKey().getName())
                 + "() + \")\");");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
@@ -313,7 +313,7 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
           putElse = true;
         }
         writer.write("if(action instanceof "
-            + getUpperCaseLeading(tempAct.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -335,11 +335,11 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
             writer.write("(("
-                + getUpperCaseLeading(tempAct.getName())
+                + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
                 + "Action)action).add"
                 + tempPart.getName()
                 + "(("
-                + getUpperCaseLeading(SimSEObjectTypeTypes.getText(tempPart
+                + CodeGeneratorUtils.getUpperCaseLeading(SimSEObjectTypeTypes.getText(tempPart
                     .getSimSEObjectTypeType()))
                 + ")participants.elementAt(0));");
             writer.write(NEWLINE);
@@ -485,7 +485,7 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
           writer.write("else ");
         }
         writer.write("if(objTypeName.equals(\""
-            + getUpperCaseLeading(tempType.getName()) + "\"))");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + "\"))");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -496,9 +496,9 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
         }
-        writer.write(getUpperCaseLeading(tempType.getName()) + " a = state.get"
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + " a = state.get"
             + SimSEObjectTypeTypes.getText(tempType.getType())
-            + "StateRepository().get" + getUpperCaseLeading(tempType.getName())
+            + "StateRepository().get" + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName())
             + "StateRepository().get(");
         if (tempType.getKey().getType() == AttributeTypes.STRING) {
           writer.write("keyValStr);");
@@ -530,7 +530,7 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
                 putElse2 = true;
               }
               writer.write("if(action instanceof "
-                  + getUpperCaseLeading(tempAct.getName()) + "Action)");
+                  + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
               writer.write(NEWLINE);
               writer.write(OPEN_BRACK);
               writer.write(NEWLINE);
@@ -559,7 +559,7 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
                   writer.write(NEWLINE);
                   writer.write(OPEN_BRACK);
                   writer.write(NEWLINE);
-                  writer.write("((" + getUpperCaseLeading(tempAct.getName())
+                  writer.write("((" + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
                       + "Action)action).add" + tempPart.getName() + "(("
                       + SimSEObjectTypeTypes.getText(tempType.getType())
                       + ")a);");
@@ -609,7 +609,7 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
           writer.write("else ");
         }
         writer.write("if(action instanceof "
-            + getUpperCaseLeading(tempAct.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -682,9 +682,5 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
           + psdFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

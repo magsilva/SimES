@@ -5,27 +5,34 @@
 
 package simse.codegenerator.guigenerator;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.codegenerator.*;
+import simse.modelbuilder.objectbuilder.Attribute;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.NumericalAttribute;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
+import java.util.Vector;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.JOptionPane;
 
 public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
   private DefinedObjectTypes objTypes; // holds all of the defined object types
                                        // from an sso file
 
-  public AtAGlanceFramesGenerator(DefinedObjectTypes dots, File dir) {
-    objTypes = dots;
-    directory = dir;
+  public AtAGlanceFramesGenerator(DefinedObjectTypes objTypes, File directory) {
+    this.objTypes = objTypes;
+    this.directory = directory;
   }
 
   public void generate() {
     String[] types = SimSEObjectTypeTypes.getAllTypesAsStrings();
-    for (int i = 0; i < types.length; i++) {
-      generateFrameFile(types[i]);
+    for (String type : types) {
+      generateFrameFile(type);
     }
   }
 
@@ -88,15 +95,16 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // get all types:
-      Vector types = objTypes.getAllObjectTypesOfType(SimSEObjectTypeTypes
-          .getIntRepresentation(type));
-      for (int i = 0; i < types.size(); i++) {
-        SimSEObjectType tempType = (SimSEObjectType) types.elementAt(i);
+      Vector<SimSEObjectType> types = 
+      	objTypes.getAllObjectTypesOfType(
+      			SimSEObjectTypeTypes.getIntRepresentation(type));
+      for (SimSEObjectType tempType : types) {
         writer.write("private JTable " + tempType.getName().toLowerCase()
             + "Table;");
         writer.write(NEWLINE);
-        writer.write("private " + getUpperCaseLeading(tempType.getName())
-            + "TableModel " + tempType.getName().toLowerCase() + "Model;");
+        writer.write("private " + 
+        		CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + 
+        		"TableModel " + tempType.getName().toLowerCase() + "Model;");
         writer.write(NEWLINE);
         writer.write("private JPanel " + tempType.getName().toLowerCase()
             + "TitlePane;");
@@ -130,9 +138,10 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       for (int i = 0; i < types.size(); i++) {
-        SimSEObjectType tempType = (SimSEObjectType) types.elementAt(i);
+        SimSEObjectType tempType = types.elementAt(i);
         writer.write(tempType.getName().toLowerCase() + "Model = new "
-            + getUpperCaseLeading(tempType.getName()) + "TableModel(s);");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + 
+            "TableModel(s);");
         writer.write(NEWLINE);
         writer.write(tempType.getName().toLowerCase() + "Table = new JTable("
             + tempType.getName().toLowerCase() + "Model);");
@@ -178,7 +187,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       for (int i = 0; i < types.size(); i++) {
-        SimSEObjectType tempType = (SimSEObjectType) types.elementAt(i);
+        SimSEObjectType tempType = types.elementAt(i);
         writer.write("JScrollPane " + tempType.getName().toLowerCase()
             + "Pane = new JScrollPane(" + tempType.getName().toLowerCase()
             + "Table);");
@@ -190,13 +199,14 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       for (int i = 0; i < types.size(); i++) {
-        SimSEObjectType tempType = (SimSEObjectType) types.elementAt(i);
+        SimSEObjectType tempType = types.elementAt(i);
         writer.write(tempType.getName().toLowerCase()
             + "TitlePane = new JPanel();");
         writer.write(NEWLINE);
         writer.write(tempType.getName().toLowerCase()
             + "TitlePane.add(new JLabel(\""
-            + getUpperCaseLeading(tempType.getName()) + "s:\"));");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + 
+            "s:\"));");
         writer.write(NEWLINE);
       }
 
@@ -213,7 +223,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       for (int i = 0; i < types.size(); i++) {
-        SimSEObjectType tempType = (SimSEObjectType) types.elementAt(i);
+        SimSEObjectType tempType = types.elementAt(i);
         writer.write("mainPane.add(" + tempType.getName().toLowerCase()
             + "TitlePane);");
         writer.write(NEWLINE);
@@ -267,7 +277,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       for (int i = 0; i < types.size(); i++) {
-        SimSEObjectType tempType = (SimSEObjectType) types.elementAt(i);
+        SimSEObjectType tempType = types.elementAt(i);
         if (i > 0) {
           writer.write("else ");
         }
@@ -332,19 +342,19 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       for (int i = 0; i < types.size(); i++) {
-        SimSEObjectType tempType = (SimSEObjectType) types.elementAt(i);
-        if (i > 0) // not on first element
-        {
+        SimSEObjectType tempType = types.elementAt(i);
+        if (i > 0) { // not on first element
           writer.write("else ");
         }
         writer.write("if(model instanceof "
-            + getUpperCaseLeading(tempType.getName()) + "TableModel)");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + 
+            "TableModel)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
         writer
             .write("column = selectedTable.getColumnModel().getColumn((("
-                + getUpperCaseLeading(tempType.getName())
+                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName())
                 + "TableModel)selectedTable.getModel()).getColumnIndex(itemText));");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
@@ -473,7 +483,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
   		writer.write("rightAlignRenderer.setHorizontalAlignment(JLabel.RIGHT);");
   		writer.write(NEWLINE);
       for (int i = 0; i < types.size(); i++) {
-        SimSEObjectType tempType = (SimSEObjectType) types.elementAt(i);
+        SimSEObjectType tempType = types.elementAt(i);
         writer.write(tempType.getName().toLowerCase() + "Model.update();");
         writer.write(NEWLINE);
         
@@ -481,9 +491,9 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
     		writer.write("if (!state.getClock().isStopped()) { // game not over");
     		writer.write(NEWLINE);
     		
-    		Vector visibleAtts = tempType.getAllVisibleAttributes();
+    		Vector<Attribute> visibleAtts = tempType.getAllVisibleAttributes();
     		for (int j = 0; j < visibleAtts.size(); j++) {
-    		  Attribute att = (Attribute)visibleAtts.get(j);
+    		  Attribute att = visibleAtts.get(j);
     		  if (att instanceof NumericalAttribute) {
 	    		  writer.write(tempType.getName().toLowerCase() + 
 	    		      "Table.getColumnModel().getColumn(" + 
@@ -496,10 +506,10 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
     		writer.write(NEWLINE);
     		writer.write("else { // game over");
     		writer.write(NEWLINE);
-    		Vector visibleOnCompletionAtts = 
+    		Vector<Attribute> visibleOnCompletionAtts = 
     		  tempType.getAllVisibleOnCompletionAttributes();
     		for (int j = 0; j < visibleOnCompletionAtts.size(); j++) {
-    		  Attribute att = (Attribute)visibleOnCompletionAtts.get(j);
+    		  Attribute att = visibleOnCompletionAtts.get(j);
     		  if (att instanceof NumericalAttribute) {
 	    		  writer.write(tempType.getName().toLowerCase() + 
 	    		      "Table.getColumnModel().getColumn(" + 
@@ -530,7 +540,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
       writer.write("double height = 0;");
       writer.write(NEWLINE);
       for (int i = 0; i < types.size(); i++) {
-        SimSEObjectType tempType = (SimSEObjectType) types.elementAt(i);
+        SimSEObjectType tempType = types.elementAt(i);
         writer.write("height += ((" + tempType.getName().toLowerCase()
             + "Table.getRowHeight() + (" + tempType.getName().toLowerCase()
             + "Table.getRowMargin() * 2)) * ("
@@ -592,9 +602,5 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
           + frameFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

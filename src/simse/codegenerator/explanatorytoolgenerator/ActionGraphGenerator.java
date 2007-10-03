@@ -6,24 +6,27 @@
 package simse.codegenerator.explanatorytoolgenerator;
 
 import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 import simse.modelbuilder.actionbuilder.ActionType;
 import simse.modelbuilder.actionbuilder.DefinedActionTypes;
 import simse.modelbuilder.ModelOptions;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 public class ActionGraphGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
   private DefinedActionTypes actTypes;
   private ModelOptions options;
 
-  public ActionGraphGenerator(DefinedActionTypes actTypes, File dir, 
+  public ActionGraphGenerator(DefinedActionTypes actTypes, File directory, 
   		ModelOptions options) {
     this.actTypes = actTypes;
-    directory = dir;
+    this.directory = directory;
     this.options = options;
   }
 
@@ -169,19 +172,15 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // generate an index and an indices array list for each type of action:
-      Vector actions = actTypes.getAllActionTypes();
+      Vector<ActionType> actions = actTypes.getAllActionTypes();
       for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.get(i);
+        ActionType act = actions.get(i);
         if (act.isVisibleInExplanatoryTool()) {
           String lCaseName = act.getName().toLowerCase();
-          writer
-              .write("private int "
-                  + lCaseName
+          writer.write("private int " + lCaseName
                   + "Index = 1; // index to be used for labeling multiple actions of the same type");
           writer.write(NEWLINE);
-          writer
-              .write("private ArrayList "
-                  + lCaseName
+          writer.write("private ArrayList " + lCaseName
                   + "Indices = new ArrayList(); // an ArrayList to map indices for "
                   + act.getName() + " Action labels to action ids");
           writer.write(NEWLINE);
@@ -216,7 +215,7 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
           .write("// add dummy entries for 0 positions (since we don't want to display a series on the 0 line):");
       writer.write(NEWLINE);
       for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.get(i);
+        ActionType act = actions.get(i);
         if (act.isVisibleInExplanatoryTool()) {
           writer.write(act.getName().toLowerCase()
               + "Indices.add(0, new Integer(-1));");
@@ -277,8 +276,9 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       // go through each action and generate code for it:
       boolean writeElse = false;
       for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.get(i);
-        String uCaseName = getUpperCaseLeading(act.getName());
+        ActionType act = actions.get(i);
+        String uCaseName = 
+        	CodeGeneratorUtils.getUpperCaseLeading(act.getName());
         String lCaseName = act.getName().toLowerCase();
         if (act.isVisibleInExplanatoryTool()) {
           if (writeElse) {
@@ -411,8 +411,9 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       // go through each action and generate code for it:
       boolean writeElse2 = false;
       for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.get(i);
-        String uCaseName = getUpperCaseLeading(act.getName());
+        ActionType act = actions.get(i);
+        String uCaseName = 
+        	CodeGeneratorUtils.getUpperCaseLeading(act.getName());
         String lCaseName = act.getName().toLowerCase();
         if (act.isVisibleInExplanatoryTool()) {
           if (writeElse2) {
@@ -471,8 +472,9 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       // go through each action and generate code for it:
       boolean writeElse3 = false;
       for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.get(i);
-        String uCaseName = getUpperCaseLeading(act.getName());
+        ActionType act = actions.get(i);
+        String uCaseName = 
+        	CodeGeneratorUtils.getUpperCaseLeading(act.getName());
         String lCaseName = act.getName().toLowerCase();
         if (act.isVisibleInExplanatoryTool()) {
           if (writeElse3) {
@@ -726,8 +728,9 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
     	// go through each action and generate code for it:
       writeElse = false;
       for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.get(i);
-        String uCaseName = getUpperCaseLeading(act.getName());
+        ActionType act = actions.get(i);
+        String uCaseName = 
+        	CodeGeneratorUtils.getUpperCaseLeading(act.getName());
         String lCaseName = act.getName().toLowerCase();
         if (act.isVisibleInExplanatoryTool()) {
           if (writeElse) {
@@ -813,9 +816,5 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
           + actGraphFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

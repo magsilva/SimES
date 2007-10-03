@@ -11,14 +11,14 @@ public class ActionTypeParticipant implements Cloneable {
                                 // customer
   private ActionTypeParticipantQuantity quantity; // conditions on the quantity
                                                   // of this participant
-  private Vector simseObjTypes; // Vector of SimSEObjectTypes that this
+  private Vector<SimSEObjectType> simseObjTypes; // Vector of SimSEObjectTypes that this
                                 // participant can be
 
   public ActionTypeParticipant(int ssObjTypeType) {
     name = new String();
     simseObjTypeType = ssObjTypeType;
     quantity = new ActionTypeParticipantQuantity(Guard.AT_LEAST);
-    simseObjTypes = new Vector();
+    simseObjTypes = new Vector<SimSEObjectType>();
   }
 
   public Object clone() {
@@ -27,10 +27,9 @@ public class ActionTypeParticipant implements Cloneable {
       cl.name = name;
       cl.simseObjTypeType = simseObjTypeType;
       cl.quantity = (ActionTypeParticipantQuantity) (quantity.clone());
-      Vector clonedTypes = new Vector();
+      Vector<SimSEObjectType> clonedTypes = new Vector<SimSEObjectType>();
       for (int i = 0; i < simseObjTypes.size(); i++) {
-        clonedTypes.add((SimSEObjectType) (((SimSEObjectType) (simseObjTypes
-            .elementAt(i))).clone()));
+        clonedTypes.add((SimSEObjectType) ((simseObjTypes.elementAt(i)).clone()));
       }
       cl.simseObjTypes = clonedTypes;
       return cl;
@@ -59,7 +58,7 @@ public class ActionTypeParticipant implements Cloneable {
     simseObjTypes.removeAllElements();
   }
 
-  public Vector getAllSimSEObjectTypes() // returns the SimSEObjectTypes that
+  public Vector<SimSEObjectType> getAllSimSEObjectTypes() // returns the SimSEObjectTypes that
                                          // this participant can be of
   {
     return simseObjTypes;
@@ -80,7 +79,7 @@ public class ActionTypeParticipant implements Cloneable {
   {
     boolean notFound = true;
     for (int i = 0; i < simseObjTypes.size(); i++) {
-      SimSEObjectType tempType = (SimSEObjectType) (simseObjTypes.elementAt(i));
+      SimSEObjectType tempType = simseObjTypes.elementAt(i);
       if (tempType.getName().equals(newType.getName())) {
         notFound = false;
       }
@@ -97,7 +96,7 @@ public class ActionTypeParticipant implements Cloneable {
                                                      // participant can be
   {
     for (int i = 0; i < simseObjTypes.size(); i++) {
-      SimSEObjectType tempType = (SimSEObjectType) (simseObjTypes.elementAt(i));
+      SimSEObjectType tempType = simseObjTypes.elementAt(i);
       if (tempType.getName().equals(typeName)) {
         simseObjTypes.removeElementAt(i);
       }
@@ -106,7 +105,7 @@ public class ActionTypeParticipant implements Cloneable {
 
   public SimSEObjectType getSimSEObjectType(String typeName) {
     for (int i = 0; i < simseObjTypes.size(); i++) {
-      SimSEObjectType tempType = (SimSEObjectType) (simseObjTypes.elementAt(i));
+      SimSEObjectType tempType = simseObjTypes.elementAt(i);
       if (tempType.getName().equals(typeName)) {
         return tempType;
       }
@@ -116,7 +115,7 @@ public class ActionTypeParticipant implements Cloneable {
   
   public boolean hasSimSEObjectType(String typeName) {
     for (int i = 0; i < simseObjTypes.size(); i++) {
-      SimSEObjectType tempType = (SimSEObjectType) (simseObjTypes.elementAt(i));
+      SimSEObjectType tempType = simseObjTypes.elementAt(i);
       if (tempType.getName().equals(typeName)) {
         return true;
       }

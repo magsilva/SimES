@@ -220,7 +220,7 @@ public class MapEditorMap extends SimSEMap {
     setPreferredSize(new Dimension(screenX, screenY));
   }
 
-  public ArrayList getUserDatas() {
+  public ArrayList<UserData> getUserDatas() {
     return sopUsers;
   }
 
@@ -286,7 +286,7 @@ public class MapEditorMap extends SimSEMap {
 
     // add any existing sop objects to menu
     for (int i = 0; i < sopUsers.size(); i++) {
-      UserData tmp = (UserData) sopUsers.get(i);
+      UserData tmp = sopUsers.get(i);
 
       if (i == ssObjCount)//&& i < sopUsers.size()) // now on rule objects
       {
@@ -315,7 +315,7 @@ public class MapEditorMap extends SimSEMap {
 
     // draw employees
     for (int i = 0; i < sopUsers.size(); i++) {
-      UserData tmp = (UserData) sopUsers.get(i);
+      UserData tmp = sopUsers.get(i);
       if (tmp.isDisplayed()) {
         g.drawImage(tmp.getUserIcon(), tmp.getXLocation() * MapData.TILE_SIZE,
             tmp.getYLocation() * MapData.TILE_SIZE, this);
@@ -377,7 +377,7 @@ public class MapEditorMap extends SimSEMap {
     else if (source == delete) {
       // deletes employee if on tile
       for (int i = 0; i < sopUsers.size(); i++) {
-        UserData tmp = (UserData) sopUsers.get(i);
+        UserData tmp = sopUsers.get(i);
 
         if (tmp.checkXYLocations(clickedX, clickedY))
           tmp.setDisplayed(false);
@@ -436,7 +436,7 @@ public class MapEditorMap extends SimSEMap {
       UserData user = null;
 
       for (int i = 0; i < sopUsers.size(); i++) {
-        UserData tmp = (UserData) sopUsers.get(i);
+        UserData tmp = sopUsers.get(i);
 
         // a employee exists on the current tile so prevent it from being placed
         // there

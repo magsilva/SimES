@@ -9,6 +9,7 @@ import simse.modelbuilder.ModelOptions;
 import simse.modelbuilder.actionbuilder.ActionType;
 import simse.modelbuilder.actionbuilder.DefinedActionTypes;
 import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 import simse.codegenerator.explanatorytoolgenerator.ActionGraphGenerator;
 import simse.codegenerator.explanatorytoolgenerator.ActionInfoPanelGenerator;
 import simse.codegenerator.explanatorytoolgenerator.ObjectGraphGenerator;
@@ -22,12 +23,16 @@ import simse.modelbuilder.rulebuilder.Rule;
 import simse.modelbuilder.startstatebuilder.CreatedObjects;
 import simse.modelbuilder.startstatebuilder.SimSEObject;
 
-import java.util.*;
+import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;;
 
 public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
   private ModelOptions options;
@@ -35,22 +40,22 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
   private CreatedObjects objs;
   private DefinedActionTypes acts;
   private ObjectGraphGenerator objGraphGen; // generates the ObjectGraph class
-  private ActionGraphGenerator actGraphGen; // generates the ActionGraph class
-  private CompositeGraphGenerator compGraphGen; // generates the CompositeGraph
-                                                // class
-  private ActionInfoPanelGenerator actInfoPanelGen; // generates the
-  // ActionInfoPanel class
-  private RuleInfoPanelGenerator ruleInfoPanelGen; // generates the
-  // RuleInfoPanel class
-  private ActionInfoWindowGenerator actInfoWindowGen; // generates the
-  // ActionInfoWindow class
-  private TriggerDescriptionsGenerator trigDescGen; // generates the
-  // TriggerDescriptions class
-  private DestroyerDescriptionsGenerator destDescGen; // generates the
-  // DestroyerDescriptions
-  // class
-  private RuleDescriptionsGenerator ruleDescGen; // generates the
-  // RuleDescriptions class
+	private ActionGraphGenerator actGraphGen; // generates the ActionGraph class
+	private CompositeGraphGenerator compGraphGen; // generates the CompositeGraph
+																								// class
+	private ActionInfoPanelGenerator actInfoPanelGen; // generates the
+																										// ActionInfoPanel class
+	private RuleInfoPanelGenerator ruleInfoPanelGen; // generates the
+																										// RuleInfoPanel class
+	private ActionInfoWindowGenerator actInfoWindowGen; // generates the
+																											// ActionInfoWindow class
+	private TriggerDescriptionsGenerator trigDescGen; // generates the
+																										// TriggerDescriptions class
+	private DestroyerDescriptionsGenerator destDescGen; // generates the
+																											// DestroyerDescriptions
+																											// class
+	private RuleDescriptionsGenerator ruleDescGen; // generates the
+																									// RuleDescriptions class
 
   public ExplanatoryToolGenerator(ModelOptions options, 
       DefinedObjectTypes objTypes, CreatedObjects objs, 
@@ -79,9 +84,10 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
         options.getCodeGenerationDestinationDirectory());
   }
 
-  public void generate() // causes all of this component's sub-components to
-  // generate code
-  {
+/*
+ * causes all of this component's sub-components to generate code
+ */
+  public void generate() { 
     // copy the JFreeChart jars:
     copyJFreeChartJars();
 
@@ -97,8 +103,8 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
     generateExplanatoryTool();
   }
 
-  private void generateExplanatoryTool() // generates the ExplanatoryTool class
-  {
+  // generates the ExplanatoryTool class
+  private void generateExplanatoryTool() { 
     File expToolFile = new File(options.
         getCodeGenerationDestinationDirectory(),
         ("simse\\explanatorytool\\ExplanatoryTool.java"));
@@ -235,15 +241,15 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("// object list:");
       writer.write(NEWLINE);
       writer.write("String[] objects = {");
-      Vector objects = objs.getAllObjects();
+      Vector<SimSEObject> objects = objs.getAllObjects();
       for (int i = 0; i < objects.size(); i++) {
-        SimSEObject obj = (SimSEObject) objects.get(i);
-        writer.write("\""
-            + getUpperCaseLeading(obj.getSimSEObjectType().getName())
-            + " "
-            + getUpperCaseLeading(SimSEObjectTypeTypes.getText(obj
-                .getSimSEObjectType().getType())) + " "
-            + obj.getKey().getValue().toString() + "\",");
+        SimSEObject obj = objects.get(i);
+        writer.write("\"" + CodeGeneratorUtils.getUpperCaseLeading(
+        		obj.getSimSEObjectType().getName()) + " " + 
+        		CodeGeneratorUtils.getUpperCaseLeading(
+        				SimSEObjectTypeTypes.getText(
+        						obj.getSimSEObjectType().getType())) + " " + 
+        						obj.getKey().getValue().toString() + "\",");
         writer.write(NEWLINE);
       }
       writer.write("};");
@@ -311,11 +317,12 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("String[] actions = {");
       writer.write(NEWLINE);
-      Vector actions = acts.getAllActionTypes();
+      Vector<ActionType> actions = acts.getAllActionTypes();
       for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.get(i);
+        ActionType act = actions.get(i);
         if (act.isVisibleInExplanatoryTool()) {
-          writer.write("\"" + getUpperCaseLeading(act.getName()) + "\",");
+          writer.write("\"" + 
+          		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "\",");
           writer.write(NEWLINE);
         }
       }
@@ -908,23 +915,23 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer
           .write("String selectedObject = (String)objectList.getSelectedItem();");
       writer.write(NEWLINE);
-      Vector objectTypes = objTypes.getAllObjectTypes();
+      Vector<SimSEObjectType> objectTypes = objTypes.getAllObjectTypes();
       for (int i = 0; i < objectTypes.size(); i++) {
-        SimSEObjectType objType = (SimSEObjectType) objectTypes.get(i);
+        SimSEObjectType objType = objectTypes.get(i);
         if (i > 0) {
           writer.write("else ");
         }
         writer.write("if (selectedObject.startsWith(\""
-            + getUpperCaseLeading(objType.getName()) + " "
+            + CodeGeneratorUtils.getUpperCaseLeading(objType.getName()) + " "
             + SimSEObjectTypeTypes.getText(objType.getType())
             + "\")) {");
         writer.write(NEWLINE);
         writer.write("String[] attributes = {");
         writer.write(NEWLINE);
-        Vector attributes = objType.getAllAttributes();
+        Vector<Attribute> attributes = objType.getAllAttributes();
         int numVisibleNumericalAtts = 0;
         for (int j = 0; j < attributes.size(); j++) {
-          Attribute att = (Attribute) attributes.get(j);
+          Attribute att = attributes.get(j);
           if ((att instanceof NumericalAttribute)
               && ((att.isVisible()) || (att.isVisibleOnCompletion()))) {
             writer.write("\"" + att.getName() + "\",");
@@ -943,8 +950,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
         if (numVisibleNumericalAtts == 0) {
           writer.write("attributeList.setEnabled(false);");
           writer.write(NEWLINE);
-        }
-        else {
+        } else {
           writer.write("attributeList.setEnabled(true);");
           writer.write(NEWLINE);
           writer.write("attributeList.setSelectedIndex(0);");
@@ -1031,24 +1037,25 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       boolean writeElse = false;
-      for (int i = 0; i < actions.size(); i++) {
-        ActionType action = (ActionType) actions.get(i);
+      for (ActionType action : actions) {
         if (action.isVisibleInExplanatoryTool()) {
           if (writeElse) {
             writer.write("else ");
           } else {
             writeElse = true;
           }
-          writer.write("if (actionName.equals(\"" + getUpperCaseLeading(action.getName()) + "\")) {");
+          writer.write("if (actionName.equals(\"" + 
+          		CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + 
+          		"\")) {");
           writer.write(NEWLINE);
-          Vector trigRules = action.getAllTriggerRules();
+          Vector<Rule> trigRules = action.getAllTriggerRules();
           if (trigRules.size() > 0) {
             writer.write("String[] trigList = {");
             writer.write(NEWLINE);
 
             // go through all trigger rules:
             for (int j = 0; j < trigRules.size(); j++) {
-              Rule trigRule = (Rule) trigRules.get(j);
+              Rule trigRule = trigRules.get(j);
               if (trigRule.isVisibleInExplanatoryTool()) {
                 writer.write("\"" + trigRule.getName() + "\",");
                 writer.write(NEWLINE);
@@ -1059,14 +1066,14 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
             writer.write("triggerRuleList.setListData(trigList);");
             writer.write(NEWLINE);
           }
-          Vector destRules = action.getAllDestroyerRules();
+          Vector<Rule> destRules = action.getAllDestroyerRules();
           if (destRules.size() > 0) {
             writer.write("String[] destList = {");
             writer.write(NEWLINE);
 
             // go through all destroyer rules:
             for (int j = 0; j < destRules.size(); j++) {
-              Rule destRule = (Rule) destRules.get(j);
+              Rule destRule = destRules.get(j);
               if (destRule.isVisibleInExplanatoryTool()) {
                 writer.write("\"" + destRule.getName() + "\",");
                 writer.write(NEWLINE);
@@ -1077,14 +1084,14 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
             writer.write("destroyerRuleList.setListData(destList);");
             writer.write(NEWLINE);
           }
-          Vector contRules = action.getAllContinuousRules();
+          Vector<Rule> contRules = action.getAllContinuousRules();
           if (contRules.size() > 0) {
             writer.write("String[] intList = {");
             writer.write(NEWLINE);
 
             // go through all continuous rules:
             for (int j = 0; j < contRules.size(); j++) {
-              Rule contRule = (Rule) contRules.get(j);
+              Rule contRule = contRules.get(j);
               if (contRule.isVisibleInExplanatoryTool()) {
                 writer.write("\"" + contRule.getName() + "\",");
                 writer.write(NEWLINE);
@@ -1114,20 +1121,19 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
 
       // go through all actions:
       writeElse = false;
-      for (int i = 0; i < actions.size(); i++) {
-        ActionType action = (ActionType) actions.get(i);
+      for (ActionType action : actions) {
         if (action.isVisibleInExplanatoryTool()) {
           // go through all rules:
-          Vector rules = action.getAllRules();
-          for (int j = 0; j < rules.size(); j++) {
-            Rule rule = (Rule) rules.get(j);
+          Vector<Rule> rules = action.getAllRules();
+          for (Rule rule : rules) {
             if (rule.isVisibleInExplanatoryTool()) {
               if (writeElse) {
                 writer.write("else ");
               } else {
                 writeElse = true;
               }
-              writer.write("if (ruleName.equals(\"" + rule.getName() + "\")) {");
+              writer.write("if (ruleName.equals(\"" + rule.getName() + 
+              		"\")) {");
               writer.write(NEWLINE);
               writer.write("text = RuleDescriptions."
                   + action.getName().toUpperCase() + "_"
@@ -1156,10 +1162,6 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
     }
   }
 
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
-  }
-
   // copies the JFreeChart jars into the generated code directory
   private void copyJFreeChartJars() {
     try {
@@ -1175,8 +1177,8 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
         byte[] buffer = new byte[1024];
         int len = 1024;
         BufferedOutputStream out = new BufferedOutputStream(
-            new FileOutputStream(options.
-                getCodeGenerationDestinationDirectory() + "\\lib\\" + 
+            new FileOutputStream(
+            		options.getCodeGenerationDestinationDirectory() + "\\lib\\" + 
                 ze.getName()));
         while ((len = zis.read(buffer, 0, len)) >= 0) {
           out.write(buffer, 0, len);

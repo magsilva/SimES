@@ -5,16 +5,19 @@
 
 package simse.codegenerator.guigenerator;
 
-import java.io.*;
-import javax.swing.*;
+import simse.codegenerator.CodeGeneratorConstants;
 
-import simse.codegenerator.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import javax.swing.JOptionPane;;
 
 public class LogoPanelGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
 
-  public LogoPanelGenerator(File dir) {
-    directory = dir;
+  public LogoPanelGenerator(File directory) {
+    this.directory = directory;
   }
 
   public void generate() {

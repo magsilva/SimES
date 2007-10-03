@@ -5,16 +5,27 @@
 
 package simse.codegenerator.guigenerator;
 
-import simse.modelbuilder.*;
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.startstatebuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import simse.modelbuilder.mapeditor.*;
-import simse.codegenerator.*;
+import simse.modelbuilder.ModelOptions;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.WarningListDialog;
+import simse.modelbuilder.startstatebuilder.CreatedObjects;
+import simse.modelbuilder.startstatebuilder.SimSEObject;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.mapeditor.ImageLoader;
+import simse.modelbuilder.mapeditor.TileData;
+import simse.modelbuilder.mapeditor.UserData;
+import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Vector;
+
+import javax.swing.JOptionPane;;
 
 public class GUIGenerator implements CodeGeneratorConstants {
   private ModelOptions options;
@@ -41,11 +52,13 @@ public class GUIGenerator implements CodeGeneratorConstants {
                                                     // Dialog when you click the
                                                     // SimSE logo
 
-  public GUIGenerator(ModelOptions opts, DefinedObjectTypes objTypes, 
-      CreatedObjects objs, DefinedActionTypes acts, Hashtable stsObjs, 
-      Hashtable ruleObjs, TileData[][] map, ArrayList userDatas) {
-    options = opts;
-    Hashtable allObjsToImages = new Hashtable();
+  public GUIGenerator(ModelOptions options, DefinedObjectTypes objTypes, 
+      CreatedObjects objs, DefinedActionTypes acts, Hashtable<SimSEObject, 
+      String> stsObjs, Hashtable<SimSEObject, String> ruleObjs, 
+      TileData[][] map, ArrayList<UserData> userDatas) {
+    this.options = options;
+    Hashtable<SimSEObject, String> allObjsToImages = 
+    	new Hashtable<SimSEObject, String>();
     allObjsToImages.putAll(stsObjs);
     allObjsToImages.putAll(ruleObjs);
     imageLoaderGen = new ImageLoaderGenerator(
@@ -79,28 +92,28 @@ public class GUIGenerator implements CodeGeneratorConstants {
         options.getCodeGenerationDestinationDirectory());
   }
 
-  public boolean generate() // causes all of this component's sub-components to
-                         		// generate code; returns true if no errors, false 
-  													// otherwise
-  {
+  /*
+   * causes all of this component's sub-components to generate code; returns
+   * true if no errors, false otherwise
+   */
+  public boolean generate() {
 	  if (!options.getIconDirectory().exists() || 
 			  !options.getIconDirectory().isDirectory()) { // icon dir doesn't exist
-      Vector warnings = new Vector();
+      Vector<String> warnings = new Vector<String>();
 	  	warnings.add(0, "ERROR! Incomplete simulation generated!!");
 	  	warnings.add("Cannot find icon directory " + 
 	  			options.getIconDirectory().getAbsolutePath());
-      WarningListDialog wld = new WarningListDialog(warnings,
-          "Code Generation Errors");
+      new WarningListDialog(warnings, "Code Generation Errors");
       return false;
-	  }
-	  else {
-	    copyDir(options.getIconDirectory().getPath(),
+	  } else {
+	    CodeGeneratorUtils.copyDir(options.getIconDirectory().getPath(),
 	        (options.getCodeGenerationDestinationDirectory().getPath() + 
 	            "\\simse\\gui\\" + (new File(options.getIconDirectory().
 	                getPath())).getName()));
 	
-	    ImageLoader.copyImagesToDir(options.getCodeGenerationDestinationDirectory()
-	        .getPath() + "\\simse\\gui\\");
+	    ImageLoader.copyImagesToDir(
+	    		options.getCodeGenerationDestinationDirectory().getPath() + 
+	    		"\\simse\\gui\\");
 	
 	    imageLoaderGen.generate();
 	    clockPanelGen.generate();
@@ -121,8 +134,8 @@ public class GUIGenerator implements CodeGeneratorConstants {
 	  }
   }
 
-  private void generateMainGUI() // generates the SimSEGUI class
-  {
+  // generates the SimSEGUI class
+  private void generateMainGUI() { 
     File mainGUIFile = new File(
         options.getCodeGenerationDestinationDirectory(), 
         ("simse\\gui\\SimSEGUI.java"));
@@ -469,69 +482,6 @@ public class GUIGenerator implements CodeGeneratorConstants {
       JOptionPane.showMessageDialog(null, ("Error writing file "
           + mainGUIFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
-    }
-  }
-
-  private void copyDir(String dirToCopyPath, String destinationDirPath) // copies
-                                                                        // the
-                                                                        // directory
-                                                                        // whose
-                                                                        // path
-                                                                        // is
-                                                                        // dirToCopyPath,
-                                                                        // along
-                                                                        // with
-                                                                        // all
-                                                                        // its
-                                                                        // files
-                                                                        // (not
-                                                                        // directories),
-  // to the directory whose path is destinationDirPath
-  {
-    File dirToCopy = new File(dirToCopyPath);
-    File destinationDir = new File(destinationDirPath);
-    destinationDir.mkdir();
-
-    String[] files = dirToCopy.list();
-    try {
-      // go through each file:
-      for (int i = 0; i < files.length; i++) {
-        File inFile = new File(dirToCopyPath, files[i]);
-        if (inFile.isFile()) // not a directory
-        {
-          File outFile = new File(destinationDir, files[i]);
-          if (outFile.exists()) {
-            outFile.delete();
-          }
-          FileInputStream inStream = new FileInputStream(inFile);
-          FileOutputStream outStream = new FileOutputStream(outFile);
-          boolean eof = false;
-          while (!eof) // not end of file
-          {
-            int b = inStream.read();
-            if (b == -1) {
-              eof = true;
-            } else {
-              outStream.write(b); // write it to the other file
-            }
-          }
-          inStream.close();
-          outStream.close();
-        } else // is a directory
-        {
-          // recurse:
-          copyDir(inFile.getPath(), new String(destinationDirPath + "\\"
-              + inFile.getName()));
-        }
-      }
-    } catch (FileNotFoundException e) {
-      JOptionPane
-          .showMessageDialog(null, ("Cannot find directory to copy: *"
-              + dirToCopyPath + "*"), "File Not Found",
-              JOptionPane.WARNING_MESSAGE);
-    } catch (IOException e) {
-      JOptionPane.showMessageDialog(null, ("Error reading file: " + e
-          .toString()), "File IO Error", JOptionPane.WARNING_MESSAGE);
     }
   }
 }

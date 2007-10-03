@@ -10,18 +10,21 @@ import simse.modelbuilder.actionbuilder.ActionType;
 import simse.modelbuilder.actionbuilder.DefinedActionTypes;
 import simse.modelbuilder.rulebuilder.Rule;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 public class RuleDescriptionsGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
   private DefinedActionTypes actTypes;
 
-  public RuleDescriptionsGenerator(DefinedActionTypes actTypes, File dir) {
+  public RuleDescriptionsGenerator(DefinedActionTypes actTypes, 
+  		File directory) {
     this.actTypes = actTypes;
-    directory = dir;
+    this.directory = directory;
   }
 
   public void generate() {
@@ -42,14 +45,12 @@ public class RuleDescriptionsGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // go through all actions:
-      Vector actions = actTypes.getAllActionTypes();
-      boolean writeElse = false;
-      for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.get(i);
+      Vector<ActionType> actions = actTypes.getAllActionTypes();
+      for (ActionType act : actions) {
         if (act.isVisibleInExplanatoryTool()) {
-          Vector rules = act.getAllRules();
+          Vector<Rule> rules = act.getAllRules();
           for (int j = 0; j < rules.size(); j++) {
-            Rule rule = (Rule) rules.get(j);
+            Rule rule = rules.get(j);
             if (rule.isVisibleInExplanatoryTool()) {
               writer.write("static final String " + act.getName().toUpperCase()
                   + "_" + rule.getName().toUpperCase() + " = \""

@@ -16,18 +16,21 @@ import simse.modelbuilder.actionbuilder.RandomActionTypeTrigger;
 import simse.modelbuilder.actionbuilder.UserActionTypeTrigger;
 import simse.modelbuilder.objectbuilder.AttributeTypes;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 public class TriggerDescriptionsGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
   private DefinedActionTypes actTypes;
 
-  public TriggerDescriptionsGenerator(DefinedActionTypes actTypes, File dir) {
+  public TriggerDescriptionsGenerator(DefinedActionTypes actTypes, 
+  		File directory) {
     this.actTypes = actTypes;
-    directory = dir;
+    this.directory = directory;
   }
 
   public void generate() {
@@ -48,14 +51,11 @@ public class TriggerDescriptionsGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // go through all actions:
-      Vector actions = actTypes.getAllActionTypes();
-      boolean writeElse = false;
-      for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.get(i);
+      Vector<ActionType> actions = actTypes.getAllActionTypes();
+      for (ActionType act : actions) {
         if (act.isVisibleInExplanatoryTool()) {
-          Vector triggers = act.getAllTriggers();
-          for (int j = 0; j < triggers.size(); j++) {
-            ActionTypeTrigger trigger = (ActionTypeTrigger) triggers.get(j);
+          Vector<ActionTypeTrigger> triggers = act.getAllTriggers();
+          for (ActionTypeTrigger trigger : triggers) {
             writer.write("static final String " + act.getName().toUpperCase()
                 + "_" + trigger.getName().toUpperCase() + " = ");
             writer.write(NEWLINE);
@@ -72,33 +72,36 @@ public class TriggerDescriptionsGenerator implements CodeGeneratorConstants {
             writer.write("when the following conditions are met: \\n");
 
             // go through all participant conditions:
-            Vector partTriggers = trigger.getAllParticipantTriggers();
+            Vector<ActionTypeParticipantTrigger> partTriggers = 
+            	trigger.getAllParticipantTriggers();
             for (int k = 0; k < partTriggers.size(); k++) {
-              ActionTypeParticipantTrigger partTrigger = (ActionTypeParticipantTrigger) partTriggers
-                  .get(k);
+              ActionTypeParticipantTrigger partTrigger = partTriggers.get(k);
               String partName = partTrigger.getParticipant().getName();
 
               // go through all ActionTypeParticipantConstraints for this
               // participant:
-              Vector partConstraints = partTrigger.getAllConstraints();
+              Vector<ActionTypeParticipantConstraint> partConstraints = 
+              	partTrigger.getAllConstraints();
               for (int m = 0; m < partConstraints.size(); m++) {
-                ActionTypeParticipantConstraint partConstraint = (ActionTypeParticipantConstraint) partConstraints
-                    .get(m);
+                ActionTypeParticipantConstraint partConstraint = 
+                	partConstraints.get(m);
                 String typeName = partConstraint.getSimSEObjectType().getName();
 
                 // go through all ActionTypeParticipantAttributeConstraints for
                 // this type:
-                ActionTypeParticipantAttributeConstraint[] attConstraints = partConstraint
-                    .getAllAttributeConstraints();
+                ActionTypeParticipantAttributeConstraint[] attConstraints = 
+                	partConstraint.getAllAttributeConstraints();
                 for (int n = 0; n < attConstraints.length; n++) {
-                  ActionTypeParticipantAttributeConstraint attConstraint = attConstraints[n];
+                  ActionTypeParticipantAttributeConstraint attConstraint = 
+                  	attConstraints[n];
                   String attName = attConstraint.getAttribute().getName();
                   String attGuard = attConstraint.getGuard();
                   if (attConstraint.isConstrained()) {
                     String condVal = attConstraint.getValue().toString();
                     writer.write(partName + "." + attName + " (" + typeName
                         + ") " + attGuard + " ");
-                    if (attConstraint.getAttribute().getType() == AttributeTypes.STRING) {
+                    if (attConstraint.getAttribute().getType() == 
+                    	AttributeTypes.STRING) {
                       writer.write("\\\"" + condVal + "\\\"");
                     } else {
                       writer.write(condVal);

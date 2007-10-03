@@ -150,9 +150,9 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
             writer.write("Vector "
                 + objTypeName.toLowerCase()
                 + "s = state.get"
-                + getUpperCaseLeading(SimSEObjectTypeTypes.getText(constraint
+                + CodeGeneratorUtils.getUpperCaseLeading(SimSEObjectTypeTypes.getText(constraint
                     .getSimSEObjectType().getType())) + "StateRepository().get"
-                + getUpperCaseLeading(objTypeName)
+                + CodeGeneratorUtils.getUpperCaseLeading(objTypeName)
                 + "StateRepository().getAll();");
             // generate it
             writer.write(NEWLINE);
@@ -169,13 +169,13 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
-          writer.write(getUpperCaseLeading(objTypeName) + " a = ("
-              + getUpperCaseLeading(objTypeName) + ")"
+          writer.write(CodeGeneratorUtils.getUpperCaseLeading(objTypeName) + " a = ("
+              + CodeGeneratorUtils.getUpperCaseLeading(objTypeName) + ")"
               + objTypeName.toLowerCase() + "s.elementAt(i);");
           writer.write(NEWLINE);
           writer
               .write("Vector allActions = state.getActionStateRepository().get"
-                  + getUpperCaseLeading(action.getName())
+                  + CodeGeneratorUtils.getUpperCaseLeading(action.getName())
                   + "ActionStateRepository().getAllActions(a);");
           writer.write(NEWLINE);
           writer.write("boolean alreadyInAction = false;");
@@ -192,8 +192,8 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
-            writer.write(getUpperCaseLeading(action.getName()) + "Action b = ("
-                + getUpperCaseLeading(action.getName())
+            writer.write(CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action b = ("
+                + CodeGeneratorUtils.getUpperCaseLeading(action.getName())
                 + "Action)allActions.elementAt(j);");
             writer.write(NEWLINE);
             writer.write("if(b.getAll" + trig.getParticipant().getName()
@@ -219,7 +219,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
             ActionTypeParticipantAttributeConstraint attConst = attConstraints[m];
             if (attConst.isConstrained()) {
               writer.write(" && (a.get"
-                  + getUpperCaseLeading(attConst.getAttribute().getName())
+                  + CodeGeneratorUtils.getUpperCaseLeading(attConst.getAttribute().getName())
                   + "() ");
               if (attConst.getAttribute().getType() == AttributeTypes.STRING) {
                 writer.write(".equals(" + "\"" + attConst.getValue().toString()
@@ -305,8 +305,8 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
         }
       } else if ((outerTrig instanceof AutonomousActionTypeTrigger)
           || (outerTrig instanceof RandomActionTypeTrigger)) {
-        writer.write(getUpperCaseLeading(action.getName()) + "Action a = new "
-            + getUpperCaseLeading(action.getName()) + "Action();");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action a = new "
+            + CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action();");
         writer.write(NEWLINE);
         for (int k = 0; k < parts.size(); k++) {
           ActionTypeParticipant part = (ActionTypeParticipant) parts
@@ -326,12 +326,12 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
-          writer.write(getUpperCaseLeading(SimSEObjectTypeTypes.getText(part
+          writer.write(CodeGeneratorUtils.getUpperCaseLeading(SimSEObjectTypeTypes.getText(part
               .getSimSEObjectTypeType()))
               + " a"
               + k
               + " = ("
-              + getUpperCaseLeading(SimSEObjectTypeTypes.getText(part
+              + CodeGeneratorUtils.getUpperCaseLeading(SimSEObjectTypeTypes.getText(part
                   .getSimSEObjectTypeType()))
               + ")"
               + part.getName().toLowerCase() + "s" + counter);
@@ -416,7 +416,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
         writer.write("state.getActionStateRepository().get"
-            + getUpperCaseLeading(action.getName())
+            + CodeGeneratorUtils.getUpperCaseLeading(action.getName())
             + "ActionStateRepository().add(a);");
         writer.write(NEWLINE);
         // execute all trigger rules:
@@ -432,8 +432,8 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
         if (outerTrig.isGameEndingTrigger()) {
           writer.write("// stop game and give score:");
           writer.write(NEWLINE);
-          writer.write(getUpperCaseLeading(action.getName())
-              + "Action t111 = (" + getUpperCaseLeading(action.getName())
+          writer.write(CodeGeneratorUtils.getUpperCaseLeading(action.getName())
+              + "Action t111 = (" + CodeGeneratorUtils.getUpperCaseLeading(action.getName())
               + "Action)a;");
           writer.write(NEWLINE);
           // find the scoring attribute:
@@ -468,10 +468,10 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
-            writer.write(getUpperCaseLeading(scoringPartConst
+            writer.write(CodeGeneratorUtils.getUpperCaseLeading(scoringPartConst
                 .getSimSEObjectType().getName())
                 + " t = ("
-                + getUpperCaseLeading(scoringPartConst.getSimSEObjectType()
+                + CodeGeneratorUtils.getUpperCaseLeading(scoringPartConst.getSimSEObjectType()
                     .getName())
                 + ")(t111.getAll"
                 + scoringPartTrig.getParticipant().getName()
@@ -535,7 +535,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
         int cnt = counter + 2;
         writer.write("Vector a" + cnt
             + "s = state.getActionStateRepository().get"
-            + getUpperCaseLeading(action.getName())
+            + CodeGeneratorUtils.getUpperCaseLeading(action.getName())
             + "ActionStateRepository().getAllActions();");
         writer.write(NEWLINE);
         writer.write("if(a" + cnt + "s.size() == 0)");
@@ -561,8 +561,8 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(action.getName()) + "Action a" + cnt
-            + " = (" + getUpperCaseLeading(action.getName()) + "Action)a" + cnt
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action a" + cnt
+            + " = (" + CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action)a" + cnt
             + "s.elementAt(i);");
         writer.write(NEWLINE);
         // go through all participants:
@@ -611,7 +611,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
                 writer.write(" || ");
               }
               writer.write("(b" + cnt + " instanceof "
-                  + getUpperCaseLeading(tempType.getName()) + ")");
+                  + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")");
             }
             writer.write(") && (a" + cnt + ".getAll" + part.getName()
                 + "s().contains(b" + cnt + ") == false))");
@@ -626,8 +626,8 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
-            writer.write(getUpperCaseLeading(action.getName()) + "Action a"
-                + cnt + "b = (" + getUpperCaseLeading(action.getName())
+            writer.write(CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action a"
+                + cnt + "b = (" + CodeGeneratorUtils.getUpperCaseLeading(action.getName())
                 + "Action)a" + cnt + "s.elementAt(k);");
             writer.write(NEWLINE);
             writer.write("if(a" + cnt + "b.getAll" + part.getName()
@@ -659,7 +659,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
                 writer.write("else ");
               }
               writer.write("if((b" + cnt + " instanceof "
-                  + getUpperCaseLeading(tempType.getName()) + ")");
+                  + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")");
               // go through all attribute constraints:
               ActionTypeParticipantAttributeConstraint[] attConstraints = outerTrig
                   .getParticipantTrigger(part.getName()).getConstraint(
@@ -668,9 +668,9 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
                 ActionTypeParticipantAttributeConstraint attConst = attConstraints[m];
                 if (attConst.isConstrained()) {
                   writer.write(" && ((("
-                      + getUpperCaseLeading(tempType.getName()) + ")b" + cnt
+                      + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")b" + cnt
                       + ").get"
-                      + getUpperCaseLeading(attConst.getAttribute().getName())
+                      + CodeGeneratorUtils.getUpperCaseLeading(attConst.getAttribute().getName())
                       + "() ");
                   if (attConst.getAttribute().getType() == AttributeTypes.STRING) {
                     writer.write(".equals(" + "\""
@@ -714,10 +714,6 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
           + trigFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 
   private boolean vectorContainsString(Vector v, String s) {

@@ -6,22 +6,25 @@
 package simse.codegenerator.explanatorytoolgenerator;
 
 import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 import simse.modelbuilder.actionbuilder.ActionType;
 import simse.modelbuilder.actionbuilder.DefinedActionTypes;
 import simse.modelbuilder.rulebuilder.Rule;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
   private DefinedActionTypes actTypes;
 
-  public RuleInfoPanelGenerator(DefinedActionTypes actTypes, File dir) {
+  public RuleInfoPanelGenerator(DefinedActionTypes actTypes, File directory) {
     this.actTypes = actTypes;
-    directory = dir;
+    this.directory = directory;
   }
 
   public void generate() {
@@ -269,10 +272,9 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // go through all actions:
-      Vector actions = actTypes.getAllActionTypes();
+      Vector<ActionType> actions = actTypes.getAllActionTypes();
       boolean writeElse = false;
-      for (int i = 0; i < actions.size(); i++) {
-        ActionType action = (ActionType) actions.get(i);
+      for (ActionType action : actions) {
         if (action.isVisibleInExplanatoryTool()) {
           if (writeElse) {
             writer.write("else ");
@@ -280,16 +282,17 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
             writeElse = true;
           }
           writer.write("if (action instanceof "
-              + getUpperCaseLeading(action.getName()) + "Action) {");
+              + CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + 
+              "Action) {");
           writer.write(NEWLINE);
-          Vector trigRules = action.getAllTriggerRules();
+          Vector<Rule> trigRules = action.getAllTriggerRules();
           if (trigRules.size() > 0) {
             writer.write("String[] trigList = {");
             writer.write(NEWLINE);
 
             // go through all trigger rules:
             for (int j = 0; j < trigRules.size(); j++) {
-              Rule trigRule = (Rule) trigRules.get(j);
+              Rule trigRule = trigRules.get(j);
               if (trigRule.isVisibleInExplanatoryTool()) {
                 writer.write("\"" + trigRule.getName() + "\",");
                 writer.write(NEWLINE);
@@ -300,14 +303,14 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
             writer.write("triggerRuleList.setListData(trigList);");
             writer.write(NEWLINE);
           }
-          Vector destRules = action.getAllDestroyerRules();
+          Vector<Rule> destRules = action.getAllDestroyerRules();
           if (destRules.size() > 0) {
             writer.write("String[] destList = {");
             writer.write(NEWLINE);
 
             // go through all destroyer rules:
             for (int j = 0; j < destRules.size(); j++) {
-              Rule destRule = (Rule) destRules.get(j);
+              Rule destRule = destRules.get(j);
               if (destRule.isVisibleInExplanatoryTool()) {
                 writer.write("\"" + destRule.getName() + "\",");
                 writer.write(NEWLINE);
@@ -318,14 +321,14 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
             writer.write("destroyerRuleList.setListData(destList);");
             writer.write(NEWLINE);
           }
-          Vector contRules = action.getAllContinuousRules();
+          Vector<Rule> contRules = action.getAllContinuousRules();
           if (contRules.size() > 0) {
             writer.write("String[] intList = {");
             writer.write(NEWLINE);
 
             // go through all continuous rules:
             for (int j = 0; j < contRules.size(); j++) {
-              Rule contRule = (Rule) contRules.get(j);
+              Rule contRule = contRules.get(j);
               if (contRule.isVisibleInExplanatoryTool()) {
                 writer.write("\"" + contRule.getName() + "\",");
                 writer.write(NEWLINE);
@@ -377,8 +380,7 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
 
       // go through all actions:
       writeElse = false;
-      for (int i = 0; i < actions.size(); i++) {
-        ActionType action = (ActionType) actions.get(i);
+      for (ActionType action : actions) {
         if (action.isVisibleInExplanatoryTool()) {
           if (writeElse) {
             writer.write("else ");
@@ -386,14 +388,14 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
             writeElse = true;
           }
           writer.write("if (action instanceof "
-              + getUpperCaseLeading(action.getName()) + "Action) {");
+              + CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + 
+              "Action) {");
           writer.write(NEWLINE);
 
           // go through all rules:
-          Vector rules = action.getAllRules();
+          Vector<Rule> rules = action.getAllRules();
           boolean writeElse2 = false;
-          for (int j = 0; j < rules.size(); j++) {
-            Rule rule = (Rule) rules.get(j);
+          for (Rule rule : rules) {
             if (rule.isVisibleInExplanatoryTool()) {
               if (writeElse2) {
                 writer.write("else ");
@@ -429,9 +431,5 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
           + ruleInfoFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

@@ -7,15 +7,17 @@ package simse.codegenerator.explanatorytoolgenerator;
 
 import simse.codegenerator.CodeGeneratorConstants;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 public class ActionInfoWindowGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
 
-  public ActionInfoWindowGenerator(File dir) {
-    directory = dir;
+  public ActionInfoWindowGenerator(File directory) {
+    this.directory = directory;
   }
 
   public void generate() {

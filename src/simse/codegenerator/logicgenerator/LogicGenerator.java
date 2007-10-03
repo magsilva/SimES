@@ -5,14 +5,23 @@
 
 package simse.codegenerator.logicgenerator;
 
-import simse.modelbuilder.*;
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import simse.codegenerator.logicgenerator.dialoggenerator.*;
-import simse.codegenerator.*;
+import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.logicgenerator.dialoggenerator.ChooseActionToDestroyDialogGenerator;
+import simse.codegenerator.logicgenerator.dialoggenerator.ChooseActionToJoinDialogGenerator;
+import simse.codegenerator.logicgenerator.dialoggenerator.ChooseRoleToPlayDialogGenerator;
+import simse.codegenerator.logicgenerator.dialoggenerator.EmployeeParticipantSelectionDialogGenerator;
+import simse.codegenerator.logicgenerator.dialoggenerator.NonEmployeeParticipantSelectionDialogGenerator;
+import simse.codegenerator.logicgenerator.dialoggenerator.ParticipantSelectionDialogsDriverGenerator;
 
-import java.io.*;
-import javax.swing.*;
+import simse.modelbuilder.ModelOptions;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
 
 public class LogicGenerator implements CodeGeneratorConstants {
   private MiscUpdaterGenerator miscUGen; // generates MiscUpdater component
@@ -67,10 +76,11 @@ public class LogicGenerator implements CodeGeneratorConstants {
     ruleGen = new RuleExecutorGenerator(actTypes, directory);
   }
 
-  // returns true if generation successful, false otherwise
-  public boolean generate() // causes all of this component's sub-components to
-                         		// generate code
-  {
+  /*
+   * causes all of this component's sub-components to generate code; returns
+   * true if generation successful, false otherwise
+   */
+  public boolean generate() { 
     miscUGen.generate();
     trigGen.generate();
     destGen.generate();

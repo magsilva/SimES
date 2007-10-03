@@ -8,17 +8,17 @@ package simse.modelbuilder.objectbuilder;
 import java.util.*;
 
 public class DefinedObjectTypes {
-  Vector objs; // Vector of SimSEObjectTypes
+  Vector<SimSEObjectType> objs; // Vector of SimSEObjectTypes
 
-  public DefinedObjectTypes(Vector v) {
-    objs = new Vector(v);
+  public DefinedObjectTypes(Vector<SimSEObjectType> v) {
+    objs = new Vector<SimSEObjectType>(v);
   }
 
   public DefinedObjectTypes() {
-    objs = new Vector();
+    objs = new Vector<SimSEObjectType>();
   }
 
-  public Vector getAllObjectTypes() // returns a Vector of SimSEObjectTypes
+  public Vector<SimSEObjectType> getAllObjectTypes() // returns a Vector of SimSEObjectTypes
   {
     return objs;
   }
@@ -46,15 +46,15 @@ public class DefinedObjectTypes {
     objs.insertElementAt(newObject, position);
   }
 
-  public Vector getAllObjectTypesOfType(int type) // returns a Vector of all
+  public Vector<SimSEObjectType> getAllObjectTypesOfType(int type) // returns a Vector of all
                                                   // SimSEObjectTypes in the
                                                   // data structure that have
                                                   // type = to the type
                                                   // parameter
   {
-    Vector v = new Vector();
+    Vector<SimSEObjectType> v = new Vector<SimSEObjectType>();
     for (int i = 0; i < objs.size(); i++) {
-      SimSEObjectType tempObj = ((SimSEObjectType) objs.elementAt(i));
+      SimSEObjectType tempObj = objs.elementAt(i);
       if (tempObj.getType() == type) // object is of the specified type
       {
         v.add(tempObj); // add it to the vector to return
@@ -71,7 +71,7 @@ public class DefinedObjectTypes {
                                                               // type and name
   {
     for (int i = 0; i < objs.size(); i++) {
-      SimSEObjectType tempObj = ((SimSEObjectType) objs.elementAt(i));
+      SimSEObjectType tempObj = objs.elementAt(i);
       if ((tempObj.getType() == type) && (tempObj.getName().equals(name))) {
         return tempObj;
       }
@@ -86,7 +86,7 @@ public class DefinedObjectTypes {
   public int removeObjectType(int type, String name) 
   {
     for (int i = 0; i < objs.size(); i++) {
-      SimSEObjectType tempObj = ((SimSEObjectType) objs.elementAt(i));
+      SimSEObjectType tempObj = objs.elementAt(i);
       if ((tempObj.getType() == type) && (tempObj.getName().equals(name))) {
         objs.remove(i);
         return i;
@@ -107,7 +107,7 @@ public class DefinedObjectTypes {
   
   public int getIndexOf(SimSEObjectType type) {
     for (int i = 0; i < objs.size(); i++) {
-      SimSEObjectType objType = (SimSEObjectType) objs.elementAt(i);
+      SimSEObjectType objType = objs.elementAt(i);
       if (objType.getName().equals(type.getName())) {
         return objs.indexOf(objType);
       }

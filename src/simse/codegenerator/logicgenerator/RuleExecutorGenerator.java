@@ -163,13 +163,13 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
         {
           writer.write("else ");
         }
-        writer.write("if(act instanceof " + getUpperCaseLeading(act.getName())
+        writer.write("if(act instanceof " + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
             + "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(act.getName()) + "Action b = ("
-            + getUpperCaseLeading(act.getName()) + "Action)act;");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action b = ("
+            + CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action)act;");
         writer.write(NEWLINE);
         writer.write("if(");
         // go through all participants:
@@ -255,7 +255,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
         }
         writer.write("state.getActionStateRepository().get"
-            + getUpperCaseLeading(act.getName())
+            + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
             + "ActionStateRepository().remove(b);");
         writer.write(NEWLINE);
 
@@ -277,8 +277,8 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
           if (highestPriDest.isGameEndingDestroyer()) {
             writer.write("// stop game and give score:");
             writer.write(NEWLINE);
-            writer.write(getUpperCaseLeading(act.getName()) + "Action t111 = ("
-                + getUpperCaseLeading(act.getName()) + "Action)b;");
+            writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action t111 = ("
+                + CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action)b;");
             writer.write(NEWLINE);
             // find the scoring attribute:
             ActionTypeParticipantDestroyer scoringPartDest = null;
@@ -312,10 +312,10 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
               writer.write(NEWLINE);
               writer.write(OPEN_BRACK);
               writer.write(NEWLINE);
-              writer.write(getUpperCaseLeading(scoringPartConst
+              writer.write(CodeGeneratorUtils.getUpperCaseLeading(scoringPartConst
                   .getSimSEObjectType().getName())
                   + " t = ("
-                  + getUpperCaseLeading(scoringPartConst.getSimSEObjectType()
+                  + CodeGeneratorUtils.getUpperCaseLeading(scoringPartConst.getSimSEObjectType()
                       .getName())
                   + ")(t111.getAll"
                   + scoringPartDest.getParticipant().getName()
@@ -382,7 +382,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
 
   private void generateRuleExecutorFunctionCall(Rule rule) {
   	try {
-	    writer.write(getLowerCaseLeading(rule.getName()) + "(gui, " +
+	    writer.write(CodeGeneratorUtils.getLowerCaseLeading(rule.getName()) + "(gui, " +
 	    		"updateInstructions, ruleName, action);");
 	    writer.write(NEWLINE);
   	} catch (IOException e) {
@@ -398,13 +398,13 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
       writer.write("// " + rule.getName() + " rule (" + action.getName()
           + " Action):");
       writer.write(NEWLINE);
-    	writer.write("private void " + getLowerCaseLeading(rule.getName()) + 
+    	writer.write("private void " + CodeGeneratorUtils.getLowerCaseLeading(rule.getName()) + 
     			"(JFrame gui, int updateInstructions, String ruleName, " + 
     			"simse.adts.actions.Action action) {");
     	writer.write(NEWLINE);
 	    writer.write("Vector " + action.getName().toLowerCase()
 	    		+ "Acts = state.getActionStateRepository().get"
-	    		+ getUpperCaseLeading(action.getName())
+	    		+ CodeGeneratorUtils.getUpperCaseLeading(action.getName())
 	    		+ "ActionStateRepository().getAllActions();");
 	    writer.write(NEWLINE);
       if (rule instanceof EffectRule) // EFFECT RULE
@@ -450,9 +450,9 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(action.getName()) + "Action "
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action "
             + action.getName().toLowerCase() + "Act = ("
-            + getUpperCaseLeading(action.getName()) + "Action)"
+            + CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action)"
             + action.getName().toLowerCase() + "Acts.elementAt(i);");
         writer.write(NEWLINE);
         if ((rule.getTiming() == RuleTiming.TRIGGER)
@@ -593,7 +593,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             if (input.isCancelable()) {
               writer.write("state.getActionStateRepository().get"
-                  + getUpperCaseLeading(action.getName())
+                  + CodeGeneratorUtils.getUpperCaseLeading(action.getName())
                   + "ActionStateRepository().remove("
                   + action.getName().toLowerCase() + "Act);");
               writer.write(NEWLINE);
@@ -655,7 +655,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
               writer.write(NEWLINE);
               if (input.isCancelable()) {
                 writer.write("state.getActionStateRepository().get"
-                    + getUpperCaseLeading(action.getName())
+                    + CodeGeneratorUtils.getUpperCaseLeading(action.getName())
                     + "ActionStateRepository().remove("
                     + action.getName().toLowerCase() + "Act);");
                 writer.write(NEWLINE);
@@ -737,7 +737,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
               writer.write(NEWLINE);
               if (input.isCancelable()) {
                 writer.write("state.getActionStateRepository().get"
-                    + getUpperCaseLeading(action.getName())
+                    + CodeGeneratorUtils.getUpperCaseLeading(action.getName())
                     + "ActionStateRepository().remove("
                     + action.getName().toLowerCase() + "Act);");
                 writer.write(NEWLINE);
@@ -821,17 +821,17 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
             writer.write("if("
                 + partRuleEff.getParticipant().getName().toLowerCase()
                 + "2 instanceof "
-                + getUpperCaseLeading(partTypeRuleEff.getSimSEObjectType()
+                + CodeGeneratorUtils.getUpperCaseLeading(partTypeRuleEff.getSimSEObjectType()
                     .getName()) + ")");
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
-            writer.write(getUpperCaseLeading(partTypeRuleEff
+            writer.write(CodeGeneratorUtils.getUpperCaseLeading(partTypeRuleEff
                 .getSimSEObjectType().getName())
                 + " "
                 + partTypeRuleEff.getSimSEObjectType().getName().toLowerCase()
                 + " = ("
-                + getUpperCaseLeading(partTypeRuleEff.getSimSEObjectType()
+                + CodeGeneratorUtils.getUpperCaseLeading(partTypeRuleEff.getSimSEObjectType()
                     .getName())
                 + ")"
                 + partRuleEff.getParticipant().getName().toLowerCase() + "2;");
@@ -874,7 +874,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
                   writer.write("else ");
                 }
                 writer.write("if(tempAct instanceof "
-                    + getUpperCaseLeading(tempActType.getName()) + "Action)");
+                    + CodeGeneratorUtils.getUpperCaseLeading(tempActType.getName()) + "Action)");
                 writer.write(NEWLINE);
                 writer.write(OPEN_BRACK);
                 writer.write(NEWLINE);
@@ -894,7 +894,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
                   if (tempPart.getSimSEObjectTypeType() == partTypeRuleEff
                       .getSimSEObjectType().getType()) {
                     writer.write("(("
-                        + getUpperCaseLeading(tempActType.getName())
+                        + CodeGeneratorUtils.getUpperCaseLeading(tempActType.getName())
                         + "Action)tempAct).set" + tempPart.getName());
                     if (activateAll) {
                       writer.write("Active");
@@ -928,7 +928,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
                 ActionType tempAct = (ActionType)actsToActivate.elementAt(m);
                 writer.write("Vector " + tempAct.getName().toLowerCase() +
                     "actionsActivate = state.getActionStateRepository().get" +
-                    getUpperCaseLeading(tempAct.getName()) + 
+                    CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
                     "ActionStateRepository().getAllInactiveActions(" + 
                     partTypeRuleEff.getSimSEObjectType().getName().
                     toLowerCase() + ");");
@@ -936,8 +936,8 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
                 writer.write("for (int k = 0; k < " + tempAct.getName().
                     toLowerCase() + "actionsActivate.size(); k++) {");
                 writer.write(NEWLINE);
-                writer.write(getUpperCaseLeading(tempAct.getName()) + 
-                    "Action tempAct = (" + getUpperCaseLeading(tempAct.
+                writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
+                    "Action tempAct = (" + CodeGeneratorUtils.getUpperCaseLeading(tempAct.
                         getName()) + "Action) " + tempAct.getName().
                         toLowerCase() + "actionsActivate.elementAt(k);");
                 writer.write(NEWLINE);  
@@ -966,7 +966,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
                 ActionType tempAct = (ActionType)actsToDeactivate.elementAt(m);
                 writer.write("Vector " + tempAct.getName().toLowerCase() +
                     "actionsDeactivate = state.getActionStateRepository().get" 
-                    + getUpperCaseLeading(tempAct.getName()) + 
+                    + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
                     "ActionStateRepository().getAllActiveActions(" + 
                     partTypeRuleEff.getSimSEObjectType().getName().
                     toLowerCase() + ");");
@@ -974,8 +974,8 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
                 writer.write("for (int k = 0; k < " + tempAct.getName().
                     toLowerCase() + "actionsDeactivate.size(); k++) {");
                 writer.write(NEWLINE);
-                writer.write(getUpperCaseLeading(tempAct.getName()) + 
-                    "Action tempAct = (" + getUpperCaseLeading(tempAct.
+                writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
+                    "Action tempAct = (" + CodeGeneratorUtils.getUpperCaseLeading(tempAct.
                         getName()) + "Action) " + tempAct.getName().
                         toLowerCase() + "actionsDeactivate.elementAt(k);");
                 writer.write(NEWLINE);  
@@ -1206,7 +1206,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
                         writer.write(activeInactiveToken + partName + ssObjType
                             + attName + " += (double)(((" + ssObjType + ")"
                             + partName.toLowerCase() + "3).get"
-                            + getUpperCaseLeading(attName) + "());");
+                            + CodeGeneratorUtils.getUpperCaseLeading(attName) + "());");
                         writer.write(NEWLINE);
                         writer.write(CLOSED_BRACK);
                         writer.write(NEWLINE);
@@ -1293,7 +1293,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
                                                                // action name
                           {
                             writer.write("get"
-                                + getUpperCaseLeading(actionName)
+                                + CodeGeneratorUtils.getUpperCaseLeading(actionName)
                                 + "ActionStateRepository().");
                           }
                           writer.write("getAll");
@@ -1537,7 +1537,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
                           vectorName = (actionName.toLowerCase() + "Actions");
                           writer.write(vectorName
                               + " = state.getActionStateRepository().get"
-                              + getUpperCaseLeading(actionName)
+                              + CodeGeneratorUtils.getUpperCaseLeading(actionName)
                               + "ActionStateRepository().getAllActions();");
                         }
                         writer.write(NEWLINE);
@@ -1554,9 +1554,9 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
                           writer.write("if(action");
                         } else // action name specified
                         {
-                          writer.write(getUpperCaseLeading(actionName)
+                          writer.write(CodeGeneratorUtils.getUpperCaseLeading(actionName)
                               + "Action " + actionName.toLowerCase()
-                              + "Action = (" + getUpperCaseLeading(actionName)
+                              + "Action = (" + CodeGeneratorUtils.getUpperCaseLeading(actionName)
                               + "Action)" + actionName.toLowerCase()
                               + "Actions.elementAt(m);");
                           writer.write(NEWLINE);
@@ -2091,7 +2091,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
                           + partTypeRuleEff.getSimSEObjectType().getName()
                               .toLowerCase()
                           + ".get"
-                          + getUpperCaseLeading(token.substring(token
+                          + CodeGeneratorUtils.getUpperCaseLeading(token.substring(token
                               .indexOf(':') + 1)) + "()))");
                       if (isNegative) {
                         expression.append("))");
@@ -2202,7 +2202,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
                   writer.write(partTypeRuleEff.getSimSEObjectType().getName()
                       .toLowerCase()
                       + ".set"
-                      + getUpperCaseLeading(partAttRuleEff.getAttribute()
+                      + CodeGeneratorUtils.getUpperCaseLeading(partAttRuleEff.getAttribute()
                           .getName())
                       + "(("
                       + attType
@@ -2509,9 +2509,9 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(action.getName()) + "Action "
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action "
             + action.getName().toLowerCase() + "Act = ("
-            + getUpperCaseLeading(action.getName()) + "Action)"
+            + CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action)"
             + action.getName().toLowerCase() + "Acts.elementAt(i);");
         writer.write(NEWLINE);
         if ((rule.getTiming() == RuleTiming.TRIGGER)
@@ -2562,13 +2562,13 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
         for (int i = 0; i < objsToCreate.size(); i++) {
           StringBuffer lineToCreateObj = new StringBuffer();
           SimSEObject obj = (SimSEObject) objsToCreate.elementAt(i);
-          lineToCreateObj.append(getUpperCaseLeading(obj.getSimSEObjectType()
+          lineToCreateObj.append(CodeGeneratorUtils.getUpperCaseLeading(obj.getSimSEObjectType()
               .getName())
               + " "
               + obj.getSimSEObjectType().getName().toLowerCase()
               + i
               + " = new "
-              + getUpperCaseLeading(obj.getSimSEObjectType().getName()) + "(");
+              + CodeGeneratorUtils.getUpperCaseLeading(obj.getSimSEObjectType().getName()) + "(");
           boolean createObj = true;
           // go through all instantiated attributes:
           Vector instAtts = obj.getAllAttributes();
@@ -2630,7 +2630,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
             writer.write("state.get"
                 + SimSEObjectTypeTypes.getText(obj.getSimSEObjectType()
                     .getType()) + "StateRepository().get"
-                + getUpperCaseLeading(obj.getSimSEObjectType().getName())
+                + CodeGeneratorUtils.getUpperCaseLeading(obj.getSimSEObjectType().getName())
                 + "StateRepository().add("
                 + obj.getSimSEObjectType().getName().toLowerCase() + i + ");");
             writer.write(NEWLINE);
@@ -2700,9 +2700,9 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(action.getName()) + "Action "
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action "
             + action.getName().toLowerCase() + "Act = ("
-            + getUpperCaseLeading(action.getName()) + "Action)"
+            + CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action)"
             + action.getName().toLowerCase() + "Acts.elementAt(i);");
         writer.write(NEWLINE);
         if ((rule.getTiming() == RuleTiming.TRIGGER)
@@ -2756,7 +2756,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
           ActionTypeParticipant part = cond.getParticipant();
 
           writer.write("Vector " + part.getName().toLowerCase() + "s = (("
-              + getUpperCaseLeading(action.getName()) + "Action)"
+              + CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action)"
               + action.getName().toLowerCase() + "Act).getAll" + part.getName()
               + "s();");
           writer.write(NEWLINE);
@@ -2781,7 +2781,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
             {
               writer.write("else ");
             }
-            writer.write("if(a instanceof " + getUpperCaseLeading(objTypeName)
+            writer.write("if(a instanceof " + CodeGeneratorUtils.getUpperCaseLeading(objTypeName)
                 + ")");
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
@@ -2802,9 +2802,9 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
                 }
                 writer
                     .write("((("
-                        + getUpperCaseLeading(objTypeName)
+                        + CodeGeneratorUtils.getUpperCaseLeading(objTypeName)
                         + ")a).get"
-                        + getUpperCaseLeading(tempAttConst.getAttribute()
+                        + CodeGeneratorUtils.getUpperCaseLeading(tempAttConst.getAttribute()
                             .getName()) + "()");
                 if (tempAttConst.getAttribute().getType() == AttributeTypes.STRING) {
                   writer.write(".equals(" + "\""
@@ -2831,10 +2831,10 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
                   + SimSEObjectTypeTypes.getText(constraint
                       .getSimSEObjectType().getType())
                   + "StateRepository().get"
-                  + getUpperCaseLeading(constraint.getSimSEObjectType()
+                  + CodeGeneratorUtils.getUpperCaseLeading(constraint.getSimSEObjectType()
                       .getName())
                   + "StateRepository().remove(("
-                  + getUpperCaseLeading(constraint.getSimSEObjectType()
+                  + CodeGeneratorUtils.getUpperCaseLeading(constraint.getSimSEObjectType()
                       .getName()) + ")a);");
               writer.write(NEWLINE);
               writer
@@ -2850,10 +2850,10 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
                   + SimSEObjectTypeTypes.getText(constraint
                       .getSimSEObjectType().getType())
                   + "StateRepository().get"
-                  + getUpperCaseLeading(constraint.getSimSEObjectType()
+                  + CodeGeneratorUtils.getUpperCaseLeading(constraint.getSimSEObjectType()
                       .getName())
                   + "StateRepository().remove(("
-                  + getUpperCaseLeading(constraint.getSimSEObjectType()
+                  + CodeGeneratorUtils.getUpperCaseLeading(constraint.getSimSEObjectType()
                       .getName()) + ")a);");
               writer.write(NEWLINE);
               writer
@@ -2896,14 +2896,8 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
           JOptionPane.WARNING_MESSAGE);
     }
   }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
-  }
   
-  private String getLowerCaseLeading(String s) {
-  	return (s.substring(0, 1).toLowerCase() + s.substring(1));
-  }
+
 
   private boolean vectorContainsString(Vector v, String s) {
     for (int i = 0; i < v.size(); i++) {

@@ -284,7 +284,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements
           writer.write("else ");
         }
         writer.write("if(action instanceof "
-            + getUpperCaseLeading(tempAct.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -364,9 +364,9 @@ public class ParticipantSelectionDialogsDriverGenerator implements
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
         writer.write("state.getActionStateRepository().get"
-            + getUpperCaseLeading(tempAct.getName())
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
             + "ActionStateRepository().add(("
-            + getUpperCaseLeading(tempAct.getName()) + "Action)action);");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)action);");
         writer.write(NEWLINE);
         // execute all trigger rules:
         Vector trigRules = tempAct.getAllTriggerRules();
@@ -399,8 +399,8 @@ public class ParticipantSelectionDialogsDriverGenerator implements
 
               writer.write("// stop game and give score:");
               writer.write(NEWLINE);
-              writer.write(getUpperCaseLeading(tempAct.getName())
-                  + "Action a = (" + getUpperCaseLeading(tempAct.getName())
+              writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
+                  + "Action a = (" + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
                   + "Action)action;");
               writer.write(NEWLINE);
               // find the scoring attribute:
@@ -435,10 +435,10 @@ public class ParticipantSelectionDialogsDriverGenerator implements
                 writer.write(NEWLINE);
                 writer.write(OPEN_BRACK);
                 writer.write(NEWLINE);
-                writer.write(getUpperCaseLeading(scoringPartConst
+                writer.write(CodeGeneratorUtils.getUpperCaseLeading(scoringPartConst
                     .getSimSEObjectType().getName())
                     + " t = ("
-                    + getUpperCaseLeading(scoringPartConst.getSimSEObjectType()
+                    + CodeGeneratorUtils.getUpperCaseLeading(scoringPartConst.getSimSEObjectType()
                         .getName())
                     + ")(a.getAll"
                     + scoringPartTrig.getParticipant().getName()
@@ -492,9 +492,5 @@ public class ParticipantSelectionDialogsDriverGenerator implements
           + psddFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

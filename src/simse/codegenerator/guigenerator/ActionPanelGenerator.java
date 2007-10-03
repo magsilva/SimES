@@ -5,13 +5,21 @@
 
 package simse.codegenerator.guigenerator;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import simse.codegenerator.*;
+import simse.modelbuilder.objectbuilder.Attribute;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.codegenerator.CodeGenerator;
+import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
+import java.util.Vector;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.JOptionPane;
 
 public class ActionPanelGenerator implements CodeGeneratorConstants {
   private DefinedObjectTypes objTypes; // holds all of the defined object types
@@ -20,11 +28,11 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
                                        // from an ssa file
   private File directory; // directory to save generated code into
 
-  public ActionPanelGenerator(DefinedObjectTypes objs, DefinedActionTypes acts,
-      File dir) {
-    objTypes = objs;
-    actTypes = acts;
-    directory = dir;
+  public ActionPanelGenerator(DefinedObjectTypes objTypes, 
+  		DefinedActionTypes actTypes, File directory) {
+    this.objTypes = objTypes;
+    this.actTypes = actTypes;
+    this.directory = directory;
   }
 
   public void generate() {
@@ -385,38 +393,38 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // go through all employee types:
-      Vector empTypes = objTypes
+      Vector<SimSEObjectType> empTypes = objTypes
           .getAllObjectTypesOfType(SimSEObjectTypeTypes.EMPLOYEE);
       for (int i = 0; i < empTypes.size(); i++) {
-        SimSEObjectType tempType = (SimSEObjectType) empTypes.elementAt(i);
+        SimSEObjectType tempType = empTypes.elementAt(i);
         if (i > 0) {
           writer.write("else ");
         }
 
-        Vector v = tempType.getAllAttributes();
+        Vector<Attribute> v = tempType.getAllAttributes();
         Attribute keyAtt = null;
-
-        for (int j = 0; j < v.size(); j++) {
-          Attribute att = (Attribute) v.elementAt(j);
-
+        for (Attribute att : v) {
           if (att.isKey())
             keyAtt = att;
         }
 
         writer.write("if(emp instanceof "
-            + getUpperCaseLeading(tempType.getName()) + ")");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(getUpperCaseLeading(tempType.getName()) + " e = ("
-            + getUpperCaseLeading(tempType.getName()) + ")emp;");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) 
+        		+ " e = (" + 
+        		CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + 
+        		")emp;");
         writer.write(NEWLINE);
         writer.write("if(empsToKeyLabels.get(e) == null)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
         writer.write("JLabel temp = new JLabel(\"\" + e.get"
-            + getUpperCaseLeading(keyAtt.getName()) + "());");
+            + CodeGeneratorUtils.getUpperCaseLeading(keyAtt.getName()) + 
+            "());");
         writer.write(NEWLINE);
         writer.write("temp.setForeground(Color.WHITE);");
         writer.write(NEWLINE);
@@ -471,10 +479,9 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
 
       // go through all action types and generate code for those that are
       // visible:
-      Vector allActs = actTypes.getAllActionTypes();
+      Vector<ActionType> allActs = actTypes.getAllActionTypes();
       boolean putElse = false;
-      for (int i = 0; i < allActs.size(); i++) {
-        ActionType tempActType = (ActionType) allActs.elementAt(i);
+      for (ActionType tempActType : allActs) {
         if ((tempActType.isVisibleInSimulation())
             && (tempActType.getDescription() != null)
             && (tempActType.getDescription().length() > 0)) {
@@ -484,7 +491,8 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
             putElse = true;
           }
           writer.write("if(tempAct instanceof "
-              + getUpperCaseLeading(tempActType.getName()) + "Action)");
+              + CodeGeneratorUtils.getUpperCaseLeading(tempActType.getName()) + 
+              "Action)");
           writer.write(NEWLINE);
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
@@ -738,9 +746,5 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
           + actPanelFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

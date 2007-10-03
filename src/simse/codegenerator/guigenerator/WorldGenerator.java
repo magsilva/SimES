@@ -5,8 +5,11 @@
 
 package simse.codegenerator.guigenerator;
 
-import java.io.*;
-import javax.swing.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import javax.swing.JOptionPane;;
 
 public class WorldGenerator {
   private final char NEWLINE = '\n';
@@ -15,8 +18,8 @@ public class WorldGenerator {
 
   private File directory; // directory to save generated code into
 
-  public WorldGenerator(File dir) {
-    directory = dir;
+  public WorldGenerator(File directory) {
+    this.directory = directory;
   }
 
   public void generate() {

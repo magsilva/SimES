@@ -5,29 +5,35 @@
 
 package simse.codegenerator.enginegenerator;
 
-import simse.codegenerator.*;
-import simse.modelbuilder.*;
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.startstatebuilder.*;
+import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
+import simse.modelbuilder.ModelOptions;
+import simse.modelbuilder.objectbuilder.Attribute;
+import simse.modelbuilder.objectbuilder.AttributeTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+import simse.modelbuilder.startstatebuilder.CreatedObjects;
+import simse.modelbuilder.startstatebuilder.InstantiatedAttribute;
+import simse.modelbuilder.startstatebuilder.SimSEObject;
 
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
-import javax.swing.Timer;
+import java.util.Vector;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.JOptionPane;
 
 public class EngineGenerator implements CodeGeneratorConstants {
   private File directory; // directory to generate into
   private CreatedObjects createdObjs; // start state objects
   private StartingNarrativeDialogGenerator sndg;
 
-  public EngineGenerator(ModelOptions options, CreatedObjects cObjs) {
+  public EngineGenerator(ModelOptions options, CreatedObjects createdObjs) {
     directory = options.getCodeGenerationDestinationDirectory();
-    createdObjs = cObjs;
+    this.createdObjs = createdObjs;
     sndg = new StartingNarrativeDialogGenerator(createdObjs, directory);
   }
 
-  public void generate() // causes the engine component to be generated
-  {
+  // causes the engine component to be generated
+  public void generate() {
     // generate starting narrative dialog:
     sndg.generate();
 
@@ -94,56 +100,52 @@ public class EngineGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("timer = new Timer(50, this);");
       writer.write(NEWLINE);
-      // startup script: go through each objects in the start state, create it,
+      // startup script: go through each object in the start state, create it,
       // and add it to the simulation:
-      Vector objs = createdObjs.getAllObjects();
+      Vector<SimSEObject> objs = createdObjs.getAllObjects();
       for (int i = 0; i < objs.size(); i++) {
         StringBuffer strToWrite = new StringBuffer();
-        SimSEObject tempObj = (SimSEObject) objs.elementAt(i);
-        String objTypeName = getUpperCaseLeading(tempObj.getSimSEObjectType()
-            .getName());
+        SimSEObject tempObj = objs.elementAt(i);
+        String objTypeName = CodeGeneratorUtils.getUpperCaseLeading(
+        		tempObj.getSimSEObjectType().getName());
         strToWrite.append(objTypeName + " a" + i + " = new " + objTypeName
             + "(");
-        Vector atts = tempObj.getSimSEObjectType().getAllAttributes();
-        if (atts.size() == tempObj.getAllAttributes().size()) // all attributes
-        // are
-        // instantiated
-        {
+        Vector<Attribute> atts = 
+        	tempObj.getSimSEObjectType().getAllAttributes();
+        if (atts.size() == tempObj.getAllAttributes().size()) { // all 
+        																												// attributes
+        																											  // are 
+        																											  // instantiated
           boolean validObj = true;
           // go through all attributes:
           for (int j = 0; j < atts.size(); j++) {
-            Attribute att = (Attribute) atts.elementAt(j);
-            InstantiatedAttribute instAtt = tempObj.getAttribute(att.getName()); // get
-            // the
-            // corresponding
-            // instantiated
-            // attribute
-            if (instAtt == null) // no corresponding instantiated attribute
-            {
+            Attribute att = atts.elementAt(j);
+            InstantiatedAttribute instAtt = 
+            	tempObj.getAttribute(att.getName()); // get
+																									 // the
+																									 // corresponding
+																									 // instantiated
+																									 // attribute
+            if (instAtt == null) { // no corresponding instantiated attribute
               validObj = false;
               break;
             }
-            if (instAtt.isInstantiated()) // attribute has a value
-            {
+            if (instAtt.isInstantiated()) { // attribute has a value
               if (instAtt.getAttribute().getType() == AttributeTypes.STRING) {
                 strToWrite.append("\"" + instAtt.getValue() + "\"");
-              } else // boolean, int, or double
-              {
+              } else { // boolean, int, or double
                 strToWrite.append(instAtt.getValue().toString());
               }
-              if (j < (atts.size() - 1)) // not on last element
-              {
+              if (j < (atts.size() - 1)) { // not on last element
                 strToWrite.append(", ");
               }
-            } else // attribute does not have a value -- invalidates entire
-            // object
-            {
+            } else { // attribute does not have a value -- invalidates entire
+										// object
               validObj = false;
               break;
             }
           }
-          if (validObj) // if valid, finish writing:
-          {
+          if (validObj) { // if valid, finish writing:
             writer.write(strToWrite + ");");
             writer.write(NEWLINE);
             writer.write("state.get"
@@ -308,9 +310,5 @@ public class EngineGenerator implements CodeGeneratorConstants {
           + engineFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

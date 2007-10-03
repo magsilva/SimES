@@ -4,25 +4,35 @@
 
 package simse.codegenerator.guigenerator;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.codegenerator.*;
+import simse.modelbuilder.objectbuilder.Attribute;
+import simse.modelbuilder.objectbuilder.AttributeTypes;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.NumericalAttribute;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 public class AttributePanelGenerator implements CodeGeneratorConstants {
   private DefinedObjectTypes objTypes; // holds all of the defined object types
                                        // from an sso file
   private File directory; // directory to save generated code into
 
-  public AttributePanelGenerator(DefinedObjectTypes objs, File dir) {
-    objTypes = objs;
-    directory = dir;
+  public AttributePanelGenerator(DefinedObjectTypes objTypes, File directory) {
+    this.objTypes = objTypes;
+    this.directory = directory;
   }
 
   public void generate() {
-    File attPanelFile = new File(directory, ("simse\\gui\\AttributePanel.java"));
+    File attPanelFile = 
+    	new File(directory, ("simse\\gui\\AttributePanel.java"));
     if (attPanelFile.exists()) {
       attPanelFile.delete(); // delete old version of file
     }
@@ -308,7 +318,7 @@ public class AttributePanelGenerator implements CodeGeneratorConstants {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
 
-      //			writer.write("if(!guiChanged)");
+      // writer.write("if(!guiChanged)");
 
       writer.write("if(false)");
       writer.write(NEWLINE);
@@ -330,136 +340,134 @@ public class AttributePanelGenerator implements CodeGeneratorConstants {
         String typeName = metaTypes[i];
         writer.write("// " + typeName + ":");
         writer.write(NEWLINE);
-        if (i > 0) // not on first element
-        {
+        if (i > 0) { // not on first element
           writer.write("else ");
         }
-        writer.write("if((objInFocus != null) && state.get" + typeName
-            + "StateRepository().getAll().contains(objInFocus))");
+        writer.write("if((objInFocus != null) && state.get" + typeName + 
+        		"StateRepository().getAll().contains(objInFocus))");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
         // go through all object types:
-        Vector types = objTypes.getAllObjectTypes();
+        Vector<SimSEObjectType> types = objTypes.getAllObjectTypes();
         // Make a vector of only the types that have the correct meta type:
-        Vector correctTypes = new Vector();
+        Vector<SimSEObjectType> correctTypes = new Vector<SimSEObjectType>();
         for (int j = 0; j < types.size(); j++) {
-          SimSEObjectType temp = (SimSEObjectType) types.elementAt(j);
-          if (temp.getType() == SimSEObjectTypeTypes
-              .getIntRepresentation(typeName)) {
+          SimSEObjectType temp = types.elementAt(j);
+          if (temp.getType() == 
+          	SimSEObjectTypeTypes.getIntRepresentation(typeName)) {
             correctTypes.add(temp);
           }
         }
         for (int j = 0; j < correctTypes.size(); j++) {
-          SimSEObjectType tempType = (SimSEObjectType) correctTypes
-              .elementAt(j);
-          if (j > 0) // not on first element
-          {
+          SimSEObjectType tempType = correctTypes.elementAt(j);
+          if (j > 0) { // not on first element
             writer.write("else ");
           }
-          writer.write("if(objInFocus instanceof "
-              + getUpperCaseLeading(tempType.getName()) + ")");
+          writer.write("if(objInFocus instanceof " + 
+          		CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")");
           writer.write(NEWLINE);
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
-          writer.write(getUpperCaseLeading(tempType.getName()) + " p = ("
-              + getUpperCaseLeading(tempType.getName()) + ")objInFocus;");
+          writer.write(CodeGeneratorUtils.getUpperCaseLeading(
+          		tempType.getName()) + " p = (" + 
+          		CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + 
+          		")objInFocus;");
           writer.write(NEWLINE);
           writer.write("attributes.add(\"<html><font size=2>Type: "
               + tempType.getName() + "</font></html>\");");
           writer.write(NEWLINE);
           // go through all attributes:
-          Vector atts = tempType.getAllAttributes();
+          Vector<Attribute> atts = tempType.getAllAttributes();
           for (int k = 0; k < atts.size(); k++) {
-            Attribute a = (Attribute) atts.elementAt(k);
+            Attribute a = atts.elementAt(k);
             if (a.isVisible()) {
               writer.write("if(!state.getClock().isStopped()) // game not over");
               writer.write(NEWLINE);
               writer.write(OPEN_BRACK);
               writer.write(NEWLINE);
-              if (a.getType() == AttributeTypes.DOUBLE) // double att -- need to
-                                                        // do formatting stuff
-              {
+              if (a.getType() == AttributeTypes.DOUBLE) { // double att -- need
+																													// to do formatting
+																													// stuff
                 NumericalAttribute numAtt = (NumericalAttribute) a;
-                if (numAtt.getMinNumFractionDigits() != null) // has a min num
-                                                              // fraction digits
-                {
-                  writer.write("numFormat.setMinimumFractionDigits("
-                      + numAtt.getMinNumFractionDigits().intValue() + ");");
+                if (numAtt.getMinNumFractionDigits() != null) { // has a min num
+																																// fraction
+																																// digits
+                  writer.write("numFormat.setMinimumFractionDigits(" + 
+                  		numAtt.getMinNumFractionDigits().intValue() + ");");
                   writer.write(NEWLINE);
                 } else {
                   // set it to the default minimum:
                   writer.write("numFormat.setMinimumFractionDigits(0);");
                   writer.write(NEWLINE);
                 }
-                if (numAtt.getMaxNumFractionDigits() != null) // has a max num
-                                                              // fraction digits
-                {
-                  writer.write("numFormat.setMaximumFractionDigits("
-                      + numAtt.getMaxNumFractionDigits().intValue() + ");");
+                if (numAtt.getMaxNumFractionDigits() != null) { // has a max num
+																																// fraction
+																																// digits
+                  writer.write("numFormat.setMaximumFractionDigits(" + 
+                  		numAtt.getMaxNumFractionDigits().intValue() + ");");
                   writer.write(NEWLINE);
                 } else {
                   // set it to the default maximum:
                   writer.write("numFormat.setMaximumFractionDigits(16);");
                   writer.write(NEWLINE);
                 }
-                writer.write("attributes.add(\"<html><font size=2>"
-                    + numAtt.getName() + ": \" + numFormat.format(p.get"
-                    + getUpperCaseLeading(numAtt.getName())
-                    + "()) + \"</font></html>\");");
+                writer.write("attributes.add(\"<html><font size=2>" + 
+                		numAtt.getName() + ": \" + numFormat.format(p.get" + 
+                		CodeGeneratorUtils.getUpperCaseLeading(numAtt.getName()) + 
+                		"()) + \"</font></html>\");");
                 writer.write(NEWLINE);
-              } else // non-double att -- no formatting required
-              {
-                writer.write("attributes.add(\"<html><font size=2>"
-                    + a.getName() + ": \" + p.get"
-                    + getUpperCaseLeading(a.getName())
-                    + "() + \"</font></html>\");");
+              } else { // non-double att -- no formatting required
+                writer.write("attributes.add(\"<html><font size=2>" + 
+                		a.getName() + ": \" + p.get" + 
+                		CodeGeneratorUtils.getUpperCaseLeading(a.getName()) + 
+                		"() + \"</font></html>\");");
                 writer.write(NEWLINE);
               }
               writer.write(CLOSED_BRACK);
               writer.write(NEWLINE);
-            } if (a.isVisibleOnCompletion()) {
+            } 
+            if (a.isVisibleOnCompletion()) {
               writer.write("if(state.getClock().isStopped()) // game is over");
               writer.write(NEWLINE);
               writer.write(OPEN_BRACK);
               writer.write(NEWLINE);
-              if (a.getType() == AttributeTypes.DOUBLE) // double att -- need to
-                                                        // do formatting stuff
-              {
+              if (a.getType() == AttributeTypes.DOUBLE) { // double att -- need
+																													// to do formatting
+																													// stuff
                 NumericalAttribute numAtt = (NumericalAttribute) a;
-                if (numAtt.getMinNumFractionDigits() != null) // has a min num
-                                                              // fraction digits
-                {
-                  writer.write("numFormat.setMinimumFractionDigits("
-                      + numAtt.getMinNumFractionDigits().intValue() + ");");
+                if (numAtt.getMinNumFractionDigits() != null) { // has a min num
+																																// fraction
+																																// digits
+                  writer.write("numFormat.setMinimumFractionDigits(" + 
+                  		numAtt.getMinNumFractionDigits().intValue() + ");");
                   writer.write(NEWLINE);
                 } else {
                   // set it to the default minimum:
                   writer.write("numFormat.setMinimumFractionDigits(0);");
                   writer.write(NEWLINE);
                 }
-                if (numAtt.getMaxNumFractionDigits() != null) // has a max num
-                                                              // fraction digits
-                {
-                  writer.write("numFormat.setMaximumFractionDigits("
-                      + numAtt.getMaxNumFractionDigits().intValue() + ");");
+                if (numAtt.getMaxNumFractionDigits() != null) { // has a max num
+																																// fraction
+																																// digits
+                  writer.write("numFormat.setMaximumFractionDigits(" + 
+                  		numAtt.getMaxNumFractionDigits().intValue() + ");");
                   writer.write(NEWLINE);
                 } else {
                   // set it to the default maximum:
                   writer.write("numFormat.setMaximumFractionDigits(16);");
                   writer.write(NEWLINE);
                 }
-                writer.write("attributes.add(\"<html><font size=2>"
-                    + numAtt.getName() + ": \" + numFormat.format(p.get"
-                    + getUpperCaseLeading(numAtt.getName()) + 
+                writer.write("attributes.add(\"<html><font size=2>" + 
+                		numAtt.getName() + ": \" + numFormat.format(p.get" + 
+                		CodeGeneratorUtils.getUpperCaseLeading(numAtt.getName()) + 
                     "()) + \"</font></html>\");");
                 writer.write(NEWLINE);
-              } else // non-double att -- no formatting required
-              {
-                writer.write("attributes.add(\"<html><font size=2>"
-                    + a.getName() + ": \" + p.get" + 
-                    getUpperCaseLeading(a.getName())
-                    + "() + \"</font></html>\");");
+              } else { // non-double att -- no formatting required
+                writer.write("attributes.add(\"<html><font size=2>" + 
+                		a.getName() + ": \" + p.get" + 
+                		CodeGeneratorUtils.getUpperCaseLeading(a.getName()) + 
+                		"() + \"</font></html>\");");
                 writer.write(NEWLINE);
               }
               writer.write(CLOSED_BRACK);
@@ -572,9 +580,5 @@ public class AttributePanelGenerator implements CodeGeneratorConstants {
           + attPanelFile.getPath() + ": " + e.toString()), "File IO Error",
           JOptionPane.WARNING_MESSAGE);
     }
-  }
-
-  private String getUpperCaseLeading(String s) {
-    return (s.substring(0, 1).toUpperCase() + s.substring(1));
   }
 }

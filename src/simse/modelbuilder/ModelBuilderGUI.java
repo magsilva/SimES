@@ -2,22 +2,50 @@
 
 package simse.modelbuilder;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.startstatebuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import simse.modelbuilder.rulebuilder.*;
-import simse.modelbuilder.graphicsbuilder.*;
-import simse.modelbuilder.mapeditor.*;
-import simse.codegenerator.*;
+import simse.modelbuilder.actionbuilder.ActionBuilderGUI;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.actionbuilder.DestroyerPrioritizer;
+import simse.modelbuilder.actionbuilder.TriggerPrioritizer;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.ObjectBuilderGUI;
+import simse.modelbuilder.startstatebuilder.CreatedObjects;
+import simse.modelbuilder.startstatebuilder.NarrativeDialog;
+import simse.modelbuilder.startstatebuilder.StartStateBuilderGUI;
+import simse.modelbuilder.rulebuilder.ContinuousRulePrioritizer;
+import simse.modelbuilder.rulebuilder.DestroyerRulePrioritizer;
+import simse.modelbuilder.rulebuilder.RuleBuilderGUI;
+import simse.modelbuilder.rulebuilder.TriggerRulePrioritizer;
+import simse.modelbuilder.graphicsbuilder.GraphicsBuilderGUI;
+import simse.modelbuilder.mapeditor.MapEditorGUI;
+import simse.modelbuilder.mapeditor.TileData;
+import simse.modelbuilder.mapeditor.UserData;
+import simse.codegenerator.CodeGenerator;
 
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.event.*;
-import java.io.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.SingleSelectionModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+import java.util.ArrayList;
+import java.util.Vector;
 
 
 public class ModelBuilderGUI extends JFrame implements ActionListener,
@@ -29,7 +57,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
   private DefinedObjectTypes objectTypes;
   private CreatedObjects objects;
   private DefinedActionTypes actionTypes;
-  private ArrayList userDatas; // list of UserData objects for each employee
+  private ArrayList<UserData> userDatas; // list of UserData objects for each employee
                                // that is displayed in the map
   private TileData[][] map; // map
   private ModelOptions options;
@@ -288,7 +316,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     else if (source == optionsItem) {
       if (openFile != null) { // a file is open
         // bring up model options dialog:
-        ModelOptionsDialog mod = new ModelOptionsDialog(this, options);
+        new ModelOptionsDialog(this, options);
         fileModSinceLastSave = true;
         
         Component selectedComp = mainPane.getSelectedComponent();
@@ -307,21 +335,20 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
       if (openFile != null) // a file is open
       {
         // bring up starting narrative dialog:
-        NarrativeDialog nd = new NarrativeDialog(this, objects,
-            "Starting Narrative");
+        new NarrativeDialog(this, objects, "Starting Narrative");
         fileModSinceLastSave = true;
       }
     } 
     else if (source == triggerItem) {
-      TriggerPrioritizer tp = new TriggerPrioritizer(this, actionTypes);
+      new TriggerPrioritizer(this, actionTypes);
       fileModSinceLastSave = true;
     }
 
     else if (source == destroyerItem) {
-      DestroyerPrioritizer dp = new DestroyerPrioritizer(this, actionTypes);
+      new DestroyerPrioritizer(this, actionTypes);
       fileModSinceLastSave = true;
     } else if (source == continuousItem) {
-      ContinuousRulePrioritizer rp = new ContinuousRulePrioritizer(this,
+      new ContinuousRulePrioritizer(this,
           actionTypes);
       fileModSinceLastSave = true;
     } 
@@ -395,13 +422,12 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
       if (mItem.getText().endsWith("Trigger")) {
         ActionType tempAct = actionTypes.getActionType(mItem.getText()
             .substring(0, mItem.getText().indexOf(' ')));
-        TriggerRulePrioritizer rp = new TriggerRulePrioritizer(this, tempAct);
+        new TriggerRulePrioritizer(this, tempAct);
         fileModSinceLastSave = true;
       } else if (mItem.getText().endsWith("Destroyer")) {
         ActionType tempAct = actionTypes.getActionType(mItem.getText()
             .substring(0, mItem.getText().indexOf(' ')));
-        DestroyerRulePrioritizer rp = new DestroyerRulePrioritizer(this,
-            tempAct);
+        new DestroyerRulePrioritizer(this, tempAct);
         fileModSinceLastSave = true;
       }
     }
@@ -565,7 +591,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
   {
     // trigger rules menu:
     triggerRulesMenu.removeAll();
-    Vector acts = actionTypes.getAllActionTypes();
+    Vector<ActionType> acts = actionTypes.getAllActionTypes();
     // go through all action types and add them to the menu:
     for (int i = 0; i < acts.size(); i++) {
       ActionType tempAct = (ActionType) acts.elementAt(i);
@@ -633,7 +659,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
   }
 
   public static void main(String[] args) {
-    ModelBuilderGUI mbg = new ModelBuilderGUI();
+    new ModelBuilderGUI();
   }
 
   public class ExitListener extends WindowAdapter {
