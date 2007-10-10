@@ -16,13 +16,13 @@ public class OtherActionsEffect implements Cloneable {
     "Activate/deactivate specific actions";
   
   private String effect;
-  private Vector actionsToActivate;
-  private Vector actionsToDeactivate;
+  private Vector<ActionType> actionsToActivate;
+  private Vector<ActionType> actionsToDeactivate;
   
   public OtherActionsEffect() {
     effect = NONE;
-    actionsToActivate = new Vector();
-    actionsToDeactivate = new Vector();
+    actionsToActivate = new Vector<ActionType>();
+    actionsToDeactivate = new Vector<ActionType>();
   }
   
   public Object clone() {
@@ -33,22 +33,22 @@ public class OtherActionsEffect implements Cloneable {
 
       // actions to activate:
       if (actionsToActivate != null) {
-	      Vector clonedActsToActivate = new Vector();
+	      Vector<ActionType> clonedActsToActivate = new Vector<ActionType>();
 	      for (int i = 0; i < actionsToActivate.size(); i++) {
 	        // no cloning, since these are pointers to actions
 	        clonedActsToActivate
-	            .add((ActionType) actionsToActivate.elementAt(i));
+	            .add(actionsToActivate.elementAt(i));
 	      }
 	      cl.actionsToActivate = clonedActsToActivate;
       }
       
       // actions to deactivate:
       if (actionsToDeactivate != null) {
-	      Vector clonedActsToDeactivate = new Vector();
+	      Vector<ActionType> clonedActsToDeactivate = new Vector<ActionType>();
 	      for (int i = 0; i < actionsToDeactivate.size(); i++) {
 	        // no cloning, since these are pointers to actions
 	        clonedActsToDeactivate
-	            .add((ActionType) actionsToDeactivate.elementAt(i));
+	            .add(actionsToDeactivate.elementAt(i));
 	      }
 	      cl.actionsToDeactivate = clonedActsToDeactivate;
       }
@@ -68,20 +68,20 @@ public class OtherActionsEffect implements Cloneable {
   }
   
   // returns a Vector of ActionTypes to activate
-  public Vector getActionsToActivate() {
+  public Vector<ActionType> getActionsToActivate() {
     return actionsToActivate;
   }
   
   // returns a Vector of ActionTypes to deactivate
-  public Vector getActionsToDeactivate() {
+  public Vector<ActionType> getActionsToDeactivate() {
     return actionsToDeactivate;
   }
   
-  public void setActionsToActivate(Vector acts) {
+  public void setActionsToActivate(Vector<ActionType> acts) {
     actionsToActivate = acts;
   }
   
-  public void setActionsToDeactivate(Vector acts) {
+  public void setActionsToDeactivate(Vector<ActionType> acts) {
     actionsToDeactivate = acts;
   }
   

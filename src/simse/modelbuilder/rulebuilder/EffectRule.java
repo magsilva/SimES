@@ -6,39 +6,39 @@ import java.util.*;
 import simse.modelbuilder.actionbuilder.*;
 
 public class EffectRule extends Rule implements Cloneable {
-  private Vector inputs; // Vector of RuleInputs for this rule
-  private Vector participantRuleEffects; // Vector of ParticipantRuleEffects for
+  private Vector<RuleInput> inputs; // Vector of RuleInputs for this rule
+  private Vector<ParticipantRuleEffect> participantRuleEffects; // Vector of ParticipantRuleEffects for
                                          // this rule
 
   public EffectRule(String name, ActionType act) {
     super(name, act);
-    inputs = new Vector();
-    participantRuleEffects = new Vector();
+    inputs = new Vector<RuleInput>();
+    participantRuleEffects = new Vector<ParticipantRuleEffect>();
   }
 
   public Object clone() {
     EffectRule cl = (EffectRule) (super.clone());
 
     // clone inputs:
-    Vector clonedInputs = new Vector();
+    Vector<RuleInput> clonedInputs = new Vector<RuleInput>();
     for (int i = 0; i < inputs.size(); i++) {
-      clonedInputs
-          .add((RuleInput) (((RuleInput) (inputs.elementAt(i))).clone()));
+      clonedInputs.add((RuleInput) (inputs.elementAt(i).clone()));
     }
     cl.inputs = clonedInputs;
 
     // clone rule effects:
-    Vector clonedEffects = new Vector();
+    Vector<ParticipantRuleEffect> clonedEffects = 
+    	new Vector<ParticipantRuleEffect>();
     for (int i = 0; i < participantRuleEffects.size(); i++) {
       clonedEffects
-          .add((ParticipantRuleEffect) (((ParticipantRuleEffect) (participantRuleEffects
-              .elementAt(i))).clone()));
+          .add((ParticipantRuleEffect) 
+          		(participantRuleEffects.elementAt(i).clone()));
     }
     cl.participantRuleEffects = clonedEffects;
     return cl;
   }
 
-  public Vector getAllRuleInputs() {
+  public Vector<RuleInput> getAllRuleInputs() {
     return inputs;
   }
 
@@ -46,7 +46,7 @@ public class EffectRule extends Rule implements Cloneable {
                                              // specified name
   {
     for (int i = 0; i < inputs.size(); i++) {
-      RuleInput tempInput = (RuleInput) inputs.elementAt(i);
+      RuleInput tempInput = inputs.elementAt(i);
       if (tempInput.getName().equals(name)) {
         return tempInput;
       }
@@ -62,7 +62,7 @@ public class EffectRule extends Rule implements Cloneable {
                                            // specified name
   {
     for (int i = 0; i < inputs.size(); i++) {
-      RuleInput tempInput = (RuleInput) inputs.elementAt(i);
+      RuleInput tempInput = inputs.elementAt(i);
       if (tempInput.getName().equals(name)) {
         inputs.remove(tempInput);
       }
@@ -73,11 +73,11 @@ public class EffectRule extends Rule implements Cloneable {
     inputs.remove(i);
   }
 
-  public void setRuleInputs(Vector ruleInputs) {
+  public void setRuleInputs(Vector<RuleInput> ruleInputs) {
     inputs = ruleInputs;
   }
 
-  public Vector getAllParticipantRuleEffects() {
+  public Vector<ParticipantRuleEffect> getAllParticipantRuleEffects() {
     return participantRuleEffects;
   }
 
@@ -90,8 +90,7 @@ public class EffectRule extends Rule implements Cloneable {
   // with the specified name
   {
     for (int i = 0; i < participantRuleEffects.size(); i++) {
-      ParticipantRuleEffect tempEffect = (ParticipantRuleEffect) participantRuleEffects
-          .elementAt(i);
+      ParticipantRuleEffect tempEffect = participantRuleEffects.elementAt(i);
       if (tempEffect.getParticipant().getName().equals(partName)) {
         return tempEffect;
       }
@@ -111,8 +110,7 @@ public class EffectRule extends Rule implements Cloneable {
   // specified name
   {
     for (int i = 0; i < participantRuleEffects.size(); i++) {
-      ParticipantRuleEffect tempEffect = (ParticipantRuleEffect) participantRuleEffects
-          .elementAt(i);
+      ParticipantRuleEffect tempEffect = participantRuleEffects.elementAt(i);
       if (tempEffect.getParticipant().getName().equals(partName)) {
         participantRuleEffects.remove(tempEffect);
       }
@@ -127,8 +125,7 @@ public class EffectRule extends Rule implements Cloneable {
   // participant with the specified name
   {
     for (int i = 0; i < participantRuleEffects.size(); i++) {
-      ParticipantRuleEffect tempEffect = (ParticipantRuleEffect) participantRuleEffects
-          .elementAt(i);
+      ParticipantRuleEffect tempEffect = participantRuleEffects.elementAt(i);
       if (tempEffect.getParticipant().getName().equals(partName)) {
         return true;
       }
@@ -140,7 +137,7 @@ public class EffectRule extends Rule implements Cloneable {
     participantRuleEffects.remove(e);
   }
 
-  public void setParticipantRuleEffects(Vector effects) {
+  public void setParticipantRuleEffects(Vector<ParticipantRuleEffect> effects) {
     participantRuleEffects = effects;
   }
 }

@@ -2,25 +2,26 @@
 
 package simse.modelbuilder;
 
+import simse.codegenerator.CodeGenerator;
+
 import simse.modelbuilder.actionbuilder.ActionBuilderGUI;
 import simse.modelbuilder.actionbuilder.ActionType;
 import simse.modelbuilder.actionbuilder.DefinedActionTypes;
 import simse.modelbuilder.actionbuilder.DestroyerPrioritizer;
 import simse.modelbuilder.actionbuilder.TriggerPrioritizer;
-import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
-import simse.modelbuilder.objectbuilder.ObjectBuilderGUI;
-import simse.modelbuilder.startstatebuilder.CreatedObjects;
-import simse.modelbuilder.startstatebuilder.NarrativeDialog;
-import simse.modelbuilder.startstatebuilder.StartStateBuilderGUI;
-import simse.modelbuilder.rulebuilder.ContinuousRulePrioritizer;
-import simse.modelbuilder.rulebuilder.DestroyerRulePrioritizer;
-import simse.modelbuilder.rulebuilder.RuleBuilderGUI;
-import simse.modelbuilder.rulebuilder.TriggerRulePrioritizer;
 import simse.modelbuilder.graphicsbuilder.GraphicsBuilderGUI;
 import simse.modelbuilder.mapeditor.MapEditorGUI;
 import simse.modelbuilder.mapeditor.TileData;
 import simse.modelbuilder.mapeditor.UserData;
-import simse.codegenerator.CodeGenerator;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.ObjectBuilderGUI;
+import simse.modelbuilder.rulebuilder.ContinuousRulePrioritizer;
+import simse.modelbuilder.rulebuilder.DestroyerRulePrioritizer;
+import simse.modelbuilder.rulebuilder.RuleBuilderGUI;
+import simse.modelbuilder.rulebuilder.TriggerRulePrioritizer;
+import simse.modelbuilder.startstatebuilder.CreatedObjects;
+import simse.modelbuilder.startstatebuilder.NarrativeDialog;
+import simse.modelbuilder.startstatebuilder.StartStateBuilderGUI;
 
 import java.awt.Component;
 import java.awt.Cursor;
@@ -29,13 +30,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import java.io.File;
 import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.Vector;
+
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -44,9 +50,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import java.util.ArrayList;
-import java.util.Vector;
-
 
 public class ModelBuilderGUI extends JFrame implements ActionListener,
     ChangeListener, MenuListener {
@@ -57,8 +60,9 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
   private DefinedObjectTypes objectTypes;
   private CreatedObjects objects;
   private DefinedActionTypes actionTypes;
-  private ArrayList<UserData> userDatas; // list of UserData objects for each employee
-                               // that is displayed in the map
+  private ArrayList<UserData> userDatas; // list of UserData objects for each 
+  																			 // employee that is displayed in the 
+  																			 // map
   private TileData[][] map; // map
   private ModelOptions options;
   private ModelOptionsFileManipulator optionsFileManip;
@@ -260,60 +264,45 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     repaint();
   }
 
-  public void setFileModSinceLastSave() // sets this variable to "true"
-  {
+  // sets this variable to "true"
+  public void setFileModSinceLastSave() { 
     fileModSinceLastSave = true;
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
-
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource(); // get which component the action came from
-
     if (source == newItem) {
       newFile();
-    }
-
-    else if (source == openItem) {
+    } else if (source == openItem) {
       openFile();
-    }
-
-    else if (source == closeItem) {
-      if (openFile != null) // a file is open
-      {
+    } else if (source == closeItem) {
+      if (openFile != null) { // a file is open
         closeFile();
       }
     }
 
     if (source == saveItem) {
-      if (openFile != null) // a file is open
-      {
-        if (openFile.exists()) // file has already been saved before
-        {
+      if (openFile != null) { // a file is open
+        if (openFile.exists()) { // file has already been saved before
           checkForInconsistencies(false);
           fileManip.generateFile(openFile, graphicsBuilder.
               getStartStateObjsToImages(), graphicsBuilder.
               getRuleObjsToImages(), objectBuilder.allowHireFire());
           fileModSinceLastSave = false;
-        } else // file has not been saved before
-        {
+        } else { // file has not been saved before
           saveAs();
         }
       }
-    } 
-    else if (source == saveAsItem) {
-      if (openFile != null) // a file is open
-      {
+    } else if (source == saveAsItem) {
+      if (openFile != null) { // a file is open
         saveAs();
       }
-    } 
-    else if (source == exitItem) {
-      if (closeFile()) // if current file is successfully closed, exit
-      {
+    } else if (source == exitItem) {
+      if (closeFile()) { // if current file is successfully closed, exit
         System.exit(0);
       }
-    } 
-    else if (source == optionsItem) {
+    } else if (source == optionsItem) {
       if (openFile != null) { // a file is open
         // bring up model options dialog:
         new ModelOptionsDialog(this, options);
@@ -330,30 +319,23 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
           checkForInconsistencies(true);
         }
       }
-    }
-    else if (source == narrativeItem) {
-      if (openFile != null) // a file is open
-      {
+    } else if (source == narrativeItem) {
+      if (openFile != null) { // a file is open
         // bring up starting narrative dialog:
         new NarrativeDialog(this, objects, "Starting Narrative");
         fileModSinceLastSave = true;
       }
-    } 
-    else if (source == triggerItem) {
+    } else if (source == triggerItem) {
       new TriggerPrioritizer(this, actionTypes);
       fileModSinceLastSave = true;
-    }
-
-    else if (source == destroyerItem) {
+    } else if (source == destroyerItem) {
       new DestroyerPrioritizer(this, actionTypes);
       fileModSinceLastSave = true;
     } else if (source == continuousItem) {
       new ContinuousRulePrioritizer(this,
           actionTypes);
       fileModSinceLastSave = true;
-    } 
-    
-    else if (source == generateSimItem) {
+    } else if (source == generateSimItem) {
       int choice = JOptionPane.OK_OPTION;
       if (fileModSinceLastSave) {
         // must save first
@@ -364,14 +346,12 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
                 		"Press OK to save now."), "Confirm Save", 
                 		JOptionPane.OK_CANCEL_OPTION);
         if (choice == JOptionPane.OK_OPTION) {
-          if (openFile.exists()) // file has already been saved before
-          {
+          if (openFile.exists()) { // file has already been saved before
             fileManip.generateFile(openFile, graphicsBuilder
                 .getStartStateObjsToImages(), graphicsBuilder
                 .getRuleObjsToImages(), objectBuilder.allowHireFire());
             fileModSinceLastSave = false;
-          } else // file has not been saved before
-          {
+          } else { // file has not been saved before
             saveAs();
           }
         }
@@ -385,23 +365,19 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
 		      // get directory to generate code in:
 		      // Bring up a file chooser to choose a directory:
 		      JFileChooser dirFileChooser = new JFileChooser();
-		      dirFileChooser.addChoosableFileFilter(new DirectoryFileFilter()); // make
-		                                                                        // it so
-		                                                                        // it
-		                                                                        // only
-		                                                                        // displays
-		                                                                        // directories
+		      // make it so it only displays directories:
+		      dirFileChooser.addChoosableFileFilter(new DirectoryFileFilter()); 
 		      // bring up open file chooser:
 		      dirFileChooser.setSelectedFile(new File(""));
 		      dirFileChooser
-		          .setDialogTitle("Please select a destination directory (to generate code into):");
+		          .setDialogTitle("Please select a destination directory (to " +
+		          		"generate code into):");
 		      dirFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		      int returnVal = dirFileChooser.showOpenDialog(this);
 		      if (returnVal == JFileChooser.APPROVE_OPTION) {
 		        File f = dirFileChooser.getSelectedFile();
-		        if (f.isDirectory()) // valid
-		        {
-		          // set destination directory
+		        if (f.isDirectory()) { // valid
+		          // set destination directory:
 		          options.setCodeGenerationDestinationDirectory(f);
 		        }
 		      }
@@ -443,11 +419,9 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     }
   }
 
-  public void menuCanceled(MenuEvent e) {
-  }
+  public void menuCanceled(MenuEvent e) {}
 
-  public void menuDeselected(MenuEvent e) {
-  }
+  public void menuDeselected(MenuEvent e) {}
 
   private boolean saveAs() {
     // bring up save file chooser:
@@ -472,8 +446,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
         saveAs(); // try again
         return false;
       }
-    } else // "cancel" button chosen
-    {
+    } else { // "cancel" button chosen
       return false;
     }
   }
@@ -495,8 +468,8 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     mapEditor.setNewOpenFile(openFile);
   }
 
-  private void setNoOpenFile() // makes it so there's no open file in the GUI
-  {
+  // make sit so there's no open file in the GUI
+  private void setNoOpenFile() {
     openFile = null;
     setTitle("SimSE Model Builder");
     fileModSinceLastSave = false;
@@ -513,34 +486,30 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     generateMenu.setEnabled(false);
   }
 
-  private void resetWindowTitle() // resets the window title to reflect the
-                                  // current file open
-  {
+  // resets the window title to reflect the current file open
+  private void resetWindowTitle() {
     setTitle(("SimSE Model Builder - [") + openFile.getName() + ("]"));
   }
 
-  private void newFile() // creates a new action file
-  {
-    if (closeFile()) // if currently-open file is successfuly closed, continue
-    {
+  // creates a new .mdl file
+  private void newFile() { 
+    if (closeFile()) { // if currently-open file is successfuly closed, continue
       setNewOpenFile(new File("NewFile.mdl"));
       fileModSinceLastSave = false;
     }
   }
 
-  private void openFile() // allows the user to open a file
-  {
-    if (closeFile()) // attempt to close currently opened file, if it works,
-                     // continue:
-    {
+  // allows the user to open a file
+  private void openFile() { 
+  	// attempt ot close currently opened file; if it works, continue:
+    if (closeFile()) { 
       // bring up open file chooser:
       fileChooser.setSelectedFile(new File(""));
       int returnVal = fileChooser.showOpenDialog(this);
       if (returnVal == JFileChooser.APPROVE_OPTION) {
         // open file:
         File f = fileChooser.getSelectedFile();
-        if (isMDLFile(f)) // valid file format
-        {
+        if (isMDLFile(f)) { // valid file format
           setNewOpenFile(f);
           fileModSinceLastSave = false;
         } else {
@@ -553,25 +522,22 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     }
   }
 
-  private boolean closeFile() // closes the file currently open (returns true if
-                              // file is closed, false otherwise (i.e., user
-                              // cancels
-  // operation))
-  {
-    if (fileModSinceLastSave) // file has been modified since last save
-    {
+  /*
+   * closes the file currently open (returns true if file is closed, false
+   * otherwise (i.e., user cancels operation))
+   */
+  private boolean closeFile() {
+    if (fileModSinceLastSave) { // file has been modified since last save
       int choice = JOptionPane.showConfirmDialog(null, ("Save changes to "
           + openFile.getName() + "?"), "SimSE Model Builder",
           JOptionPane.YES_NO_CANCEL_OPTION);
       if (choice != JOptionPane.CANCEL_OPTION) {
         if (choice == JOptionPane.YES_OPTION) {
-          if (openFile.exists()) // file has already been saved before
-          {
+          if (openFile.exists()) { // file has already been saved before
             fileManip.generateFile(openFile, graphicsBuilder
                 .getStartStateObjsToImages(), graphicsBuilder
                 .getRuleObjsToImages(), objectBuilder.allowHireFire());
-          } else // file has not been saved before
-          {
+          } else { // file has not been saved before
             if (saveAs() == false) {
               return false; // file not saved, action cancelled
             }
@@ -586,15 +552,17 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     return true;
   }
 
-  public void resetRulesMenu() // reset the trigger/destroyer prioritize menus
-                               // to reflect the rules currently in the file
-  {
+  /*
+   * reset the trigger/destroyer prioritize menus to reflect the rules currently
+   * in the model
+   */
+  public void resetRulesMenu() { 
     // trigger rules menu:
     triggerRulesMenu.removeAll();
     Vector<ActionType> acts = actionTypes.getAllActionTypes();
     // go through all action types and add them to the menu:
     for (int i = 0; i < acts.size(); i++) {
-      ActionType tempAct = (ActionType) acts.elementAt(i);
+      ActionType tempAct = acts.elementAt(i);
       if (tempAct.hasTriggerRules()) {
         JMenuItem tempItem = new JMenuItem(tempAct.getName() + " Trigger");
         triggerRulesMenu.add(tempItem);
@@ -606,7 +574,7 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
     destroyerRulesMenu.removeAll();
     // go through all action types and add them to the menu:
     for (int i = 0; i < acts.size(); i++) {
-      ActionType tempAct = (ActionType) acts.elementAt(i);
+      ActionType tempAct = acts.elementAt(i);
       if (tempAct.hasDestroyerRules()) {
         JMenuItem tempItem = new JMenuItem(tempAct.getName() + " Destroyer");
         destroyerRulesMenu.add(tempItem);
@@ -629,14 +597,11 @@ public class ModelBuilderGUI extends JFrame implements ActionListener,
    * resets the UI by clearing all current selections.
    */
   private void checkForInconsistencies(boolean resetUI) {
-    if (openFile != null) // there is a file currently open
-    {
+    if (openFile != null) { // there is a file currently open
       startStateBuilder.getCreatedObjects().updateAllInstantiatedAttributes();
       try {
-        File tempFile = File.createTempFile(openFile.getName(), ".mdl"); // create
-                                                                         // a
-                                                                         // temporary
-                                                                         // file
+      	// create a temporary file:
+        File tempFile = File.createTempFile(openFile.getName(), ".mdl"); 
         tempFile.deleteOnExit(); // make sure it's deleted on exit
         fileManip.generateFile(tempFile, graphicsBuilder.
             getStartStateObjsToImages(), graphicsBuilder.getRuleObjsToImages(),

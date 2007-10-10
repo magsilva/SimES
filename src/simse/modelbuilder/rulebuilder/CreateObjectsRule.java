@@ -10,32 +10,31 @@ import simse.modelbuilder.startstatebuilder.*;
 import simse.modelbuilder.actionbuilder.*;
 
 public class CreateObjectsRule extends Rule implements Cloneable {
-  private Vector objects; // Vector of SimSEObjects that this rule creates as
+  private Vector<SimSEObject> objects; // Vector of SimSEObjects that this rule creates as
                           // its effect
 
   public CreateObjectsRule(String name, ActionType act) {
     super(name, act);
-    objects = new Vector();
+    objects = new Vector<SimSEObject>();
   }
 
   public Object clone() {
     CreateObjectsRule cl = (CreateObjectsRule) (super.clone());
-    Vector clonedObjs = new Vector();
+    Vector<SimSEObject> clonedObjs = new Vector<SimSEObject>();
     for (int i = 0; i < objects.size(); i++) {
-      clonedObjs.add((SimSEObject) (((SimSEObject) (objects.elementAt(i)))
-          .clone()));
+      clonedObjs.add((SimSEObject) (objects.elementAt(i).clone()));
     }
     cl.objects = clonedObjs;
     return cl;
   }
 
-  public Vector getAllSimSEObjects() // returns all SimSEObjects that are
+  public Vector<SimSEObject> getAllSimSEObjects() // returns all SimSEObjects that are
                                      // created as an effect of this rule
   {
     return objects;
   }
 
-  public void setObjects(Vector newObjs) {
+  public void setObjects(Vector<SimSEObject> newObjs) {
     objects = newObjs;
   }
 
@@ -65,7 +64,7 @@ public class CreateObjectsRule extends Rule implements Cloneable {
   // name, type, and key attribute value from this rule
   {
     for (int i = 0; i < objects.size(); i++) {
-      SimSEObject tempObj = (SimSEObject) objects.elementAt(i);
+      SimSEObject tempObj = objects.elementAt(i);
       if ((tempObj.getName().equals(name))
           && (tempObj.getSimSEObjectType().getType() == type)
           && (tempObj.getKey().isInstantiated())

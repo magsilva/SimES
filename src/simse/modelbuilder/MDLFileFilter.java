@@ -6,9 +6,11 @@
 package simse.modelbuilder;
 
 import java.io.File;
-import javax.swing.filechooser.*;
+
+import javax.swing.filechooser.FileFilter;
 
 public class MDLFileFilter extends FileFilter {
+	
   //Accept all directories and all *.mdl files.
   public boolean accept(File f) {
     String fileName = f.getName();

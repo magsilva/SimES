@@ -5,26 +5,37 @@
 
 package simse.codegenerator.logicgenerator.dialoggenerator;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import simse.modelbuilder.rulebuilder.*;
-import simse.codegenerator.*;
+import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantAttributeConstraint;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantConstraint;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantTrigger;
+import simse.modelbuilder.actionbuilder.ActionTypeTrigger;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.actionbuilder.UserActionTypeTrigger;
+import simse.modelbuilder.objectbuilder.AttributeTypes;
+import simse.modelbuilder.rulebuilder.Rule;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 public class ParticipantSelectionDialogsDriverGenerator implements
     CodeGeneratorConstants {
   private File directory; // directory to generate into
   private File psddFile; // file to generate
   private DefinedActionTypes actTypes; // holds all of the defined action types
-                                       // from an ssa file
 
-  public ParticipantSelectionDialogsDriverGenerator(DefinedActionTypes acts,
-      File dir) {
-    directory = dir;
-    actTypes = acts;
+  public ParticipantSelectionDialogsDriverGenerator(DefinedActionTypes actTypes,
+      File directory) {
+    this.directory = directory;
+    this.actTypes = actTypes;
   }
 
   public void generate() {
@@ -60,6 +71,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
+      
       // member variables:
       writer.write("private Vector partNames;");
       writer.write(NEWLINE);
@@ -77,6 +89,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements
       writer.write(NEWLINE);
       writer.write("private String menuText;");
       writer.write(NEWLINE);
+      
       // constructor:
       writer
           .write("public ParticipantSelectionDialogsDriver(JFrame gui, Vector pNames, Vector parts, simse.adts.actions.Action act, State s, RuleExecutor re, DestroyerChecker dc, Employee emp, String mText)");
@@ -261,14 +274,13 @@ public class ParticipantSelectionDialogsDriverGenerator implements
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       // gather all of the action types w/ user triggers:
-      Vector acts = actTypes.getAllActionTypes();
-      Vector userActs = new Vector();
+      Vector<ActionType> acts = actTypes.getAllActionTypes();
+      Vector<ActionType> userActs = new Vector<ActionType>();
       for (int i = 0; i < acts.size(); i++) {
-        ActionType act = (ActionType) acts.elementAt(i);
-        Vector allTrigs = act.getAllTriggers();
+        ActionType act = acts.elementAt(i);
+        Vector<ActionTypeTrigger> allTrigs = act.getAllTriggers();
         for (int j = 0; j < allTrigs.size(); j++) {
-          ActionTypeTrigger tempTrig = (ActionTypeTrigger) allTrigs
-              .elementAt(j);
+          ActionTypeTrigger tempTrig = allTrigs.elementAt(j);
           if (tempTrig instanceof UserActionTypeTrigger) {
             userActs.add(act);
             break;
@@ -278,13 +290,13 @@ public class ParticipantSelectionDialogsDriverGenerator implements
 
       // go through each action type:
       for (int i = 0; i < userActs.size(); i++) {
-        ActionType tempAct = (ActionType) userActs.elementAt(i);
-        if (i > 0) // not on first element
-        {
+        ActionType tempAct = userActs.elementAt(i);
+        if (i > 0) { // not on first element
           writer.write("else ");
         }
         writer.write("if(action instanceof "
-            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
+            "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -302,11 +314,10 @@ public class ParticipantSelectionDialogsDriverGenerator implements
         writer.write(NEWLINE);
 
         // generate conditions for each user trigger:
-        Vector allTrigs = tempAct.getAllTriggers();
+        Vector<ActionTypeTrigger> allTrigs = tempAct.getAllTriggers();
         boolean putElse9 = false;
         for (int j = 0; j < allTrigs.size(); j++) {
-          ActionTypeTrigger tempTrig = (ActionTypeTrigger) allTrigs
-              .elementAt(j);
+          ActionTypeTrigger tempTrig = allTrigs.elementAt(j);
           if ((tempTrig instanceof UserActionTypeTrigger)
               && (tempTrig.getTriggerText() != null)
               && (tempTrig.getTriggerText().length() > 0)) {
@@ -337,8 +348,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements
         // generate conditions for each user trigger:
         boolean putElse8 = false;
         for (int j = 0; j < allTrigs.size(); j++) {
-          ActionTypeTrigger tempTrig = (ActionTypeTrigger) allTrigs
-              .elementAt(j);
+          ActionTypeTrigger tempTrig = allTrigs.elementAt(j);
           if ((tempTrig instanceof UserActionTypeTrigger)
               && (tempTrig.getTriggerText() != null)
               && (tempTrig.getTriggerText().length() > 0)) {
@@ -366,12 +376,13 @@ public class ParticipantSelectionDialogsDriverGenerator implements
         writer.write("state.getActionStateRepository().get"
             + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
             + "ActionStateRepository().add(("
-            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)action);");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
+            "Action)action);");
         writer.write(NEWLINE);
         // execute all trigger rules:
-        Vector trigRules = tempAct.getAllTriggerRules();
+        Vector<Rule> trigRules = tempAct.getAllTriggerRules();
         for (int j = 0; j < trigRules.size(); j++) {
-          Rule tRule = (Rule) trigRules.elementAt(j);
+          Rule tRule = trigRules.elementAt(j);
           writer.write("ruleExec.update(gui, RuleExecutor.UPDATE_ONE, \""
               + tRule.getName() + "\", action);");
           writer.write(NEWLINE);
@@ -381,10 +392,10 @@ public class ParticipantSelectionDialogsDriverGenerator implements
 
         // game-ending:
         if (tempAct.hasGameEndingTrigger()) {
-          Vector trigs = tempAct.getAllTriggers();
+          Vector<ActionTypeTrigger> trigs = tempAct.getAllTriggers();
           boolean putElse7 = false;
           for (int j = 0; j < trigs.size(); j++) {
-            ActionTypeTrigger tempTrig = (ActionTypeTrigger) trigs.elementAt(j);
+            ActionTypeTrigger tempTrig = trigs.elementAt(j);
             if (tempTrig.isGameEndingTrigger()) {
               if (putElse7) {
                 writer.write("else ");
@@ -399,24 +410,26 @@ public class ParticipantSelectionDialogsDriverGenerator implements
 
               writer.write("// stop game and give score:");
               writer.write(NEWLINE);
-              writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
-                  + "Action a = (" + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
-                  + "Action)action;");
+              writer.write(CodeGeneratorUtils.getUpperCaseLeading(
+              		tempAct.getName()) + "Action a = (" + 
+              		CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
+              		"Action)action;");
               writer.write(NEWLINE);
               // find the scoring attribute:
               ActionTypeParticipantTrigger scoringPartTrig = null;
               ActionTypeParticipantConstraint scoringPartConst = null;
               ActionTypeParticipantAttributeConstraint scoringAttConst = null;
-              Vector partTrigs = tempTrig.getAllParticipantTriggers();
+              Vector<ActionTypeParticipantTrigger> partTrigs = 
+              	tempTrig.getAllParticipantTriggers();
               for (int k = 0; k < partTrigs.size(); k++) {
-                ActionTypeParticipantTrigger partTrig = (ActionTypeParticipantTrigger) partTrigs
-                    .elementAt(k);
-                Vector partConsts = partTrig.getAllConstraints();
+                ActionTypeParticipantTrigger partTrig = partTrigs.elementAt(k);
+                Vector<ActionTypeParticipantConstraint> partConsts = 
+                	partTrig.getAllConstraints();
                 for (int m = 0; m < partConsts.size(); m++) {
-                  ActionTypeParticipantConstraint partConst = (ActionTypeParticipantConstraint) partConsts
-                      .elementAt(m);
-                  ActionTypeParticipantAttributeConstraint[] attConsts = partConst
-                      .getAllAttributeConstraints();
+                  ActionTypeParticipantConstraint partConst = 
+                  	partConsts.elementAt(m);
+                  ActionTypeParticipantAttributeConstraint[] attConsts = 
+                  	partConst.getAllAttributeConstraints();
                   for (int n = 0; n < attConsts.length; n++) {
                     if (attConsts[n].isScoringAttribute()) {
                       scoringAttConst = attConsts[n];
@@ -435,26 +448,29 @@ public class ParticipantSelectionDialogsDriverGenerator implements
                 writer.write(NEWLINE);
                 writer.write(OPEN_BRACK);
                 writer.write(NEWLINE);
-                writer.write(CodeGeneratorUtils.getUpperCaseLeading(scoringPartConst
-                    .getSimSEObjectType().getName())
-                    + " t = ("
-                    + CodeGeneratorUtils.getUpperCaseLeading(scoringPartConst.getSimSEObjectType()
-                        .getName())
-                    + ")(a.getAll"
-                    + scoringPartTrig.getParticipant().getName()
-                    + "s().elementAt(0));");
+                writer.write(CodeGeneratorUtils.getUpperCaseLeading(
+                		scoringPartConst.getSimSEObjectType().getName()) + 
+                		" t = (" + CodeGeneratorUtils.getUpperCaseLeading(
+                				scoringPartConst.getSimSEObjectType().getName()) + 
+                				")(a.getAll" + 
+                				scoringPartTrig.getParticipant().getName() + 
+                				"s().elementAt(0));");
                 writer.write(NEWLINE);
                 writer.write("if(t != null)");
                 writer.write(NEWLINE);
                 writer.write(OPEN_BRACK);
                 writer.write(NEWLINE);
-                if (scoringAttConst.getAttribute().getType() == AttributeTypes.INTEGER) {
+                if (scoringAttConst.getAttribute().getType() == 
+                	AttributeTypes.INTEGER) {
                   writer.write("int");
-                } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.DOUBLE) {
+                } else if (scoringAttConst.getAttribute().getType() == 
+                	AttributeTypes.DOUBLE) {
                   writer.write("double");
-                } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.STRING) {
+                } else if (scoringAttConst.getAttribute().getType() == 
+                	AttributeTypes.STRING) {
                   writer.write("String");
-                } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.BOOLEAN) {
+                } else if (scoringAttConst.getAttribute().getType() == 
+                	AttributeTypes.BOOLEAN) {
                   writer.write("boolean");
                 }
                 writer.write(" v = t.get"

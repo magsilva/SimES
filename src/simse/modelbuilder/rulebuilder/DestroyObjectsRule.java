@@ -6,33 +6,35 @@ import simse.modelbuilder.actionbuilder.*;
 import java.util.*;
 
 public class DestroyObjectsRule extends Rule implements Cloneable {
-  private Vector participantConditions; // vector of
+  private Vector<DestroyObjectsRuleParticipantCondition> participantConditions; // vector of
                                         // DestroyObjectsRuleParticipantConditions
                                         // for this rule
 
   public DestroyObjectsRule(String name, ActionType act) {
     super(name, act);
-    participantConditions = new Vector();
+    participantConditions = 
+    	new Vector<DestroyObjectsRuleParticipantCondition>();
     // add an empty condition for each participant:
-    Vector parts = act.getAllParticipants();
+    Vector<ActionTypeParticipant> parts = act.getAllParticipants();
     for (int i = 0; i < parts.size(); i++) {
-      addEmptyCondition((ActionTypeParticipant) parts.elementAt(i));
+      addEmptyCondition(parts.elementAt(i));
     }
   }
 
   public Object clone() {
     DestroyObjectsRule cl = (DestroyObjectsRule) (super.clone());
-    Vector clonedConditions = new Vector();
+    Vector<DestroyObjectsRuleParticipantCondition> clonedConditions = 
+    	new Vector<DestroyObjectsRuleParticipantCondition>();
     for (int i = 0; i < participantConditions.size(); i++) {
       clonedConditions
-          .add((DestroyObjectsRuleParticipantCondition) (((DestroyObjectsRuleParticipantCondition) (participantConditions
-              .elementAt(i))).clone()));
+          .add((DestroyObjectsRuleParticipantCondition) (participantConditions
+              .elementAt(i).clone()));
     }
     cl.participantConditions = clonedConditions;
     return cl;
   }
 
-  public Vector getAllParticipantConditions() {
+  public Vector<DestroyObjectsRuleParticipantCondition> getAllParticipantConditions() {
     return participantConditions;
   }
 
@@ -41,8 +43,8 @@ public class DestroyObjectsRule extends Rule implements Cloneable {
   // participant to be destroyed by this rule
   {
     for (int i = 0; i < participantConditions.size(); i++) {
-      DestroyObjectsRuleParticipantCondition tempCond = (DestroyObjectsRuleParticipantCondition) (participantConditions
-          .elementAt(i));
+      DestroyObjectsRuleParticipantCondition tempCond = participantConditions
+          .elementAt(i);
       if (tempCond.getParticipant().getName().equals(participantName)) {
         return tempCond;
       }
@@ -59,8 +61,8 @@ public class DestroyObjectsRule extends Rule implements Cloneable {
   {
     boolean notFound = true;
     for (int i = 0; i < participantConditions.size(); i++) {
-      DestroyObjectsRuleParticipantCondition tempCond = (DestroyObjectsRuleParticipantCondition) (participantConditions
-          .elementAt(i));
+      DestroyObjectsRuleParticipantCondition tempCond = participantConditions
+          .elementAt(i);
       if (tempCond.getParticipant().getName().equals(
           newCond.getParticipant().getName())) // condition for this participant
                                                // already
@@ -85,8 +87,8 @@ public class DestroyObjectsRule extends Rule implements Cloneable {
   // the new condition replaces it.
   {
     for (int i = 0; i < participantConditions.size(); i++) {
-      DestroyObjectsRuleParticipantCondition tempCond = (DestroyObjectsRuleParticipantCondition) (participantConditions
-          .elementAt(i));
+      DestroyObjectsRuleParticipantCondition tempCond = participantConditions
+          .elementAt(i);
       if (tempCond.getParticipant().getName().equals(part.getName())) // condition
                                                                       // for
                                                                       // this
@@ -109,15 +111,15 @@ public class DestroyObjectsRule extends Rule implements Cloneable {
                                                            // the specified name
   {
     for (int i = 0; i < participantConditions.size(); i++) {
-      DestroyObjectsRuleParticipantCondition tempCond = (DestroyObjectsRuleParticipantCondition) (participantConditions
-          .elementAt(i));
+      DestroyObjectsRuleParticipantCondition tempCond = participantConditions
+          .elementAt(i);
       if (tempCond.getParticipant().getName().equals(partName)) {
         participantConditions.removeElementAt(i);
       }
     }
   }
 
-  public void setConditions(Vector newConditions) {
+  public void setConditions(Vector<DestroyObjectsRuleParticipantCondition> newConditions) {
     participantConditions = newConditions;
   }
 }

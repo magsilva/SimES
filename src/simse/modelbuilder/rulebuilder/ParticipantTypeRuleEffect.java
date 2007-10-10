@@ -11,7 +11,7 @@ import simse.modelbuilder.objectbuilder.*;
 public class ParticipantTypeRuleEffect implements Cloneable {
   private SimSEObjectType ssObjType; // pointer to the SimSEObjectType for this
                                      // participant type
-  private Vector attributeEffects; // Vector of ParticipantAttributeRuleEffects
+  private Vector<ParticipantAttributeRuleEffect> attributeEffects; // Vector of ParticipantAttributeRuleEffects
                                    // for the attributes of this participant
   private OtherActionsEffect otherActEffect; // the effect of this action on the
                                  // participant's other actions
@@ -19,11 +19,11 @@ public class ParticipantTypeRuleEffect implements Cloneable {
   public ParticipantTypeRuleEffect(SimSEObjectType type) {
     ssObjType = type;
     // initialize an effect for each attribute:
-    attributeEffects = new Vector();
-    Vector attributes = ssObjType.getAllAttributes();
+    attributeEffects = new Vector<ParticipantAttributeRuleEffect>();
+    Vector<Attribute> attributes = ssObjType.getAllAttributes();
     for (int i = 0; i < attributes.size(); i++) {
       attributeEffects.add(new ParticipantAttributeRuleEffect(
-          (Attribute) attributes.elementAt(i)));
+          attributes.elementAt(i)));
     }
     otherActEffect = new OtherActionsEffect();
   }
@@ -37,11 +37,12 @@ public class ParticipantTypeRuleEffect implements Cloneable {
       // object type, even in the clone. So BE CAREFUL!!
 
       // clone attribute effects:
-      Vector clonedAttEffects = new Vector();
+      Vector<ParticipantAttributeRuleEffect> clonedAttEffects = 
+      	new Vector<ParticipantAttributeRuleEffect>();
       for (int i = 0; i < attributeEffects.size(); i++) {
         clonedAttEffects
-            .add((ParticipantAttributeRuleEffect) (((ParticipantAttributeRuleEffect) (attributeEffects
-                .elementAt(i))).clone()));
+            .add((ParticipantAttributeRuleEffect) 
+            		(attributeEffects.elementAt(i).clone()));
       }
       cl.attributeEffects = clonedAttEffects;
 
@@ -58,7 +59,7 @@ public class ParticipantTypeRuleEffect implements Cloneable {
     return ssObjType;
   }
 
-  public Vector getAllAttributeEffects() {
+  public Vector<ParticipantAttributeRuleEffect> getAllAttributeEffects() {
     return attributeEffects;
   }
 
@@ -78,8 +79,7 @@ public class ParticipantTypeRuleEffect implements Cloneable {
   // name
   {
     for (int i = 0; i < attributeEffects.size(); i++) {
-      ParticipantAttributeRuleEffect tempEffect = (ParticipantAttributeRuleEffect) attributeEffects
-          .elementAt(i);
+      ParticipantAttributeRuleEffect tempEffect = attributeEffects.elementAt(i);
       if (tempEffect.getAttribute().getName().equals(attName)) {
         return tempEffect;
       }
@@ -101,8 +101,7 @@ public class ParticipantTypeRuleEffect implements Cloneable {
   // one replaces it
   {
     for (int i = 0; i < attributeEffects.size(); i++) {
-      ParticipantAttributeRuleEffect tempEffect = (ParticipantAttributeRuleEffect) attributeEffects
-          .elementAt(i);
+      ParticipantAttributeRuleEffect tempEffect = attributeEffects.elementAt(i);
       if (tempEffect.getAttribute().getName().equals(
           newAttEffect.getAttribute().getName())) {
         attributeEffects.remove(tempEffect);
@@ -123,8 +122,7 @@ public class ParticipantTypeRuleEffect implements Cloneable {
                                                     // with the specified name
   {
     for (int i = 0; i < attributeEffects.size(); i++) {
-      ParticipantAttributeRuleEffect tempEffect = (ParticipantAttributeRuleEffect) attributeEffects
-          .elementAt(i);
+      ParticipantAttributeRuleEffect tempEffect = attributeEffects.elementAt(i);
       if (tempEffect.getAttribute().getName().equals(attName)) {
         attributeEffects.remove(tempEffect);
       }

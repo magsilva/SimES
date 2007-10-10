@@ -9,18 +9,17 @@ import simse.modelbuilder.objectbuilder.*;
 public class ParticipantRuleEffect implements Cloneable {
   private ActionTypeParticipant participant; // pointer to the participant for
                                              // this effect
-  private Vector partTypeEffects; // Vector of ParticipantTypeRuleEffects for
+  private Vector<ParticipantTypeRuleEffect> partTypeEffects; // Vector of ParticipantTypeRuleEffects for
                                   // each SimSEObject type that this participant
                                   // can be
 
   public ParticipantRuleEffect(ActionTypeParticipant part) {
     participant = part;
     // initialize a ParticipantTypeRuleEffect for each SimSEObject type:
-    partTypeEffects = new Vector();
-    Vector types = participant.getAllSimSEObjectTypes();
+    partTypeEffects = new Vector<ParticipantTypeRuleEffect>();
+    Vector<SimSEObjectType> types = participant.getAllSimSEObjectTypes();
     for (int i = 0; i < types.size(); i++) {
-      partTypeEffects.add(new ParticipantTypeRuleEffect((SimSEObjectType) types
-          .elementAt(i)));
+      partTypeEffects.add(new ParticipantTypeRuleEffect(types.elementAt(i)));
     }
   }
 
@@ -34,11 +33,12 @@ public class ParticipantRuleEffect implements Cloneable {
       // participant, even in the clone. So BE CAREFUL!!
 
       // clone participant type rule effects:
-      Vector clonedEffects = new Vector();
+      Vector<ParticipantTypeRuleEffect> clonedEffects = 
+      	new Vector<ParticipantTypeRuleEffect>();
       for (int i = 0; i < partTypeEffects.size(); i++) {
         clonedEffects
-            .add((ParticipantTypeRuleEffect) (((ParticipantTypeRuleEffect) (partTypeEffects
-                .elementAt(i))).clone()));
+            .add((ParticipantTypeRuleEffect) 
+            		(partTypeEffects.elementAt(i).clone()));
       }
       cl.partTypeEffects = clonedEffects;
       return cl;
@@ -54,7 +54,7 @@ public class ParticipantRuleEffect implements Cloneable {
     return (ActionTypeParticipant) (participant.clone());
   }
 
-  public Vector getAllParticipantTypeEffects() {
+  public Vector<ParticipantTypeRuleEffect> getAllParticipantTypeEffects() {
     return partTypeEffects;
   }
 
@@ -67,8 +67,7 @@ public class ParticipantRuleEffect implements Cloneable {
                                                                                   // SimSEObjectType
   {
     for (int i = 0; i < partTypeEffects.size(); i++) {
-      ParticipantTypeRuleEffect tempEffect = (ParticipantTypeRuleEffect) (partTypeEffects
-          .elementAt(i));
+      ParticipantTypeRuleEffect tempEffect = partTypeEffects.elementAt(i);
       if (tempEffect.getSimSEObjectType() == type) {
         return tempEffect;
       }
@@ -84,8 +83,7 @@ public class ParticipantRuleEffect implements Cloneable {
   // the same SimSEObjectTypeType! Think about it!
   {
     for (int i = 0; i < partTypeEffects.size(); i++) {
-      ParticipantTypeRuleEffect tempEffect = (ParticipantTypeRuleEffect) (partTypeEffects
-          .elementAt(i));
+      ParticipantTypeRuleEffect tempEffect = partTypeEffects.elementAt(i);
       if (tempEffect.getSimSEObjectType().getName().equals(typeName)) {
         return tempEffect;
       }
@@ -106,8 +104,7 @@ public class ParticipantRuleEffect implements Cloneable {
   {
     boolean notFound = true;
     for (int i = 0; i < partTypeEffects.size(); i++) {
-      ParticipantTypeRuleEffect tempEffect = (ParticipantTypeRuleEffect) (partTypeEffects
-          .elementAt(i));
+      ParticipantTypeRuleEffect tempEffect = partTypeEffects.elementAt(i);
       if (tempEffect.getSimSEObjectType() == newEffect.getSimSEObjectType()) {
         partTypeEffects.setElementAt(newEffect, i);
         notFound = false;
@@ -133,8 +130,7 @@ public class ParticipantRuleEffect implements Cloneable {
                                                                     // SimSEObjectType
   {
     for (int i = 0; i < partTypeEffects.size(); i++) {
-      ParticipantTypeRuleEffect tempEffect = (ParticipantTypeRuleEffect) (partTypeEffects
-          .elementAt(i));
+      ParticipantTypeRuleEffect tempEffect = partTypeEffects.elementAt(i);
       if (tempEffect.getSimSEObjectType() == type) {
         partTypeEffects.removeElementAt(i);
       }
@@ -150,8 +146,7 @@ public class ParticipantRuleEffect implements Cloneable {
   // the same SimSEObjectTypeType! Think about it!
   {
     for (int i = 0; i < partTypeEffects.size(); i++) {
-      ParticipantTypeRuleEffect tempEffect = (ParticipantTypeRuleEffect) (partTypeEffects
-          .elementAt(i));
+      ParticipantTypeRuleEffect tempEffect = partTypeEffects.elementAt(i);
       if (tempEffect.getSimSEObjectType().getName().equals(typeName)) {
         partTypeEffects.removeElementAt(i);
       }

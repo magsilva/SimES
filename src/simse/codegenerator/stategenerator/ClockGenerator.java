@@ -5,11 +5,15 @@
 
 package simse.codegenerator.stategenerator;
 
-import java.io.*;
-import javax.swing.*;
+import simse.codegenerator.CodeGeneratorConstants;
 
-import simse.codegenerator.*;
-import simse.modelbuilder.*;
+import simse.modelbuilder.ModelOptions;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
 
 public class ClockGenerator implements CodeGeneratorConstants {
   private File directory; // directory to generate into

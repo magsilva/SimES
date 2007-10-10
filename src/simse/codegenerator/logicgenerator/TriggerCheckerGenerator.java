@@ -5,34 +5,53 @@
 
 package simse.codegenerator.logicgenerator;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import simse.modelbuilder.rulebuilder.*;
-import simse.codegenerator.*;
+import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantAttributeConstraint;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantConstraint;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantTrigger;
+import simse.modelbuilder.actionbuilder.ActionTypeTrigger;
+import simse.modelbuilder.actionbuilder.AttributeGuard;
+import simse.modelbuilder.actionbuilder.AutonomousActionTypeTrigger;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.actionbuilder.RandomActionTypeTrigger;
+import simse.modelbuilder.actionbuilder.UserActionTypeTrigger;
+import simse.modelbuilder.objectbuilder.AttributeTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+import simse.modelbuilder.rulebuilder.Rule;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 public class TriggerCheckerGenerator implements CodeGeneratorConstants {
   private File directory; // directory to save generated code into
   private DefinedActionTypes actTypes; // holds all of the defined action types
-                                       // from an ssa file
   private FileWriter writer;
   private File trigFile;
-  private Vector vectors; // for keeping track of which vectors are being used
-                          // in generated code so that you don't generate the
-  // same ones more than once -- e.g., Vector programmers //
-  // state.getEmployeeStateRepository().getProgrammerStateRepository().getAll()
-  // will be generated more than once if you
-  // don't keep track of this.
-  private Vector nonPrioritizedTriggers;
-  private Vector prioritizedTriggers;
+  private Vector<String> vectors; // for keeping track of which vectors are 
+  																// being used in generated code so that you 
+  															  // don't generate the same ones more than once
+  																// -- e.g., Vector programmers 
+  																// state.getEmployeeStateRepository().
+  																// getProgrammerStateRepository().getAll()
+  																// will be generated more than once if you
+  																// don't keep track of this.
+  private Vector<ActionTypeTrigger> nonPrioritizedTriggers;
+  private Vector<ActionTypeTrigger> prioritizedTriggers;
 
-  public TriggerCheckerGenerator(DefinedActionTypes dats, File dir) {
-    actTypes = dats;
-    directory = dir;
-    vectors = new Vector();
+  public TriggerCheckerGenerator(DefinedActionTypes actTypes, File directory) {
+    this.actTypes = actTypes;
+    this.directory = directory;
+    vectors = new Vector<String>();
     initializeTriggerLists();
   }
 
@@ -96,14 +115,12 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
       int counter = 0;
       // generate prioritized triggers:
       for (int i = 0; i < prioritizedTriggers.size(); i++) {
-        generateTriggerChecker((ActionTypeTrigger) prioritizedTriggers
-            .elementAt(i), counter);
+        generateTriggerChecker(prioritizedTriggers.elementAt(i), counter);
         counter++;
       }
       // generate non-prioritized triggers:
       for (int i = 0; i < nonPrioritizedTriggers.size(); i++) {
-        generateTriggerChecker((ActionTypeTrigger) nonPrioritizedTriggers
-            .elementAt(i), counter);
+        generateTriggerChecker(nonPrioritizedTriggers.elementAt(i), counter);
         counter++;
       }
       writer.write(CLOSED_BRACK);
@@ -117,51 +134,49 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
     }
   }
 
-  private void generateTriggerChecker(ActionTypeTrigger outerTrig, int counter) {
+  private void generateTriggerChecker(ActionTypeTrigger outerTrig, 
+  		int counter) {
     try {
       ActionType action = outerTrig.getActionType();
-      if (!(outerTrig instanceof UserActionTypeTrigger)) // not a user trigger
-      {
+      if (!(outerTrig instanceof UserActionTypeTrigger)) { // not a user trigger
         writer.write("if(!updateUserTrigsOnly)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
       }
-      Vector triggers = outerTrig.getAllParticipantTriggers();
+      Vector<ActionTypeParticipantTrigger> triggers = 
+      	outerTrig.getAllParticipantTriggers();
       for (int j = 0; j < triggers.size(); j++) {
-        ActionTypeParticipantTrigger trig = (ActionTypeParticipantTrigger) triggers
-            .elementAt(j);
+        ActionTypeParticipantTrigger trig = triggers.elementAt(j);
         writer.write("Vector " + trig.getParticipant().getName().toLowerCase()
             + "s" + counter + " = new Vector();");
         writer.write(NEWLINE);
-        Vector constraints = trig.getAllConstraints();
+        Vector<ActionTypeParticipantConstraint> constraints = 
+        	trig.getAllConstraints();
         for (int k = 0; k < constraints.size(); k++) {
-          ActionTypeParticipantConstraint constraint = (ActionTypeParticipantConstraint) constraints
-              .elementAt(k);
+          ActionTypeParticipantConstraint constraint = constraints.elementAt(k);
           String objTypeName = constraint.getSimSEObjectType().getName();
-          if (vectorContainsString(vectors, (objTypeName.toLowerCase() + "s")) == false) // this
-                                                                                         // vector
-                                                                                         // has
-                                                                                         // not
-                                                                                         // been
-                                                                                         // generated
-                                                                                         // already
-          {
+          if (vectorContainsString(vectors, 
+          		(objTypeName.toLowerCase() + "s")) == false) { // this vector has
+          																									 // not been 
+          																									 // generated 
+          																									 // already
             writer.write("Vector "
                 + objTypeName.toLowerCase()
                 + "s = state.get"
-                + CodeGeneratorUtils.getUpperCaseLeading(SimSEObjectTypeTypes.getText(constraint
-                    .getSimSEObjectType().getType())) + "StateRepository().get"
-                + CodeGeneratorUtils.getUpperCaseLeading(objTypeName)
-                + "StateRepository().getAll();");
+                + CodeGeneratorUtils.getUpperCaseLeading(
+                		SimSEObjectTypeTypes.getText(constraint.
+                				getSimSEObjectType().getType())) + 
+                				"StateRepository().get" + 
+                				CodeGeneratorUtils.getUpperCaseLeading(objTypeName) + 
+                				"StateRepository().getAll();");
             // generate it
             writer.write(NEWLINE);
-            if (outerTrig instanceof UserActionTypeTrigger) // user trigger --
-                                                            // can be used by
-                                                            // others
-            {
-              vectors.add(objTypeName.toLowerCase() + "s"); // add it to the
-                                                            // list
+            if (outerTrig instanceof UserActionTypeTrigger) { // user trigger --
+                                                              // can be used by
+                                                            	// others
+            	// add it to the list:
+              vectors.add(objTypeName.toLowerCase() + "s"); 
             }
           }
           writer.write("for(int i=0; i<" + objTypeName.toLowerCase()
@@ -169,9 +184,9 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
-          writer.write(CodeGeneratorUtils.getUpperCaseLeading(objTypeName) + " a = ("
-              + CodeGeneratorUtils.getUpperCaseLeading(objTypeName) + ")"
-              + objTypeName.toLowerCase() + "s.elementAt(i);");
+          writer.write(CodeGeneratorUtils.getUpperCaseLeading(objTypeName) + 
+          		" a = (" + CodeGeneratorUtils.getUpperCaseLeading(objTypeName) + 
+          		")" + objTypeName.toLowerCase() + "s.elementAt(i);");
           writer.write(NEWLINE);
           writer
               .write("Vector allActions = state.getActionStateRepository().get"
@@ -181,20 +196,21 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
           writer.write("boolean alreadyInAction = false;");
           writer.write(NEWLINE);
 
-          if ((trig.getParticipant().getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE)
-              || (trig.getParticipant().getSimSEObjectTypeType() == SimSEObjectTypeTypes.ARTIFACT)) // employees
-                                                                                                    // and
-                                                                                                    // artifacts
-                                                                                                    // can
-          //only be in one of these actions in this role at a time
-          {
+          if ((trig.getParticipant().getSimSEObjectTypeType() == 
+          	SimSEObjectTypeTypes.EMPLOYEE) || 
+          	(trig.getParticipant().getSimSEObjectTypeType() == 
+              	SimSEObjectTypeTypes.ARTIFACT)) { // employees and artifacts can 
+          																				// only be in one of these 
+          																				// actions in this role at a 
+          																				// time
             writer.write("for(int j=0; j<allActions.size(); j++)");
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
-            writer.write(CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action b = ("
-                + CodeGeneratorUtils.getUpperCaseLeading(action.getName())
-                + "Action)allActions.elementAt(j);");
+            writer.write(CodeGeneratorUtils.getUpperCaseLeading(
+            		action.getName()) + "Action b = (" + 
+            		CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + 
+            		"Action)allActions.elementAt(j);");
             writer.write(NEWLINE);
             writer.write("if(b.getAll" + trig.getParticipant().getName()
                 + "s().contains(a))");
@@ -216,11 +232,12 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
           ActionTypeParticipantAttributeConstraint[] attConstraints = constraint
               .getAllAttributeConstraints();
           for (int m = 0; m < attConstraints.length; m++) {
-            ActionTypeParticipantAttributeConstraint attConst = attConstraints[m];
+            ActionTypeParticipantAttributeConstraint attConst = 
+            	attConstraints[m];
             if (attConst.isConstrained()) {
               writer.write(" && (a.get"
-                  + CodeGeneratorUtils.getUpperCaseLeading(attConst.getAttribute().getName())
-                  + "() ");
+                  + CodeGeneratorUtils.getUpperCaseLeading(
+                  		attConst.getAttribute().getName()) + "() ");
               if (attConst.getAttribute().getType() == AttributeTypes.STRING) {
                 writer.write(".equals(" + "\"" + attConst.getValue().toString()
                     + "\")");
@@ -254,11 +271,10 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
           || (outerTrig instanceof RandomActionTypeTrigger)) {
         writer.write("while(");
       }
-      Vector parts = action.getAllParticipants();
+      Vector<ActionTypeParticipant> parts = action.getAllParticipants();
       for (int k = 0; k < parts.size(); k++) {
-        ActionTypeParticipant part = (ActionTypeParticipant) parts.elementAt(k);
-        if (k > 0) // not on first element
-        {
+        ActionTypeParticipant part = parts.elementAt(k);
+        if (k > 0) { // not on first element
           writer.write(" && ");
         }
         writer.write("(" + part.getName().toLowerCase() + "s" + counter
@@ -266,12 +282,10 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
         if (part.getQuantity().isMinValBoundless()) {
           if (part.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) {
             writer.write("> 0)");
-          } else // non-employee
-          {
+          } else { // non-employee
             writer.write(">= 0)");
           }
-        } else // min val bounded
-        {
+        } else { // min val bounded
           writer
               .write(" >= " + part.getQuantity().getMinVal().intValue() + ")");
         }
@@ -284,8 +298,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
         // go through each participant, and if it's an employee, add the text to
         // their menu:
         for (int k = 0; k < parts.size(); k++) {
-          ActionTypeParticipant part = (ActionTypeParticipant) parts
-              .elementAt(k);
+          ActionTypeParticipant part = parts.elementAt(k);
           if (part.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) {
             writer.write("for(int j=0; j<" + part.getName().toLowerCase() + "s"
                 + counter + ".size(); j++)");
@@ -305,16 +318,15 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
         }
       } else if ((outerTrig instanceof AutonomousActionTypeTrigger)
           || (outerTrig instanceof RandomActionTypeTrigger)) {
-        writer.write(CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action a = new "
-            + CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action();");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + 
+        		"Action a = new " + CodeGeneratorUtils.getUpperCaseLeading(
+        				action.getName()) + "Action();");
         writer.write(NEWLINE);
         for (int k = 0; k < parts.size(); k++) {
-          ActionTypeParticipant part = (ActionTypeParticipant) parts
-              .elementAt(k);
+          ActionTypeParticipant part = parts.elementAt(k);
           if (part.getQuantity().isMaxValBoundless()) {
             writer.write("while(true)");
-          } else // max bounded
-          {
+          } else { // max bounded
             writer.write("for(int i=0; i<"
                 + part.getQuantity().getMaxVal().intValue() + "; i++)");
           }
@@ -326,15 +338,12 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
-          writer.write(CodeGeneratorUtils.getUpperCaseLeading(SimSEObjectTypeTypes.getText(part
-              .getSimSEObjectTypeType()))
-              + " a"
-              + k
-              + " = ("
-              + CodeGeneratorUtils.getUpperCaseLeading(SimSEObjectTypeTypes.getText(part
-                  .getSimSEObjectTypeType()))
-              + ")"
-              + part.getName().toLowerCase() + "s" + counter);
+          writer.write(CodeGeneratorUtils.getUpperCaseLeading(
+          		SimSEObjectTypeTypes.getText(part.getSimSEObjectTypeType())) + 
+          		" a" + k + " = (" + CodeGeneratorUtils.getUpperCaseLeading(
+          				SimSEObjectTypeTypes.getText(
+          						part.getSimSEObjectTypeType())) + ")" + 
+          						part.getName().toLowerCase() + "s" + counter);
           if ((part.getSimSEObjectTypeType() == SimSEObjectTypeTypes.ARTIFACT)
           		|| (part.getSimSEObjectTypeType() == 
           			SimSEObjectTypeTypes.EMPLOYEE)) { // can't be in more than one 
@@ -364,17 +373,9 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
 
         // RANDOM TRIGGER:
         if ((outerTrig instanceof RandomActionTypeTrigger)
-            && (((RandomActionTypeTrigger) outerTrig).getFrequency() < 100.0)) // have
-                                                                               // to
-                                                                               // put
-                                                                               // the
-                                                                               // <
-                                                                               // 100
-                                                                               // here
-                                                                               // because
-        // otherwise it might not always be triggered (if ran num is 100 and
-        // frequency is 100)
-        {
+            && (((RandomActionTypeTrigger) outerTrig).getFrequency() < 100.0)) {
+        	// have to put the < 100 here because otherwise it might not always be
+        	// triggered (if ran num is 100 and frequency is 100)
           writer.write("if((ranNumGen.nextDouble() * 100.0) < "
               + (((RandomActionTypeTrigger) outerTrig).getFrequency()) + ")");
           writer.write(NEWLINE);
@@ -396,8 +397,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
         if ((outerTrig.getTriggerText() != null)
-            && (outerTrig.getTriggerText().length() > 0)) // has trigger text
-        {
+            && (outerTrig.getTriggerText().length() > 0)) { // has trigger text
           writer.write("((Employee)tempObj).setOverheadText(\""
               + outerTrig.getTriggerText() + "\");");
           writer.write(NEWLINE);
@@ -420,9 +420,9 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
             + "ActionStateRepository().add(a);");
         writer.write(NEWLINE);
         // execute all trigger rules:
-        Vector trigRules = action.getAllTriggerRules();
+        Vector<Rule> trigRules = action.getAllTriggerRules();
         for (int i = 0; i < trigRules.size(); i++) {
-          Rule tRule = (Rule) trigRules.elementAt(i);
+          Rule tRule = trigRules.elementAt(i);
           writer.write("ruleExec.update(gui, RuleExecutor.UPDATE_ONE, \""
               + tRule.getName() + "\", a);");
           writer.write(NEWLINE);
@@ -433,21 +433,22 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
           writer.write("// stop game and give score:");
           writer.write(NEWLINE);
           writer.write(CodeGeneratorUtils.getUpperCaseLeading(action.getName())
-              + "Action t111 = (" + CodeGeneratorUtils.getUpperCaseLeading(action.getName())
-              + "Action)a;");
+              + "Action t111 = (" + CodeGeneratorUtils.getUpperCaseLeading(
+              		action.getName()) + "Action)a;");
           writer.write(NEWLINE);
           // find the scoring attribute:
           ActionTypeParticipantTrigger scoringPartTrig = null;
           ActionTypeParticipantConstraint scoringPartConst = null;
           ActionTypeParticipantAttributeConstraint scoringAttConst = null;
-          Vector partTrigs = outerTrig.getAllParticipantTriggers();
+          Vector<ActionTypeParticipantTrigger> partTrigs = 
+          	outerTrig.getAllParticipantTriggers();
           for (int k = 0; k < partTrigs.size(); k++) {
-            ActionTypeParticipantTrigger partTrig = (ActionTypeParticipantTrigger) partTrigs
-                .elementAt(k);
-            Vector partConsts = partTrig.getAllConstraints();
+            ActionTypeParticipantTrigger partTrig = partTrigs.elementAt(k);
+            Vector<ActionTypeParticipantConstraint> partConsts = 
+            	partTrig.getAllConstraints();
             for (int m = 0; m < partConsts.size(); m++) {
-              ActionTypeParticipantConstraint partConst = (ActionTypeParticipantConstraint) partConsts
-                  .elementAt(m);
+              ActionTypeParticipantConstraint partConst = 
+              	partConsts.elementAt(m);
               ActionTypeParticipantAttributeConstraint[] attConsts = partConst
                   .getAllAttributeConstraints();
               for (int n = 0; n < attConsts.length; n++) {
@@ -471,23 +472,27 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
             writer.write(CodeGeneratorUtils.getUpperCaseLeading(scoringPartConst
                 .getSimSEObjectType().getName())
                 + " t = ("
-                + CodeGeneratorUtils.getUpperCaseLeading(scoringPartConst.getSimSEObjectType()
-                    .getName())
-                + ")(t111.getAll"
-                + scoringPartTrig.getParticipant().getName()
-                + "s().elementAt(0));");
+                + CodeGeneratorUtils.getUpperCaseLeading(
+                		scoringPartConst.getSimSEObjectType().getName()) + 
+                		")(t111.getAll" + 
+                		scoringPartTrig.getParticipant().getName() + 
+                		"s().elementAt(0));");
             writer.write(NEWLINE);
             writer.write("if(t != null)");
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
-            if (scoringAttConst.getAttribute().getType() == AttributeTypes.INTEGER) {
+            if (scoringAttConst.getAttribute().getType() == 
+            	AttributeTypes.INTEGER) {
               writer.write("int");
-            } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.DOUBLE) {
+            } else if (scoringAttConst.getAttribute().getType() == 
+            	AttributeTypes.DOUBLE) {
               writer.write("double");
-            } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.STRING) {
+            } else if (scoringAttConst.getAttribute().getType() == 
+            	AttributeTypes.STRING) {
               writer.write("String");
-            } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.BOOLEAN) {
+            } else if (scoringAttConst.getAttribute().getType() == 
+            	AttributeTypes.BOOLEAN) {
               writer.write("boolean");
             }
             writer.write(" v = t.get"
@@ -509,17 +514,9 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
 
         // RANDOM TRIGGER:
         if ((outerTrig instanceof RandomActionTypeTrigger)
-            && (((RandomActionTypeTrigger) outerTrig).getFrequency() < 100.0)) // have
-                                                                               // to
-                                                                               // put
-                                                                               // the
-                                                                               // <
-                                                                               // 100
-                                                                               // here
-                                                                               // because
-        // otherwise it might not always be triggered (if ran num is 100 and
-        // frequency is 100)
-        {
+            && (((RandomActionTypeTrigger) outerTrig).getFrequency() < 100.0)) {
+        	// have to put the < 100 here because otherwise it might not always be
+        	// triggered (if ran num is 100 and frequency is 100)
           writer.write(CLOSED_BRACK);
           writer.write(NEWLINE);
         }
@@ -561,30 +558,21 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action a" + cnt
-            + " = (" + CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action)a" + cnt
-            + "s.elementAt(i);");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + 
+        		"Action a" + cnt + " = (" + CodeGeneratorUtils.getUpperCaseLeading(
+        				action.getName()) + "Action)a" + cnt + "s.elementAt(i);");
         writer.write(NEWLINE);
         // go through all participants:
         for (int j = 0; j < parts.size(); j++) {
-          ActionTypeParticipant part = (ActionTypeParticipant) parts
-              .elementAt(j);
-          if (part.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) // employee
-                                                                              // participant,
-                                                                              // hence,
-                                                                              // a
-                                                                              // role
-                                                                              // this
-                                                                              // employee
-                                                                              // could
-          // play
+          ActionTypeParticipant part = parts.elementAt(j);
+          if (part.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) 
+          	// employee participant, hence, a role this employee could play
           {
             writer.write("if(a" + cnt + ".getAll" + part.getName()
                 + "s().size() < ");
             if (part.getQuantity().isMaxValBoundless()) {
               writer.write("999999");
-            } else // max val has a value
-            {
+            } else { // max val has a value
               writer.write((part.getQuantity().getMaxVal()).toString());
             }
             writer.write(")");
@@ -603,15 +591,15 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             writer.write("if((");
             // go through each SimSEObjectType:
-            Vector types = part.getAllSimSEObjectTypes();
+            Vector<SimSEObjectType> types = part.getAllSimSEObjectTypes();
             for (int k = 0; k < types.size(); k++) {
-              SimSEObjectType tempType = (SimSEObjectType) types.elementAt(k);
-              if (k > 0) // not on first element
-              {
+              SimSEObjectType tempType = types.elementAt(k);
+              if (k > 0) { // not on first element
                 writer.write(" || ");
               }
               writer.write("(b" + cnt + " instanceof "
-                  + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")");
+                  + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) +
+                  ")");
             }
             writer.write(") && (a" + cnt + ".getAll" + part.getName()
                 + "s().contains(b" + cnt + ") == false))");
@@ -626,9 +614,11 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
-            writer.write(CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + "Action a"
-                + cnt + "b = (" + CodeGeneratorUtils.getUpperCaseLeading(action.getName())
-                + "Action)a" + cnt + "s.elementAt(k);");
+            writer.write(
+            		CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + 
+            		"Action a" + cnt + "b = (" + 
+            		CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + 
+            		"Action)a" + cnt + "s.elementAt(k);");
             writer.write(NEWLINE);
             writer.write("if(a" + cnt + "b.getAll" + part.getName()
                 + "s().contains(b" + cnt + "))");
@@ -653,26 +643,28 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             // go through all participant constraints:
             for (int k = 0; k < types.size(); k++) {
-              SimSEObjectType tempType = (SimSEObjectType) types.elementAt(k);
-              if (k > 0) // not on first element
-              {
+              SimSEObjectType tempType = types.elementAt(k);
+              if (k > 0) { // not on first element
                 writer.write("else ");
               }
               writer.write("if((b" + cnt + " instanceof "
-                  + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")");
+                  + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) +
+                  ")");
               // go through all attribute constraints:
-              ActionTypeParticipantAttributeConstraint[] attConstraints = outerTrig
-                  .getParticipantTrigger(part.getName()).getConstraint(
+              ActionTypeParticipantAttributeConstraint[] attConstraints = 
+              	outerTrig.getParticipantTrigger(part.getName()).getConstraint(
                       tempType.getName()).getAllAttributeConstraints();
               for (int m = 0; m < attConstraints.length; m++) {
-                ActionTypeParticipantAttributeConstraint attConst = attConstraints[m];
+                ActionTypeParticipantAttributeConstraint attConst = 
+                	attConstraints[m];
                 if (attConst.isConstrained()) {
                   writer.write(" && ((("
-                      + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")b" + cnt
-                      + ").get"
-                      + CodeGeneratorUtils.getUpperCaseLeading(attConst.getAttribute().getName())
-                      + "() ");
-                  if (attConst.getAttribute().getType() == AttributeTypes.STRING) {
+                      + CodeGeneratorUtils.getUpperCaseLeading(
+                      		tempType.getName()) + ")b" + cnt + ").get" + 
+                      		CodeGeneratorUtils.getUpperCaseLeading(
+                      				attConst.getAttribute().getName()) + "() ");
+                  if (attConst.getAttribute().getType() == 
+                  	AttributeTypes.STRING) {
                     writer.write(".equals(" + "\""
                         + attConst.getValue().toString() + "\")");
                   } else {
@@ -716,9 +708,9 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
     }
   }
 
-  private boolean vectorContainsString(Vector v, String s) {
+  private boolean vectorContainsString(Vector<String> v, String s) {
     for (int i = 0; i < v.size(); i++) {
-      String temp = (String) v.elementAt(i);
+      String temp = v.elementAt(i);
       if (temp.equals(s)) {
         return true;
       }
@@ -726,42 +718,39 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
     return false;
   }
 
-  private void initializeTriggerLists() // gets the triggers in prioritized
-                                        // order according to their priority
+  /*
+   * gets the triggers in prioritized order according to their priority
+   */
+  private void initializeTriggerLists() 
   {
     // initialize lists:
-    nonPrioritizedTriggers = new Vector();
-    prioritizedTriggers = new Vector();
-    Vector allActions = actTypes.getAllActionTypes();
+    nonPrioritizedTriggers = new Vector<ActionTypeTrigger>();
+    prioritizedTriggers = new Vector<ActionTypeTrigger>();
+    Vector<ActionType> allActions = actTypes.getAllActionTypes();
     // go through all action types and get their triggers:
     for (int i = 0; i < allActions.size(); i++) {
-      ActionType tempAct = (ActionType) allActions.elementAt(i);
-      Vector trigs = tempAct.getAllTriggers();
+      ActionType tempAct = allActions.elementAt(i);
+      Vector<ActionTypeTrigger> trigs = tempAct.getAllTriggers();
       for (int j = 0; j < trigs.size(); j++) {
-        ActionTypeTrigger tempTrig = (ActionTypeTrigger) trigs.elementAt(j);
+        ActionTypeTrigger tempTrig = trigs.elementAt(j);
         int priority = tempTrig.getPriority();
-        if (priority == -1) // trigger is not prioritized
-        {
+        if (priority == -1) { // trigger is not prioritized
           nonPrioritizedTriggers.addElement(tempTrig);
-        } else // priority >= 0
-        {
-          if (prioritizedTriggers.size() == 0) // no elements have been added
-                                               // yet to the prioritized trigger
-                                               // list
-          {
+        } else { // priority >= 0
+          if (prioritizedTriggers.size() == 0) { // no elements have been added
+                                               	 // yet to the prioritized 
+          																			 // trigger list
             prioritizedTriggers.add(tempTrig);
           } else {
             // find the correct position to insert the trigger at:
             for (int k = 0; k < prioritizedTriggers.size(); k++) {
-              ActionTypeTrigger tempA = (ActionTypeTrigger) prioritizedTriggers
-                  .elementAt(k);
+              ActionTypeTrigger tempA = prioritizedTriggers.elementAt(k);
               if (priority <= tempA.getPriority()) {
                 prioritizedTriggers.insertElementAt(tempTrig, k); // insert the
                                                                   // trigger
                 break;
-              } else if (k == (prioritizedTriggers.size() - 1)) // on the last
-                                                                // element
-              {
+              } else if (k == (prioritizedTriggers.size() - 1)) { // on the last
+                                                                	// element
                 prioritizedTriggers.add(tempTrig); // add the trigger to the end
                                                    // of the list
                 break;

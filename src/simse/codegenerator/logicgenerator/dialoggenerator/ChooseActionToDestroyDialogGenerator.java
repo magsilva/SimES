@@ -5,25 +5,40 @@
 
 package simse.codegenerator.logicgenerator.dialoggenerator;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import simse.modelbuilder.rulebuilder.*;
-import simse.codegenerator.*;
+import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.ActionTypeDestroyer;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantAttributeConstraint;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantConstraint;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantDestroyer;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.actionbuilder.UserActionTypeDestroyer;
+import simse.modelbuilder.objectbuilder.AttributeTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+import simse.modelbuilder.rulebuilder.Rule;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 public class ChooseActionToDestroyDialogGenerator implements
     CodeGeneratorConstants {
   private File directory; // directory to generate into
   private File catddFile; // file to generate
   private DefinedActionTypes actTypes; // holds all of the defined action types
-                                       // from an ssa file
 
-  public ChooseActionToDestroyDialogGenerator(DefinedActionTypes acts, File dir) {
-    directory = dir;
-    actTypes = acts;
+  public ChooseActionToDestroyDialogGenerator(DefinedActionTypes actTypes, 
+  		File directory) {
+    this.directory = directory;
+    this.actTypes = actTypes;
   }
 
   public void generate() {
@@ -124,14 +139,13 @@ public class ChooseActionToDestroyDialogGenerator implements
       writer.write(NEWLINE);
 
       // make a Vector of all the action types with user destroyers:
-      Vector userDestActs = new Vector();
-      Vector allActs = actTypes.getAllActionTypes();
+      Vector<ActionType> userDestActs = new Vector<ActionType>();
+      Vector<ActionType> allActs = actTypes.getAllActionTypes();
       for (int j = 0; j < allActs.size(); j++) {
-        ActionType userAct = (ActionType) allActs.elementAt(j);
-        Vector allDests = userAct.getAllDestroyers();
+        ActionType userAct = allActs.elementAt(j);
+        Vector<ActionTypeDestroyer> allDests = userAct.getAllDestroyers();
         for (int k = 0; k < allDests.size(); k++) {
-          ActionTypeDestroyer tempDest = (ActionTypeDestroyer) allDests
-              .elementAt(k);
+          ActionTypeDestroyer tempDest = allDests.elementAt(k);
           if (tempDest instanceof UserActionTypeDestroyer) {
             userDestActs.add(userAct);
             break;
@@ -140,18 +154,18 @@ public class ChooseActionToDestroyDialogGenerator implements
       }
       // go through each action type and generate code for it:
       for (int j = 0; j < userDestActs.size(); j++) {
-        ActionType act = (ActionType) userDestActs.elementAt(j);
-        if (j > 0) // not on first element
-        {
+        ActionType act = userDestActs.elementAt(j);
+        if (j > 0) { // not on first element
           writer.write("else ");
         }
         writer.write("if(tempAct instanceof "
-            + CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+            "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("actionName = \"" + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
-            + "\";");
+        writer.write("actionName = \"" + 
+        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "\";");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
@@ -162,13 +176,13 @@ public class ChooseActionToDestroyDialogGenerator implements
       writer.write("JPanel middlePane = new JPanel(new GridLayout(0, 1));");
       writer.write(NEWLINE);
       for (int j = 0; j < userDestActs.size(); j++) {
-        ActionType act = (ActionType) userDestActs.elementAt(j);
-        if (j > 0) // not on first element
-        {
+        ActionType act = userDestActs.elementAt(j);
+        if (j > 0) { // not on first element
           writer.write("else ");
         }
         writer.write("if(tempAct instanceof "
-            + CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+            "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -176,9 +190,10 @@ public class ChooseActionToDestroyDialogGenerator implements
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action act = ("
-            + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
-            + "Action)actions.elementAt(i);");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+        		"Action act = (" + 
+        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+        		"Action)actions.elementAt(i);");
         writer.write(NEWLINE);
         writer.write("if(act.getAllParticipants().contains(emp))");
         writer.write(NEWLINE);
@@ -187,15 +202,13 @@ public class ChooseActionToDestroyDialogGenerator implements
         writer.write("StringBuffer label = new StringBuffer();");
         writer.write(NEWLINE);
         // go through all participants:
-        Vector parts = act.getAllParticipants();
+        Vector<ActionTypeParticipant> parts = act.getAllParticipants();
         for (int k = 0; k < parts.size(); k++) {
-          if (k > 0) // not on first element
-          {
+          if (k > 0) { // not on first element
             writer.write("label.append(\"; \");");
             writer.write(NEWLINE);
           }
-          ActionTypeParticipant tempPart = (ActionTypeParticipant) parts
-              .elementAt(k);
+          ActionTypeParticipant tempPart = parts.elementAt(k);
           writer.write("label.append(\"" + tempPart.getName() + "(s); \");");
           writer.write(NEWLINE);
           writer.write("Vector all" + tempPart.getName() + "s = act.getAll"
@@ -221,24 +234,26 @@ public class ChooseActionToDestroyDialogGenerator implements
               + ")all" + tempPart.getName() + "s.elementAt(j);");
           writer.write(NEWLINE);
           // go through all allowable SimSEObjectTypes for this participant:
-          Vector ssObjTypes = tempPart.getAllSimSEObjectTypes();
+          Vector<SimSEObjectType> ssObjTypes = 
+          	tempPart.getAllSimSEObjectTypes();
           for (int m = 0; m < ssObjTypes.size(); m++) {
-            SimSEObjectType tempType = (SimSEObjectType) ssObjTypes
-                .elementAt(m);
-            if (m > 0) // not on first element
-            {
+            SimSEObjectType tempType = ssObjTypes.elementAt(m);
+            if (m > 0) { // not on first element
               writer.write("else ");
             }
             writer.write("if(a instanceof "
-                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")");
+                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + 
+                ")");
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
             writer.write("label.append(\""
-                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + "(\" + (("
-                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + ")a).get"
-                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getKey().getName())
-                + "() + \")\");");
+                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + 
+                "(\" + ((" + 
+                CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + 
+                ")a).get" + 
+                CodeGeneratorUtils.getUpperCaseLeading(
+                		tempType.getKey().getName()) + "() + \")\");");
             writer.write(NEWLINE);
             writer.write(CLOSED_BRACK);
             writer.write(NEWLINE);
@@ -381,25 +396,25 @@ public class ChooseActionToDestroyDialogGenerator implements
       writer.write(NEWLINE);
       // go through all action types w/ user destroyers:
       for (int i = 0; i < userDestActs.size(); i++) {
-        ActionType tempAct = (ActionType) userDestActs.elementAt(i);
-        if (i > 0) // not on first element
-        {
+        ActionType tempAct = userDestActs.elementAt(i);
+        if (i > 0) { // not on first element
           writer.write("else ");
         }
         writer.write("if(tempAct instanceof "
-            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
+            "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action "
-            + tempAct.getName().toLowerCase() + "Act = ("
-            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)tempAct;");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) +
+        		"Action " + tempAct.getName().toLowerCase() + "Act = (" + 
+        		CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
+        		"Action)tempAct;");
         writer.write(NEWLINE);
         // go through all participants:
-        Vector parts = tempAct.getAllParticipants();
+        Vector<ActionTypeParticipant> parts = tempAct.getAllParticipants();
         for (int j = 0; j < parts.size(); j++) {
-          ActionTypeParticipant part = (ActionTypeParticipant) parts
-              .elementAt(j);
+          ActionTypeParticipant part = parts.elementAt(j);
           if (part.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) {
             writer.write(tempAct.getName().toLowerCase() + "Act.remove"
                 + part.getName() + "(emp);");
@@ -408,11 +423,10 @@ public class ChooseActionToDestroyDialogGenerator implements
         }
 
         // go through all of the action's user destroyers:
-        Vector dests = tempAct.getAllDestroyers();
+        Vector<ActionTypeDestroyer> dests = tempAct.getAllDestroyers();
         boolean putElse = false;
         for (int j = 0; j < dests.size(); j++) {
-          ActionTypeDestroyer tempDest = (ActionTypeDestroyer) dests
-              .elementAt(j);
+          ActionTypeDestroyer tempDest = dests.elementAt(j);
           if ((tempDest instanceof UserActionTypeDestroyer)
               && (tempDest.getDestroyerText() != null)
               && (tempDest.getDestroyerText().length() > 0)) {
@@ -431,9 +445,9 @@ public class ChooseActionToDestroyDialogGenerator implements
             writer.write(NEWLINE);
 
             // execute all destroyer rules that have executeOnJoins == true:
-            Vector destRules = tempAct.getAllDestroyerRules();
+            Vector<Rule> destRules = tempAct.getAllDestroyerRules();
             for (int k = 0; k < destRules.size(); k++) {
-              Rule dRule = (Rule) destRules.elementAt(k);
+              Rule dRule = destRules.elementAt(k);
               if (dRule.getExecuteOnJoins() == true) {
                 writer.write("ruleExec.update(gui, RuleExecutor.UPDATE_ONE, \""
                     + dRule.getName() + "\", "
@@ -448,12 +462,10 @@ public class ChooseActionToDestroyDialogGenerator implements
 
         // go through all parts again:
         for (int j = 0; j < parts.size(); j++) {
-          if (j > 0) // not on first element
-          {
+          if (j > 0) { // not on first element
             writer.write("else ");
           }
-          ActionTypeParticipant part = (ActionTypeParticipant) parts
-              .elementAt(j);
+          ActionTypeParticipant part = parts.elementAt(j);
           writer.write("if(" + tempAct.getName().toLowerCase() + "Act.getAll"
               + part.getName() + "s().size() < ");
           if (part.getQuantity().isMinValBoundless()) {
@@ -482,8 +494,7 @@ public class ChooseActionToDestroyDialogGenerator implements
           // go through all user destroyers again:
           boolean putElse2 = false;
           for (int k = 0; k < dests.size(); k++) {
-            ActionTypeDestroyer tempDest = (ActionTypeDestroyer) dests
-                .elementAt(k);
+            ActionTypeDestroyer tempDest = dests.elementAt(k);
             if ((tempDest instanceof UserActionTypeDestroyer)
                 && (tempDest.getDestroyerText() != null)
                 && (tempDest.getDestroyerText().length() > 0)) {
@@ -517,8 +528,7 @@ public class ChooseActionToDestroyDialogGenerator implements
           // go through all user destroyers again:
           boolean putElse3 = false;
           for (int k = 0; k < dests.size(); k++) {
-            ActionTypeDestroyer tempDest = (ActionTypeDestroyer) dests
-                .elementAt(k);
+            ActionTypeDestroyer tempDest = dests.elementAt(k);
             if ((tempDest instanceof UserActionTypeDestroyer)
                 && (tempDest.getDestroyerText() != null)
                 && (tempDest.getDestroyerText().length() > 0)) {
@@ -548,9 +558,9 @@ public class ChooseActionToDestroyDialogGenerator implements
           writer.write(NEWLINE);
 
           // execute all destroyer rules:
-          Vector destRules = tempAct.getAllDestroyerRules();
+          Vector<Rule> destRules = tempAct.getAllDestroyerRules();
           for (int k = 0; k < destRules.size(); k++) {
-            Rule dRule = (Rule) destRules.elementAt(k);
+            Rule dRule = destRules.elementAt(k);
             writer.write("ruleExec.update(gui, RuleExecutor.UPDATE_ONE, \""
                 + dRule.getName() + "\", " + tempAct.getName().toLowerCase()
                 + "Act);");
@@ -565,11 +575,10 @@ public class ChooseActionToDestroyDialogGenerator implements
           // game-ending:
           if (tempAct.hasGameEndingDestroyer()) {
             // find all game-ending user destroyers:
-            Vector allDests = tempAct.getAllDestroyers();
+            Vector<ActionTypeDestroyer> allDests = tempAct.getAllDestroyers();
             boolean putElse711 = false;
             for (int k = 0; k < allDests.size(); k++) {
-              ActionTypeDestroyer tempDest = (ActionTypeDestroyer) allDests
-                  .elementAt(k);
+              ActionTypeDestroyer tempDest = allDests.elementAt(k);
               if ((tempDest instanceof UserActionTypeDestroyer)
                   && (tempDest.isGameEndingDestroyer())) {
                 if (putElse711) {
@@ -585,25 +594,27 @@ public class ChooseActionToDestroyDialogGenerator implements
                 writer.write(NEWLINE);
                 writer.write("// stop game and give score:");
                 writer.write(NEWLINE);
-                writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
-                    + "Action t111 = ("
-                    + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)"
-                    + tempAct.getName().toLowerCase() + "Act;");
+                writer.write(CodeGeneratorUtils.getUpperCaseLeading(
+                		tempAct.getName()) + "Action t111 = (" + 
+                		CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
+                		"Action)" + tempAct.getName().toLowerCase() + "Act;");
                 writer.write(NEWLINE);
                 // find the scoring attribute:
                 ActionTypeParticipantDestroyer scoringPartDest = null;
                 ActionTypeParticipantConstraint scoringPartConst = null;
                 ActionTypeParticipantAttributeConstraint scoringAttConst = null;
-                Vector partDests = tempDest.getAllParticipantDestroyers();
+                Vector<ActionTypeParticipantDestroyer> partDests = 
+                	tempDest.getAllParticipantDestroyers();
                 for (int m = 0; m < partDests.size(); m++) {
-                  ActionTypeParticipantDestroyer partDest = (ActionTypeParticipantDestroyer) partDests
-                      .elementAt(m);
-                  Vector partConsts = partDest.getAllConstraints();
+                  ActionTypeParticipantDestroyer partDest = 
+                  	partDests.elementAt(m);
+                  Vector<ActionTypeParticipantConstraint> partConsts = 
+                  	partDest.getAllConstraints();
                   for (int n = 0; n < partConsts.size(); n++) {
-                    ActionTypeParticipantConstraint partConst = (ActionTypeParticipantConstraint) partConsts
-                        .elementAt(n);
-                    ActionTypeParticipantAttributeConstraint[] attConsts = partConst
-                        .getAllAttributeConstraints();
+                    ActionTypeParticipantConstraint partConst = 
+                    	partConsts.elementAt(n);
+                    ActionTypeParticipantAttributeConstraint[] attConsts = 
+                    	partConst.getAllAttributeConstraints();
                     for (int p = 0; p < attConsts.length; p++) {
                       if (attConsts[p].isScoringAttribute()) {
                         scoringAttConst = attConsts[p];
@@ -622,8 +633,8 @@ public class ChooseActionToDestroyDialogGenerator implements
                   writer.write(NEWLINE);
                   writer.write(OPEN_BRACK);
                   writer.write(NEWLINE);
-                  writer.write(CodeGeneratorUtils.getUpperCaseLeading(scoringPartConst
-                      .getSimSEObjectType().getName())
+                  writer.write(CodeGeneratorUtils.getUpperCaseLeading(
+                  		scoringPartConst.getSimSEObjectType().getName())
                       + " t = ("
                       + CodeGeneratorUtils.getUpperCaseLeading(scoringPartConst
                           .getSimSEObjectType().getName())
@@ -635,13 +646,17 @@ public class ChooseActionToDestroyDialogGenerator implements
                   writer.write(NEWLINE);
                   writer.write(OPEN_BRACK);
                   writer.write(NEWLINE);
-                  if (scoringAttConst.getAttribute().getType() == AttributeTypes.INTEGER) {
+                  if (scoringAttConst.getAttribute().getType() == 
+                  	AttributeTypes.INTEGER) {
                     writer.write("int");
-                  } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.DOUBLE) {
+                  } else if (scoringAttConst.getAttribute().getType() == 
+                  	AttributeTypes.DOUBLE) {
                     writer.write("double");
-                  } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.STRING) {
+                  } else if (scoringAttConst.getAttribute().getType() == 
+                  	AttributeTypes.STRING) {
                     writer.write("String");
-                  } else if (scoringAttConst.getAttribute().getType() == AttributeTypes.BOOLEAN) {
+                  } else if (scoringAttConst.getAttribute().getType() == 
+                  	AttributeTypes.BOOLEAN) {
                     writer.write("boolean");
                   }
                   writer.write(" v = t.get"

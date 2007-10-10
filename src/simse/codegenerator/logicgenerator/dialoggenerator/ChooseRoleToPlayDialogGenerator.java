@@ -5,24 +5,34 @@
 
 package simse.codegenerator.logicgenerator.dialoggenerator;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import simse.modelbuilder.rulebuilder.*;
-import simse.codegenerator.*;
+import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.ActionTypeTrigger;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.actionbuilder.UserActionTypeTrigger;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+import simse.modelbuilder.rulebuilder.Rule;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
   private File directory; // directory to generate into
   private File crtpdFile; // file to generate
   private DefinedActionTypes actTypes; // holds all of the defined action types
-                                       // from an ssa file
 
-  public ChooseRoleToPlayDialogGenerator(DefinedActionTypes acts, File dir) {
-    directory = dir;
-    actTypes = acts;
+  public ChooseRoleToPlayDialogGenerator(DefinedActionTypes actTypes, 
+  		File directory) {
+    this.directory = directory;
+    this.actTypes = actTypes;
   }
 
   public void generate() {
@@ -65,6 +75,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
+      
       // member variables:
       writer.write("private JFrame gui;");
       writer.write(NEWLINE);
@@ -82,6 +93,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private JButton cancelButton;");
       writer.write(NEWLINE);
+      
       // constructor:
       writer
           .write("public ChooseRoleToPlayDialog(JFrame owner, Vector partNames, Employee e, simse.adts.actions.Action act, String menText, RuleExecutor re)");
@@ -261,13 +273,13 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // make a Vector of all the action types with user triggers:
-      Vector userTrigActs = new Vector();
-      Vector allActs = actTypes.getAllActionTypes();
+      Vector<ActionType> userTrigActs = new Vector<ActionType>();
+      Vector<ActionType> allActs = actTypes.getAllActionTypes();
       for (int j = 0; j < allActs.size(); j++) {
-        ActionType userAct = (ActionType) allActs.elementAt(j);
-        Vector allTrigs = userAct.getAllTriggers();
+        ActionType userAct = allActs.elementAt(j);
+        Vector<ActionTypeTrigger> allTrigs = userAct.getAllTriggers();
         for (int k = 0; k < allTrigs.size(); k++) {
-          ActionTypeTrigger tempTrig = (ActionTypeTrigger) allTrigs
+          ActionTypeTrigger tempTrig = allTrigs
               .elementAt(k);
           if (tempTrig instanceof UserActionTypeTrigger) {
             userTrigActs.add(userAct);
@@ -278,19 +290,19 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
 
       // go through all the actions with user triggers:
       for (int i = 0; i < userTrigActs.size(); i++) {
-        ActionType tempAct = (ActionType) userTrigActs.elementAt(i);
+        ActionType tempAct = userTrigActs.elementAt(i);
         writer.write("if(action instanceof "
-            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
+            "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
 
         // go through all the action's user triggers:
         boolean putElse = false;
-        Vector allTrigs = tempAct.getAllTriggers();
+        Vector<ActionTypeTrigger> allTrigs = tempAct.getAllTriggers();
         for (int j = 0; j < allTrigs.size(); j++) {
-          ActionTypeTrigger outerTrig = (ActionTypeTrigger) allTrigs
-              .elementAt(j);
+          ActionTypeTrigger outerTrig = allTrigs.elementAt(j);
           if ((outerTrig instanceof UserActionTypeTrigger)
               && (outerTrig.getTriggerText() != null)
               && (outerTrig.getTriggerText().length() > 0)) {
@@ -315,16 +327,13 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
         }
 
         // go through all employee participants:
-        Vector allParts = tempAct.getAllParticipants();
+        Vector<ActionTypeParticipant> allParts = tempAct.getAllParticipants();
         int numEmpParts = 0;
         for (int j = 0; j < allParts.size(); j++) {
-          ActionTypeParticipant part = (ActionTypeParticipant) allParts
-              .elementAt(j);
-          if (part.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) // employee
-                                                                              // participant
-          {
-            if (numEmpParts > 0) // not on first element
-            {
+          ActionTypeParticipant part = allParts.elementAt(j);
+          if (part.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) { 
+          	// employee participant
+            if (numEmpParts > 0) { // not on first element
               writer.write("else ");
             }
             numEmpParts++;
@@ -332,15 +341,16 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
-            writer.write("((" + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
-                + "Action)action).add" + part.getName() + "(emp);");
+            writer.write("((" + CodeGeneratorUtils.getUpperCaseLeading(
+            		tempAct.getName())+ "Action)action).add" + part.getName() + 
+            		"(emp);");
             writer.write(NEWLINE);
 
             // go through all trigger rules and execute rules that are to be
             // executed on each join:
-            Vector rules = tempAct.getAllTriggerRules();
+            Vector<Rule> rules = tempAct.getAllTriggerRules();
             for (int k = 0; k < rules.size(); k++) {
-              Rule tempRule = (Rule) rules.elementAt(k);
+              Rule tempRule = rules.elementAt(k);
               if (tempRule.getExecuteOnJoins() == true) {
                 writer.write("ruleExec.update(gui, RuleExecutor.UPDATE_ONE, "
                     + "\"" + tempRule.getName() + "\", action);");
@@ -374,23 +384,22 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
 
       // go through all action types w/ user triggers:
       for (int i = 0; i < userTrigActs.size(); i++) {
-        ActionType tempAct = (ActionType) userTrigActs.elementAt(i);
-        if (i > 0) // not on first element
-        {
+        ActionType tempAct = userTrigActs.elementAt(i);
+        if (i > 0) { // not on first element
           writer.write("else ");
         }
         writer.write("if(action instanceof "
-            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
+            "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
 
         // go through all the actions user triggers:
         boolean putElse = false;
-        Vector allTrigs = tempAct.getAllTriggers();
+        Vector<ActionTypeTrigger> allTrigs = tempAct.getAllTriggers();
         for (int j = 0; j < allTrigs.size(); j++) {
-          ActionTypeTrigger outerTrig = (ActionTypeTrigger) allTrigs
-              .elementAt(j);
+          ActionTypeTrigger outerTrig = allTrigs.elementAt(j);
           if ((outerTrig instanceof UserActionTypeTrigger)
               && (outerTrig.getTriggerText() != null)
               && (outerTrig.getTriggerText().length() > 0)) {
@@ -413,16 +422,13 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
         }
 
         // go through all employee participants:
-        Vector allParts = tempAct.getAllParticipants();
+        Vector<ActionTypeParticipant> allParts = tempAct.getAllParticipants();
         int numEmpParts = 0;
         for (int j = 0; j < allParts.size(); j++) {
-          ActionTypeParticipant part = (ActionTypeParticipant) allParts
-              .elementAt(j);
-          if (part.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) // employee
-                                                                              // participant
-          {
-            if (numEmpParts > 0) // not on first element
-            {
+          ActionTypeParticipant part = allParts.elementAt(j);
+          if (part.getSimSEObjectTypeType() == SimSEObjectTypeTypes.EMPLOYEE) { 
+          	// employee participant
+            if (numEmpParts > 0) { // not on first element
               writer.write("else ");
             }
             numEmpParts++;
@@ -430,15 +436,16 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
-            writer.write("((" + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
-                + "Action)action).add" + part.getName() + "(emp);");
+            writer.write("((" + CodeGeneratorUtils.getUpperCaseLeading(
+            		tempAct.getName()) + "Action)action).add" + part.getName() + 
+            		"(emp);");
             writer.write(NEWLINE);
 
             // go through all trigger rules and execute rules that are to be
             // executed on each join:
-            Vector rules = tempAct.getAllTriggerRules();
+            Vector<Rule> rules = tempAct.getAllTriggerRules();
             for (int k = 0; k < rules.size(); k++) {
-              Rule tempRule = (Rule) rules.elementAt(k);
+              Rule tempRule = rules.elementAt(k);
               if (tempRule.getExecuteOnJoins() == true) {
                 writer.write("ruleExec.update(gui, RuleExecutor.UPDATE_ONE, "
                     + "\"" + tempRule.getName() + "\", action);");

@@ -5,30 +5,40 @@
 
 package simse.codegenerator.logicgenerator.dialoggenerator;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import simse.codegenerator.*;
+import simse.codegenerator.CodeGeneratorConstants;
+import simse.codegenerator.CodeGeneratorUtils;
 
-import java.util.*;
-import java.awt.BorderLayout;
-import java.awt.Image;
-import java.io.*;
-import javax.swing.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
+import simse.modelbuilder.actionbuilder.ActionTypeTrigger;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.actionbuilder.UserActionTypeTrigger;
+import simse.modelbuilder.objectbuilder.AttributeTypes;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 public class NonEmployeeParticipantSelectionDialogGenerator implements
     CodeGeneratorConstants {
   private File directory; // directory to generate into
   private File psdFile; // file to generate
   private DefinedActionTypes actTypes; // holds all of the defined action types
-                                       // from an ssa file
   private DefinedObjectTypes objTypes; // holds all of the defined object types
-                                       // from an sso file
 
   public NonEmployeeParticipantSelectionDialogGenerator(
-      DefinedActionTypes acts, DefinedObjectTypes objs, File dir) {
-    directory = dir;
-    actTypes = acts;
-    objTypes = objs;
+      DefinedActionTypes actTypes, DefinedObjectTypes objTypes, 
+      File directory) {
+    this.directory = directory;
+    this.actTypes = actTypes;
+    this.objTypes = objTypes;
   }
 
   public void generate() {
@@ -73,6 +83,7 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
+      
       // member variables:
       writer.write("private String partName;");
       writer.write(NEWLINE);
@@ -98,6 +109,7 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
       writer.write(NEWLINE);
       writer.write("private boolean actionCancelled;");
       writer.write(NEWLINE);
+      
       // constructor:
       writer
           .write("public NonEmployeeParticipantSelectionDialog(JFrame owner, String pName, Vector parts, simse.adts.actions.Action act, State s)");
@@ -176,11 +188,10 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
       writer.write("String label = new String();");
       writer.write(NEWLINE);
       // go through each object type:
-      Vector objs = objTypes.getAllObjectTypes();
+      Vector<SimSEObjectType> objs = objTypes.getAllObjectTypes();
       for (int i = 0; i < objs.size(); i++) {
-        SimSEObjectType tempType = (SimSEObjectType) objs.elementAt(i);
-        if (i > 0) // not on first element
-        {
+        SimSEObjectType tempType = objs.elementAt(i);
+        if (i > 0) { // not on first element
           writer.write("else ");
         }
         writer.write("if(tempObj instanceof "
@@ -189,11 +200,11 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
         writer
-            .write("label = (\"" + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName())
-                + " (\" + ((" + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName())
-                + ")tempObj).get"
-                + CodeGeneratorUtils.getUpperCaseLeading(tempType.getKey().getName())
-                + "() + \")\");");
+            .write("label = (\"" + CodeGeneratorUtils.getUpperCaseLeading(
+            		tempType.getName()) + " (\" + ((" + 
+            		CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + 
+            		")tempObj).get" + CodeGeneratorUtils.getUpperCaseLeading(
+            				tempType.getKey().getName()) + "() + \")\");");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
@@ -302,32 +313,30 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       // go through each action type:
-      Vector acts = actTypes.getAllActionTypes();
+      Vector<ActionType> acts = actTypes.getAllActionTypes();
       boolean putElse = false;
       for (int j = 0; j < acts.size(); j++) {
-        ActionType tempAct = (ActionType) acts.elementAt(j);
-        if (putElse) // not on first element
-        {
+        ActionType tempAct = acts.elementAt(j);
+        if (putElse) { // not on first element
           writer.write("else ");
         } else {
           putElse = true;
         }
         writer.write("if(action instanceof "
-            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
+            "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
         // go through all participants:
-        Vector participants = tempAct.getAllParticipants();
+        Vector<ActionTypeParticipant> participants = 
+        	tempAct.getAllParticipants();
         boolean nextOneWriteElse = false;
         for (int k = 0; k < participants.size(); k++) {
-          ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
-              .elementAt(k);
-          if (tempPart.getSimSEObjectTypeType() != SimSEObjectTypeTypes.EMPLOYEE) // Non-Employee
-                                                                                  // participant
-          {
-            if (nextOneWriteElse) // not on first element
-            {
+          ActionTypeParticipant tempPart = participants.elementAt(k);
+          if (tempPart.getSimSEObjectTypeType() != 
+          	SimSEObjectTypeTypes.EMPLOYEE) { // Non-Employee participant
+            if (nextOneWriteElse) { // not on first element
               writer.write("else ");
             }
             writer.write("if(partName.equals(\"" + tempPart.getName() + "\"))");
@@ -339,8 +348,9 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
                 + "Action)action).add"
                 + tempPart.getName()
                 + "(("
-                + CodeGeneratorUtils.getUpperCaseLeading(SimSEObjectTypeTypes.getText(tempPart
-                    .getSimSEObjectTypeType()))
+                + CodeGeneratorUtils.getUpperCaseLeading(
+                		SimSEObjectTypeTypes.getText(
+                				tempPart.getSimSEObjectTypeType()))
                 + ")participants.elementAt(0));");
             writer.write(NEWLINE);
             writer.write(CLOSED_BRACK);
@@ -479,13 +489,13 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
       writer.write(NEWLINE);
       // go through each object type:
       for (int i = 0; i < objs.size(); i++) {
-        SimSEObjectType tempType = (SimSEObjectType) objs.elementAt(i);
-        if (i > 0) // not on first element
-        {
+        SimSEObjectType tempType = objs.elementAt(i);
+        if (i > 0) { // not on first element
           writer.write("else ");
         }
         writer.write("if(objTypeName.equals(\""
-            + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + "\"))");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + 
+            "\"))");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
@@ -496,10 +506,11 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
         }
-        writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempType.getName()) + " a = state.get"
-            + SimSEObjectTypeTypes.getText(tempType.getType())
-            + "StateRepository().get" + CodeGeneratorUtils.getUpperCaseLeading(tempType.getName())
-            + "StateRepository().get(");
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(
+        		tempType.getName()) + " a = state.get" + 
+        		SimSEObjectTypeTypes.getText(tempType.getType()) + 
+        		"StateRepository().get" + CodeGeneratorUtils.getUpperCaseLeading(
+        				tempType.getName()) + "StateRepository().get(");
         if (tempType.getKey().getType() == AttributeTypes.STRING) {
           writer.write("keyValStr);");
         } else if (tempType.getKey().getType() == AttributeTypes.BOOLEAN) {
@@ -517,11 +528,11 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
         // go through each action type:
         boolean putElse2 = false;
         for (int j = 0; j < acts.size(); j++) {
-          ActionType tempAct = (ActionType) acts.elementAt(j);
-          Vector trigs = tempAct.getAllTriggers();
+          ActionType tempAct = acts.elementAt(j);
+          Vector<ActionTypeTrigger> trigs = tempAct.getAllTriggers();
           // only generate code for actions w/ user triggers:
           for (int k = 0; k < trigs.size(); k++) {
-            ActionTypeTrigger tempTrig = (ActionTypeTrigger) trigs.elementAt(k);
+            ActionTypeTrigger tempTrig = trigs.elementAt(k);
             if (tempTrig instanceof UserActionTypeTrigger) {
               if (putElse2) // not on first element
               {
@@ -530,28 +541,21 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
                 putElse2 = true;
               }
               writer.write("if(action instanceof "
-                  + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
+                  + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
+                  "Action)");
               writer.write(NEWLINE);
               writer.write(OPEN_BRACK);
               writer.write(NEWLINE);
               // go through all participants:
-              Vector participants = tempAct.getAllParticipants();
+              Vector<ActionTypeParticipant> participants = 
+              	tempAct.getAllParticipants();
               boolean nextOneWriteElse = false;
               for (int m = 0; m < participants.size(); m++) {
-                ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
-                    .elementAt(m);
-                if (tempPart.getSimSEObjectType(tempType.getName()) != null) // this
-                                                                             // SimSEObjectType
-                                                                             // is
-                                                                             // an
-                                                                             // allowable
-                                                                             // type
-                                                                             // for
-                                                                             // this
-                                                                             // participant
-                {
-                  if (nextOneWriteElse) // not on first element
-                  {
+                ActionTypeParticipant tempPart = participants.elementAt(m);
+                if (tempPart.getSimSEObjectType(tempType.getName()) != null) {
+                	// this SimSEObjectType is an allowable type for this 
+                	// participant
+                  if (nextOneWriteElse) { // not on first element
                     writer.write("else ");
                   }
                   writer.write("if(partName.equals(\"" + tempPart.getName()
@@ -559,10 +563,10 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
                   writer.write(NEWLINE);
                   writer.write(OPEN_BRACK);
                   writer.write(NEWLINE);
-                  writer.write("((" + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
-                      + "Action)action).add" + tempPart.getName() + "(("
-                      + SimSEObjectTypeTypes.getText(tempType.getType())
-                      + ")a);");
+                  writer.write("((" + CodeGeneratorUtils.getUpperCaseLeading(
+                  		tempAct.getName()) + "Action)action).add" + 
+                  		tempPart.getName() + "((" + SimSEObjectTypeTypes.getText(
+                  				tempType.getType()) + ")a);");
                   writer.write(NEWLINE);
                   writer.write(CLOSED_BRACK);
                   writer.write(NEWLINE);
@@ -603,25 +607,24 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
       writer.write(NEWLINE);
       // go through each action:
       for (int i = 0; i < acts.size(); i++) {
-        ActionType tempAct = (ActionType) acts.elementAt(i);
-        if (i > 0) // not on first element
-        {
+        ActionType tempAct = acts.elementAt(i);
+        if (i > 0) { // not on first element
           writer.write("else ");
         }
         writer.write("if(action instanceof "
-            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + "Action)");
+            + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
+            "Action)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
         // go through each participant:
-        Vector participants = tempAct.getAllParticipants();
+        Vector<ActionTypeParticipant> participants = 
+        	tempAct.getAllParticipants();
         for (int j = 0; j < participants.size(); j++) {
-          if (j > 0) // not on first element
-          {
+          if (j > 0) { // not on first element
             writer.write("else ");
           }
-          ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
-              .elementAt(j);
+          ActionTypeParticipant tempPart = participants.elementAt(j);
           writer.write("if(partName.equals(\"" + tempPart.getName() + "\"))");
           writer.write(NEWLINE);
           writer.write(OPEN_BRACK);
@@ -629,16 +632,14 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
           writer.write("minNumParts = ");
           if (tempPart.getQuantity().isMinValBoundless()) {
             writer.write("0;");
-          } else // min val has a value
-          {
+          } else { // min val has a value
             writer.write(tempPart.getQuantity().getMinVal().toString() + ";");
           }
           writer.write(NEWLINE);
           writer.write("maxNumParts = ");
           if (tempPart.getQuantity().isMaxValBoundless()) {
             writer.write("999999;");
-          } else // max val has a value
-          {
+          } else { // max val has a value
             writer.write(tempPart.getQuantity().getMaxVal().toString() + ";");
           }
           writer.write(NEWLINE);

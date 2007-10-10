@@ -5,11 +5,15 @@
 
 package simse.codegenerator.utilgenerator;
 
-import java.io.*;
-import javax.swing.*;
+import simse.codegenerator.CodeGeneratorConstants;
+
 import simse.modelbuilder.ModelOptions;
 
-import simse.codegenerator.CodeGeneratorConstants;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
 
 public class IDGeneratorGenerator implements CodeGeneratorConstants {
   private ModelOptions options;

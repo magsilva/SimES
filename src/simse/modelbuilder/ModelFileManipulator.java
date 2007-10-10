@@ -20,7 +20,7 @@ public class ModelFileManipulator {
   private CreatedObjects objects;
   private DefinedActionTypes actionTypes;
   private TileData[][] mapRep;
-  private ArrayList sopUsers;
+  private ArrayList<UserData> sopUsers;
 
   // general constants
   private final char NEWLINE = '\n';
@@ -146,8 +146,8 @@ public class ModelFileManipulator {
   private final String END_ALLOW_HIRE_FIRE_TAG = "<endAllowHireFire>";
 
   public ModelFileManipulator(ModelOptions opts, DefinedObjectTypes objTypes,
-      DefinedActionTypes defActs, CreatedObjects createdObjs, ArrayList sops,
-      TileData[][] map) {
+      DefinedActionTypes defActs, CreatedObjects createdObjs, 
+      ArrayList<UserData> sops, TileData[][] map) {
     options = opts;
     objectTypes = objTypes;
     objects = createdObjs;
@@ -160,8 +160,9 @@ public class ModelFileManipulator {
    * generates a file with the name of the given file parameter that contains 
    * the model data structures in memory
    */
-  public void generateFile(File outputFile, Hashtable startStateObjsToImages,
-      Hashtable ruleObjsToImages, boolean allowHireFire) 
+  public void generateFile(File outputFile, 
+  		Hashtable<SimSEObject, String> startStateObjsToImages,
+      Hashtable<SimSEObject, String> ruleObjsToImages, boolean allowHireFire) 
   {
     if (outputFile.exists()) {
       outputFile.delete(); // delete old version of file
@@ -213,19 +214,19 @@ public class ModelFileManipulator {
       writer.write(BEGIN_OBJECT_TYPES_TAG);
       writer.write(NEWLINE);
       // go through each object type and write it to the file:
-      Vector objTypes = objectTypes.getAllObjectTypes();
+      Vector<SimSEObjectType> objTypes = objectTypes.getAllObjectTypes();
       for (int i = 0; i < objTypes.size(); i++) {
-        SimSEObjectType tempObj = (SimSEObjectType) (objTypes.elementAt(i));
+        SimSEObjectType tempObj = objTypes.elementAt(i);
         writer.write(BEGIN_OBJECT_TYPE_TAG);
         writer.write(NEWLINE);
         writer.write((new Integer(tempObj.getType())).toString());
         writer.write(NEWLINE);
         writer.write(tempObj.getName());
         writer.write(NEWLINE);
-        Vector attributes = tempObj.getAllAttributes();
+        Vector<Attribute> attributes = tempObj.getAllAttributes();
         // go through each attribute and write it to the file:
         for (int j = 0; j < attributes.size(); j++) {
-          Attribute tempAtt = (Attribute) (attributes.elementAt(j));
+          Attribute tempAtt = attributes.elementAt(j);
           writer.write(BEGIN_ATTRIBUTE_TAG);
           writer.write(NEWLINE);
           writer.write(tempAtt.getName());
@@ -261,23 +262,22 @@ public class ModelFileManipulator {
           writer.write(NEWLINE);
 
           if (tempAtt instanceof NumericalAttribute) {
+          	NumericalAttribute numAtt = (NumericalAttribute)tempAtt;
             // min value:
-            if (((NumericalAttribute) tempAtt).isMinBoundless()) {
+            if (numAtt.isMinBoundless()) {
               writer.write(BOUNDLESS);
             } else // tempAtt.isMinBoundless() == false
             {
-              writer.write(((NumericalAttribute) tempAtt).getMinValue()
-                  .toString());
+              writer.write(numAtt.getMinValue().toString());
             }
             writer.write(NEWLINE);
 
             // max value:
-            if (((NumericalAttribute) tempAtt).isMaxBoundless()) {
+            if (numAtt.isMaxBoundless()) {
               writer.write(BOUNDLESS);
-            } else // tempAtt.isMaxBoundless() == false
+            } else // numAtt.isMaxBoundless() == false
             {
-              writer.write(((NumericalAttribute) tempAtt).getMaxValue()
-                  .toString());
+              writer.write(numAtt.getMaxValue().toString());
             }
             writer.write(NEWLINE);
 
@@ -285,20 +285,18 @@ public class ModelFileManipulator {
             {
               // min/max num digits:
               // min:
-              if (((NumericalAttribute) tempAtt).getMinNumFractionDigits() == null) {
+              if (numAtt.getMinNumFractionDigits() == null) {
                 writer.write(BOUNDLESS);
               } else {
-                writer.write(((NumericalAttribute) tempAtt)
-                    .getMinNumFractionDigits().toString());
+                writer.write(numAtt.getMinNumFractionDigits().toString());
               }
               writer.write(NEWLINE);
 
               // max:
-              if (((NumericalAttribute) tempAtt).getMaxNumFractionDigits() == null) {
+              if (numAtt.getMaxNumFractionDigits() == null) {
                 writer.write(BOUNDLESS);
               } else {
-                writer.write(((NumericalAttribute) tempAtt)
-                    .getMaxNumFractionDigits().toString());
+                writer.write(numAtt.getMaxNumFractionDigits().toString());
               }
               writer.write(NEWLINE);
             }
@@ -330,9 +328,9 @@ public class ModelFileManipulator {
       writer.write(NEWLINE);
 
       // go through each object and write it to the file:
-      Vector objs = objects.getAllObjects();
+      Vector<SimSEObject> objs = objects.getAllObjects();
       for (int i = 0; i < objs.size(); i++) {
-        SimSEObject tempObj = (SimSEObject) (objs.elementAt(i));
+        SimSEObject tempObj = objs.elementAt(i);
         writer.write(BEGIN_OBJECT_TAG);
         writer.write(NEWLINE);
         writer.write((new Integer(tempObj.getSimSEObjectType().getType()))
@@ -340,11 +338,11 @@ public class ModelFileManipulator {
         writer.write(NEWLINE);
         writer.write(tempObj.getName());
         writer.write(NEWLINE);
-        Vector instAttributes = tempObj.getAllAttributes();
+        Vector<InstantiatedAttribute> instAttributes = 
+        	tempObj.getAllAttributes();
         // go through each instantiated attribute and write it to the file:
         for (int j = 0; j < instAttributes.size(); j++) {
-          InstantiatedAttribute tempInstAtt = (InstantiatedAttribute) (instAttributes
-              .elementAt(j));
+          InstantiatedAttribute tempInstAtt = instAttributes.elementAt(j);
           writer.write(BEGIN_INSTANTIATED_ATTRIBUTE_TAG);
           writer.write(NEWLINE);
           writer.write(tempInstAtt.getAttribute().getName());
@@ -370,9 +368,9 @@ public class ModelFileManipulator {
       writer.write(BEGIN_DEFINED_ACTIONS_TAG);
       writer.write(NEWLINE);
       // go through each action type and write it to the file:
-      Vector actions = actionTypes.getAllActionTypes();
+      Vector<ActionType> actions = actionTypes.getAllActionTypes();
       for (int i = 0; i < actions.size(); i++) {
-        ActionType tempAct = (ActionType) (actions.elementAt(i));
+        ActionType tempAct = actions.elementAt(i);
         writer.write(BEGIN_ACTION_TYPE_TAG);
         writer.write(NEWLINE);
         writer.write(tempAct.getName()); // action type name
@@ -407,11 +405,11 @@ public class ModelFileManipulator {
         writer.write(new Boolean(tempAct.isJoiningAllowed()).toString());
         writer.write(NEWLINE);
 
-        Vector participants = tempAct.getAllParticipants();
+        Vector<ActionTypeParticipant> participants = 
+        	tempAct.getAllParticipants();
         // go through each participant and write it to the file:
         for (int j = 0; j < participants.size(); j++) {
-          ActionTypeParticipant tempPart = (ActionTypeParticipant) (participants
-              .elementAt(j));
+          ActionTypeParticipant tempPart = participants.elementAt(j);
           writer.write(BEGIN_PARTICIPANT_TAG);
           writer.write(NEWLINE);
           writer.write(tempPart.getName()); // participant name
@@ -451,15 +449,11 @@ public class ModelFileManipulator {
           writer.write(NEWLINE);
           writer.write(BEGIN_SSOBJ_TYPE_NAMES_TAG);
           writer.write(NEWLINE);
-          Vector ssObjTypes = tempPart.getAllSimSEObjectTypes(); // get all of
-                                                                 // the
-                                                                 // SimSEObjectTypes
-                                                                 // for this
-                                                                 // participant
+          // get all of the SimSEObjectTypes for this participant:
+          Vector<SimSEObjectType> ssObjTypes = tempPart.getAllSimSEObjectTypes(); 
           // go through each SimSEObjectType and write its name to the file:
           for (int k = 0; k < ssObjTypes.size(); k++) {
-            SimSEObjectType tempType = (SimSEObjectType) (ssObjTypes
-                .elementAt(k));
+            SimSEObjectType tempType = ssObjTypes.elementAt(k);
             writer.write(tempType.getName()); // SimSEObjectType name
             writer.write(NEWLINE);
           }
@@ -470,10 +464,9 @@ public class ModelFileManipulator {
         }
 
         // triggers:
-        Vector allTrigs = tempAct.getAllTriggers();
+        Vector<ActionTypeTrigger> allTrigs = tempAct.getAllTriggers();
         for (int j = 0; j < allTrigs.size(); j++) {
-          ActionTypeTrigger tempTrig = (ActionTypeTrigger) allTrigs
-              .elementAt(j);
+          ActionTypeTrigger tempTrig = allTrigs.elementAt(j);
           writer.write(BEGIN_TRIGGER_TAG);
           writer.write(NEWLINE);
           // trigger name:
@@ -497,10 +490,11 @@ public class ModelFileManipulator {
           {
             writer.write(ActionTypeTrigger.USER);
             writer.write(NEWLINE);
-            writer.write(((UserActionTypeTrigger) (tempTrig)).getMenuText());                                                     // text
+            UserActionTypeTrigger tempUserTrig = 
+            	(UserActionTypeTrigger)tempTrig;
+            writer.write(tempUserTrig.getMenuText());                                                     // text
             writer.write(NEWLINE);
-            writer.write(String.valueOf(((UserActionTypeTrigger) (tempTrig)).
-                requiresConfirmation()));
+            writer.write(String.valueOf(tempUserTrig.requiresConfirmation()));
             writer.write(NEWLINE);
           }
           // trigger text:
@@ -519,23 +513,25 @@ public class ModelFileManipulator {
               .write((new Boolean(tempTrig.isGameEndingTrigger())).toString());
           writer.write(NEWLINE);
           // participant triggers:
-          Vector partTriggers = tempTrig.getAllParticipantTriggers();
+          Vector<ActionTypeParticipantTrigger> partTriggers = 
+          	tempTrig.getAllParticipantTriggers();
           // go through each ActionTypeParticipantTrigger and write it to the
           // file:
           for (int k = 0; k < partTriggers.size(); k++) {
             writer.write(BEGIN_PARTICIPANT_TRIGGER_TAG);
             writer.write(NEWLINE);
-            ActionTypeParticipantTrigger tempPartTrig = (ActionTypeParticipantTrigger) (partTriggers
-                .elementAt(k));
+            ActionTypeParticipantTrigger tempPartTrig = 
+            	partTriggers.elementAt(k);
             writer.write(tempPartTrig.getParticipant().getName()); // participant
                                                                    // name
             writer.write(NEWLINE);
             // go through each ActionTypeParticipantConstraint and write it to
             // the file:
-            Vector partConstraints = tempPartTrig.getAllConstraints();
+            Vector<ActionTypeParticipantConstraint> partConstraints = 
+            	tempPartTrig.getAllConstraints();
             for (int m = 0; m < partConstraints.size(); m++) {
-              ActionTypeParticipantConstraint tempPartConst = (ActionTypeParticipantConstraint) (partConstraints
-                  .elementAt(m));
+              ActionTypeParticipantConstraint tempPartConst = 
+              	partConstraints.elementAt(m);
               writer.write(BEGIN_PARTICIPANT_CONSTRAINT_TAG);
               writer.write(NEWLINE);
               writer.write(tempPartConst.getSimSEObjectType().getName()); // name
@@ -586,10 +582,9 @@ public class ModelFileManipulator {
         }
 
         // destroyers:
-        Vector allDests = tempAct.getAllDestroyers();
+        Vector<ActionTypeDestroyer> allDests = tempAct.getAllDestroyers();
         for (int j = 0; j < allDests.size(); j++) {
-          ActionTypeDestroyer tempDest = (ActionTypeDestroyer) allDests
-              .elementAt(j);
+          ActionTypeDestroyer tempDest = allDests.elementAt(j);
           writer.write(BEGIN_DESTROYER_TAG);
           writer.write(NEWLINE);
           // destroyer name:
@@ -642,24 +637,26 @@ public class ModelFileManipulator {
               .toString());
           writer.write(NEWLINE);
           // participant destroyers:
-          Vector partDestroyers = tempDest.getAllParticipantDestroyers();
+          Vector<ActionTypeParticipantDestroyer> partDestroyers = 
+          	tempDest.getAllParticipantDestroyers();
           // go through each ActionTypeParticipantDestroyer and write it to the
           // file:
           for (int k = 0; k < partDestroyers.size(); k++) {
             writer.write(BEGIN_PARTICIPANT_DESTROYER_TAG);
             writer.write(NEWLINE);
-            ActionTypeParticipantDestroyer tempPartDest = (ActionTypeParticipantDestroyer) (partDestroyers
-                .elementAt(k));
+            ActionTypeParticipantDestroyer tempPartDest = 
+            	partDestroyers.elementAt(k);
             writer.write(tempPartDest.getParticipant().getName()); // participant
                                                                    // name
             writer.write(NEWLINE);
             // participant constraints:
-            Vector partConstraints = tempPartDest.getAllConstraints();
+            Vector<ActionTypeParticipantConstraint> partConstraints = 
+            	tempPartDest.getAllConstraints();
             // go through each ActionTypeParticipantConstraint and write it to
             // the file:
             for (int m = 0; m < partConstraints.size(); m++) {
-              ActionTypeParticipantConstraint tempPartConst = (ActionTypeParticipantConstraint) (partConstraints
-                  .elementAt(m));
+              ActionTypeParticipantConstraint tempPartConst = 
+              	partConstraints.elementAt(m);
               writer.write(BEGIN_PARTICIPANT_CONSTRAINT_TAG);
               writer.write(NEWLINE);
               writer.write(tempPartConst.getSimSEObjectType().getName()); // name
@@ -718,11 +715,11 @@ public class ModelFileManipulator {
       writer.write(NEWLINE);
       // go through each action type and write its rules to the file:
       for (int i = 0; i < actions.size(); i++) {
-        ActionType tempAct = (ActionType) (actions.elementAt(i));
-        Vector rules = tempAct.getAllRules();
+        ActionType tempAct = actions.elementAt(i);
+        Vector<Rule> rules = tempAct.getAllRules();
         // go through each rule and write it to the file:
         for (int j = 0; j < rules.size(); j++) {
-          Rule tempRule = (Rule) rules.elementAt(j);
+          Rule tempRule = rules.elementAt(j);
           if (tempRule instanceof EffectRule) // EffectRule
           {
             writer.write(BEGIN_EFFECT_RULE_TAG);
@@ -763,26 +760,25 @@ public class ModelFileManipulator {
             writer.write(END_RULE_ANNOTATION_TAG);
             writer.write(NEWLINE);
 
-            Vector partEffects = ((EffectRule) tempRule)
+            Vector<ParticipantRuleEffect> partEffects = ((EffectRule) tempRule)
                 .getAllParticipantRuleEffects();
             // go through each ParticipantRuleEffect and write it to the file:
             for (int k = 0; k < partEffects.size(); k++) {
               writer.write(BEGIN_PARTICIPANT_EFFECT_TAG);
               writer.write(NEWLINE);
-              ParticipantRuleEffect tempPartEffect = (ParticipantRuleEffect) partEffects
-                  .elementAt(k);
+              ParticipantRuleEffect tempPartEffect = partEffects.elementAt(k);
               writer.write(tempPartEffect.getParticipant().getName()); // participant
                                                                        // name
               writer.write(NEWLINE);
-              Vector partTypeEffects = tempPartEffect
-                  .getAllParticipantTypeEffects();
+              Vector<ParticipantTypeRuleEffect> partTypeEffects = 
+              	tempPartEffect.getAllParticipantTypeEffects();
               // go through each ParticipantTypeRuleEffect and write it to the
               // file:
               for (int m = 0; m < partTypeEffects.size(); m++) {
                 writer.write(BEGIN_PARTICIPANT_TYPE_EFFECT_TAG);
                 writer.write(NEWLINE);
-                ParticipantTypeRuleEffect tempPartTypeEffect = (ParticipantTypeRuleEffect) partTypeEffects
-                    .elementAt(m);
+                ParticipantTypeRuleEffect tempPartTypeEffect = 
+                	partTypeEffects.elementAt(m);
                 writer.write((new Integer(tempPartTypeEffect
                     .getSimSEObjectType().getType())).toString());
                 // SimSEObjectTypeType
@@ -801,7 +797,7 @@ public class ModelFileManipulator {
                   // actions to activate:
                   writer.write(BEGIN_ACTIONS_TO_ACTIVATE_TAG);
                   writer.write(NEWLINE);
-                  Vector actionsToActivate = tempPartTypeEffect.
+                  Vector<ActionType> actionsToActivate = tempPartTypeEffect.
                   	getOtherActionsEffect().getActionsToActivate();
                   if (actionsToActivate.isEmpty()) {
                     writer.write(EMPTY_VALUE);
@@ -809,7 +805,7 @@ public class ModelFileManipulator {
                   }
                   else {
                     for (int n = 0; n < actionsToActivate.size(); n++) {
-                      ActionType tempAct2 = (ActionType)actionsToActivate.
+                      ActionType tempAct2 = actionsToActivate.
                       	elementAt(n);
                       writer.write(tempAct2.getName());
                       writer.write(NEWLINE);
@@ -821,7 +817,7 @@ public class ModelFileManipulator {
                   // actions to deactivate:
                   writer.write(BEGIN_ACTIONS_TO_DEACTIVATE_TAG);
                   writer.write(NEWLINE);
-                  Vector actionsToDeactivate = tempPartTypeEffect.
+                  Vector<ActionType> actionsToDeactivate = tempPartTypeEffect.
                   	getOtherActionsEffect().getActionsToDeactivate();
                   if (actionsToDeactivate.isEmpty()) {
                     writer.write(EMPTY_VALUE);
@@ -829,8 +825,7 @@ public class ModelFileManipulator {
                   }
                   else {
                     for (int n = 0; n < actionsToDeactivate.size(); n++) {
-                      ActionType tempAct2 = (ActionType)actionsToDeactivate.
-                      	elementAt(n);
+                      ActionType tempAct2 = actionsToDeactivate.elementAt(n);
                       writer.write(tempAct2.getName());
                       writer.write(NEWLINE);
                     }
@@ -839,15 +834,15 @@ public class ModelFileManipulator {
                   writer.write(NEWLINE);
                 }
                 
-                Vector partTypeAttEffects = tempPartTypeEffect
-                    .getAllAttributeEffects();
+                Vector<ParticipantAttributeRuleEffect> partTypeAttEffects = 
+                	tempPartTypeEffect.getAllAttributeEffects();
                 // go through each ParticipantAttributeRuleEffect and write it
                 // to the file:
                 for (int p = 0; p < partTypeAttEffects.size(); p++) {
                   writer.write(BEGIN_ATTRIBUTE_EFFECT_TAG);
                   writer.write(NEWLINE);
-                  ParticipantAttributeRuleEffect tempPartAttEffect = (ParticipantAttributeRuleEffect) partTypeAttEffects
-                      .elementAt(p);
+                  ParticipantAttributeRuleEffect tempPartAttEffect = 
+                  	partTypeAttEffects.elementAt(p);
                   writer.write(tempPartAttEffect.getAttribute().getName()); // attribute
                                                                             // name
                   writer.write(NEWLINE);

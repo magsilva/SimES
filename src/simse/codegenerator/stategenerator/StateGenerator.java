@@ -5,13 +5,17 @@
 
 package simse.codegenerator.stategenerator;
 
-import simse.modelbuilder.*;
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import simse.codegenerator.*;
+import simse.codegenerator.CodeGeneratorConstants;
 
-import java.io.*;
-import javax.swing.*;
+import simse.modelbuilder.ModelOptions;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
 
 public class StateGenerator implements CodeGeneratorConstants {
   private ModelOptions options;
@@ -20,18 +24,17 @@ public class StateGenerator implements CodeGeneratorConstants {
   private ClockGenerator clockGen; // generates clock
   private LoggerGenerator loggerGen; // generates logger
 
-  public StateGenerator(ModelOptions opts, DefinedObjectTypes objTypes,
+  public StateGenerator(ModelOptions options, DefinedObjectTypes objTypes,
       DefinedActionTypes actTypes) {
-    options = opts;
+    this.options = options;
     adtGen = new ADTGenerator(options, objTypes, actTypes);
     repGen = new RepositoryGenerator(options, objTypes, actTypes);
     clockGen = new ClockGenerator(options);
     loggerGen = new LoggerGenerator(options);
   }
 
-  public void generate() // causes all of this component's sub-components to
-                         // generate code
-  {
+  // causes all of this component's sub-components to generate code
+  public void generate() {
     adtGen.generate();
     repGen.generate();
     clockGen.generate();

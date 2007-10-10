@@ -5,13 +5,15 @@
 
 package simse.codegenerator.stategenerator;
 
-import java.io.*;
-import java.util.ArrayList;
+import simse.codegenerator.CodeGeneratorConstants;
 
-import javax.swing.*;
+import simse.modelbuilder.ModelOptions;
 
-import simse.codegenerator.*;
-import simse.modelbuilder.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
 
 public class LoggerGenerator implements CodeGeneratorConstants {
   private File directory; // directory to generate into
@@ -21,7 +23,8 @@ public class LoggerGenerator implements CodeGeneratorConstants {
   }
 
   public void generate() {
-    File loggerFile = new File(directory, ("simse\\state\\Logger\\Logger.java"));
+    File loggerFile = new File(directory, 
+    		("simse\\state\\Logger\\Logger.java"));
     if (loggerFile.exists()) {
       loggerFile.delete(); // delete old version of file
     }
