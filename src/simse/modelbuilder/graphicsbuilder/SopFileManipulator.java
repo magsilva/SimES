@@ -23,8 +23,6 @@ public class SopFileManipulator {
                                       // CreateObjectsRules in
                                       // DefinedActionTypes to filename of
                                       // associated image file (String)
-  private final String BEGIN_GRAPHICS_TAG = "<beginGraphics>";
-  private final String END_GRAPHICS_TAG = "<endGraphics>";
 
   public SopFileManipulator(ModelOptions opts, DefinedObjectTypes defObjs,
       CreatedObjects createdObjs, DefinedActionTypes acts,
@@ -52,7 +50,7 @@ public class SopFileManipulator {
       while (!foundBeginningOfGraphics) {
         String currentLine = reader.readLine(); // read in a line of text from
                                                 // the file
-        if (currentLine.equals(BEGIN_GRAPHICS_TAG)) // beginning of graphics
+        if (currentLine.equals(ModelFileManipulator.BEGIN_GRAPHICS_TAG)) // beginning of graphics
         {
           foundBeginningOfGraphics = true;
           reader.mark(200);
@@ -78,7 +76,7 @@ public class SopFileManipulator {
           while (!endOfGraphics) {
             currentLine = reader.readLine(); // read in the next line of text
                                              // from the file
-            if (currentLine.equals(END_GRAPHICS_TAG)) // end of graphics
+            if (currentLine.equals(ModelFileManipulator.END_GRAPHICS_TAG)) // end of graphics
             {
               endOfGraphics = true;
             } else // not end of graphics yet

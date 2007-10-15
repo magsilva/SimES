@@ -5,6 +5,7 @@
 
 package simse.modelbuilder.startstatebuilder;
 
+import simse.modelbuilder.ModelFileManipulator;
 import simse.modelbuilder.objectbuilder.*;
 import java.io.*;
 import java.util.*;
@@ -14,27 +15,6 @@ public class StartStateFileManipulator {
   private DefinedObjectTypes objectTypes;
   private CreatedObjects objects;
   private Random ranNumGen; // random number generator
-
-  private final char NEWLINE = '\n';
-  private final String BEGIN_OBJECT_FILENAME_TAG = new String(
-      "<beginObjectFileName>");
-  private final String END_OBJECT_FILENAME_TAG = new String(
-      "<endObjectFileName>");
-  private final String BEGIN_CREATED_OBJECTS_TAG = new String(
-      "<beginCreatedObjects>");
-  private final String END_CREATED_OBJECTS_TAG = new String(
-      "<endCreatedObjects>");
-  private final String BEGIN_OBJECT_TAG = new String("<beginObject>");
-  private final String END_OBJECT_TAG = new String("<endObject>");
-  private final String BEGIN_INSTANTIATED_ATTRIBUTE_TAG = new String(
-      "<beginInstantiatedAttribute>");
-  private final String END_INSTANTIATED_ATTRIBUTE_TAG = new String(
-      "<endInstantiatedAttribute>");
-  private final String BEGIN_STARTING_NARRATIVE_TAG = new String(
-      "<beginStartingNarrative>");
-  private final String END_STARTING_NARRATIVE_TAG = new String(
-      "<endStartingNarrative>");
-  private final String EMPTY_VALUE = new String("<>");
 
   public StartStateFileManipulator(DefinedObjectTypes defObjs,
       CreatedObjects createdObjs) {
@@ -56,29 +36,29 @@ public class StartStateFileManipulator {
       while (!foundBeginningOfStartState) {
         String currentLine = reader.readLine(); // read in a line of text from
                                                 // the file
-        if (currentLine.equals(BEGIN_CREATED_OBJECTS_TAG)) // beginning of start
+        if (currentLine.equals(ModelFileManipulator.BEGIN_CREATED_OBJECTS_TAG)) // beginning of start
                                                            // state objects
         {
           foundBeginningOfStartState = true;
           boolean endOfCreatedObjects = false;
           while (!endOfCreatedObjects) {
             currentLine = reader.readLine();
-            if (currentLine.equals(END_CREATED_OBJECTS_TAG)) // end of start
+            if (currentLine.equals(ModelFileManipulator.END_CREATED_OBJECTS_TAG)) // end of start
                                                              // state objects
             {
               endOfCreatedObjects = true;
             } else // not end of start state objects yet
             {
-              if (currentLine.equals(BEGIN_STARTING_NARRATIVE_TAG)) {
+              if (currentLine.equals(ModelFileManipulator.BEGIN_STARTING_NARRATIVE_TAG)) {
                 StringBuffer startNarr = new StringBuffer();
                 String tempInLine = reader.readLine();
-                while (tempInLine.equals(END_STARTING_NARRATIVE_TAG) == false) // not
+                while (tempInLine.equals(ModelFileManipulator.END_STARTING_NARRATIVE_TAG) == false) // not
                                                                                // done
                                                                                // yet
                 {
                   startNarr.append(tempInLine);
                   tempInLine = reader.readLine();
-                  if (tempInLine.equals(END_STARTING_NARRATIVE_TAG) == false) // not
+                  if (tempInLine.equals(ModelFileManipulator.END_STARTING_NARRATIVE_TAG) == false) // not
                                                                               // done
                                                                               // yet
                   {
@@ -88,7 +68,7 @@ public class StartStateFileManipulator {
                 objects.setStartingNarrative(startNarr.toString());
               }
 
-              else if (currentLine.equals(BEGIN_OBJECT_TAG)) {
+              else if (currentLine.equals(ModelFileManipulator.BEGIN_OBJECT_TAG)) {
                 String metaType = reader.readLine();
                 String type = reader.readLine();
                 SimSEObjectType objType = objectTypes.getObjectType((Integer
@@ -104,7 +84,7 @@ public class StartStateFileManipulator {
                   // ignore this whole object:
                   while (true) {
                     String tempLine = reader.readLine();
-                    if (tempLine.equals(END_OBJECT_TAG)) {
+                    if (tempLine.equals(ModelFileManipulator.END_OBJECT_TAG)) {
                       break;
                     }
                   }
@@ -116,7 +96,7 @@ public class StartStateFileManipulator {
                   boolean endOfObj = false;
                   while (!endOfObj) {
                     currentLine = reader.readLine(); // get the next line
-                    if (currentLine.equals(END_OBJECT_TAG)) // end of object
+                    if (currentLine.equals(ModelFileManipulator.END_OBJECT_TAG)) // end of object
                     {
                       // make sure you have all of the attributes from the
                       // SimSEObjectType added as instantiated
@@ -146,7 +126,7 @@ public class StartStateFileManipulator {
                       objects.addObject(newObj); // add object to defined object
                                                  // types
                     } else if (currentLine
-                        .equals(BEGIN_INSTANTIATED_ATTRIBUTE_TAG)) // beginning
+                        .equals(ModelFileManipulator.BEGIN_INSTANTIATED_ATTRIBUTE_TAG)) // beginning
                                                                    // of
                                                                    // attribute
                     {
@@ -168,14 +148,14 @@ public class StartStateFileManipulator {
                         // ignore entire instantiated attribute:
                         while (true) {
                           String tempLine = reader.readLine();
-                          if (tempLine.equals(END_INSTANTIATED_ATTRIBUTE_TAG)) {
+                          if (tempLine.equals(ModelFileManipulator.END_INSTANTIATED_ATTRIBUTE_TAG)) {
                             break;
                           }
                         }
                       } else {
                         String value = reader.readLine(); // get attribute's
                                                           // value (if any)
-                        if (value.equals(EMPTY_VALUE)) // attribute has no value
+                        if (value.equals(ModelFileManipulator.EMPTY_VALUE)) // attribute has no value
                         {
                           if (attribute.isKey()) // key attribute, but has no
                                                  // value

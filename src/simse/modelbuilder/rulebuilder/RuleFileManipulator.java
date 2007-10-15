@@ -5,6 +5,7 @@
 
 package simse.modelbuilder.rulebuilder;
 
+import simse.modelbuilder.ModelFileManipulator;
 import simse.modelbuilder.objectbuilder.*;
 import simse.modelbuilder.startstatebuilder.*;
 import simse.modelbuilder.actionbuilder.*;
@@ -15,52 +16,6 @@ import javax.swing.*;
 public class RuleFileManipulator {
   private DefinedObjectTypes objectTypes;
   private DefinedActionTypes actionTypes;
-  private final char NEWLINE = '\n';
-  private final String EMPTY_VALUE = "<>";
-
-  // rule file constants:
-  private final String BEGIN_RULES_TAG = "<beginRules>";
-  private final String END_RULES_TAG = "<endRules>";
-  private final String BEGIN_EFFECT_RULE_TAG = "<beginEffectRule>";
-  private final String END_EFFECT_RULE_TAG = "<endEffectRule>";
-  private final String BEGIN_PARTICIPANT_EFFECT_TAG = "<beginParticipantRuleEffect>";
-  private final String END_PARTICIPANT_EFFECT_TAG = "<endParticipantRuleEffect>";
-  private final String BEGIN_PARTICIPANT_TYPE_EFFECT_TAG = "<beginParticipantTypeRuleEffect>";
-  private final String END_PARTICIPANT_TYPE_EFFECT_TAG = "<endParticipantTypeRuleEffect>";
-  private final String BEGIN_ACTIONS_TO_ACTIVATE_TAG = "<beginActionsToActivate>";
-  private final String END_ACTIONS_TO_ACTIVATE_TAG = "<endActionsToActivate>";
-  private final String BEGIN_ACTIONS_TO_DEACTIVATE_TAG = "<beginActionsToDeactivate>";
-  private final String END_ACTIONS_TO_DEACTIVATE_TAG = "<endActionsToDeactivate>";
-  private final String BEGIN_ATTRIBUTE_EFFECT_TAG = "<beginParticipantAttributeRuleEffect>";
-  private final String END_ATTRIBUTE_EFFECT_TAG = "<endParticipantAttributeRuleEffect>";
-  private final String BEGIN_RULE_INPUT_TAG = "<beginRuleInput>";
-  private final String END_RULE_INPUT_TAG = "<endRuleInput>";
-  private final String BEGIN_RULE_INPUT_CONDITION_TAG = "<beginRuleInputCondition>";
-  private final String END_RULE_INPUT_CONDITION_TAG = "<endRuleInputCondition>";
-  private final String BEGIN_CREATE_OBJECTS_RULE_TAG = "<beginCreateObjectsRule>";
-  private final String END_CREATE_OBJECTS_RULE_TAG = "<endCreateObjectsRule>";
-  private final String BEGIN_DESTROY_OBJECTS_RULE_TAG = new String(
-      "<beginDestroyObjectsRule>");
-  private final String END_DESTROY_OBJECTS_RULE_TAG = new String(
-      "<endDestroyObjectsRule>");
-  private final String BEGIN_PARTICIPANT_CONDITION_TAG = new String(
-      "<beginDestroyObjectsRuleParticipantCondition>");
-  private final String END_PARTICIPANT_CONDITION_TAG = new String(
-      "<endDestroyObjectsRuleParticipantCondition>");
-  private final String BEGIN_PARTICIPANT_CONSTRAINT_TAG = new String(
-      "<beginActionTypeParticipantConstraint>");
-  private final String END_PARTICIPANT_CONSTRAINT_TAG = new String(
-      "<endActionTypeParticipantConstraint>");
-  private final String BEGIN_ATTRIBUTE_CONSTRAINT_TAG = new String(
-      "<beginActionTypeParticipantAttributeConstraint>");
-  private final String END_ATTRIBUTE_CONSTRAINT_TAG = new String(
-      "<endActionTypeParticipantAttributeConstraint>");
-  private final String BEGIN_OBJECT_TAG = "<beginObject>";
-  private final String END_OBJECT_TAG = "<endObject>";
-  private final String BEGIN_INSTANTIATED_ATTRIBUTE_TAG = "<beginInstantiatedAttribute>";
-  private final String END_INSTANTIATED_ATTRIBUTE_TAG = "<endInstantiatedAttribute>";
-  private final String BEGIN_RULE_ANNOTATION_TAG = "<beginRuleAnnotation>";
-  private final String END_RULE_ANNOTATION_TAG = "<endRuleAnnotation>";
 
   public RuleFileManipulator(DefinedObjectTypes defObjs,
       DefinedActionTypes defActs) {
@@ -81,18 +36,18 @@ public class RuleFileManipulator {
       while (!foundBeginningOfRules) {
         String currentLine = reader.readLine(); // read in a line of text from
                                                 // the file
-        if (currentLine.equals(BEGIN_RULES_TAG)) // beginning of rules
+        if (currentLine.equals(ModelFileManipulator.BEGIN_RULES_TAG)) // beginning of rules
         {
           foundBeginningOfRules = true;
           boolean endOfRules = false;
           while (!endOfRules) {
             currentLine = reader.readLine();
-            if (currentLine.equals(END_RULES_TAG)) // end of rules
+            if (currentLine.equals(ModelFileManipulator.END_RULES_TAG)) // end of rules
             {
               endOfRules = true;
             } else // not end of rules yet
             {
-              if (currentLine.equals(BEGIN_EFFECT_RULE_TAG)) {
+              if (currentLine.equals(ModelFileManipulator.BEGIN_EFFECT_RULE_TAG)) {
                 String ruleName = reader.readLine(); // get the rule name
                 Integer priority = new Integer(reader.readLine()); // get the
                                                                    // rule
@@ -161,13 +116,13 @@ public class RuleFileManipulator {
                         String tempInLine = reader.readLine();
 
                         tempInLine = reader.readLine();
-                        while (tempInLine.equals(END_RULE_ANNOTATION_TAG) == false) // not
+                        while (tempInLine.equals(ModelFileManipulator.END_RULE_ANNOTATION_TAG) == false) // not
                                                                                     // done
                                                                                     // yet
                         {
                           annotation.append(tempInLine);
                           tempInLine = reader.readLine();
-                          if (tempInLine.equals(END_RULE_ANNOTATION_TAG) == false) // not
+                          if (tempInLine.equals(ModelFileManipulator.END_RULE_ANNOTATION_TAG) == false) // not
                                                                                    // done
                                                                                    // yet
                           {
@@ -192,7 +147,7 @@ public class RuleFileManipulator {
                     } else {
                       getNextLine = true;
                     }
-                    if (currentLine.equals(END_EFFECT_RULE_TAG)) // end of rule
+                    if (currentLine.equals(ModelFileManipulator.END_EFFECT_RULE_TAG)) // end of rule
                     {
                       endOfRule = true;
                       // check if any participants have been added since this
@@ -235,7 +190,7 @@ public class RuleFileManipulator {
                                 + ruleName
                                 + " effect rule associated with this action type");
                       }
-                    } else if (currentLine.equals(BEGIN_PARTICIPANT_EFFECT_TAG)) // beginning
+                    } else if (currentLine.equals(ModelFileManipulator.BEGIN_PARTICIPANT_EFFECT_TAG)) // beginning
                                                                                  // of
                                                                                  // ParticipantRuleEffect
                     {
@@ -259,7 +214,7 @@ public class RuleFileManipulator {
                         while (!endOfPartEffect) {
                           String currentLine2 = reader.readLine(); // get the
                                                                    // next line
-                          if (currentLine2.equals(END_PARTICIPANT_EFFECT_TAG)) // end
+                          if (currentLine2.equals(ModelFileManipulator.END_PARTICIPANT_EFFECT_TAG)) // end
                                                                                // of
                                                                                // ParticipantRuleEffect
                           {
@@ -286,7 +241,7 @@ public class RuleFileManipulator {
                                       + ruleName + " effect rule");
                             }
                           } else if (currentLine2
-                              .equals(BEGIN_PARTICIPANT_TYPE_EFFECT_TAG)) // beginning
+                              .equals(ModelFileManipulator.BEGIN_PARTICIPANT_TYPE_EFFECT_TAG)) // beginning
                                                                           // of
                           // ParticipantTypeRuleEffect
                           {
@@ -330,7 +285,7 @@ public class RuleFileManipulator {
                               reader.mark(200);
                               String currentLineA = reader.readLine();
                               if (currentLineA.equals(
-                                  BEGIN_ACTIONS_TO_ACTIVATE_TAG)) { // new
+                              		ModelFileManipulator.BEGIN_ACTIONS_TO_ACTIVATE_TAG)) { // new
                                 																		// format
                                 																		// 2/13
                                 
@@ -339,7 +294,7 @@ public class RuleFileManipulator {
                                 while (!endOfActsToAdd) {
 	                                currentLineA = reader.readLine();
 	                                if (!currentLineA.equals(
-	                                    END_ACTIONS_TO_ACTIVATE_TAG)) {
+	                                		ModelFileManipulator.END_ACTIONS_TO_ACTIVATE_TAG)) {
 	                                  ActionType actToAdd = actionTypes.
 	                                  	getActionType(currentLineA);
 	                                  if (actToAdd != null) {
@@ -359,7 +314,7 @@ public class RuleFileManipulator {
                                 while (!endOfActsToAdd) {
 	                                currentLineA = reader.readLine();
 	                                if (!currentLineA.equals(
-	                                    END_ACTIONS_TO_DEACTIVATE_TAG)) {
+	                                		ModelFileManipulator.END_ACTIONS_TO_DEACTIVATE_TAG)) {
 	                                  ActionType actToAdd = actionTypes.
 	                                  	getActionType(currentLineA);
 	                                  if (actToAdd != null) {
@@ -406,7 +361,7 @@ public class RuleFileManipulator {
                                   getNextLine2 = true;
                                 }
                                 if (currentLine3
-                                    .equals(END_PARTICIPANT_TYPE_EFFECT_TAG)) // end
+                                    .equals(ModelFileManipulator.END_PARTICIPANT_TYPE_EFFECT_TAG)) // end
                                                                               // of
                                 // ParticipantTypeRuleEffect
                                 {
@@ -436,7 +391,7 @@ public class RuleFileManipulator {
                                         + tempAct.getName() + " action type");
                                   }
                                 } else if (currentLine3
-                                    .equals(BEGIN_ATTRIBUTE_EFFECT_TAG)) // beginning
+                                    .equals(ModelFileManipulator.BEGIN_ATTRIBUTE_EFFECT_TAG)) // beginning
                                                                          // of
                                 // ParticipantAttributeRuleEffect
                                 {
@@ -492,7 +447,7 @@ public class RuleFileManipulator {
                       }
                     }
 
-                    else if (currentLine.equals(BEGIN_RULE_INPUT_TAG)) // beginning
+                    else if (currentLine.equals(ModelFileManipulator.BEGIN_RULE_INPUT_TAG)) // beginning
                                                                        // of
                                                                        // RuleInput
                     {
@@ -521,7 +476,7 @@ public class RuleFileManipulator {
                       String conditionVal = reader.readLine(); // get the
                                                                // condition
                                                                // value
-                      if (conditionVal.equals(EMPTY_VALUE) == false) // has a
+                      if (conditionVal.equals(ModelFileManipulator.EMPTY_VALUE) == false) // has a
                                                                      // condition
                                                                      // val
                       {
@@ -548,7 +503,7 @@ public class RuleFileManipulator {
                 }
               }
 
-              else if (currentLine.equals(BEGIN_CREATE_OBJECTS_RULE_TAG)) // beginning
+              else if (currentLine.equals(ModelFileManipulator.BEGIN_CREATE_OBJECTS_RULE_TAG)) // beginning
                                                                           // of
                                                                           // CreateObjectsRule
               {
@@ -603,13 +558,13 @@ public class RuleFileManipulator {
                       String tempInLine = reader.readLine();
 
                       tempInLine = reader.readLine();
-                      while (tempInLine.equals(END_RULE_ANNOTATION_TAG) == false) // not
+                      while (tempInLine.equals(ModelFileManipulator.END_RULE_ANNOTATION_TAG) == false) // not
                                                                                   // done
                                                                                   // yet
                       {
                         annotation.append(tempInLine);
                         tempInLine = reader.readLine();
-                        if (tempInLine.equals(END_RULE_ANNOTATION_TAG) == false) // not
+                        if (tempInLine.equals(ModelFileManipulator.END_RULE_ANNOTATION_TAG) == false) // not
                                                                                  // done
                                                                                  // yet
                         {
@@ -633,14 +588,14 @@ public class RuleFileManipulator {
                     } else {
                       getNextLine = true;
                     }
-                    if (currentLine2.equals(END_CREATE_OBJECTS_RULE_TAG)) // end
+                    if (currentLine2.equals(ModelFileManipulator.END_CREATE_OBJECTS_RULE_TAG)) // end
                                                                           // of
                                                                           // CreateObjectsRule
                     {
                       endOfRule = true;
                       tempAct.addRule(newRule); // add the rule to the action
                                                 // type
-                    } else if (currentLine2.equals(BEGIN_OBJECT_TAG)) // beginning
+                    } else if (currentLine2.equals(ModelFileManipulator.BEGIN_OBJECT_TAG)) // beginning
                                                                       // of
                                                                       // SimSEObject
                     {
@@ -671,7 +626,7 @@ public class RuleFileManipulator {
                         while (!endOfObj) {
                           String currentLine3 = reader.readLine(); // get the
                                                                    // next line
-                          if (currentLine3.equals(END_OBJECT_TAG)) // end of
+                          if (currentLine3.equals(ModelFileManipulator.END_OBJECT_TAG)) // end of
                                                                    // object
                           {
                             if (tempObj.hasAttribute(tempObj
@@ -727,7 +682,7 @@ public class RuleFileManipulator {
                                                                // to the rule
                             }
                           } else if (currentLine3
-                              .equals(BEGIN_INSTANTIATED_ATTRIBUTE_TAG)) // begin
+                              .equals(ModelFileManipulator.BEGIN_INSTANTIATED_ATTRIBUTE_TAG)) // begin
                                                                          // instantiated
                                                                          // att
                           {
@@ -756,7 +711,7 @@ public class RuleFileManipulator {
                                   tempAtt);
                               String value = reader.readLine(); // get attribute
                                                                 // value
-                              if (value.equals(EMPTY_VALUE) == false) // non-empty
+                              if (value.equals(ModelFileManipulator.EMPTY_VALUE) == false) // non-empty
                               {
                                 if (tempAtt.getType() == AttributeTypes.INTEGER) // integer
                                                                                  // att
@@ -780,7 +735,7 @@ public class RuleFileManipulator {
                                 tempObj.addAttribute(tempInstAtt); // add the
                                                                    // instantiated
                                                                    // att
-                              } else if (value.equals(EMPTY_VALUE)
+                              } else if (value.equals(ModelFileManipulator.EMPTY_VALUE)
                                   && tempAtt.isKey()) // this is the key
                                                       // attribute and there is
                                                       // no value for it
@@ -813,7 +768,7 @@ public class RuleFileManipulator {
                 }
               }
 
-              else if (currentLine.equals(BEGIN_DESTROY_OBJECTS_RULE_TAG)) // beginning
+              else if (currentLine.equals(ModelFileManipulator.BEGIN_DESTROY_OBJECTS_RULE_TAG)) // beginning
                                                                            // of
                                                                            // DestroyObjectsRule
               {
@@ -868,13 +823,13 @@ public class RuleFileManipulator {
                       String tempInLine = reader.readLine();
 
                       tempInLine = reader.readLine();
-                      while (tempInLine.equals(END_RULE_ANNOTATION_TAG) == false) // not
+                      while (tempInLine.equals(ModelFileManipulator.END_RULE_ANNOTATION_TAG) == false) // not
                                                                                   // done
                                                                                   // yet
                       {
                         annotation.append(tempInLine);
                         tempInLine = reader.readLine();
-                        if (tempInLine.equals(END_RULE_ANNOTATION_TAG) == false) // not
+                        if (tempInLine.equals(ModelFileManipulator.END_RULE_ANNOTATION_TAG) == false) // not
                                                                                  // done
                                                                                  // yet
                         {
@@ -898,7 +853,7 @@ public class RuleFileManipulator {
                     } else {
                       getNextLine = true;
                     }
-                    if (currentLine2.equals(END_DESTROY_OBJECTS_RULE_TAG)) // end
+                    if (currentLine2.equals(ModelFileManipulator.END_DESTROY_OBJECTS_RULE_TAG)) // end
                                                                            // of
                                                                            // DestroyObjectsRule
                     {
@@ -906,7 +861,7 @@ public class RuleFileManipulator {
                       tempAct.addRule(newRule); // add the rule to the action
                                                 // type
                     } else if (currentLine2
-                        .equals(BEGIN_PARTICIPANT_CONDITION_TAG)) // beginning
+                        .equals(ModelFileManipulator.BEGIN_PARTICIPANT_CONDITION_TAG)) // beginning
                                                                   // of
                                                                   // participant
                                                                   // condition
@@ -925,14 +880,14 @@ public class RuleFileManipulator {
                                                                           // next
                                                                           // line
                           if (currentLinePartCond
-                              .equals(END_PARTICIPANT_CONDITION_TAG)) // end of
+                              .equals(ModelFileManipulator.END_PARTICIPANT_CONDITION_TAG)) // end of
                                                                       // participant
                                                                       // condition
                           {
                             endOfPartCond = true;
                             newRule.addParticipantCondition(newPartCond);
                           } else if (currentLinePartCond
-                              .equals(BEGIN_PARTICIPANT_CONSTRAINT_TAG)) // beginning
+                              .equals(ModelFileManipulator.BEGIN_PARTICIPANT_CONSTRAINT_TAG)) // beginning
                                                                          // of
                                                                          // particpiant
                           // constraint
@@ -958,7 +913,7 @@ public class RuleFileManipulator {
                                                                                  // next
                                                                                  // line
                                 if (currentLinePartConst
-                                    .equals(END_PARTICIPANT_CONSTRAINT_TAG)) // end
+                                    .equals(ModelFileManipulator.END_PARTICIPANT_CONSTRAINT_TAG)) // end
                                                                              // of
                                                                              // participant
                                 // constraint
@@ -966,7 +921,7 @@ public class RuleFileManipulator {
                                   endOfPartConst = true;
                                   newPartCond.addConstraint(newPartConst);
                                 } else if (currentLinePartConst
-                                    .equals(BEGIN_ATTRIBUTE_CONSTRAINT_TAG)) // beginning
+                                    .equals(ModelFileManipulator.BEGIN_ATTRIBUTE_CONSTRAINT_TAG)) // beginning
                                                                              // of
                                 // attribute constraint
                                 {
@@ -1005,7 +960,7 @@ public class RuleFileManipulator {
                                                                  // guard
                                     String value = reader.readLine(); // get the
                                                                       // value
-                                    if ((value.equals(EMPTY_VALUE)) == false) // attribute
+                                    if ((value.equals(ModelFileManipulator.EMPTY_VALUE)) == false) // attribute
                                                                               // has
                                                                               // a
                                                                               // constraining

@@ -5,6 +5,7 @@
 
 package simse.modelbuilder.actionbuilder;
 
+import simse.modelbuilder.ModelFileManipulator;
 import simse.modelbuilder.objectbuilder.*;
 import java.io.*;
 import java.util.*;
@@ -13,53 +14,6 @@ import javax.swing.*;
 public class ActionFileManipulator {
   private DefinedObjectTypes objectTypes;
   private DefinedActionTypes actionTypes;
-  private final String EMPTY_VALUE = new String("<>");
-
-  // action file constants:
-  private final String BEGIN_DEFINED_ACTIONS_TAG = "<beginDefinedActionTypes>";
-  private final String END_DEFINED_ACTIONS_TAG = new String(
-      "<endDefinedActionTypes>");
-  private final String BEGIN_ACTION_TYPE_TAG = new String("<beginActionType>");
-  private final String END_ACTION_TYPE_TAG = new String("<endActionType>");
-  private final String BEGIN_ACTION_TYPE_ANNOTATION_TAG = new String(
-      "<beginActionTypeAnnotation>");
-  private final String END_ACTION_TYPE_ANNOTATION_TAG = new String(
-      "<endActionTypeAnnotation>");
-  private final String BEGIN_PARTICIPANT_TAG = new String(
-      "<beginActionTypeParticipant>");
-  private final String END_PARTICIPANT_TAG = new String(
-      "<endActionTypeParticipant>");
-  private final String BEGIN_QUANTITY_TAG = new String(
-      "<beginActionTypeParticipantQuantity>");
-  private final String END_QUANTITY_TAG = new String(
-      "<endActionTypeParticipantQuantity>");
-  private final String BEGIN_SSOBJ_TYPE_NAMES_TAG = new String(
-      "<beginSSObjTypeNames>");
-  private final String END_SSOBJ_TYPE_NAMES_TAG = new String(
-      "<endSSObjTypeNames>");
-  private final String BEGIN_TRIGGER_TAG = new String(
-      "<beginActionTypeTrigger>");
-  private final String END_TRIGGER_TAG = new String("<endActionTypeTrigger>");
-  private final String BEGIN_PARTICIPANT_TRIGGER_TAG = new String(
-      "<beginActionTypeParticipantTrigger>");
-  private final String END_PARTICIPANT_TRIGGER_TAG = new String(
-      "<endActionTypeParticipantTrigger>");
-  private final String BEGIN_PARTICIPANT_CONSTRAINT_TAG = new String(
-      "<beginActionTypeParticipantConstraint>");
-  private final String END_PARTICIPANT_CONSTRAINT_TAG = new String(
-      "<endActionTypeParticipantConstraint>");
-  private final String BEGIN_ATTRIBUTE_CONSTRAINT_TAG = new String(
-      "<beginActionTypeParticipantAttributeConstraint>");
-  private final String END_ATTRIBUTE_CONSTRAINT_TAG = new String(
-      "<endActionTypeParticipantAttributeConstraint>");
-  private final String BEGIN_DESTROYER_TAG = new String(
-      "<beginActionTypeDestroyer>");
-  private final String END_DESTROYER_TAG = new String(
-      "<endActionTypeDestroyer>");
-  private final String BEGIN_PARTICIPANT_DESTROYER_TAG = new String(
-      "<beginActionTypeParticipantDestroyer>");
-  private final String END_PARTICIPANT_DESTROYER_TAG = new String(
-      "<endActionTypeParticipantDestroyer>");
 
   public ActionFileManipulator(DefinedObjectTypes defObjs,
       DefinedActionTypes defActs) {
@@ -80,20 +34,20 @@ public class ActionFileManipulator {
       while (!foundBeginningOfActions) {
         String currentLine = reader.readLine(); // read in a line of text from
                                                 // the file
-        if (currentLine.equals(BEGIN_DEFINED_ACTIONS_TAG)) // beginning of
+        if (currentLine.equals(ModelFileManipulator.BEGIN_DEFINED_ACTIONS_TAG)) // beginning of
                                                            // action types
         {
           foundBeginningOfActions = true;
           boolean endOfActions = false;
           while (!endOfActions) {
             currentLine = reader.readLine();
-            if (currentLine.equals(END_DEFINED_ACTIONS_TAG)) // end of defined
+            if (currentLine.equals(ModelFileManipulator.END_DEFINED_ACTIONS_TAG)) // end of defined
                                                              // actions
             {
               endOfActions = true;
             } else // not end of defined actions yet
             {
-              if (currentLine.equals(BEGIN_ACTION_TYPE_TAG)) {
+              if (currentLine.equals(ModelFileManipulator.BEGIN_ACTION_TYPE_TAG)) {
                 ActionType newAct = new ActionType(reader.readLine());
                 newAct.setVisibilityInSimulation(Boolean.valueOf(
                     reader.readLine()).booleanValue()); // set visibility
@@ -116,13 +70,13 @@ public class ActionFileManipulator {
                   String tempInLine = reader.readLine(); // get the begin
                                                          // annotation tag
                   tempInLine = reader.readLine();
-                  while (tempInLine.equals(END_ACTION_TYPE_ANNOTATION_TAG) == false) // not
+                  while (tempInLine.equals(ModelFileManipulator.END_ACTION_TYPE_ANNOTATION_TAG) == false) // not
                                                                                      // done
                                                                                      // yet
                   {
                     annotation.append(tempInLine);
                     tempInLine = reader.readLine();
-                    if (tempInLine.equals(END_ACTION_TYPE_ANNOTATION_TAG) == false) // not
+                    if (tempInLine.equals(ModelFileManipulator.END_ACTION_TYPE_ANNOTATION_TAG) == false) // not
                                                                                     // done
                                                                                     // yet
                     {
@@ -152,13 +106,13 @@ public class ActionFileManipulator {
                 boolean endOfAct = false;
                 while (!endOfAct) {
                   currentLine = reader.readLine(); // get the next line
-                  if (currentLine.equals(END_ACTION_TYPE_TAG)) // end of action
+                  if (currentLine.equals(ModelFileManipulator.END_ACTION_TYPE_TAG)) // end of action
                                                                // type
                   {
                     endOfAct = true;
                     actionTypes.addActionType(newAct); // add action type to
                                                        // defined action types
-                  } else if (currentLine.equals(BEGIN_PARTICIPANT_TAG)) // beginning
+                  } else if (currentLine.equals(ModelFileManipulator.BEGIN_PARTICIPANT_TAG)) // beginning
                                                                         // of
                                                                         // ActionTypeParticipant
                   {
@@ -183,7 +137,7 @@ public class ActionFileManipulator {
                     while (!endOfPart) {
                       String currentLine2 = reader.readLine(); // get the next
                                                                // line
-                      if (currentLine2.equals(END_PARTICIPANT_TAG)) // end of
+                      if (currentLine2.equals(ModelFileManipulator.END_PARTICIPANT_TAG)) // end of
                                                                     // ActionTypeParticipant
                       {
                         endOfPart = true;
@@ -207,7 +161,7 @@ public class ActionFileManipulator {
                                   + newPart.getName()
                                   + " participant's allowable object types are invalid -- ignoring this participant");
                         }
-                      } else if (currentLine2.equals(BEGIN_QUANTITY_TAG)) // beginning
+                      } else if (currentLine2.equals(ModelFileManipulator.BEGIN_QUANTITY_TAG)) // beginning
                                                                           // of
                                                                           // ActionTypeParticipantQuantity
                       {
@@ -218,13 +172,13 @@ public class ActionFileManipulator {
                         String quantity = reader.readLine(); // get quantity
                         String maxVal = reader.readLine(); // get max val
                         Integer[] quants = new Integer[2];
-                        if ((quantity.equals(EMPTY_VALUE)) == false) // quantity
+                        if ((quantity.equals(ModelFileManipulator.EMPTY_VALUE)) == false) // quantity
                                                                      // has a
                                                                      // value
                         {
                           quants[0] = new Integer(Integer.parseInt(quantity));
                         }
-                        if ((maxVal.equals(EMPTY_VALUE)) == false) // max val
+                        if ((maxVal.equals(ModelFileManipulator.EMPTY_VALUE)) == false) // max val
                                                                    // has a
                                                                    // value
                         {
@@ -234,14 +188,14 @@ public class ActionFileManipulator {
                                                                    // quantity
                         reader.readLine(); // get next line (END_QUANTITY_TAG)
                       } else if (currentLine2
-                          .equals(BEGIN_SSOBJ_TYPE_NAMES_TAG)) // SimSEObjectType
+                          .equals(ModelFileManipulator.BEGIN_SSOBJ_TYPE_NAMES_TAG)) // SimSEObjectType
                                                                // names
                       {
                         boolean endOfSSObjTypes = false;
                         while (!endOfSSObjTypes) {
                           String currentLine3 = reader.readLine(); // get the
                                                                    // next line
-                          if (currentLine3.equals(END_SSOBJ_TYPE_NAMES_TAG)) // end
+                          if (currentLine3.equals(ModelFileManipulator.END_SSOBJ_TYPE_NAMES_TAG)) // end
                                                                              // of
                                                                              // SimSEObjectType
                                                                              // names
@@ -267,7 +221,7 @@ public class ActionFileManipulator {
                         }
                       }
                     }
-                  } else if (currentLine.equals(BEGIN_TRIGGER_TAG)) // ActionTypeTrigger
+                  } else if (currentLine.equals(ModelFileManipulator.BEGIN_TRIGGER_TAG)) // ActionTypeTrigger
                   {
                     ActionTypeTrigger newTrig; // ActionTypeTrigger to be filled
                                                // in w/ the info. from the file
@@ -312,7 +266,7 @@ public class ActionFileManipulator {
                     String triggerText = reader.readLine(); // get the trigger
                                                             // text
                     // set the trigger text:
-                    if (triggerText.equals(EMPTY_VALUE) == false) // trigger
+                    if (triggerText.equals(ModelFileManipulator.EMPTY_VALUE) == false) // trigger
                                                                   // text not
                                                                   // empty
                     {
@@ -351,14 +305,14 @@ public class ActionFileManipulator {
                       {
                         newTrig.setGameEndingTrigger((new Boolean(
                             currentLineTrig)).booleanValue());
-                      } else if (currentLineTrig.equals(END_TRIGGER_TAG)) // end
+                      } else if (currentLineTrig.equals(ModelFileManipulator.END_TRIGGER_TAG)) // end
                                                                           // of
                                                                           // trigger
                       {
                         endOfTrig = true;
                         newAct.addTrigger(newTrig);
                       } else if (currentLineTrig
-                          .equals(BEGIN_PARTICIPANT_TRIGGER_TAG)) // beginning
+                          .equals(ModelFileManipulator.BEGIN_PARTICIPANT_TRIGGER_TAG)) // beginning
                                                                   // of
                                                                   // participant
                                                                   // trigger
@@ -377,14 +331,14 @@ public class ActionFileManipulator {
                                                                             // next
                                                                             // line
                             if (currentLinePartTrig
-                                .equals(END_PARTICIPANT_TRIGGER_TAG)) // end of
+                                .equals(ModelFileManipulator.END_PARTICIPANT_TRIGGER_TAG)) // end of
                                                                       // participant
                                                                       // trigger
                             {
                               endOfPartTrig = true;
                               newTrig.addParticipantTrigger(newPartTrig);
                             } else if (currentLinePartTrig
-                                .equals(BEGIN_PARTICIPANT_CONSTRAINT_TAG)) // beginning
+                                .equals(ModelFileManipulator.BEGIN_PARTICIPANT_CONSTRAINT_TAG)) // beginning
                                                                            // of
                                                                            // particpiant
                             // constraint
@@ -408,7 +362,7 @@ public class ActionFileManipulator {
                                   String currentLinePartConst = reader
                                       .readLine(); // get the next line
                                   if (currentLinePartConst
-                                      .equals(END_PARTICIPANT_CONSTRAINT_TAG)) // end
+                                      .equals(ModelFileManipulator.END_PARTICIPANT_CONSTRAINT_TAG)) // end
                                                                                // of
                                                                                // participant
                                   // constraint
@@ -416,7 +370,7 @@ public class ActionFileManipulator {
                                     endOfPartConst = true;
                                     newPartTrig.addConstraint(newPartConst);
                                   } else if (currentLinePartConst
-                                      .equals(BEGIN_ATTRIBUTE_CONSTRAINT_TAG)) // beginning
+                                      .equals(ModelFileManipulator.BEGIN_ATTRIBUTE_CONSTRAINT_TAG)) // beginning
                                                                                // of
                                   // attribute constraint
                                   {
@@ -460,7 +414,7 @@ public class ActionFileManipulator {
                                       String value = reader.readLine(); // get
                                                                         // the
                                                                         // value
-                                      if ((value.equals(EMPTY_VALUE)) == false) // attribute
+                                      if ((value.equals(ModelFileManipulator.EMPTY_VALUE)) == false) // attribute
                                                                                 // has
                                                                                 // a
                                                                                 // constraining
@@ -712,7 +666,7 @@ public class ActionFileManipulator {
                     }
                   }
 
-                  else if (currentLine.equals(BEGIN_DESTROYER_TAG)) // ActionTypeDestroyer
+                  else if (currentLine.equals(ModelFileManipulator.BEGIN_DESTROYER_TAG)) // ActionTypeDestroyer
                   {
                     ActionTypeDestroyer newDest; // ActionTypeDestroyer to be
                                                  // filled in w/ info. from the
@@ -757,7 +711,7 @@ public class ActionFileManipulator {
                     String destroyerText = reader.readLine(); // get the
                                                               // destroyer text
                     // set destroyer text:
-                    if (destroyerText.equals(EMPTY_VALUE) == false) // destroyer
+                    if (destroyerText.equals(ModelFileManipulator.EMPTY_VALUE) == false) // destroyer
                                                                     // text not
                                                                     // empty
                     {
@@ -796,14 +750,14 @@ public class ActionFileManipulator {
                       {
                         newDest.setGameEndingDestroyer((new Boolean(
                             currentLineDest)).booleanValue());
-                      } else if (currentLineDest.equals(END_DESTROYER_TAG)) // end
+                      } else if (currentLineDest.equals(ModelFileManipulator.END_DESTROYER_TAG)) // end
                                                                             // of
                                                                             // destroyer
                       {
                         endOfDest = true;
                         newAct.addDestroyer(newDest);
                       } else if (currentLineDest
-                          .equals(BEGIN_PARTICIPANT_DESTROYER_TAG)) // beginning
+                          .equals(ModelFileManipulator.BEGIN_PARTICIPANT_DESTROYER_TAG)) // beginning
                                                                     // of
                                                                     // participant
                                                                     // destroyer
@@ -823,7 +777,7 @@ public class ActionFileManipulator {
                                                                             // next
                                                                             // line
                             if (currentLinePartDest
-                                .equals(END_PARTICIPANT_DESTROYER_TAG)) // end
+                                .equals(ModelFileManipulator.END_PARTICIPANT_DESTROYER_TAG)) // end
                                                                         // of
                                                                         // participant
                                                                         // destroyer
@@ -831,7 +785,7 @@ public class ActionFileManipulator {
                               endOfPartDest = true;
                               newDest.addParticipantDestroyer(newPartDest);
                             } else if (currentLinePartDest
-                                .equals(BEGIN_PARTICIPANT_CONSTRAINT_TAG)) // beginning
+                                .equals(ModelFileManipulator.BEGIN_PARTICIPANT_CONSTRAINT_TAG)) // beginning
                                                                            // of
                                                                            // particpiant
                             // constraint
@@ -855,7 +809,7 @@ public class ActionFileManipulator {
                                   String currentLinePartConst = reader
                                       .readLine(); // get the next line
                                   if (currentLinePartConst
-                                      .equals(END_PARTICIPANT_CONSTRAINT_TAG)) // end
+                                      .equals(ModelFileManipulator.END_PARTICIPANT_CONSTRAINT_TAG)) // end
                                                                                // of
                                                                                // participant
                                   // constraint
@@ -863,7 +817,7 @@ public class ActionFileManipulator {
                                     endOfPartConst = true;
                                     newPartDest.addConstraint(newPartConst);
                                   } else if (currentLinePartConst
-                                      .equals(BEGIN_ATTRIBUTE_CONSTRAINT_TAG)) // beginning
+                                      .equals(ModelFileManipulator.BEGIN_ATTRIBUTE_CONSTRAINT_TAG)) // beginning
                                                                                // of
                                   // attribute constraint
                                   {
@@ -893,7 +847,7 @@ public class ActionFileManipulator {
                                       String value = reader.readLine(); // get
                                                                         // the
                                                                         // value
-                                      if ((value.equals(EMPTY_VALUE)) == false) // attribute
+                                      if ((value.equals(ModelFileManipulator.EMPTY_VALUE)) == false) // attribute
                                                                                 // has
                                                                                 // a
                                                                                 // constraining

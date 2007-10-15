@@ -8,20 +8,10 @@ package simse.modelbuilder.objectbuilder;
 import java.io.*;
 import javax.swing.*;
 
+import simse.modelbuilder.ModelFileManipulator;
+
 public class ObjectFileManipulator {
   private DefinedObjectTypes objects;
-  private final char NEWLINE = '\n';
-  private final String BOUNDLESS = new String("boundless");
-  private final String BEGIN_OBJECT_TYPES_TAG = new String(
-      "<beginDefinedObjectTypes>");
-  private final String END_OBJECT_TYPES_TAG = new String(
-      "<endDefinedObjectTypes>");
-  private final String BEGIN_OBJECT_TAG = new String("<beginObjectType>");
-  private final String END_OBJECT_TAG = new String("<endObjectType>");
-  private final String BEGIN_ATTRIBUTE_TAG = new String("<beginAttribute>");
-  private final String END_ATTRIBUTE_TAG = new String("<endAttribute>");
-  private final String BEGIN_ALLOW_HIRE_FIRE_TAG = "<beginAllowHireFire>";
-  private final String END_ALLOW_HIRE_FIRE_TAG = "<endAllowHireFire>";
   private boolean allowHireFire;
 
   public ObjectFileManipulator(DefinedObjectTypes objs) {
@@ -43,25 +33,25 @@ public class ObjectFileManipulator {
       while (!foundBeginningOfObjectTypes) {
         String currentLine = reader.readLine(); // read in a line of text from
         // the file
-        if (currentLine.equals(BEGIN_ALLOW_HIRE_FIRE_TAG)) {
+        if (currentLine.equals(ModelFileManipulator.BEGIN_ALLOW_HIRE_FIRE_TAG)) {
           allowHireFire = reader.readLine().equals("true");
           reader.readLine(); // remove the end allowHireFire tag
           allowHireFire = false; // removed this functionality, always false now
         }
 
-        if (currentLine.equals(BEGIN_OBJECT_TYPES_TAG)) // beginning of object
+        if (currentLine.equals(ModelFileManipulator.BEGIN_OBJECT_TYPES_TAG)) // beginning of object
         // types
         {
           foundBeginningOfObjectTypes = true;
           boolean endOfObjectTypes = false;
           while (!endOfObjectTypes) {
             currentLine = reader.readLine();
-            if (currentLine.equals(END_OBJECT_TYPES_TAG)) // end of object types
+            if (currentLine.equals(ModelFileManipulator.END_OBJECT_TYPES_TAG)) // end of object types
             {
               endOfObjectTypes = true;
             } else // not end of object types yet
             {
-              if (currentLine.equals(BEGIN_OBJECT_TAG)) {
+              if (currentLine.equals(ModelFileManipulator.BEGIN_OBJECT_TAG)) {
                 SimSEObjectType newObj = new SimSEObjectType(Integer
                     .parseInt(reader.readLine()), reader.readLine()); // create
                 // a new
@@ -71,12 +61,12 @@ public class ObjectFileManipulator {
                 boolean endOfObj = false;
                 while (!endOfObj) {
                   currentLine = reader.readLine(); // get the next line
-                  if (currentLine.equals(END_OBJECT_TAG)) // end of object
+                  if (currentLine.equals(ModelFileManipulator.END_OBJECT_TAG)) // end of object
                   {
                     endOfObj = true;
                     objects.addObjectType(newObj); // add object type to defined
                     // object types
-                  } else if (currentLine.equals(BEGIN_ATTRIBUTE_TAG)) // beginning
+                  } else if (currentLine.equals(ModelFileManipulator.BEGIN_ATTRIBUTE_TAG)) // beginning
                   // of
                   // attribute
                   {
@@ -123,7 +113,7 @@ public class ObjectFileManipulator {
                       String minValStr = reader.readLine(); // get the minimum
                       // value
                       Integer minVal = null;
-                      if (minValStr.equals(BOUNDLESS) == false) // minimum value
+                      if (minValStr.equals(ModelFileManipulator.BOUNDLESS) == false) // minimum value
                       // is not
                       // boundless
                       {
@@ -132,7 +122,7 @@ public class ObjectFileManipulator {
                       String maxValStr = reader.readLine(); // get the maximum
                       // value
                       Integer maxVal = null;
-                      if (maxValStr.equals(BOUNDLESS) == false) // maximum value
+                      if (maxValStr.equals(ModelFileManipulator.BOUNDLESS) == false) // maximum value
                       // is not
                       // boundless
                       {
@@ -148,7 +138,7 @@ public class ObjectFileManipulator {
                       String minValStr = reader.readLine(); // get the minimum
                       // value
                       Double minVal = null;
-                      if (minValStr.equals(BOUNDLESS) == false) // minimum value
+                      if (minValStr.equals(ModelFileManipulator.BOUNDLESS) == false) // minimum value
                       // is not
                       // boundless
                       {
@@ -157,7 +147,7 @@ public class ObjectFileManipulator {
                       String maxValStr = reader.readLine(); // get the maximum
                       // value
                       Double maxVal = null;
-                      if (maxValStr.equals(BOUNDLESS) == false) // maximum value
+                      if (maxValStr.equals(ModelFileManipulator.BOUNDLESS) == false) // maximum value
                       // is not
                       // boundless
                       {
@@ -167,7 +157,7 @@ public class ObjectFileManipulator {
                       String minDigStr = reader.readLine(); // get the minimum
                       // num digits
                       Integer minDig = null;
-                      if (minDigStr.equals(BOUNDLESS) == false) // minimum num
+                      if (minDigStr.equals(ModelFileManipulator.BOUNDLESS) == false) // minimum num
                       // digits not
                       // boundless
                       {
@@ -176,7 +166,7 @@ public class ObjectFileManipulator {
                       String maxDigStr = reader.readLine(); // get the maximum
                       // value
                       Integer maxDig = null;
-                      if (maxDigStr.equals(BOUNDLESS) == false) // maximum num
+                      if (maxDigStr.equals(ModelFileManipulator.BOUNDLESS) == false) // maximum num
                       // digits not
                       // boundless
                       {

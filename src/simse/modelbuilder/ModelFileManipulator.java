@@ -4,156 +4,224 @@
 
 package simse.modelbuilder;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.startstatebuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import simse.modelbuilder.rulebuilder.*;
-import simse.modelbuilder.mapeditor.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.ActionTypeDestroyer;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantAttributeConstraint;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantConstraint;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantDestroyer;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantTrigger;
+import simse.modelbuilder.actionbuilder.ActionTypeTrigger;
+import simse.modelbuilder.actionbuilder.AutonomousActionTypeDestroyer;
+import simse.modelbuilder.actionbuilder.AutonomousActionTypeTrigger;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.actionbuilder.Guard;
+import simse.modelbuilder.actionbuilder.RandomActionTypeDestroyer;
+import simse.modelbuilder.actionbuilder.RandomActionTypeTrigger;
+import simse.modelbuilder.actionbuilder.TimedActionTypeDestroyer;
+import simse.modelbuilder.actionbuilder.UserActionTypeDestroyer;
+import simse.modelbuilder.actionbuilder.UserActionTypeTrigger;
+import simse.modelbuilder.mapeditor.MapData;
+import simse.modelbuilder.mapeditor.TileData;
+import simse.modelbuilder.mapeditor.UserData;
+import simse.modelbuilder.objectbuilder.Attribute;
+import simse.modelbuilder.objectbuilder.AttributeTypes;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.NumericalAttribute;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+import simse.modelbuilder.rulebuilder.CreateObjectsRule;
+import simse.modelbuilder.rulebuilder.DestroyObjectsRule;
+import simse.modelbuilder.rulebuilder.DestroyObjectsRuleParticipantCondition;
+import simse.modelbuilder.rulebuilder.EffectRule;
+import simse.modelbuilder.rulebuilder.OtherActionsEffect;
+import simse.modelbuilder.rulebuilder.ParticipantAttributeRuleEffect;
+import simse.modelbuilder.rulebuilder.ParticipantRuleEffect;
+import simse.modelbuilder.rulebuilder.ParticipantTypeRuleEffect;
+import simse.modelbuilder.rulebuilder.Rule;
+import simse.modelbuilder.rulebuilder.RuleInput;
+import simse.modelbuilder.startstatebuilder.CreatedObjects;
+import simse.modelbuilder.startstatebuilder.InstantiatedAttribute;
+import simse.modelbuilder.startstatebuilder.SimSEObject;
 
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 public class ModelFileManipulator {
+  // general constants
+  public static final char NEWLINE = '\n';
+  public static final String EMPTY_VALUE = new String("<>");
+  public static final String BOUNDLESS = new String("boundless");
+
+  // object types constants:
+  public static final String BEGIN_OBJECT_TYPES_TAG = new String(
+      "<beginDefinedObjectTypes>");
+  public static final String END_OBJECT_TYPES_TAG = new String(
+      "<endDefinedObjectTypes>");
+  public static final String BEGIN_OBJECT_TYPE_TAG = 
+  	new String("<beginObjectType>");
+  public static final String END_OBJECT_TYPE_TAG = 
+  	new String("<endObjectType>");
+  public static final String BEGIN_ATTRIBUTE_TAG = 
+  	new String("<beginAttribute>");
+  public static final String END_ATTRIBUTE_TAG = 
+  	new String("<endAttribute>");
+
+  // start state constants:
+  public static final String BEGIN_CREATED_OBJECTS_TAG = new String(
+      "<beginCreatedObjects>");
+  public static final String END_CREATED_OBJECTS_TAG = new String(
+      "<endCreatedObjects>");
+  public static final String BEGIN_OBJECT_TAG = new String("<beginObject>");
+  public static final String END_OBJECT_TAG = new String("<endObject>");
+  public static final String BEGIN_INSTANTIATED_ATTRIBUTE_TAG = new String(
+      "<beginInstantiatedAttribute>");
+  public static final String END_INSTANTIATED_ATTRIBUTE_TAG = new String(
+      "<endInstantiatedAttribute>");
+  public static final String BEGIN_STARTING_NARRATIVE_TAG = new String(
+      "<beginStartingNarrative>");
+  public static final String END_STARTING_NARRATIVE_TAG = new String(
+      "<endStartingNarrative>");
+
+  // action types constants:
+  public static final String BEGIN_DEFINED_ACTIONS_TAG = 
+  	"<beginDefinedActionTypes>";
+  public static final String END_DEFINED_ACTIONS_TAG = new String(
+      "<endDefinedActionTypes>");
+  public static final String BEGIN_ACTION_TYPE_TAG = 
+  	new String("<beginActionType>");
+  public static final String END_ACTION_TYPE_TAG = 
+  	new String("<endActionType>");
+  public static final String BEGIN_ACTION_TYPE_ANNOTATION_TAG = new String(
+      "<beginActionTypeAnnotation>");
+  public static final String END_ACTION_TYPE_ANNOTATION_TAG = new String(
+      "<endActionTypeAnnotation>");
+  public static final String BEGIN_PARTICIPANT_TAG = new String(
+      "<beginActionTypeParticipant>");
+  public static final String END_PARTICIPANT_TAG = new String(
+      "<endActionTypeParticipant>");
+  public static final String BEGIN_QUANTITY_TAG = new String(
+      "<beginActionTypeParticipantQuantity>");
+  public static final String END_QUANTITY_TAG = new String(
+      "<endActionTypeParticipantQuantity>");
+  public static final String BEGIN_SSOBJ_TYPE_NAMES_TAG = new String(
+      "<beginSSObjTypeNames>");
+  public static final String END_SSOBJ_TYPE_NAMES_TAG = new String(
+      "<endSSObjTypeNames>");
+  public static final String BEGIN_TRIGGER_TAG = new String(
+      "<beginActionTypeTrigger>");
+  public static final String END_TRIGGER_TAG = 
+  	new String("<endActionTypeTrigger>");
+  public static final String BEGIN_PARTICIPANT_TRIGGER_TAG = new String(
+      "<beginActionTypeParticipantTrigger>");
+  public static final String END_PARTICIPANT_TRIGGER_TAG = new String(
+      "<endActionTypeParticipantTrigger>");
+  public static final String BEGIN_PARTICIPANT_CONSTRAINT_TAG = new String(
+      "<beginActionTypeParticipantConstraint>");
+  public static final String END_PARTICIPANT_CONSTRAINT_TAG = new String(
+      "<endActionTypeParticipantConstraint>");
+  public static final String BEGIN_ATTRIBUTE_CONSTRAINT_TAG = new String(
+      "<beginActionTypeParticipantAttributeConstraint>");
+  public static final String END_ATTRIBUTE_CONSTRAINT_TAG = new String(
+      "<endActionTypeParticipantAttributeConstraint>");
+  public static final String BEGIN_DESTROYER_TAG = new String(
+      "<beginActionTypeDestroyer>");
+  public static final String END_DESTROYER_TAG = new String(
+      "<endActionTypeDestroyer>");
+  public static final String BEGIN_PARTICIPANT_DESTROYER_TAG = new String(
+      "<beginActionTypeParticipantDestroyer>");
+  public static final String END_PARTICIPANT_DESTROYER_TAG = new String(
+      "<endActionTypeParticipantDestroyer>");
+
+  // rule constants:
+  public static final String BEGIN_RULES_TAG = "<beginRules>";
+  public static final String END_RULES_TAG = "<endRules>";
+  public static final String BEGIN_EFFECT_RULE_TAG = "<beginEffectRule>";
+  public static final String END_EFFECT_RULE_TAG = "<endEffectRule>";
+  public static final String BEGIN_PARTICIPANT_EFFECT_TAG = 
+  	"<beginParticipantRuleEffect>";
+  public static final String END_PARTICIPANT_EFFECT_TAG = 
+  	"<endParticipantRuleEffect>";
+  public static final String BEGIN_PARTICIPANT_TYPE_EFFECT_TAG = 
+  	"<beginParticipantTypeRuleEffect>";
+  public static final String END_PARTICIPANT_TYPE_EFFECT_TAG = 
+  	"<endParticipantTypeRuleEffect>";
+  public static final String BEGIN_ACTIONS_TO_ACTIVATE_TAG = 
+  	"<beginActionsToActivate>";
+  public static final String END_ACTIONS_TO_ACTIVATE_TAG = 
+  	"<endActionsToActivate>";
+  public static final String BEGIN_ACTIONS_TO_DEACTIVATE_TAG = 
+  	"<beginActionsToDeactivate>";
+  public static final String END_ACTIONS_TO_DEACTIVATE_TAG = 
+  	"<endActionsToDeactivate>";
+  public static final String BEGIN_ATTRIBUTE_EFFECT_TAG = 
+  	"<beginParticipantAttributeRuleEffect>";
+  public static final String END_ATTRIBUTE_EFFECT_TAG = 
+  	"<endParticipantAttributeRuleEffect>";
+  public static final String BEGIN_RULE_INPUT_TAG = "<beginRuleInput>";
+  public static final String END_RULE_INPUT_TAG = "<endRuleInput>";
+  public static final String BEGIN_RULE_INPUT_CONDITION_TAG = 
+  	"<beginRuleInputCondition>";
+  public static final String END_RULE_INPUT_CONDITION_TAG = 
+  	"<endRuleInputCondition>";
+  public static final String BEGIN_CREATE_OBJECTS_RULE_TAG = 
+  	"<beginCreateObjectsRule>";
+  public static final String END_CREATE_OBJECTS_RULE_TAG = 
+  	"<endCreateObjectsRule>";
+  public static final String BEGIN_DESTROY_OBJECTS_RULE_TAG = 
+  	"<beginDestroyObjectsRule>";
+  public static final String END_DESTROY_OBJECTS_RULE_TAG = 
+  	"<endDestroyObjectsRule>";
+  public static final String BEGIN_PARTICIPANT_CONDITION_TAG = 
+  	"<beginDestroyObjectsRuleParticipantCondition>";
+  public static final String END_PARTICIPANT_CONDITION_TAG = 
+  	"<endDestroyObjectsRuleParticipantCondition>";
+  public static final String BEGIN_RULE_ANNOTATION_TAG = 
+  	"<beginRuleAnnotation>";
+  public static final String END_RULE_ANNOTATION_TAG = "<endRuleAnnotation>";
+
+  // graphics constants:
+  public static final String BEGIN_GRAPHICS_TAG = "<beginGraphics>";
+  public static final String END_GRAPHICS_TAG = "<endGraphics>";
+
+  // map constants:
+  public static final String BEGIN_MAP_TAG = "<beginMap>";
+  public static final String END_MAP_TAG = "<endMap>";
+  public static final String BEGIN_SOP_USERS_TAG = "<beginSOPUsers>";
+  public static final String END_SOP_USERS_TAG = "<endSOPUsers>";
+  
+  // model options:
+  public static final String BEGIN_MODEL_OPTIONS_TAG = "<beginModelOptions>";
+  public static final String END_MODEL_OPTIONS_TAG = "<endModelOptions>";
+
+  // allow hire and fire constants
+  public static final String BEGIN_ALLOW_HIRE_FIRE_TAG = "<beginAllowHireFire>";
+  public static final String END_ALLOW_HIRE_FIRE_TAG = "<endAllowHireFire>";
+  
   private ModelOptions options;
   private DefinedObjectTypes objectTypes;
   private CreatedObjects objects;
   private DefinedActionTypes actionTypes;
   private TileData[][] mapRep;
   private ArrayList<UserData> sopUsers;
-
-  // general constants
-  private final char NEWLINE = '\n';
-  private final String EMPTY_VALUE = new String("<>");
-  private final String BOUNDLESS = new String("boundless");
-
-  // object types constants:
-  private final String BEGIN_OBJECT_TYPES_TAG = new String(
-      "<beginDefinedObjectTypes>");
-  private final String END_OBJECT_TYPES_TAG = new String(
-      "<endDefinedObjectTypes>");
-  private final String BEGIN_OBJECT_TYPE_TAG = new String("<beginObjectType>");
-  private final String END_OBJECT_TYPE_TAG = new String("<endObjectType>");
-  private final String BEGIN_ATTRIBUTE_TAG = new String("<beginAttribute>");
-  private final String END_ATTRIBUTE_TAG = new String("<endAttribute>");
-
-  // start state constants:
-  private final String BEGIN_CREATED_OBJECTS_TAG = new String(
-      "<beginCreatedObjects>");
-  private final String END_CREATED_OBJECTS_TAG = new String(
-      "<endCreatedObjects>");
-  private final String BEGIN_OBJECT_TAG = new String("<beginObject>");
-  private final String END_OBJECT_TAG = new String("<endObject>");
-  private final String BEGIN_INSTANTIATED_ATTRIBUTE_TAG = new String(
-      "<beginInstantiatedAttribute>");
-  private final String END_INSTANTIATED_ATTRIBUTE_TAG = new String(
-      "<endInstantiatedAttribute>");
-  private final String BEGIN_STARTING_NARRATIVE_TAG = new String(
-      "<beginStartingNarrative>");
-  private final String END_STARTING_NARRATIVE_TAG = new String(
-      "<endStartingNarrative>");
-
-  // action types constants:
-  private final String BEGIN_DEFINED_ACTIONS_TAG = "<beginDefinedActionTypes>";
-  private final String END_DEFINED_ACTIONS_TAG = new String(
-      "<endDefinedActionTypes>");
-  private final String BEGIN_ACTION_TYPE_TAG = new String("<beginActionType>");
-  private final String END_ACTION_TYPE_TAG = new String("<endActionType>");
-  private final String BEGIN_ACTION_TYPE_ANNOTATION_TAG = new String(
-      "<beginActionTypeAnnotation>");
-  private final String END_ACTION_TYPE_ANNOTATION_TAG = new String(
-      "<endActionTypeAnnotation>");
-  private final String BEGIN_PARTICIPANT_TAG = new String(
-      "<beginActionTypeParticipant>");
-  private final String END_PARTICIPANT_TAG = new String(
-      "<endActionTypeParticipant>");
-  private final String BEGIN_QUANTITY_TAG = new String(
-      "<beginActionTypeParticipantQuantity>");
-  private final String END_QUANTITY_TAG = new String(
-      "<endActionTypeParticipantQuantity>");
-  private final String BEGIN_SSOBJ_TYPE_NAMES_TAG = new String(
-      "<beginSSObjTypeNames>");
-  private final String END_SSOBJ_TYPE_NAMES_TAG = new String(
-      "<endSSObjTypeNames>");
-  private final String BEGIN_TRIGGER_TAG = new String(
-      "<beginActionTypeTrigger>");
-  private final String END_TRIGGER_TAG = new String("<endActionTypeTrigger>");
-  private final String BEGIN_PARTICIPANT_TRIGGER_TAG = new String(
-      "<beginActionTypeParticipantTrigger>");
-  private final String END_PARTICIPANT_TRIGGER_TAG = new String(
-      "<endActionTypeParticipantTrigger>");
-  private final String BEGIN_PARTICIPANT_CONSTRAINT_TAG = new String(
-      "<beginActionTypeParticipantConstraint>");
-  private final String END_PARTICIPANT_CONSTRAINT_TAG = new String(
-      "<endActionTypeParticipantConstraint>");
-  private final String BEGIN_ATTRIBUTE_CONSTRAINT_TAG = new String(
-      "<beginActionTypeParticipantAttributeConstraint>");
-  private final String END_ATTRIBUTE_CONSTRAINT_TAG = new String(
-      "<endActionTypeParticipantAttributeConstraint>");
-  private final String BEGIN_DESTROYER_TAG = new String(
-      "<beginActionTypeDestroyer>");
-  private final String END_DESTROYER_TAG = new String(
-      "<endActionTypeDestroyer>");
-  private final String BEGIN_PARTICIPANT_DESTROYER_TAG = new String(
-      "<beginActionTypeParticipantDestroyer>");
-  private final String END_PARTICIPANT_DESTROYER_TAG = new String(
-      "<endActionTypeParticipantDestroyer>");
-
-  // rule constants:
-  private final String BEGIN_RULES_TAG = "<beginRules>";
-  private final String END_RULES_TAG = "<endRules>";
-  private final String BEGIN_EFFECT_RULE_TAG = "<beginEffectRule>";
-  private final String END_EFFECT_RULE_TAG = "<endEffectRule>";
-  private final String BEGIN_PARTICIPANT_EFFECT_TAG = "<beginParticipantRuleEffect>";
-  private final String END_PARTICIPANT_EFFECT_TAG = "<endParticipantRuleEffect>";
-  private final String BEGIN_PARTICIPANT_TYPE_EFFECT_TAG = "<beginParticipantTypeRuleEffect>";
-  private final String END_PARTICIPANT_TYPE_EFFECT_TAG = "<endParticipantTypeRuleEffect>";
-  private final String BEGIN_ACTIONS_TO_ACTIVATE_TAG = "<beginActionsToActivate>";
-  private final String END_ACTIONS_TO_ACTIVATE_TAG = "<endActionsToActivate>";
-  private final String BEGIN_ACTIONS_TO_DEACTIVATE_TAG = "<beginActionsToDeactivate>";
-  private final String END_ACTIONS_TO_DEACTIVATE_TAG = "<endActionsToDeactivate>";
-  private final String BEGIN_ATTRIBUTE_EFFECT_TAG = "<beginParticipantAttributeRuleEffect>";
-  private final String END_ATTRIBUTE_EFFECT_TAG = "<endParticipantAttributeRuleEffect>";
-  private final String BEGIN_RULE_INPUT_TAG = "<beginRuleInput>";
-  private final String END_RULE_INPUT_TAG = "<endRuleInput>";
-  private final String BEGIN_RULE_INPUT_CONDITION_TAG = "<beginRuleInputCondition>";
-  private final String END_RULE_INPUT_CONDITION_TAG = "<endRuleInputCondition>";
-  private final String BEGIN_CREATE_OBJECTS_RULE_TAG = "<beginCreateObjectsRule>";
-  private final String END_CREATE_OBJECTS_RULE_TAG = "<endCreateObjectsRule>";
-  private final String BEGIN_DESTROY_OBJECTS_RULE_TAG = "<beginDestroyObjectsRule>";
-  private final String END_DESTROY_OBJECTS_RULE_TAG = "<endDestroyObjectsRule>";
-  private final String BEGIN_PARTICIPANT_CONDITION_TAG = "<beginDestroyObjectsRuleParticipantCondition>";
-  private final String END_PARTICIPANT_CONDITION_TAG = "<endDestroyObjectsRuleParticipantCondition>";
-  private final String BEGIN_RULE_ANNOTATION_TAG = "<beginRuleAnnotation>";
-  private final String END_RULE_ANNOTATION_TAG = "<endRuleAnnotation>";
-
-  // graphics constants:
-  private final String BEGIN_GRAPHICS_TAG = "<beginGraphics>";
-  private final String END_GRAPHICS_TAG = "<endGraphics>";
-
-  // map constants:
-  private final String BEGIN_MAP_TAG = "<beginMap>";
-  private final String END_MAP_TAG = "<endMap>";
-  private final String BEGIN_SOP_USERS_TAG = "<beginSOPUsers>";
-  private final String END_SOP_USERS_TAG = "<endSOPUsers>";
   
-  // model options:
-  private final String BEGIN_MODEL_OPTIONS_TAG = "<beginModelOptions>";
-  private final String END_MODEL_OPTIONS_TAG = "<endModelOptions>";
-
-  // allow hire and fire constants
-  private final String BEGIN_ALLOW_HIRE_FIRE_TAG = "<beginAllowHireFire>";
-  private final String END_ALLOW_HIRE_FIRE_TAG = "<endAllowHireFire>";
-
-  public ModelFileManipulator(ModelOptions opts, DefinedObjectTypes objTypes,
-      DefinedActionTypes defActs, CreatedObjects createdObjs, 
-      ArrayList<UserData> sops, TileData[][] map) {
-    options = opts;
-    objectTypes = objTypes;
-    objects = createdObjs;
-    actionTypes = defActs;
-    sopUsers = sops;
-    mapRep = map;
+  public ModelFileManipulator(ModelOptions options, 
+  		DefinedObjectTypes objectTypes, DefinedActionTypes actionTypes, 
+  		CreatedObjects objects, ArrayList<UserData> sopUsers, 
+  		TileData[][] mapRep) {
+    this.options = options;
+    this.objectTypes = objectTypes;
+    this.objects = objects;
+    this.actionTypes = actionTypes;
+    this.sopUsers = sopUsers;
+    this.mapRep = mapRep;
   }
 
   /*
@@ -162,10 +230,10 @@ public class ModelFileManipulator {
    */
   public void generateFile(File outputFile, 
   		Hashtable<SimSEObject, String> startStateObjsToImages,
-      Hashtable<SimSEObject, String> ruleObjsToImages, boolean allowHireFire) 
-  {
+      Hashtable<SimSEObject, String> ruleObjsToImages, boolean allowHireFire) {
     if (outputFile.exists()) {
-      outputFile.delete(); // delete old version of file
+    	// delete old version of file:
+      outputFile.delete(); 
     }
     try {
       FileWriter writer = new FileWriter(outputFile);
@@ -187,8 +255,7 @@ public class ModelFileManipulator {
       // icon directory:
       if (options.getIconDirectory() != null) {
         writer.write(options.getIconDirectory().getAbsolutePath());
-      }
-      else {
+      } else {
         writer.write(EMPTY_VALUE);
       }
       writer.write(NEWLINE);
@@ -196,8 +263,7 @@ public class ModelFileManipulator {
       if (options.getCodeGenerationDestinationDirectory() != null) {
         writer.write(options.getCodeGenerationDestinationDirectory().
             getAbsolutePath());
-      }
-      else {
+      } else {
         writer.write(EMPTY_VALUE);
       }
       writer.write(NEWLINE);
@@ -237,8 +303,7 @@ public class ModelFileManipulator {
           // visible:
           if (tempAtt.isVisible()) {
             writer.write('1');
-          } else // tempAtt.isVisible() == false
-          {
+          } else { // tempAtt.isVisible() == false
             writer.write('0');
           }
           writer.write(NEWLINE);
@@ -246,8 +311,7 @@ public class ModelFileManipulator {
           // key:
           if (tempAtt.isKey()) {
             writer.write('1');
-          } else // tempAtt.isKey() == false
-          {
+          } else { // tempAtt.isKey() == false
             writer.write('0');
           }
           writer.write(NEWLINE);
@@ -255,8 +319,7 @@ public class ModelFileManipulator {
           // visibleOnCompletion:
           if (tempAtt.isVisibleOnCompletion()) {
             writer.write('1');
-          } else // tempAtt.isVisibleOnCompletion() == false
-          {
+          } else { // tempAtt.isVisibleOnCompletion() == false
             writer.write('0');
           }
           writer.write(NEWLINE);
@@ -266,8 +329,7 @@ public class ModelFileManipulator {
             // min value:
             if (numAtt.isMinBoundless()) {
               writer.write(BOUNDLESS);
-            } else // tempAtt.isMinBoundless() == false
-            {
+            } else { // tempAtt.isMinBoundless() == false
               writer.write(numAtt.getMinValue().toString());
             }
             writer.write(NEWLINE);
@@ -275,14 +337,12 @@ public class ModelFileManipulator {
             // max value:
             if (numAtt.isMaxBoundless()) {
               writer.write(BOUNDLESS);
-            } else // numAtt.isMaxBoundless() == false
-            {
+            } else { // numAtt.isMaxBoundless() == false
               writer.write(numAtt.getMaxValue().toString());
             }
             writer.write(NEWLINE);
 
-            if (tempAtt.getType() == AttributeTypes.DOUBLE) // double attribute
-            {
+            if (tempAtt.getType() == AttributeTypes.DOUBLE) { // double att
               // min/max num digits:
               // min:
               if (numAtt.getMinNumFractionDigits() == null) {
@@ -347,11 +407,9 @@ public class ModelFileManipulator {
           writer.write(NEWLINE);
           writer.write(tempInstAtt.getAttribute().getName());
           writer.write(NEWLINE);
-          if (tempInstAtt.getValue() != null) // attribute has a value
-          {
+          if (tempInstAtt.getValue() != null) { // attribute has a value
             writer.write(tempInstAtt.getValue().toString());
-          } else // attribute does not have a value
-          {
+          } else { // attribute does not have a value
             writer.write(EMPTY_VALUE);
           }
           writer.write(NEWLINE);
@@ -423,26 +481,23 @@ public class ModelFileManipulator {
           writer.write(NEWLINE);
           writer.write(BEGIN_QUANTITY_TAG);
           writer.write(NEWLINE);
-          writer.write(Guard.getText(tempPart.getQuantity().getGuard())); // quantity
-                                                                          // guard
+          // quantity guard:
+          writer.write(Guard.getText(tempPart.getQuantity().getGuard())); 
           writer.write(NEWLINE);
-          if (tempPart.getQuantity().isQuantityBoundless()) // quantity is
-                                                            // boundless
-          {
+          if (tempPart.getQuantity().isQuantityBoundless()) { // quantity is
+                                                              // boundless
             writer.write(EMPTY_VALUE);
-          } else // quantity has a value
-          {
-            writer.write(tempPart.getQuantity().getQuantity()[0].toString()); // quantity
+          } else { // quantity has a value
+          	// quantity:
+            writer.write(tempPart.getQuantity().getQuantity()[0].toString()); 
           }
           writer.write(NEWLINE);
-          if (tempPart.getQuantity().getQuantity()[1] == null) // max value is
-                                                               // boundless
-          {
+          if (tempPart.getQuantity().getQuantity()[1] == null) { // max value is
+                                                                 // boundless
             writer.write(EMPTY_VALUE);
-          } else // max value has a value
-          {
-            writer.write(tempPart.getQuantity().getQuantity()[1].toString()); // max
-                                                                              // value
+          } else { // max value has a value
+          	// max value:
+            writer.write(tempPart.getQuantity().getQuantity()[1].toString()); 
           }
           writer.write(NEWLINE);
           writer.write(END_QUANTITY_TAG);
@@ -450,7 +505,8 @@ public class ModelFileManipulator {
           writer.write(BEGIN_SSOBJ_TYPE_NAMES_TAG);
           writer.write(NEWLINE);
           // get all of the SimSEObjectTypes for this participant:
-          Vector<SimSEObjectType> ssObjTypes = tempPart.getAllSimSEObjectTypes(); 
+          Vector<SimSEObjectType> ssObjTypes = 
+          	tempPart.getAllSimSEObjectTypes(); 
           // go through each SimSEObjectType and write its name to the file:
           for (int k = 0; k < ssObjTypes.size(); k++) {
             SimSEObjectType tempType = ssObjTypes.elementAt(k);
@@ -473,21 +529,19 @@ public class ModelFileManipulator {
           writer.write(tempTrig.getName());
           writer.write(NEWLINE);
           // trigger type:
-          if (tempTrig instanceof AutonomousActionTypeTrigger) // autonomous
-                                                               // trigger
-          {
+          if (tempTrig instanceof AutonomousActionTypeTrigger) { // autonomous
+                                                               	 // trigger
             writer.write(ActionTypeTrigger.AUTO); // auto trigger type
             writer.write(NEWLINE);
-          } else if (tempTrig instanceof RandomActionTypeTrigger) // random
-                                                                  // trigger
-          {
+          } else if (tempTrig instanceof RandomActionTypeTrigger) { // random
+                                                                    // trigger
             writer.write(ActionTypeTrigger.RANDOM); // random trigger type
             writer.write(NEWLINE);
             writer.write((new Double(((RandomActionTypeTrigger) (tempTrig))
                 .getFrequency())).toString()); // frequency
             writer.write(NEWLINE);
-          } else if (tempTrig instanceof UserActionTypeTrigger) // user trigger
-          {
+          } else if (tempTrig instanceof UserActionTypeTrigger) { // user 
+          																												// trigger
             writer.write(ActionTypeTrigger.USER);
             writer.write(NEWLINE);
             UserActionTypeTrigger tempUserTrig = 
@@ -515,15 +569,14 @@ public class ModelFileManipulator {
           // participant triggers:
           Vector<ActionTypeParticipantTrigger> partTriggers = 
           	tempTrig.getAllParticipantTriggers();
-          // go through each ActionTypeParticipantTrigger and write it to the
-          // file:
+          // go through each ActionTypeParticipantTrigger and write it to file
           for (int k = 0; k < partTriggers.size(); k++) {
             writer.write(BEGIN_PARTICIPANT_TRIGGER_TAG);
             writer.write(NEWLINE);
             ActionTypeParticipantTrigger tempPartTrig = 
             	partTriggers.elementAt(k);
-            writer.write(tempPartTrig.getParticipant().getName()); // participant
-                                                                   // name
+            // participant name:
+            writer.write(tempPartTrig.getParticipant().getName()); 
             writer.write(NEWLINE);
             // go through each ActionTypeParticipantConstraint and write it to
             // the file:
@@ -534,34 +587,27 @@ public class ModelFileManipulator {
               	partConstraints.elementAt(m);
               writer.write(BEGIN_PARTICIPANT_CONSTRAINT_TAG);
               writer.write(NEWLINE);
-              writer.write(tempPartConst.getSimSEObjectType().getName()); // name
-                                                                          // of
-                                                                          // the
-                                                                          // SimSEObject
-                                                                          // type
-                                                                          // for
-                                                                          // this
-                                                                          // participant
+              // name of the SimSEObject type for this participant:
+              writer.write(tempPartConst.getSimSEObjectType().getName()); 
               // constraint
               writer.write(NEWLINE);
               // go through each ActionTypeParticipantAttributeConstraint and
               // write it to the file:
-              ActionTypeParticipantAttributeConstraint[] attConstraints = tempPartConst
-                  .getAllAttributeConstraints();
+              ActionTypeParticipantAttributeConstraint[] attConstraints = 
+              	tempPartConst.getAllAttributeConstraints();
               for (int n = 0; n < attConstraints.length; n++) {
-                ActionTypeParticipantAttributeConstraint tempAttConst = attConstraints[n];
+                ActionTypeParticipantAttributeConstraint tempAttConst = 
+                	attConstraints[n];
                 writer.write(BEGIN_ATTRIBUTE_CONSTRAINT_TAG);
                 writer.write(NEWLINE);
-                writer.write(tempAttConst.getAttribute().getName()); // attribute
-                                                                     // name
+                // attribute name:
+                writer.write(tempAttConst.getAttribute().getName()); 
                 writer.write(NEWLINE);
                 writer.write(tempAttConst.getGuard()); // guard
                 writer.write(NEWLINE);
-                if (tempAttConst.isConstrained()) // has a value
-                {
+                if (tempAttConst.isConstrained()) { // has a value
                   writer.write(tempAttConst.getValue().toString()); // value
-                } else // is unconstrained by a value
-                {
+                } else { // is unconstrained by a value
                   writer.write(EMPTY_VALUE);
                 }
                 writer.write(NEWLINE);
@@ -591,30 +637,26 @@ public class ModelFileManipulator {
           writer.write(tempDest.getName());
           writer.write(NEWLINE);
           // destroyer type:
-          if (tempDest instanceof AutonomousActionTypeDestroyer) // autonomous
-                                                                 // destroyer
-          {
+          if (tempDest instanceof AutonomousActionTypeDestroyer) { // autonomous
+                                                                 	 // destroyer
             writer.write(ActionTypeDestroyer.AUTO); // auto destroyer type
             writer.write(NEWLINE);
-          } else if (tempDest instanceof RandomActionTypeDestroyer) // random
-                                                                    // destroyer
-          {
+          } else if (tempDest instanceof RandomActionTypeDestroyer) { // random
+                                                                      // dest
             writer.write(ActionTypeDestroyer.RANDOM); // random destroyer type
             writer.write(NEWLINE);
             writer.write((new Double(((RandomActionTypeDestroyer) (tempDest))
                 .getFrequency())).toString()); // frequency
             writer.write(NEWLINE);
-          } else if (tempDest instanceof UserActionTypeDestroyer) // user
-                                                                  // destroyer
-          {
+          } else if (tempDest instanceof UserActionTypeDestroyer) { // user
+                                                                    // destroyer
             writer.write(ActionTypeDestroyer.USER);
             writer.write(NEWLINE);
-            writer.write(((UserActionTypeDestroyer) (tempDest)).getMenuText()); // menu
-                                                                                // text
+            // menu text:
+            writer.write(((UserActionTypeDestroyer) (tempDest)).getMenuText()); 
             writer.write(NEWLINE);
-          } else if (tempDest instanceof TimedActionTypeDestroyer) // timed
-                                                                   // destroyer
-          {
+          } else if (tempDest instanceof TimedActionTypeDestroyer) { // timed
+                                                                     // dest
             writer.write(ActionTypeDestroyer.TIMED);
             writer.write(NEWLINE);
             writer.write((new Integer(((TimedActionTypeDestroyer) (tempDest))
@@ -646,8 +688,8 @@ public class ModelFileManipulator {
             writer.write(NEWLINE);
             ActionTypeParticipantDestroyer tempPartDest = 
             	partDestroyers.elementAt(k);
-            writer.write(tempPartDest.getParticipant().getName()); // participant
-                                                                   // name
+            // participant name:
+            writer.write(tempPartDest.getParticipant().getName()); 
             writer.write(NEWLINE);
             // participant constraints:
             Vector<ActionTypeParticipantConstraint> partConstraints = 
@@ -659,33 +701,26 @@ public class ModelFileManipulator {
               	partConstraints.elementAt(m);
               writer.write(BEGIN_PARTICIPANT_CONSTRAINT_TAG);
               writer.write(NEWLINE);
-              writer.write(tempPartConst.getSimSEObjectType().getName()); // name
-                                                                          // of
-                                                                          // the
-                                                                          // SimSEObject
-                                                                          // type
-                                                                          // for
-                                                                          // this
-                                                                          // participant
+              // name of the SimSEObject type for this participant:
+              writer.write(tempPartConst.getSimSEObjectType().getName()); 
               // constraint
               writer.write(NEWLINE);
               // attribute constraints:
-              ActionTypeParticipantAttributeConstraint[] attConstraints = tempPartConst
-                  .getAllAttributeConstraints();
+              ActionTypeParticipantAttributeConstraint[] attConstraints = 
+              	tempPartConst.getAllAttributeConstraints();
               for (int n = 0; n < attConstraints.length; n++) {
-                ActionTypeParticipantAttributeConstraint tempAttConst = attConstraints[n];
+                ActionTypeParticipantAttributeConstraint tempAttConst = 
+                	attConstraints[n];
                 writer.write(BEGIN_ATTRIBUTE_CONSTRAINT_TAG);
                 writer.write(NEWLINE);
-                writer.write(tempAttConst.getAttribute().getName()); // attribute
-                                                                     // name
+                // attribute name:
+                writer.write(tempAttConst.getAttribute().getName()); 
                 writer.write(NEWLINE);
                 writer.write(tempAttConst.getGuard()); // guard
                 writer.write(NEWLINE);
-                if (tempAttConst.isConstrained()) // has a value
-                {
+                if (tempAttConst.isConstrained()) { // has a value
                   writer.write(tempAttConst.getValue().toString()); // value
-                } else // is unconstrained by a value
-                {
+                } else { // is unconstrained by a value
                   writer.write(EMPTY_VALUE);
                 }
                 writer.write(NEWLINE);
@@ -720,26 +755,22 @@ public class ModelFileManipulator {
         // go through each rule and write it to the file:
         for (int j = 0; j < rules.size(); j++) {
           Rule tempRule = rules.elementAt(j);
-          if (tempRule instanceof EffectRule) // EffectRule
-          {
+          if (tempRule instanceof EffectRule) { // EffectRule
             writer.write(BEGIN_EFFECT_RULE_TAG);
             writer.write(NEWLINE);
             writer.write(tempRule.getName()); // rule name
             writer.write(NEWLINE);
-            writer.write((new Integer(tempRule.getPriority())).toString()); // rule
-                                                                            // priority
+            // rule priority:
+            writer.write((new Integer(tempRule.getPriority())).toString()); 
             writer.write(NEWLINE);
             writer.write(tempAct.getName()); // action name
             writer.write(NEWLINE);
-            writer.write((new Integer(tempRule.getTiming())).toString()); // rule
-                                                                          // timing
+            // rule timing:
+            writer.write((new Integer(tempRule.getTiming())).toString()); 
             writer.write(NEWLINE);
+            // rule execute on join status:
             writer
-                .write((new Boolean(tempRule.getExecuteOnJoins())).toString()); // rule
-                                                                                // execute
-                                                                                // on
-                                                                                // join
-                                                                                // status
+                .write((new Boolean(tempRule.getExecuteOnJoins())).toString()); 
             writer.write(NEWLINE);
 
             // explanatory tool visibility
@@ -759,16 +790,18 @@ public class ModelFileManipulator {
             writer.write(NEWLINE);
             writer.write(END_RULE_ANNOTATION_TAG);
             writer.write(NEWLINE);
+            
+            EffectRule tempEffectRule = (EffectRule)tempRule;
 
-            Vector<ParticipantRuleEffect> partEffects = ((EffectRule) tempRule)
-                .getAllParticipantRuleEffects();
+            Vector<ParticipantRuleEffect> partEffects = 
+            	tempEffectRule.getAllParticipantRuleEffects();
             // go through each ParticipantRuleEffect and write it to the file:
             for (int k = 0; k < partEffects.size(); k++) {
               writer.write(BEGIN_PARTICIPANT_EFFECT_TAG);
               writer.write(NEWLINE);
               ParticipantRuleEffect tempPartEffect = partEffects.elementAt(k);
-              writer.write(tempPartEffect.getParticipant().getName()); // participant
-                                                                       // name
+              // participant name:
+              writer.write(tempPartEffect.getParticipant().getName()); 
               writer.write(NEWLINE);
               Vector<ParticipantTypeRuleEffect> partTypeEffects = 
               	tempPartEffect.getAllParticipantTypeEffects();
@@ -783,8 +816,8 @@ public class ModelFileManipulator {
                     .getSimSEObjectType().getType())).toString());
                 // SimSEObjectTypeType
                 writer.write(NEWLINE);
-                writer.write(tempPartTypeEffect.getSimSEObjectType().getName()); // SimSEObjectType
-                                                                                 // name
+                // SimSEObjectType name:
+                writer.write(tempPartTypeEffect.getSimSEObjectType().getName()); 
                 
                 // other actions effect:
                 writer.write(NEWLINE);
@@ -802,8 +835,7 @@ public class ModelFileManipulator {
                   if (actionsToActivate.isEmpty()) {
                     writer.write(EMPTY_VALUE);
                     writer.write(NEWLINE);
-                  }
-                  else {
+                  } else {
                     for (int n = 0; n < actionsToActivate.size(); n++) {
                       ActionType tempAct2 = actionsToActivate.
                       	elementAt(n);
@@ -822,8 +854,7 @@ public class ModelFileManipulator {
                   if (actionsToDeactivate.isEmpty()) {
                     writer.write(EMPTY_VALUE);
                     writer.write(NEWLINE);
-                  }
-                  else {
+                  } else {
                     for (int n = 0; n < actionsToDeactivate.size(); n++) {
                       ActionType tempAct2 = actionsToDeactivate.elementAt(n);
                       writer.write(tempAct2.getName());
@@ -843,8 +874,8 @@ public class ModelFileManipulator {
                   writer.write(NEWLINE);
                   ParticipantAttributeRuleEffect tempPartAttEffect = 
                   	partTypeAttEffects.elementAt(p);
-                  writer.write(tempPartAttEffect.getAttribute().getName()); // attribute
-                                                                            // name
+                  // attribute name:
+                  writer.write(tempPartAttEffect.getAttribute().getName()); 
                   writer.write(NEWLINE);
                   writer.write(tempPartAttEffect.getEffect());
                   writer.write(NEWLINE);
@@ -859,19 +890,20 @@ public class ModelFileManipulator {
             }
 
             //  rule input:
-            Vector inputs = ((EffectRule) tempRule).getAllRuleInputs();
+            Vector<RuleInput> inputs = tempEffectRule.getAllRuleInputs();
             // go through each rule input and write it to the file:
             for (int k = 0; k < inputs.size(); k++) {
               writer.write(BEGIN_RULE_INPUT_TAG);
               writer.write(NEWLINE);
-              RuleInput tempInput = (RuleInput) inputs.elementAt(k);
+              RuleInput tempInput = inputs.elementAt(k);
               writer.write(tempInput.getName()); // input name
               writer.write(NEWLINE);
               writer.write(tempInput.getType()); // input type
               writer.write(NEWLINE);
               writer.write(tempInput.getPrompt()); // input prompt
               writer.write(NEWLINE);
-              writer.write((new Boolean(tempInput.isCancelable())).toString()); // cancelable
+              // cancellable:
+              writer.write((new Boolean(tempInput.isCancelable())).toString()); 
               writer.write(NEWLINE);
               // input condition:
               writer.write(BEGIN_RULE_INPUT_CONDITION_TAG);
@@ -880,15 +912,13 @@ public class ModelFileManipulator {
                                                                  // condition
                                                                  // guard
               writer.write(NEWLINE);
-              if (tempInput.getCondition().isConstrained()) // input has a
-                                                            // constraining/condition
-                                                            // value
-              {
-                writer.write(tempInput.getCondition().getValue().toString()); // input
-                                                                              // condition
-                                                                              // value
-              } else // unconstrained
-              {
+              if (tempInput.getCondition().isConstrained()) { // input has a
+                                                            	// constraining/
+              																								// condition
+                                                            	// value
+              	// input condition value:
+                writer.write(tempInput.getCondition().getValue().toString()); 
+              } else { // unconstrained
                 writer.write(EMPTY_VALUE);
               }
               writer.write(NEWLINE);
@@ -906,13 +936,13 @@ public class ModelFileManipulator {
             writer.write(NEWLINE);
             writer.write(tempRule.getName());
             writer.write(NEWLINE);
-            writer.write((new Integer(tempRule.getPriority())).toString()); // rule
-                                                                            // priority
+            // rule priority:
+            writer.write((new Integer(tempRule.getPriority())).toString()); 
             writer.write(NEWLINE);
             writer.write(tempAct.getName()); // action name
             writer.write(NEWLINE);
-            writer.write((new Integer(tempRule.getTiming())).toString()); // rule
-                                                                          // timing
+            // rule timing:
+            writer.write((new Integer(tempRule.getTiming())).toString()); 
             writer.write(NEWLINE);
 
             // explanatory tool visibility
@@ -933,37 +963,35 @@ public class ModelFileManipulator {
             writer.write(END_RULE_ANNOTATION_TAG);
             writer.write(NEWLINE);
 
-            Vector ruleObjs = ((CreateObjectsRule) tempRule)
+            Vector<SimSEObject> ruleObjs = ((CreateObjectsRule) tempRule)
                 .getAllSimSEObjects();
             // go through each object that this rule creates and write it to the
             // file:
             for (int k = 0; k < ruleObjs.size(); k++) {
               writer.write(BEGIN_OBJECT_TAG);
               writer.write(NEWLINE);
-              SimSEObject tempObj = (SimSEObject) ruleObjs.elementAt(k);
+              SimSEObject tempObj = ruleObjs.elementAt(k);
               writer
                   .write((new Integer(tempObj.getSimSEObjectType().getType()))
                       .toString()); // SimSEObjectTypeType
               writer.write(NEWLINE);
-              writer.write(tempObj.getSimSEObjectType().getName()); // SimSEObjectType
-                                                                    // name
+              // SimSEObjectType name:
+              writer.write(tempObj.getSimSEObjectType().getName()); 
               writer.write(NEWLINE);
-              Vector atts = tempObj.getAllAttributes();
+              Vector<InstantiatedAttribute> atts = tempObj.getAllAttributes();
               // go through each instantiated attribute of this object and write
               // it to the file:
               for (int m = 0; m < atts.size(); m++) {
                 writer.write(BEGIN_INSTANTIATED_ATTRIBUTE_TAG);
                 writer.write(NEWLINE);
-                InstantiatedAttribute tempInstAtt = (InstantiatedAttribute) atts
-                    .elementAt(m);
+                InstantiatedAttribute tempInstAtt = atts.elementAt(m);
                 writer.write(tempInstAtt.getAttribute().getName()); // attribute
                                                                     // name
                 writer.write(NEWLINE);
                 if (tempInstAtt.isInstantiated()) {
                   writer.write(tempInstAtt.getValue().toString());
-                } else // not instantiated (this case should never happen, but
-                       // it's included just in case)
-                {
+                } else { // not instantiated (this case should never happen, but
+                       	 // it's included just in case)
                   writer.write(EMPTY_VALUE);
                 }
                 writer.write(NEWLINE);
@@ -982,13 +1010,13 @@ public class ModelFileManipulator {
             writer.write(NEWLINE);
             writer.write(tempRule.getName());
             writer.write(NEWLINE);
-            writer.write((new Integer(tempRule.getPriority())).toString()); // rule
-                                                                            // priority
+            // rule priority:
+            writer.write((new Integer(tempRule.getPriority())).toString()); 
             writer.write(NEWLINE);
             writer.write(tempAct.getName()); // action name
             writer.write(NEWLINE);
-            writer.write((new Integer(tempRule.getTiming())).toString()); // rule
-                                                                          // timing
+            // rule timing:
+            writer.write((new Integer(tempRule.getTiming())).toString()); 
             writer.write(NEWLINE);
 
             // explanatory tool visibility
@@ -1010,53 +1038,47 @@ public class ModelFileManipulator {
             writer.write(NEWLINE);
 
             // participant conditions:
-            Vector partConds = ((DestroyObjectsRule) tempRule)
-                .getAllParticipantConditions();
+            Vector<DestroyObjectsRuleParticipantCondition> partConds = 
+            	((DestroyObjectsRule) tempRule).getAllParticipantConditions();
             // go through each participant condition and write it to the file:
             for (int m = 0; m < partConds.size(); m++) {
               writer.write(BEGIN_PARTICIPANT_CONDITION_TAG);
               writer.write(NEWLINE);
-              DestroyObjectsRuleParticipantCondition tempPartCond = (DestroyObjectsRuleParticipantCondition) (partConds
-                  .elementAt(m));
-              writer.write(tempPartCond.getParticipant().getName()); // participant
-                                                                     // name
+              DestroyObjectsRuleParticipantCondition tempPartCond = 
+              	partConds.elementAt(m);
+              // participant name:
+              writer.write(tempPartCond.getParticipant().getName()); 
               writer.write(NEWLINE);
               // go through each ActionTypeParticipantConstraint and write it to
               // the file:
-              Vector partConstraints = tempPartCond.getAllConstraints();
+              Vector<ActionTypeParticipantConstraint> partConstraints = 
+              	tempPartCond.getAllConstraints();
               for (int n = 0; n < partConstraints.size(); n++) {
-                ActionTypeParticipantConstraint tempPartConst = (ActionTypeParticipantConstraint) (partConstraints
-                    .elementAt(n));
+                ActionTypeParticipantConstraint tempPartConst = 
+                	partConstraints.elementAt(n);
                 writer.write(BEGIN_PARTICIPANT_CONSTRAINT_TAG);
                 writer.write(NEWLINE);
-                writer.write(tempPartConst.getSimSEObjectType().getName()); // name
-                                                                            // of
-                                                                            // the
-                                                                            // SimSEObject
-                                                                            // type
-                                                                            // for
-                                                                            // this
-                                                                            // participant
+                // SimSEObject type name for this participant
+                writer.write(tempPartConst.getSimSEObjectType().getName()); 
                 // constraint
                 writer.write(NEWLINE);
                 // go through each ActionTypeParticipantAttributeConstraint and
                 // write it to the file:
-                ActionTypeParticipantAttributeConstraint[] attConstraints = tempPartConst
-                    .getAllAttributeConstraints();
+                ActionTypeParticipantAttributeConstraint[] attConstraints = 
+                	tempPartConst.getAllAttributeConstraints();
                 for (int p = 0; p < attConstraints.length; p++) {
-                  ActionTypeParticipantAttributeConstraint tempAttConst = attConstraints[p];
+                  ActionTypeParticipantAttributeConstraint tempAttConst = 
+                  	attConstraints[p];
                   writer.write(BEGIN_ATTRIBUTE_CONSTRAINT_TAG);
                   writer.write(NEWLINE);
-                  writer.write(tempAttConst.getAttribute().getName()); // attribute
-                                                                       // name
+                  // attribute name:
+                  writer.write(tempAttConst.getAttribute().getName()); 
                   writer.write(NEWLINE);
                   writer.write(tempAttConst.getGuard()); // guard
                   writer.write(NEWLINE);
-                  if (tempAttConst.isConstrained()) // has a value
-                  {
+                  if (tempAttConst.isConstrained()) { // has a value
                     writer.write(tempAttConst.getValue().toString()); // value
-                  } else // is unconstrained by a value
-                  {
+                  } else { // is unconstrained by a value
                     writer.write(EMPTY_VALUE);
                   }
                   writer.write(NEWLINE);
@@ -1083,7 +1105,7 @@ public class ModelFileManipulator {
 
       // start state objects:
       for (int i = 0; i < objs.size(); i++) {
-        SimSEObject obj = (SimSEObject) objs.elementAt(i);
+        SimSEObject obj = objs.elementAt(i);
         // SimSEObjectTypeType:
         writer.write(SimSEObjectTypeTypes.getText(obj.getSimSEObjectType()
             .getType()));
@@ -1092,30 +1114,23 @@ public class ModelFileManipulator {
         writer.write(obj.getSimSEObjectType().getName());
         writer.write(NEWLINE);
         // key att value:
-        if (obj.getSimSEObjectType().hasKey() == false) // doesn't have a key
-                                                        // attribute
-        {
+        if (obj.getSimSEObjectType().hasKey() == false) { // doesn't have a key
+                                                          // attribute
           writer.write("");
           writer.write(NEWLINE);
-        } else // has a key attribute
-        {
-          if (obj.getKey().isInstantiated() == false) // doesn't have a key
-                                                      // attribute value
-          {
+        } else { // has a key attribute
+          if (obj.getKey().isInstantiated() == false) { // doesn't have a key
+                                                        // attribute value
             writer.write("");
             writer.write(NEWLINE);
-          } else // has a key attribute value
-          {
+          } else { // has a key attribute value
             writer.write(obj.getKey().getValue().toString());
             writer.write(NEWLINE);
           }
         }
-        if (((String) startStateObjsToImages.get(obj) != null)
-            && (((String) startStateObjsToImages.get(obj)).length() > 0)) // has
-                                                                          // an
-                                                                          // image
-        {
-          writer.write((String) startStateObjsToImages.get(obj));
+        if ((startStateObjsToImages.get(obj) != null)
+            && (startStateObjsToImages.get(obj).length() > 0)) { // has an image
+          writer.write(startStateObjsToImages.get(obj));
           writer.write(NEWLINE);
         } else {
           writer.write("");
@@ -1126,13 +1141,13 @@ public class ModelFileManipulator {
 
       // create objects rules objects:
       for (int i = 0; i < actions.size(); i++) {
-        ActionType act = (ActionType) actions.elementAt(i);
-        Vector rules = act.getAllCreateObjectsRules();
+        ActionType act = actions.elementAt(i);
+        Vector<CreateObjectsRule> rules = act.getAllCreateObjectsRules();
         for (int j = 0; j < rules.size(); j++) {
-          CreateObjectsRule rule = (CreateObjectsRule) rules.elementAt(j);
-          Vector ruleObjs = rule.getAllSimSEObjects();
+          CreateObjectsRule rule = rules.elementAt(j);
+          Vector<SimSEObject> ruleObjs = rule.getAllSimSEObjects();
           for (int k = 0; k < ruleObjs.size(); k++) {
-            SimSEObject obj = (SimSEObject) ruleObjs.elementAt(k);
+            SimSEObject obj = ruleObjs.elementAt(k);
             // SimSEObjectTypeType:
             writer.write(SimSEObjectTypeTypes.getText(obj.getSimSEObjectType()
                 .getType()));
@@ -1141,30 +1156,23 @@ public class ModelFileManipulator {
             writer.write(obj.getSimSEObjectType().getName());
             writer.write(NEWLINE);
             // key att value:
-            if (obj.getSimSEObjectType().hasKey() == false) // doesn't have a
-                                                            // key attribute
-            {
+            if (obj.getSimSEObjectType().hasKey() == false) { // doesn't have a
+                                                              // key attribute
               writer.write("");
               writer.write(NEWLINE);
-            } else // has a key attribute
-            {
-              if (obj.getKey().isInstantiated() == false) // doesn't have a key
-                                                          // attribute value
-              {
+            } else { // has a key attribute
+              if (obj.getKey().isInstantiated() == false) { // doesn't have a 
+              																							// key att value
                 writer.write("");
                 writer.write(NEWLINE);
-              } else // has a key attribute value
-              {
+              } else { // has a key attribute value
                 writer.write(obj.getKey().getValue().toString());
                 writer.write(NEWLINE);
               }
             }
-            if (((String) ruleObjsToImages.get(obj) != null)
-                && (((String) ruleObjsToImages.get(obj)).length() > 0)) // has
-                                                                        // an
-                                                                        // image
-            {
-              writer.write((String) ruleObjsToImages.get(obj));
+            if ((ruleObjsToImages.get(obj) != null)
+                && (ruleObjsToImages.get(obj).length() > 0)) { // has an image
+              writer.write(ruleObjsToImages.get(obj));
               writer.write(NEWLINE);
             } else {
               writer.write("");
@@ -1185,7 +1193,7 @@ public class ModelFileManipulator {
       writer.write(NEWLINE);
       // write sop objects to file
       for (int i = 0; i < sopUsers.size(); i++) {
-        UserData tmp = (UserData) sopUsers.get(i);
+        UserData tmp = sopUsers.get(i);
         writer.write(tmp.getName());
         writer.write(NEWLINE);
         writer.write("" + tmp.isDisplayed());
