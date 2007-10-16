@@ -2,17 +2,37 @@
 
 package simse.modelbuilder.actionbuilder;
 
-import simse.modelbuilder.*;
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.startstatebuilder.*;
-import java.awt.event.*;
-import java.awt.Dimension;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.DefaultTableCellRenderer;
+import simse.modelbuilder.ModelBuilderGUI;
+import simse.modelbuilder.WarningListPane;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
 
-import java.util.*;
-import java.io.*;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+
+import java.io.File;
+
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class ActionBuilderGUI extends JPanel implements ActionListener,
     ListSelectionListener, MouseListener {
@@ -50,11 +70,11 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
                                                     // info about a participant
   private WarningListPane warningPane;
 
-  public ActionBuilderGUI(JFrame owner, DefinedObjectTypes objTypes) {
+  public ActionBuilderGUI(JFrame owner, DefinedObjectTypes objects) {
     mainGUI = owner;
     actions = new DefinedActionTypes();
 
-    objects = objTypes;
+    this.objects = objects;
     actFileManip = new ActionFileManipulator(objects, actions);
 
     // Create main panel (box):
@@ -75,9 +95,11 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     // Create "action table" pane:
     actTblMod = new ActionTableModel();
     actionTable = new JTable(actTblMod);
-    DefaultTableCellRenderer rightAlignRenderer = new DefaultTableCellRenderer();
+    DefaultTableCellRenderer rightAlignRenderer = 
+    	new DefaultTableCellRenderer();
 		rightAlignRenderer.setHorizontalAlignment(JLabel.RIGHT);
-		actionTable.getColumnModel().getColumn(2).setCellRenderer(rightAlignRenderer);
+		actionTable.getColumnModel().getColumn(2).setCellRenderer(
+				rightAlignRenderer);
     actionTable.addMouseListener(this);
     actionTablePane = new JScrollPane(actionTable);
     actionTablePane
@@ -131,16 +153,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     definedActionsList = new JList();
     definedActionsList.setVisibleRowCount(7); // make 7 items visible at a time
     definedActionsList.setFixedCellWidth(500);
-    definedActionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only
-                                                                              // allow
-                                                                              // the
-                                                                              // user
-                                                                              // to
-                                                                              // select
-                                                                              // one
-                                                                              // item
-                                                                              // at a
-                                                                              // time
+    // only allow the user to select one item at a time:
+    definedActionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
     definedActionsList.addListSelectionListener(this);
     JScrollPane definedActionsListPane = new JScrollPane(definedActionsList);
     definedActionsPane.add(definedActionsListPane);
@@ -197,28 +211,23 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     repaint();
   }
 
-  public void mousePressed(MouseEvent me) {
-  }
+  public void mousePressed(MouseEvent me) {}
 
-  public void mouseReleased(MouseEvent me) {
-  }
+  public void mouseReleased(MouseEvent me) {}
 
-  public void mouseEntered(MouseEvent me) {
-  }
+  public void mouseEntered(MouseEvent me) {}
 
-  public void mouseExited(MouseEvent me) {
-  }
+  public void mouseExited(MouseEvent me) {}
 
   public void mouseClicked(MouseEvent me) {
     int clicks = me.getClickCount();
 
     if (me.getButton() == MouseEvent.BUTTON1 && clicks >= 2) {
-      if (actionTable.getSelectedRow() >= 0) // a row is selected
-      {
+      if (actionTable.getSelectedRow() >= 0) { // a row is selected
         ActionTypeParticipant tempPart = actTblMod
             .getActionTypeInFocus()
-            .getParticipant(
-                (String) (actTblMod.getValueAt(actionTable.getSelectedRow(), 0)));
+            .getParticipant((String) (actTblMod.getValueAt(
+            		actionTable.getSelectedRow(), 0)));
         editParticipant(tempPart);
         editParticipantButton.setEnabled(false);
         removeParticipantButton.setEnabled(false);
@@ -229,11 +238,10 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
   }
 
   public void valueChanged(ListSelectionEvent e) {
-    if (definedActionsList.getSelectedIndex() >= 0) // an item (action) is
-                                                    // selected
-    {
-      ActionType tempAct = (ActionType) (actions.getAllActionTypes()
-          .elementAt(definedActionsList.getSelectedIndex()));
+    if (definedActionsList.getSelectedIndex() >= 0) { // an item (action) is
+                                                      // selected
+      ActionType tempAct = actions.getAllActionTypes()
+          .elementAt(definedActionsList.getSelectedIndex());
       // get the selected action type
       setActionInFocus(tempAct);
     }
@@ -247,10 +255,9 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
    * reloads the action types from a temporary file; if restUI is true, clears
    * all current selections
    */
-  public void reload(File tempFile, boolean resetUI) 
-  {
+  public void reload(File tempFile, boolean resetUI) {
     // reload:
-    Vector warnings = actFileManip.loadFile(tempFile);
+    Vector<String> warnings = actFileManip.loadFile(tempFile);
     generateWarnings(warnings);
 
     if (resetUI) {
@@ -258,12 +265,12 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
 	    updateDefinedActionsList();
 	    clearActionInFocus();
 	    createNewActionButton.setEnabled(false);
-	    Vector objTypes = objects.getAllObjectTypes();
-	    if (objTypes.size() > 0) // there is at least one object type
-	    {
-	      // make sure there is at least one object type w/ at least one attribute:
+	    Vector<SimSEObjectType> objTypes = objects.getAllObjectTypes();
+	    if (objTypes.size() > 0) { // there is at least one object type
+	      // make sure there is at least one object type w/ at least one 
+	    	// attribute:
 	      for (int i = 0; i < objTypes.size(); i++) {
-	        SimSEObjectType type = (SimSEObjectType) objTypes.elementAt(i);
+	        SimSEObjectType type = objTypes.elementAt(i);
 	        // check if it has at least one attribute:
 	        if (type.getAllAttributes().size() > 0) {
 	          createNewActionButton.setEnabled(true);
@@ -276,29 +283,25 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     }
   }
 
-  private void generateWarnings(Vector warnings) // displays warnings of errors
-                                                 // found during checking for
-                                                 // inconsistencies
-  {
-    if (warnings.size() > 0) // there is at least 1 warning
-    {
+  /*
+   * displays warnings of errors found during checking for inconsistencies
+   */
+  private void generateWarnings(Vector<String> warnings) { 
+    if (warnings.size() > 0) { // there is at least 1 warning
       warningPane.setWarnings(warnings);
     }
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
-
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource(); // get which component the action came from
-    if (source == createNewActionButton) // User has pressed the "Create New
-                                         // Action" button
-    {
+    if (source == createNewActionButton) { // User has pressed the "Create New
+                                         	 // Action" button
       createNewAction();
     }
 
-    else if (source == addParticipantButton) // user has requested to add a new
-                                             // participant
-    {
+    else if (source == addParticipantButton) { // user has requested to add a 
+    																					 // new participant
       addParticipant();
       editParticipantButton.setEnabled(false);
       removeParticipantButton.setEnabled(false);
@@ -307,12 +310,11 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     }
 
     else if (source == editParticipantButton) {
-      if (actionTable.getSelectedRow() >= 0) // a row is selected
-      {
+      if (actionTable.getSelectedRow() >= 0) { // a row is selected
         ActionTypeParticipant tempPart = actTblMod
             .getActionTypeInFocus()
-            .getParticipant(
-                (String) (actTblMod.getValueAt(actionTable.getSelectedRow(), 0)));
+            .getParticipant((String) (actTblMod.getValueAt(
+            		actionTable.getSelectedRow(), 0)));
         editParticipant(tempPart);
         editParticipantButton.setEnabled(false);
         removeParticipantButton.setEnabled(false);
@@ -322,19 +324,17 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     }
 
     else if (source == removeParticipantButton) {
-      if (actionTable.getSelectedRow() >= 0) // a row is selected
-      {
+      if (actionTable.getSelectedRow() >= 0) { // a row is selected
         ActionTypeParticipant tempPart = actTblMod
             .getActionTypeInFocus()
-            .getParticipant(
-                (String) (actTblMod.getValueAt(actionTable.getSelectedRow(), 0)));
+            .getParticipant((String) (actTblMod.getValueAt(
+            		actionTable.getSelectedRow(), 0)));
         removeParticipant(tempPart);
       }
     }
     
     else if (source == movePartUpButton) {
-      if (actionTable.getSelectedRow() >= 0) // a row is selected
-      {
+      if (actionTable.getSelectedRow() >= 0) { // a row is selected
         ActionTypeParticipant tempPart = actTblMod.getActionTypeInFocus().
         	getParticipant((String) (actTblMod.getValueAt(
         	    actionTable.getSelectedRow(), 0)));
@@ -343,8 +343,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     }
     
     else if (source == movePartDownButton) {
-      if (actionTable.getSelectedRow() >= 0) // a row is selected
-      {
+      if (actionTable.getSelectedRow() >= 0) { // a row is selected
         ActionTypeParticipant tempPart = actTblMod.getActionTypeInFocus().
         	getParticipant((String) (actTblMod.getValueAt(
         	    actionTable.getSelectedRow(), 0)));
@@ -353,80 +352,71 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     }
     
     else if (source == moveActUpButton) {
-      if (!definedActionsList.getSelectionModel().isSelectionEmpty())
-      {
-        ActionType tempAct = (ActionType) (actions.getAllActionTypes()
-            .elementAt(definedActionsList.getSelectedIndex()));
+      if (!definedActionsList.getSelectionModel().isSelectionEmpty()) {
+        ActionType tempAct = actions.getAllActionTypes()
+            .elementAt(definedActionsList.getSelectedIndex());
         moveActionUp(tempAct);
       }
     }
     
     else if (source == moveActDownButton) {
-      if (!definedActionsList.getSelectionModel().isSelectionEmpty())
-      {
-        ActionType tempAct = (ActionType) (actions.getAllActionTypes()
-            .elementAt(definedActionsList.getSelectedIndex()));
+      if (!definedActionsList.getSelectionModel().isSelectionEmpty()) {
+        ActionType tempAct = actions.getAllActionTypes()
+            .elementAt(definedActionsList.getSelectedIndex());
         moveActionDown(tempAct);
       }
     }
 
     else if (source == removeActionButton) {
-      if (definedActionsList.getSelectedIndex() >= 0) // an item (action) is
-                                                      // selected
-      {
+      if (definedActionsList.getSelectedIndex() >= 0) { // an item (action) is
+                                                      	// selected
         // remove the selected action type:
         removeAction((String) (definedActionsList.getSelectedValue()));
       }
     } else if (source == renameActionButton) {
-      if (definedActionsList.getSelectedIndex() >= 0) // an item (action) is
-                                                      // selected
-      {
+      if (definedActionsList.getSelectedIndex() >= 0) { // an item (action) is
+                                                      	// selected
         // remove the selected action type:
         renameAction((String) (definedActionsList.getSelectedValue()));
       }
     }
 
-    else if (source == triggerButton) // trigger button selected
-    {
-      ActionTypeTriggerManagementForm trigForm = new ActionTypeTriggerManagementForm(
-          mainGUI, actTblMod.getActionTypeInFocus(), actions);
+    else if (source == triggerButton) { // trigger button selected
+      new ActionTypeTriggerManagementForm(mainGUI, 
+      		actTblMod.getActionTypeInFocus(), actions);
       ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
     }
 
-    else if (source == destroyerButton) // destroyer button selected
-    {
-      ActionTypeDestroyerManagementForm destForm = new ActionTypeDestroyerManagementForm(
-          mainGUI, actTblMod.getActionTypeInFocus(), actions);
+    else if (source == destroyerButton) { // destroyer button selected
+      new ActionTypeDestroyerManagementForm(mainGUI, 
+      		actTblMod.getActionTypeInFocus(), actions);
       ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
     }
 
-    else if (source == optionsButton) // options button selected
-    {
-      ActionTypeOptionsInfoForm form = new ActionTypeOptionsInfoForm(
-          mainGUI, actTblMod.getActionTypeInFocus());
+    else if (source == optionsButton) { // options button selected
+      new ActionTypeOptionsInfoForm(mainGUI, actTblMod.getActionTypeInFocus());
       ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
     }
   }
 
-  private void createNewAction() // creates a new action and adds it to the data
-                                 // structure
-  {
+  /*
+   * creates a new action and adds it to the data structure
+   */
+  private void createNewAction() { 
     String response = JOptionPane.showInputDialog(null,
         "Enter a name for this action:", "Enter Action Name",
         JOptionPane.QUESTION_MESSAGE); // Show input dialog
     if (response != null) {
-      if (actionNameInputValid(response) == false) // input is invalid
-      {
+      if (actionNameInputValid(response) == false) { // input is invalid
         JOptionPane
             .showMessageDialog(
                 null,
-                "Please enter a unique name, between 2 and 40 alphabetic characters, and no spaces",
-                "Invalid Input", JOptionPane.WARNING_MESSAGE); // warn user to
-                                                               // enter a valid
-                                                               // name
+                "Please enter a unique name, between 2 and 40 alphabetic " +
+                "characters, and no spaces", "Invalid Input", 
+                JOptionPane.WARNING_MESSAGE); // warn user to enter a valid
+                                              // name
         createNewAction(); // try again
-      } else // user has entered valid input
-      {
+      } else { // user has entered valid input
         ActionType newAction = new ActionType(response); // create new action
                                                          // type
         actions.addActionType(newAction); // add to the data structure
@@ -443,39 +433,35 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     }
   }
 
-  private boolean actionNameInputValid(String input) // returns true if input is
-                                                     // a valid action name,
-                                                     // false if not
-  {
+  // returns true if input is a valid action name, false if not
+  private boolean actionNameInputValid(String input) { 
     char[] cArray = input.toCharArray();
 
     // Check for length constraints:
-    if ((cArray.length < 2) || (cArray.length > 40)) // user has a string
-                                                     // shorter than 2 chars or
-                                                     // longer than 40 chars
-    {
+    if ((cArray.length < 2) || (cArray.length > 40)) { // user has a string
+                                                     	 // shorter than 2 chars 
+    																									 // or longer than 40 
+    																									 // chars
       return false;
     }
 
     // Check for invalid characters:
     for (int i = 0; i < cArray.length; i++) {
-      if ((Character.isLetter(cArray[i])) == false) // character is not a letter
-                                                    // (hence, invalid)
-      {
+      if ((Character.isLetter(cArray[i])) == false) { // character is not a 
+      																								// letter (hence, invalid)
         return false;
       }
     }
 
     // Check for uniqueness of name:
-    Vector existingActionTypes = actions.getAllActionTypes();
+    Vector<ActionType> existingActionTypes = actions.getAllActionTypes();
     for (int i = 0; i < existingActionTypes.size(); i++) {
-      ActionType tempAct = ((ActionType) existingActionTypes.elementAt(i));
-      if (tempAct.getName().equalsIgnoreCase(input)) // name entered is not
-                                                     // unique (there is already
-                                                     // another action defined
-                                                     // with the
-      // same name (hence, invalid)
-      {
+      ActionType tempAct = existingActionTypes.elementAt(i);
+      if (tempAct.getName().equalsIgnoreCase(input)) { // name entered is not
+                                                     	 // unique (there is 
+      																							   // already another action
+      																								 // defined with the same 
+      																								 // name (hence, invalid)
         return false;
       }
     }
@@ -497,8 +483,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
         movePartDownButton.setEnabled(false);
       }
 
-      public void windowGainedFocus(WindowEvent ev) {
-      }
+      public void windowGainedFocus(WindowEvent ev) {}
     };
     apInfoForm.addWindowFocusListener(l);
     ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
@@ -514,8 +499,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
         actTblMod.refreshData();
       }
 
-      public void windowGainedFocus(WindowEvent ev) {
-      }
+      public void windowGainedFocus(WindowEvent ev) {}
     };
     apInfoForm.addWindowFocusListener(l);
     ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
@@ -534,17 +518,14 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
       movePartUpButton.setEnabled(false);
       movePartDownButton.setEnabled(false);
       ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
-    } else // choice == JOptionPane.NO_OPTION
-    {
-    }
+    } 
   }
 
-  private void setupActionTableSelectionListenerStuff() // enables edit and
-                                                        // remove participant
-                                                        // buttons whenever a
-                                                        // row (participant)
-  // is selected
-  {
+  /*
+   * enables edit and remove participant buttons whenever a row (participant)
+   * is selected
+   */
+  private void setupActionTableSelectionListenerStuff() { 
     // Copied from a Java tutorial:
     ListSelectionModel rowSM = actionTable.getSelectionModel();
     rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -564,13 +545,8 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     });
   }
 
-  private void setupDefinedActionsListSelectionListenerStuff() // enables
-                                                               // buttons
-                                                               // whenever a
-                                                               // list item
-                                                               // (action) is
-                                                               // selected
-  {
+  // enables buttons whenever a list item (action is selected)
+  private void setupDefinedActionsListSelectionListenerStuff() { 
     // Copied from a Java tutorial:
     ListSelectionModel rowSM = definedActionsList.getSelectionModel();
     rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -593,27 +569,20 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
   }
 
   private void updateDefinedActionsList() {
-    Vector actionNames = new Vector();
-    Vector currentActs = actions.getAllActionTypes();
+    Vector<String> actionNames = new Vector<String>();
+    Vector<ActionType> currentActs = actions.getAllActionTypes();
     for (int i = 0; i < currentActs.size(); i++) {
-      actionNames.add(((ActionType) (currentActs.elementAt(i))).getName());
+      actionNames.add(currentActs.elementAt(i).getName());
     }
     definedActionsList.setListData(actionNames);
   }
 
-  private void setActionInFocus(ActionType newAct) // sets the given action type
-                                                   // as the focus of this GUI
-  {
+  // sets the given action type as the focus of this GUI
+  private void setActionInFocus(ActionType newAct) { 
     actTblMod.setActionTypeInFocus(newAct); // set focus of action table to new
                                             // action type
-    actionTableTitle.setText((newAct.getName()) + " Action Participants:"); // change
-                                                                            // title
-                                                                            // of
-                                                                            // table
-                                                                            // to
-                                                                            // reflect
-                                                                            // new
-                                                                            // action
+    // change title of table to reflect new action:
+    actionTableTitle.setText((newAct.getName()) + " Action Participants:"); 
     // enable buttons:
     addParticipantButton.setEnabled(true);
     editParticipantButton.setEnabled(false);
@@ -628,28 +597,23 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     definedActionsList.setSelectedValue(newAct.getName(), true);
   }
 
-  private void renameAction(String actionName) // removes the action with the
-                                               // specified name from the data
-                                               // structure
-  {
+  // remove sthe action with the specified name from the data structure
+  private void renameAction(String actionName) { 
     ActionType act = actions.getActionType(actionName);
+    // show input dialog:
     String response = JOptionPane.showInputDialog(null, "Enter new name for "
-        + act.getName(), "Rename Action Type", JOptionPane.QUESTION_MESSAGE); // Show
-                                                                              // input
-                                                                              // dialog
+        + act.getName(), "Rename Action Type", JOptionPane.QUESTION_MESSAGE); 
     if (response != null) {
-      if (actionNameInputValid(response) == false) // input is invalid
-      {
+      if (actionNameInputValid(response) == false) { // input is invalid
         JOptionPane
             .showMessageDialog(
                 null,
-                "Please enter a unique name, between 2 and 40 alphabetic characters, and no spaces",
-                "Invalid Input", JOptionPane.WARNING_MESSAGE); // warn user to
-                                                               // enter a valid
-                                                               // number
+                "Please enter a unique name, between 2 and 40 alphabetic " +
+                "characters, and no spaces", "Invalid Input", 
+                JOptionPane.WARNING_MESSAGE); // warn user to enter a valid
+                                              // number
         renameAction(actionName); // try again
-      } else // user has entered valid input
-      {
+      } else { // user has entered valid input
         act.setName(response);
         updateDefinedActionsList();
         setActionInFocus(act); // set newly created object to be the focus of
@@ -659,19 +623,16 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     }
   }
 
-  private void removeAction(String actionName) // removes the action with the
-                                               // specified name from the data
-                                               // structure
-  {
+  // removes the action with the specified name from the data structure
+  private void removeAction(String actionName) { 
     int choice = JOptionPane.showConfirmDialog(null, ("Really remove "
         + actionName + " action type?"), "Confirm Action Type Removal",
         JOptionPane.YES_NO_OPTION);
     if (choice == JOptionPane.YES_OPTION) {
       actions.removeActionType(actionName);
       if ((actTblMod.getActionTypeInFocus() != null)
-          && (actTblMod.getActionTypeInFocus().getName() == actionName)) // removing
-      // action type currently in focus
-      {
+          && (actTblMod.getActionTypeInFocus().getName() == actionName)) { 
+      	// removing action type currently in focus
         clearActionInFocus(); // set it so that there's no action type in focus
       }
       moveActUpButton.setEnabled(false);
@@ -680,14 +641,11 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
       renameActionButton.setEnabled(false);
       updateDefinedActionsList();
       ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
-    } else // choice == JOptionPane.NO_OPTION
-    {
-    }
+    } 
   }
 
-  private void clearActionInFocus() // clears the GUI so that it doesn't have an
-                                    // action type in focus
-  {
+  // clears the GUI so that it doesn't have an action type in focus
+  private void clearActionInFocus() { 
     actTblMod.clearActionTypeInFocus(); // clear the table
     actionTableTitle.setText("No action type selected");
     // disable buttons:
@@ -707,14 +665,13 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     updateDefinedActionsList();
     createNewActionButton.setEnabled(false);
     warningPane.clearWarnings();
-    if (f.exists()) // file has been saved before
-    {
+    if (f.exists()) { // file has been saved before
       reload(f, true);
     }
   }
 
-  public void setNoOpenFile() // makes it so there's no open file in the GUI
-  {
+  // makes it so there's no open file in the GUI
+  public void setNoOpenFile() { 
     clearActionInFocus();
     actions.clearAll();
     updateDefinedActionsList();
@@ -735,15 +692,11 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     warningPane.clearWarnings();
   }
   
-  /*
-   * Moves a participant up in the list
-   */
+  // Moves a participant up in the list
   private void moveParticipantUp(ActionTypeParticipant part) {
     int partIndex = 
       actTblMod.getActionTypeInFocus().getParticipantIndex(part.getName());
-    Vector parts = actTblMod.getActionTypeInFocus().getAllParticipants();
-    if (partIndex > 0) // first list element wasn't chosen
-    {
+    if (partIndex > 0) { // first list element wasn't chosen
       int position = actTblMod.getActionTypeInFocus().
       	temporarilyRemoveParticipant(part.getName());
       
@@ -755,15 +708,13 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     }
   }
   
-  /*
-   * Moves a participant down in the list
-   */
+  // Moves a participant down in the list
   private void moveParticipantDown(ActionTypeParticipant part) {
     int partIndex = 
       actTblMod.getActionTypeInFocus().getParticipantIndex(part.getName());
-    Vector parts = actTblMod.getActionTypeInFocus().getAllParticipants();
-    if (partIndex < (parts.size() - 1)) // last list element wasn't chosen
-    {
+    Vector<ActionTypeParticipant> parts = 
+    	actTblMod.getActionTypeInFocus().getAllParticipants();
+    if (partIndex < (parts.size() - 1)) { // last list element wasn't chosen
       int position = actTblMod.getActionTypeInFocus().
       	temporarilyRemoveParticipant(part.getName());
       
@@ -775,9 +726,7 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     }
   }
   
-  /*
-   * Moves an action up in the list
-   */
+  // Moves an action up in the list
   private void moveActionUp(ActionType act) {
     int actIndex = actions.getIndexOf(act);
     if (actIndex > 0) { // first element wasn't chosen
@@ -789,13 +738,11 @@ public class ActionBuilderGUI extends JPanel implements ActionListener,
     }
   }
   
-  /*
-   * Moves an action down in the list
-   */
+  // Moves an action down in the list
   private void moveActionDown(ActionType act) {
     int actIndex = actions.getIndexOf(act);
     if (actIndex < (actions.getAllActionTypes().size() - 1)) { // last element
-			 // wasn't chosen
+			 																												 // wasn't chosen
       int position = actions.removeActionType(act.getName());
       actions.addActionType(act, (position + 1)); // move down
       updateDefinedActionsList();

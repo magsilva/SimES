@@ -5,47 +5,46 @@
 
 package simse.modelbuilder.actionbuilder;
 
-import simse.modelbuilder.objectbuilder.*;
-import javax.swing.table.*;
-import java.util.*;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+
+import java.util.Vector;
+
+import javax.swing.table.AbstractTableModel;
 
 public class ActionTableModel extends AbstractTableModel {
-  Vector data; // data in table
-  ActionType action; // ActionType in focus, whose participants are being
-                     // displayed in the table
-  String[] columnNames = { "Name", "Quantity Guard", "Quantity",
+  private Vector<Vector<Object>> data; // data in table
+  private ActionType action; // ActionType in focus, whose participants are 
+  													 // being displayed in the table
+  private String[] columnNames = { "Name", "Quantity Guard", "Quantity",
       "Participant Meta-Type", "Possible Participant Types" };
 
   // column names
 
-  public ActionTableModel(ActionType act) {
-    action = act;
-    data = new Vector();
+  public ActionTableModel(ActionType action) {
+    this.action = action;
+    data = new Vector<Vector<Object>>();
     refreshData();
   }
 
-  public ActionTableModel() // Creates an empty table
-  {
-    data = new Vector();
+  // creates an empty table:
+  public ActionTableModel() { 
+    data = new Vector<Vector<Object>>();
   }
 
-  public void setActionTypeInFocus(ActionType act) // sets the table to display
-                                                   // the participants of this
-                                                   // action type
-  {
+  // sets the table to display the participants of this action type
+  public void setActionTypeInFocus(ActionType act) { 
     action = act;
     refreshData();
   }
 
-  public ActionType getActionTypeInFocus() // returns the action type currently
-                                           // in focus
-  {
+  // returns the action type currently in focus
+  public ActionType getActionTypeInFocus() { 
     return action;
   }
 
-  public void clearActionTypeInFocus() // clears the action type currently in
-                                       // focus
-  {
+  // clears the action type currently in focus
+  public void clearActionTypeInFocus() { 
     action = null;
     data.removeAllElements();
     fireTableDataChanged(); // notify listeners that data has changed
@@ -59,7 +58,7 @@ public class ActionTableModel extends AbstractTableModel {
     if (data.size() == 0) {
       return 0;
     }
-    return ((Vector) data.elementAt(0)).size();
+    return data.elementAt(0).size();
   }
 
   public String getColumnName(int col) {
@@ -67,60 +66,55 @@ public class ActionTableModel extends AbstractTableModel {
   }
 
   public Object getValueAt(int row, int col) {
-    return ((Vector) data.elementAt(col)).elementAt(row);
+    return data.elementAt(col).elementAt(row);
   }
 
   public void setValueAt(Object value, int row, int col) {
-    ((Vector) data.elementAt(col)).add(value);
+    data.elementAt(col).add(value);
     fireTableCellUpdated(row, col);
   }
 
-  // Initialize/refresh table data:
+  // Initializes/refreshes table data
   public void refreshData() {
-    Vector temp = new Vector();
-    Vector participants = action.getAllParticipants();
+    Vector<Object> temp = new Vector<Object>();
+    Vector<ActionTypeParticipant> participants = action.getAllParticipants();
 
     if (participants != null) {
       // Initialize participant names:
       for (int i = 0; i < participants.size(); i++) {
-        temp.add(((ActionTypeParticipant) participants.elementAt(i)).getName());
+        temp.add(participants.elementAt(i).getName());
       }
-      if (data.isEmpty()) // first-time initialization
-      {
+      if (data.isEmpty()) { // first-time initialization
         data.add(temp);
-      } else // refreshing value
-      {
+      } else { // refreshing value
         data.setElementAt(temp, 0);
       }
 
       // Initialize participant quantity guards:
-      temp = new Vector();
+      temp = new Vector<Object>();
       for (int i = 0; i < participants.size(); i++) {
-        temp.add(Guard.getText(((ActionTypeParticipant) participants
-            .elementAt(i)).getQuantity().getGuard()));
+        temp.add(Guard.getText(
+        		participants.elementAt(i).getQuantity().getGuard()));
       }
-      if (data.size() < 2) // first-time initialization
-      {
+      if (data.size() < 2) { // first-time initialization
         data.add(temp);
-      } else // refreshing value
-      {
+      } else { // refreshing value
         data.setElementAt(temp, 1);
       }
 
       // Initialize participant quantity:
       StringBuffer quantString = new StringBuffer();
-      temp = new Vector();
+      temp = new Vector<Object>();
       for (int i = 0; i < participants.size(); i++) {
         quantString = new StringBuffer(); // clear the string buffer
-        Integer[] quant = ((ActionTypeParticipant) participants.elementAt(i))
-            .getQuantity().getQuantity();
+        Integer[] quant = participants.elementAt(i).getQuantity().getQuantity();
         if (quant[0] == null) {
           quantString.append("Boundless");
         } else {
           quantString.append(quant[0].intValue());
         }
-        if ((((ActionTypeParticipant) (participants.elementAt(i)))
-            .getQuantity().getGuard()) == Guard.AT_LEAST_AND_AT_MOST) {
+        if (participants.elementAt(i).getQuantity().getGuard() == 
+        	Guard.AT_LEAST_AND_AT_MOST) {
           quantString.append(", ");
           if (quant[1] == null) {
             quantString.append("Boundless");
@@ -130,49 +124,41 @@ public class ActionTableModel extends AbstractTableModel {
         }
         temp.add(quantString.toString());
       }
-      if (data.size() < 3) // first-time initialization
-      {
+      if (data.size() < 3) { // first-time initialization
         data.add(temp);
-      } else // refreshing value
-      {
+      } else { // refreshing value
         data.setElementAt(temp, 2);
       }
 
       // Initialize participant metatype:
-      temp = new Vector();
+      temp = new Vector<Object>();
       for (int i = 0; i < participants.size(); i++) {
-        temp.add(SimSEObjectTypeTypes
-            .getText(((ActionTypeParticipant) participants.elementAt(i))
-                .getSimSEObjectTypeType()));
+        temp.add(SimSEObjectTypeTypes.getText(
+        		participants.elementAt(i).getSimSEObjectTypeType()));
       }
-      if (data.size() < 4) // first-time initialization
-      {
+      if (data.size() < 4) { // first-time initialization
         data.add(temp);
-      } else // refreshing value
-      {
+      } else { // refreshing value
         data.setElementAt(temp, 3);
       }
 
       // Initialize participant types:
-      temp = new Vector();
+      temp = new Vector<Object>();
       for (int i = 0; i < participants.size(); i++) {
-        Vector types = ((ActionTypeParticipant) participants.elementAt(i))
-            .getAllSimSEObjectTypes();
+        Vector<SimSEObjectType> types = 
+        	participants.elementAt(i).getAllSimSEObjectTypes();
         StringBuffer s = new StringBuffer();
         for (int j = 0; j < types.size(); j++) {
-          s.append(((SimSEObjectType) (types.elementAt(j))).getName());
-          if (j < (types.size() - 1)) // not the last element yet
-          {
+          s.append(types.elementAt(j).getName());
+          if (j < (types.size() - 1)) { // not the last element yet
             s.append(", ");
           }
         }
         temp.add(s);
       }
-      if (data.size() < 5) // first-time initialization
-      {
+      if (data.size() < 5) { // first-time initialization
         data.add(temp);
-      } else // refreshing value
-      {
+      } else { // refreshing value
         data.setElementAt(temp, 4);
       }
     }
@@ -183,7 +169,7 @@ public class ActionTableModel extends AbstractTableModel {
    * JTable uses this method to determine the default renderer/ editor for each
    * cell. (Copied from a Java tutorial)
    */
-  public Class getColumnClass(int c) {
+  public Class<?> getColumnClass(int c) {
     return getValueAt(0, c).getClass();
   }
 }

@@ -13,9 +13,9 @@ public class ActionTypeParticipantQuantity implements Cloneable {
     quantity = new Integer[2];
   }
 
-  public ActionTypeParticipantQuantity(int guard, Integer[] quant) {
-    quantityGuard = guard;
-    quantity = quant;
+  public ActionTypeParticipantQuantity(int quantityGuard, Integer[] quantity) {
+    this.quantityGuard = quantityGuard;
+    this.quantity = quantity;
   }
 
   public Object clone() {
@@ -38,15 +38,13 @@ public class ActionTypeParticipantQuantity implements Cloneable {
     return null;
   }
 
-  public int getGuard() // returns the quantity guard for this action type
-                        // participant quantity
-  {
+  // returns the quantity guard for this action type participant quantity
+  public int getGuard() { 
     return quantityGuard;
   }
 
-  public Integer[] getQuantity() // returns the quantity for this participant
-                                 // quantity
-  {
+  // returns the quantity for this participant quantity
+  public Integer[] getQuantity() { 
     return quantity;
   }
 
@@ -69,7 +67,8 @@ public class ActionTypeParticipantQuantity implements Cloneable {
   public boolean isMaxValBoundless() {
     if (((quantityGuard == Guard.EXACTLY) && (quantity[0] != null))
         || ((quantityGuard == Guard.AT_MOST) && (quantity[0] != null))
-        || ((quantityGuard == Guard.AT_LEAST_AND_AT_MOST) && (quantity[1] != null))) {
+        || ((quantityGuard == Guard.AT_LEAST_AND_AT_MOST) && 
+        		(quantity[1] != null))) {
       return false;
     } else {
       return true;

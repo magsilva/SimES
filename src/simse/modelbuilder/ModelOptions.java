@@ -9,15 +9,17 @@ import java.io.File;
 
 public class ModelOptions {
   private boolean includeEveryoneStopOption; // whether or not to include an
-  																	 // "everyone stop what you're doing"
-  	 																 // option on the employees' menus
+  																	 				 // "everyone stop what you're 
+  																					 // doing" option on the employees'
+  																					 // menus
   private boolean expToolAccessibleDuringGame; // whether or not to make the 
-  																		 // explanatory tool accessible during
-  																		 // the game
+  																		 				 // explanatory tool accessible 
+  																						 // during the game
   private boolean allowBranching; // whether or not to allow branching multiple
   															  // games through the explanatory tool
   private File iconDirectory; // directory containing icons for this model
-  private File codeGenerationDestinationDirectory; // directory to generate code into
+  private File codeGenerationDestinationDirectory; // directory to generate code 
+  																								 // into
 
   public ModelOptions(boolean includeEveryoneStopOption, 
   		boolean expToolAccessibleDuringGame, boolean allowBranching, 
@@ -36,8 +38,7 @@ public class ModelOptions {
     allowBranching = false;
   }
 
-  public boolean getEveryoneStopOption() 
-  {
+  public boolean getEveryoneStopOption() {
     return includeEveryoneStopOption;
   }
 
@@ -45,8 +46,7 @@ public class ModelOptions {
     includeEveryoneStopOption = everyoneStop;
   }
   
-  public boolean getExplanatoryToolAccessOption() 
-  {
+  public boolean getExplanatoryToolAccessOption() {
     return expToolAccessibleDuringGame;
   }
 

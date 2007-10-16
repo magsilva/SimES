@@ -5,14 +5,33 @@
 
 package simse.modelbuilder.actionbuilder;
 
-import simse.modelbuilder.objectbuilder.*;
-import java.awt.event.*;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+
 import java.awt.Dimension;
-import java.awt.Point;
-import javax.swing.*;
-import javax.swing.event.*;
-import java.util.*;
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class ActionTypeDestroyerManagementForm extends JDialog implements
     ActionListener, MouseListener {
@@ -21,7 +40,7 @@ public class ActionTypeDestroyerManagementForm extends JDialog implements
   private DefinedActionTypes allActions; // all of the currently defined actions
                                          // (for passing into the destroyer info
                                          // form)
-  private Vector destroyerNames; // for the JList
+  private Vector<String> destroyerNames; // for the JList
 
   private JList destroyerList; // for choosing a destroyer to edit
   private JButton viewEditButton; // for viewing/editing destroyers
@@ -31,12 +50,12 @@ public class ActionTypeDestroyerManagementForm extends JDialog implements
   private JButton cancelButton;
 
   public ActionTypeDestroyerManagementForm(JFrame owner, ActionType action,
-      DefinedActionTypes acts) {
+      DefinedActionTypes allActions) {
     super(owner, true);
     originalAction = action; // store pointer to original
     actionInFocus = (ActionType) action.clone(); // make a copy of the action
                                                  // for temporary editing
-    allActions = acts;
+    this.allActions = allActions;
 
     // Set window title:
     setTitle("Destroyer Management");
@@ -52,20 +71,11 @@ public class ActionTypeDestroyerManagementForm extends JDialog implements
     destroyerList = new JList();
     destroyerList.setVisibleRowCount(10); // make 10 items visible at a time
     destroyerList.setFixedCellWidth(200);
-    destroyerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only
-                                                                         // allow
-                                                                         // the
-                                                                         // user
-                                                                         // to
-                                                                         // select
-                                                                         // one
-                                                                         // item
-                                                                         // at a
-                                                                         // time
+    destroyerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
     destroyerList.addMouseListener(this);
     JScrollPane topPane = new JScrollPane(destroyerList);
     // initialize destroyer names:
-    destroyerNames = new Vector();
+    destroyerNames = new Vector<String>();
     refreshDestroyerList();
     setUpDestroyerListActionListenerStuff();
 
@@ -118,24 +128,23 @@ public class ActionTypeDestroyerManagementForm extends JDialog implements
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource(); // get which component the action came from
 
     if (source == viewEditButton) {
       viewEditButtonClicked();
-    }
-
-    else if (source == removeButton) {
-      if (destroyerList.isSelectionEmpty() == false) // a destroyer is selected
-      {
+    } else if (source == removeButton) {
+      if (destroyerList.isSelectionEmpty() == false) { // a destroyer is 
+      																								 // selected
         String selectedStr = (String) destroyerList.getSelectedValue();
         int choice = JOptionPane
             .showConfirmDialog(
                 null,
                 ("Really remove "
-                    + selectedStr.substring(0, selectedStr.indexOf(' ')) + " destroyer?"),
-                "Confirm Destroyer Removal", JOptionPane.YES_NO_OPTION);
+                    + selectedStr.substring(0, selectedStr.indexOf(' ')) + 
+                    " destroyer?"), "Confirm Destroyer Removal", 
+                    JOptionPane.YES_NO_OPTION);
         if (choice == JOptionPane.YES_OPTION) {
           // Remove destroyer:
           actionInFocus.removeDestroyer(selectedStr.substring(0, selectedStr
@@ -143,65 +152,47 @@ public class ActionTypeDestroyerManagementForm extends JDialog implements
           removeButton.setEnabled(false);
           viewEditButton.setEnabled(false);
           refreshDestroyerList();
-        } else // choice == JOptionPane.NO_OPTION
-        {
         }
       }
-    }
-
-    else if (source == newDestroyerButton) {
+    } else if (source == newDestroyerButton) {
       // Create a new destroyer:
       AutonomousActionTypeDestroyer newDest = new AutonomousActionTypeDestroyer(
           "", actionInFocus);
       // add a participant destroyer for each participant:
-      Vector allParts = actionInFocus.getAllParticipants();
+      Vector<ActionTypeParticipant> allParts = 
+      	actionInFocus.getAllParticipants();
       for (int i = 0; i < allParts.size(); i++) {
-        ActionTypeParticipant tempPart = (ActionTypeParticipant) allParts
-            .elementAt(i);
+        ActionTypeParticipant tempPart = allParts.elementAt(i);
         newDest.addEmptyDestroyer(tempPart);
         // add an empty constraint to the participant destroyer for each
         // allowable SimSEObjectType:
-        Vector allTypes = tempPart.getAllSimSEObjectTypes();
+        Vector<SimSEObjectType> allTypes = tempPart.getAllSimSEObjectTypes();
         for (int j = 0; j < allTypes.size(); j++) {
           newDest.getParticipantDestroyer(tempPart.getName())
-              .addEmptyConstraint((SimSEObjectType) allTypes.elementAt(j));
+              .addEmptyConstraint(allTypes.elementAt(j));
         }
       }
       // Bring up form for adding a new destroyer:
-      ActionTypeDestroyerInfoForm destInfoForm = new ActionTypeDestroyerInfoForm(
-          this, actionInFocus, newDest, allActions);
+      new ActionTypeDestroyerInfoForm(this, actionInFocus, newDest, allActions);
       refreshDestroyerList();
-    }
-
-    else if (source == okButton) {
-      originalAction.setDestroyers(actionInFocus.getAllDestroyers()); // set
-                                                                      // permanent
-                                                                      // action's
-                                                                      // destroyers
-                                                                      // to the
-                                                                      // edited
-                                                                      // one
+    } else if (source == okButton) {
+    	// set permanent action's destroyers to the edited one:
+      originalAction.setDestroyers(actionInFocus.getAllDestroyers()); 
       setVisible(false);
       dispose();
-    }
-
-    else if (source == cancelButton) {
+    }  else if (source == cancelButton) {
       setVisible(false);
       dispose();
     }
   }
   
-  public void mousePressed(MouseEvent me) {
-  }
+  public void mousePressed(MouseEvent me) {}
 
-  public void mouseReleased(MouseEvent me) {
-  }
+  public void mouseReleased(MouseEvent me) {}
 
-  public void mouseEntered(MouseEvent me) {
-  }
+  public void mouseEntered(MouseEvent me) {}
 
-  public void mouseExited(MouseEvent me) {
-  }
+  public void mouseExited(MouseEvent me) {}
 
   public void mouseClicked(MouseEvent me) {
     int clicks = me.getClickCount();
@@ -213,9 +204,9 @@ public class ActionTypeDestroyerManagementForm extends JDialog implements
 
   private void refreshDestroyerList() {
     destroyerNames.removeAllElements();
-    Vector dests = actionInFocus.getAllDestroyers();
+    Vector<ActionTypeDestroyer> dests = actionInFocus.getAllDestroyers();
     for (int i = 0; i < dests.size(); i++) {
-      ActionTypeDestroyer tempDest = (ActionTypeDestroyer) dests.elementAt(i);
+      ActionTypeDestroyer tempDest = dests.elementAt(i);
       String destInfo = new String(tempDest.getName() + " (");
       if (tempDest instanceof AutonomousActionTypeDestroyer) {
         destInfo = destInfo.concat(ActionTypeDestroyer.AUTO);
@@ -232,12 +223,11 @@ public class ActionTypeDestroyerManagementForm extends JDialog implements
     destroyerList.setListData(destroyerNames);
   }
 
-  private void setUpDestroyerListActionListenerStuff() // enables view/edit and
-                                                       // remove buttons
-                                                       // whenever a list item
-                                                       // (destroyer) is
-                                                       // selected
-  {
+  /*
+   * enables view/edit and remove buttons whenever a list item (destroyer) is
+   * selected
+   */
+  private void setUpDestroyerListActionListenerStuff() { 
     // Copied from a Java tutorial:
     ListSelectionModel rowSM = destroyerList.getSelectionModel();
     rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -256,14 +246,12 @@ public class ActionTypeDestroyerManagementForm extends JDialog implements
   }
   
   private void viewEditButtonClicked() {
-    if (destroyerList.isSelectionEmpty() == false) // a destroyer is selected
-    {
+    if (!destroyerList.isSelectionEmpty()) { // a destroyer is selected
       // Bring up form for viewing/editing destroyer:
       String selectedStr = (String) destroyerList.getSelectedValue();
       ActionTypeDestroyer dest = actionInFocus.getDestroyer(selectedStr
           .substring(0, selectedStr.indexOf(' ')));
-      ActionTypeDestroyerInfoForm destInfoForm = new ActionTypeDestroyerInfoForm(
-          this, actionInFocus, dest, allActions);
+      new ActionTypeDestroyerInfoForm(this, actionInFocus, dest, allActions);
       removeButton.setEnabled(false);
       viewEditButton.setEnabled(false);
       refreshDestroyerList();
@@ -272,10 +260,8 @@ public class ActionTypeDestroyerManagementForm extends JDialog implements
 
   public class ExitListener extends WindowAdapter {
     public void windowClosing(WindowEvent event) {
-      {
-        setVisible(false);
-        dispose();
-      }
+      setVisible(false);
+      dispose();
     }
   }
 }

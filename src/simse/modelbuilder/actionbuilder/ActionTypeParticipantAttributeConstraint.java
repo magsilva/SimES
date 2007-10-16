@@ -2,7 +2,7 @@
 
 package simse.modelbuilder.actionbuilder;
 
-import simse.modelbuilder.objectbuilder.*;
+import simse.modelbuilder.objectbuilder.Attribute;
 
 public class ActionTypeParticipantAttributeConstraint implements Cloneable {
   private Attribute attribute; // POINTER TO the attribute that is being
@@ -12,12 +12,12 @@ public class ActionTypeParticipantAttributeConstraint implements Cloneable {
   private boolean score; // whether or not this attribute defines the score for
                          // a game
 
-  public ActionTypeParticipantAttributeConstraint(Attribute a, String g,
-      Object val, boolean s) {
-    attribute = a;
-    guard = g;
-    val = value;
-    score = s;
+  public ActionTypeParticipantAttributeConstraint(Attribute attribute, 
+  		String guard, Object value, boolean score) {
+    this.attribute = attribute;
+    this.guard = guard;
+    this.value = value;
+    this.score = score;
   }
 
   public ActionTypeParticipantAttributeConstraint(Attribute a) {
@@ -29,8 +29,8 @@ public class ActionTypeParticipantAttributeConstraint implements Cloneable {
 
   public Object clone() {
     try {
-      ActionTypeParticipantAttributeConstraint cl = (ActionTypeParticipantAttributeConstraint) (super
-          .clone());
+      ActionTypeParticipantAttributeConstraint cl = 
+      	(ActionTypeParticipantAttributeConstraint) (super.clone());
       cl.attribute = attribute; // NOTE: since this is a pointer to the
                                 // attribute, it must remain a pointer to the
       // attribute, even in the clone. So BE CAREFUL!!
@@ -52,14 +52,13 @@ public class ActionTypeParticipantAttributeConstraint implements Cloneable {
     return null;
   }
 
-  public Attribute getAttribute() // returns a COPY OF the attribute
-  {
+  // returns a COPY OF the attribute
+  public Attribute getAttribute() { // returns a COPY OF the attribute
     return (Attribute) attribute.clone();
   }
 
-  public boolean isConstrained() // returns true if there is a constraint for
-                                 // this attribute, false otherwise
-  {
+  // returns true if there is a constraint for this attirubte, false otherwise
+  public boolean isConstrained() { 
     if ((value == null) || (value.equals(""))) {
       return false;
     } else {

@@ -3,7 +3,6 @@
 package simse.modelbuilder.objectbuilder;
 
 import simse.modelbuilder.*;
-import simse.modelbuilder.startstatebuilder.WarningListPane;
 
 import java.awt.event.*;
 import java.awt.Dimension;

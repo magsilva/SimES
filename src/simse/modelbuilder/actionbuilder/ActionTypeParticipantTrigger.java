@@ -2,16 +2,17 @@
 
 package simse.modelbuilder.actionbuilder;
 
-import simse.modelbuilder.objectbuilder.*;
-import java.util.*;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+
+import java.util.Vector;
 
 public class ActionTypeParticipantTrigger implements Cloneable {
   private ActionTypeParticipant participant; // participant
-  private Vector<ActionTypeParticipantConstraint> constraints; // vector of ActionTypeParticipantConstraints for
-                              // this participant
+  private Vector<ActionTypeParticipantConstraint> constraints; 
+  // vector of ActionTypeParticipantConstraints for this participant
 
-  public ActionTypeParticipantTrigger(ActionTypeParticipant part) {
-    participant = part;
+  public ActionTypeParticipantTrigger(ActionTypeParticipant participant) {
+    this.participant = participant;
     constraints = new Vector<ActionTypeParticipantConstraint>();
   }
 
@@ -21,12 +22,13 @@ public class ActionTypeParticipantTrigger implements Cloneable {
           .clone());
       cl.participant = participant; // NOTE: since this is a pointer to the
                                     // participant, it must remain a pointer to
-                                    // the
-      // participant, even in the clone. So BE CAREFUL!!
-      Vector<ActionTypeParticipantConstraint> clonedConsts = new Vector<ActionTypeParticipantConstraint>();
+                                    // the participant, even in the clone. So BE
+      															// CAREFUL!!
+      Vector<ActionTypeParticipantConstraint> clonedConsts = 
+      	new Vector<ActionTypeParticipantConstraint>();
       for (int i = 0; i < constraints.size(); i++) {
-        clonedConsts
-            .add((ActionTypeParticipantConstraint) ((constraints.elementAt(i)).clone()));
+        clonedConsts.add((ActionTypeParticipantConstraint) 
+        		((constraints.elementAt(i)).clone()));
       }
       cl.constraints = clonedConsts;
       return cl;
@@ -36,9 +38,8 @@ public class ActionTypeParticipantTrigger implements Cloneable {
     return null;
   }
 
-  public ActionTypeParticipant getParticipant() // returns a COPY of the
-                                                // participant
-  {
+  // returns a COPY of the participant
+  public ActionTypeParticipant getParticipant() { 
     return (ActionTypeParticipant) (participant.clone());
   }
 
@@ -50,14 +51,8 @@ public class ActionTypeParticipantTrigger implements Cloneable {
     return constraints;
   }
 
-  public ActionTypeParticipantConstraint getConstraint(SimSEObjectType type) // returns
-                                                                             // the
-                                                                             // constraint
-                                                                             // for
-                                                                             // the
-                                                                             // specified
-                                                                             // SimSEObjectType
-  {
+  // returns the constraint for the specified SimSEObjectType
+  public ActionTypeParticipantConstraint getConstraint(SimSEObjectType type) { 
     for (int i = 0; i < constraints.size(); i++) {
       ActionTypeParticipantConstraint tempConst = constraints.elementAt(i);
       if (tempConst.getSimSEObjectType().getName().equals(type.getName())) {
@@ -67,22 +62,10 @@ public class ActionTypeParticipantTrigger implements Cloneable {
     return null;
   }
 
-  public ActionTypeParticipantConstraint getConstraint(String typeName) // note
-                                                                        // to
-                                                                        // self:
-                                                                        // it's
-                                                                        // okay
-                                                                        // to
-                                                                        // just
-                                                                        // give
-                                                                        // the
-                                                                        // type
-                                                                        // name
-                                                                        // and
-                                                                        // not
-  // the SimSEObjectTypeType because all SimSEObjectTypes in one participant
-  // MUST be of the same SimSEObjectTypeType! Think about it!
-  {
+  public ActionTypeParticipantConstraint getConstraint(String typeName) { 
+  	// note to self: it's okay to just give the type name and not
+  	// the SimSEObjectTypeType because all SimSEObjectTypes in one participant
+  	// MUST be of the same SimSEObjectTypeType! Think about it!
     for (int i = 0; i < constraints.size(); i++) {
       ActionTypeParticipantConstraint tempConst = constraints.elementAt(i);
       if (tempConst.getSimSEObjectType().getName().equals(typeName)) {
@@ -92,16 +75,11 @@ public class ActionTypeParticipantTrigger implements Cloneable {
     return null;
   }
 
-  public void addConstraint(ActionTypeParticipantConstraint newConst) // adds
-                                                                      // the
-                                                                      // specified
-                                                                      // constraint
-                                                                      // to the
-                                                                      // participant;
-                                                                      // if a
-                                                                      // constraint
-  // for its SimSEObjectType is already there, the new constraint replaces it.
-  {
+  /*
+   * adds the specified constraint to the participant; if a constraint for its
+   * SimSEObjectType is already there, the new constraint replaces it
+   */
+  public void addConstraint(ActionTypeParticipantConstraint newConst) { 
     boolean notFound = true;
     for (int i = 0; i < constraints.size(); i++) {
       ActionTypeParticipantConstraint tempConst = constraints.elementAt(i);
@@ -110,19 +88,17 @@ public class ActionTypeParticipantTrigger implements Cloneable {
         notFound = false;
       }
     }
-    if (notFound) // new constraint, not a replacement for a previous one
-    {
+    if (notFound) { // new constraint, not a replacement for a previous one
       constraints.add(newConst);
     }
   }
 
-  public void addEmptyConstraint(SimSEObjectType type) // adds a new constraint
-                                                       // (of the specified
-                                                       // SimSEObjectType) that
-                                                       // is
-  // unconstrained to this participant; if a constraint with this type is
-  // already there, the new constraint replaces it.
-  {
+  /*
+   * adds a new constraint (of the specified SimSEObjectType) that is
+   * unconstrained to this participant; if a constraint with this type is
+   * already there, the new constraint replaces it
+   */
+  public void addEmptyConstraint(SimSEObjectType type) { 
     for (int i = 0; i < constraints.size(); i++) {
       ActionTypeParticipantConstraint tempConst = constraints.elementAt(i);
       if (tempConst.getSimSEObjectType() == type) {
@@ -132,9 +108,8 @@ public class ActionTypeParticipantTrigger implements Cloneable {
     constraints.add(new ActionTypeParticipantConstraint(type));
   }
 
-  public void removeConstraint(SimSEObjectType type) // removes the constraint
-                                                     // for this SimSEObjectType
-  {
+  // removes the constraint for this SimSEObjectType
+  public void removeConstraint(SimSEObjectType type) { 
     for (int i = 0; i < constraints.size(); i++) {
       ActionTypeParticipantConstraint tempConst = constraints.elementAt(i);
       if (tempConst.getSimSEObjectType() == type) {
@@ -143,13 +118,12 @@ public class ActionTypeParticipantTrigger implements Cloneable {
     }
   }
 
-  public void removeConstraint(String typeName) // removes the constraint for
-                                                // the SimSEObjectType with the
-                                                // specified name; note to self:
-  // it's okay to just give the type name and not the SimSEObjectTypeType
-  // because all SimSEObjectTypes in one participant MUST be of
-  // the same SimSEObjectTypeType! Think about it!
-  {
+  // removes the constraint for the SimSEObjectType with the specified name
+  public void removeConstraint(String typeName) { 
+  	// note to self:
+  	// it's okay to just give the type name and not the SimSEObjectTypeType
+  	// because all SimSEObjectTypes in one participant MUST be of
+  	// the same SimSEObjectTypeType! Think about it!
     for (int i = 0; i < constraints.size(); i++) {
       ActionTypeParticipantConstraint tempConst = constraints.elementAt(i);
       if (tempConst.getSimSEObjectType().getName().equals(typeName)) {
@@ -158,7 +132,8 @@ public class ActionTypeParticipantTrigger implements Cloneable {
     }
   }
 
-  public void setConstraints(Vector<ActionTypeParticipantConstraint> newConstraints) {
+  public void setConstraints(
+  		Vector<ActionTypeParticipantConstraint> newConstraints) {
     constraints = newConstraints;
   }
 }

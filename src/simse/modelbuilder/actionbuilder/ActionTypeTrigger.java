@@ -2,12 +2,17 @@
 
 package simse.modelbuilder.actionbuilder;
 
-import java.util.*;
+import java.util.Vector;
 
 public abstract class ActionTypeTrigger implements Cloneable {
-  private String name;
-  private Vector<ActionTypeParticipantTrigger> participantTriggers; // vector of ActionTypeParticipantTriggers
-                                      // for this action type trigger
+  // trigger type constants:
+  public static final String AUTO = "Autonomous";
+  public static final String USER = "User-Initiated";
+  public static final String RANDOM = "Random";
+  
+	private String name;
+  private Vector<ActionTypeParticipantTrigger> participantTriggers; 
+  // vector of ActionTypeParticipantTriggers for this action type trigger
   private String triggerText; // text that shows up over the head of an employee
                               // participant when this is triggered
   private int priority; // priority of execution of this trigger
@@ -15,36 +20,32 @@ public abstract class ActionTypeTrigger implements Cloneable {
   private ActionType action; // POINTER TO action type that this trigger is
                              // attached to
 
-  // trigger type constants:
-  public static final String AUTO = "Autonomous";
-  public static final String USER = "User-Initiated";
-  public static final String RANDOM = "Random";
-
-  public ActionTypeTrigger(String n, ActionType a) {
-    name = n;
+  public ActionTypeTrigger(String name, ActionType action) {
+    this.name = name;
     participantTriggers = new Vector<ActionTypeParticipantTrigger>();
     triggerText = new String();
     priority = -1;
     gameEnding = false;
-    action = a;
+    this.action = action;
   }
 
   public Object clone() {
     try {
       ActionTypeTrigger cl = (ActionTypeTrigger) (super.clone());
       cl.name = name;
-      Vector<ActionTypeParticipantTrigger> clonedTriggers = new Vector<ActionTypeParticipantTrigger>();
+      Vector<ActionTypeParticipantTrigger> clonedTriggers = 
+      	new Vector<ActionTypeParticipantTrigger>();
       for (int i = 0; i < participantTriggers.size(); i++) {
-        clonedTriggers
-            .add((ActionTypeParticipantTrigger) ((participantTriggers.elementAt(i)).clone()));
+        clonedTriggers.add((ActionTypeParticipantTrigger) 
+        		((participantTriggers.elementAt(i)).clone()));
       }
       cl.participantTriggers = clonedTriggers;
       cl.triggerText = triggerText;
       cl.priority = priority;
       cl.gameEnding = gameEnding;
       cl.action = action; // NOTE: since this is a pointer to the action, it
-                          // must remain a pointer to the
-      // action, even in the clone. So BE CAREFUL!!
+                          // must remain a pointer to the action, even in the 
+      										// clone. So BE CAREFUL!!
       return cl;
     } catch (CloneNotSupportedException c) {
       System.out.println(c.getMessage());
@@ -88,10 +89,9 @@ public abstract class ActionTypeTrigger implements Cloneable {
     return participantTriggers;
   }
 
+  // returns the trigger for the specified participant
   public ActionTypeParticipantTrigger getParticipantTrigger(
-      String participantName) // returns the trigger for the specified
-                              // participant
-  {
+      String participantName) { 
     for (int i = 0; i < participantTriggers.size(); i++) {
       ActionTypeParticipantTrigger tempTrig = participantTriggers
           .elementAt(i);
@@ -102,64 +102,46 @@ public abstract class ActionTypeTrigger implements Cloneable {
     return null;
   }
 
-  public void addParticipantTrigger(ActionTypeParticipantTrigger newTrig) // adds
-                                                                          // the
-                                                                          // specified
-                                                                          // participant
-                                                                          // trigger
-                                                                          // to
-                                                                          // this
-  // ActionTypeTrigger; if a trigger for this participant is already there, the
-  // new trigger replaces it.
-  {
+  /*
+   * adds the specified participant trigger to this ActionTypeTrigger; if a 
+   * trigger to this ActionTypeTrigger; if a trigger for this participant is
+   * already there, the new trigger replaces it
+   */
+  public void addParticipantTrigger(ActionTypeParticipantTrigger newTrig) { 
     boolean notFound = true;
     for (int i = 0; i < participantTriggers.size(); i++) {
       ActionTypeParticipantTrigger tempTrig = participantTriggers.elementAt(i);
       if (tempTrig.getParticipant().getName().equals(
-          newTrig.getParticipant().getName())) // trigger for this participant
-                                               // already
-      // exists, needs to be replaced
-      {
+          newTrig.getParticipant().getName())) { // trigger for this participant
+                                               	 // already exists, needs to be 
+      																					 // replaced
         participantTriggers.setElementAt(newTrig, i);
         notFound = false;
       }
     }
-    if (notFound) // new trigger, not a replacement for a previous one
-    {
+    if (notFound) { // new trigger, not a replacement for a previous one
       participantTriggers.add(newTrig);
     }
   }
 
-  public void addEmptyTrigger(ActionTypeParticipant part) // adds a new
-                                                          // participant trigger
-                                                          // that is
-                                                          // unconstrained to
-                                                          // this
-  // ActionTypeTrigger; if a trigger for this participant is already there, the
-  // new trigger replaces it.
-  {
+  /*
+   * adds a new participant trigger that is unconstrained to this
+   * ActionTypeTrigger; if a trigger for this participant is already there, the
+   * new trigger replaces it
+   */
+  public void addEmptyTrigger(ActionTypeParticipant part) { 
     for (int i = 0; i < participantTriggers.size(); i++) {
       ActionTypeParticipantTrigger tempTrig = participantTriggers.elementAt(i);
-      if (tempTrig.getParticipant().getName().equals(part.getName())) // trigger
-                                                                      // for
-                                                                      // this
-                                                                      // participant
-                                                                      // already
-                                                                      // exists,
-                                                                      // needs
-                                                                      // to be
-      // replaced
-      {
+      if (tempTrig.getParticipant().getName().equals(part.getName())) { 
+      	// trigger for this participant already exists, needs to be replaced
         participantTriggers.remove(tempTrig);
       }
     }
     participantTriggers.add(new ActionTypeParticipantTrigger(part));
   }
 
-  public void removeTrigger(String partName) // removes the trigger for the
-                                             // participant with the specified
-                                             // name
-  {
+  // removes the trigger for the participant with the specified name
+  public void removeTrigger(String partName) { 
     for (int i = 0; i < participantTriggers.size(); i++) {
       ActionTypeParticipantTrigger tempTrig = participantTriggers.elementAt(i);
       if (tempTrig.getParticipant().getName().equals(partName)) {
@@ -172,14 +154,12 @@ public abstract class ActionTypeTrigger implements Cloneable {
     participantTriggers = newTriggers;
   }
 
-  public ActionTypeTrigger morph(String triggerType) // morphs this
-                                                     // ActionTypeTrigger to the
-                                                     // new type of trigger
-                                                     // specified and returns
-  // it.
-  {
-    if (triggerType.equals(AUTO)) // autonomous trigger type
-    {
+  /*
+   * morphs this ActionTypeTrigger to the new type of trigger specified and
+   * returns it
+   */
+  public ActionTypeTrigger morph(String triggerType) { 
+    if (triggerType.equals(AUTO)) { // autonomous trigger type
       AutonomousActionTypeTrigger autoTrig = new AutonomousActionTypeTrigger(
           name, action);
       autoTrig.setTriggers(participantTriggers);
@@ -188,8 +168,7 @@ public abstract class ActionTypeTrigger implements Cloneable {
       autoTrig.setGameEndingTrigger(gameEnding);
       return autoTrig;
     }
-    if (triggerType.equals(USER)) // user trigger type
-    {
+    if (triggerType.equals(USER)) { // user trigger type
       UserActionTypeTrigger userTrig = new UserActionTypeTrigger(name, action);
       if (this instanceof UserActionTypeTrigger) {
         userTrig.setMenuText(((UserActionTypeTrigger) (this)).getMenuText());
@@ -202,8 +181,7 @@ public abstract class ActionTypeTrigger implements Cloneable {
       userTrig.setGameEndingTrigger(gameEnding);
       return userTrig;
     }
-    if (triggerType.equals(RANDOM)) // random trigger type
-    {
+    if (triggerType.equals(RANDOM)) { // random trigger type
       RandomActionTypeTrigger randomTrig = new RandomActionTypeTrigger(name,
           action);
       if (this instanceof RandomActionTypeTrigger) {
@@ -219,9 +197,8 @@ public abstract class ActionTypeTrigger implements Cloneable {
     return null;
   }
 
-  public ActionType getActionType() // returns a COPY of the action type that
-                                    // this trigger is attached to
-  {
+  // returns a COPY of the action type that this trigger is attached to
+  public ActionType getActionType() { 
     return (ActionType) action.clone();
   }
 }

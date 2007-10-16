@@ -5,14 +5,27 @@
 
 package simse.modelbuilder.actionbuilder;
 
-import javax.swing.*;
-
-import java.awt.event.*;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
-
 import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class ActionTypeOptionsInfoForm extends JDialog implements
     ActionListener {
@@ -34,9 +47,9 @@ public class ActionTypeOptionsInfoForm extends JDialog implements
   private JButton okButton; 
   private JButton cancelButton;
 
-  public ActionTypeOptionsInfoForm(JFrame owner, ActionType action) {
+  public ActionTypeOptionsInfoForm(JFrame owner, ActionType actionInFocus) {
     super(owner, true);
-    actionInFocus = action;
+    this.actionInFocus = actionInFocus;
 
     // Set window title:
     setTitle(actionInFocus.getName() + " Action Options");
@@ -52,7 +65,8 @@ public class ActionTypeOptionsInfoForm extends JDialog implements
     simVisibleList.addItem("true");
     simVisibleList.addItem("false");
     simVisibleList
-        .setToolTipText("Whether or not this action type is visible in the simulation's user interface");
+        .setToolTipText("Whether or not this action type is visible in the " +
+        		"simulation's user interface");
     simVisibleList.addActionListener(this);
     simVisPane.add(simVisibleList);
 
@@ -62,7 +76,8 @@ public class ActionTypeOptionsInfoForm extends JDialog implements
     descriptionPane.add(descriptionLabel);
     descriptionTextField = new JTextField(15);
     descriptionTextField
-        .setToolTipText("Description of this action type to appear in the simulation's user interface");
+        .setToolTipText("Description of this action type to appear in the " +
+        		"simulation's user interface");
     descriptionPane.add(descriptionTextField);
     
     // Disable simulation visibility stuff if no employee participant in action:
@@ -149,8 +164,8 @@ public class ActionTypeOptionsInfoForm extends JDialog implements
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource(); // get which component the action came from
 
     if (source == simVisibleList) {
@@ -161,34 +176,25 @@ public class ActionTypeOptionsInfoForm extends JDialog implements
         descriptionLabel.setEnabled(false);
         descriptionTextField.setEnabled(false);
       }
-    }
-
-    else if (source == cancelButton) // cancel button has been pressed
-    {
+    } else if (source == cancelButton) { // cancel button has been pressed
       // Close window:
       setVisible(false);
       dispose();
-    }
-
-    else if (source == okButton) // okButton has been pressed
-    {
+    } else if (source == okButton) { // okButton has been pressed
       // simulation visibility
       if (((String) simVisibleList.getSelectedItem()).equals("true")) {
         // check if description is valid:
         String des = descriptionTextField.getText();
-        if ((des.equals(null)) || (des.length() == 0)) // nothing entered
-        {
+        if ((des.equals(null)) || (des.length() == 0)) { // nothing entered
           JOptionPane.showMessageDialog(null, "Please enter a description",
               "Invalid Input", JOptionPane.ERROR_MESSAGE);
-        } else // valid input
-        {
+        } else { // valid input
           actionInFocus.setVisibilityInSimulation(true);
           actionInFocus.setDescription(des);
           setVisible(false);
           dispose();
         }
-      } else // false
-      {
+      } else { // false
         actionInFocus.setVisibilityInSimulation(false);
         actionInFocus.setDescription(null);
         setVisible(false);
@@ -198,8 +204,7 @@ public class ActionTypeOptionsInfoForm extends JDialog implements
       // explanatory tool visibility
       if (((String) expVisibleList.getSelectedItem()).equals("true")) {
         actionInFocus.setVisibilityInExplanatoryTool(true);
-      } else // false
-      {
+      } else { // false
         actionInFocus.setVisibilityInExplanatoryTool(false);
       }
       String ann = annotationTextArea.getText();
@@ -214,21 +219,19 @@ public class ActionTypeOptionsInfoForm extends JDialog implements
     }
   }
 
-  private void initializeForm() // initializes the form to reflect the action
-                                // being edited
-  {
-    // simulation visibility
+  // initializes the form to reflect the action being edited
+  private void initializeForm() { 
+    // simulation visibility:
     if (actionInFocus.hasParticipantOfMetaType(
         SimSEObjectTypeTypes.EMPLOYEE)) {
 	    if (actionInFocus.isVisibleInSimulation()) {
 	      simVisibleList.setSelectedIndex(0);
-	    } else // not visible
-	    {
+	    } else { // not visible
 	      simVisibleList.setSelectedIndex(1);
 	    }
 	    if ((actionInFocus.getDescription() != null)
-	        && (actionInFocus.getDescription().length() > 0)) // has a description
-	    {
+	        && (actionInFocus.getDescription().length() > 0)) { // has a 
+	    																												// description
 	      descriptionTextField.setText(actionInFocus.getDescription());
 	    }
     }
@@ -236,13 +239,11 @@ public class ActionTypeOptionsInfoForm extends JDialog implements
     // explanatory tool visibility
     if (actionInFocus.isVisibleInExplanatoryTool()) {
       expVisibleList.setSelectedIndex(0);
-    } else // not visible
-    {
+    } else { // not visible
       expVisibleList.setSelectedIndex(1);
     }
     if ((actionInFocus.getAnnotation() != null)
-        && (actionInFocus.getAnnotation().length() > 0)) // has annotation
-    {
+        && (actionInFocus.getAnnotation().length() > 0)) { // has annotation
       annotationTextArea.setText(actionInFocus.getAnnotation());
       annotationTextArea.setCaretPosition(0);
     }

@@ -2,23 +2,41 @@
 
 package simse.modelbuilder.actionbuilder;
 
-import simse.modelbuilder.objectbuilder.*;
-import javax.swing.*;
-import java.awt.event.*;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.util.*;
-import java.lang.Math;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
 
 public class ActionTypeParticipantInfoForm extends JDialog implements
     ActionListener {
   private ActionType actionInFocus; // original action type whose participant is
                                     // being edited
-  private Vector triggers; // copy of triggers for this action type
-  private Vector destroyers; // copy of destroyers for this action type
+  private Vector<ActionTypeTrigger> triggers; // copy of triggers for this 
+  																						// action type
+  private Vector<ActionTypeDestroyer> destroyers; // copy of destroyers for this
+  																								// action type
   private ActionTypeParticipant participant; // copy of participant whose values
                                              // are being edited
   private ActionTypeParticipant originalParticipant; // participant (as it was
@@ -39,8 +57,8 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
   private JTextField maxValTextField; // for entering the max value of the
                                       // quantity of the participant
   private JComboBox metaTypeList; // for choosing the meta-type
-  private Vector checkBoxes; // vector of JCheckBoxes, each one representing a
-                             // type
+  private Vector<JCheckBox> checkBoxes; // vector of JCheckBoxes, each one 
+  																			// representing a type
   private JPanel checkBoxesPane; // pane for checkboxes
   private Box middlePane;
   private JPanel bottomPane;
@@ -50,25 +68,25 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
   private GridLayout checkBoxesLayout;
   private JPanel topPane;
 
-  public ActionTypeParticipantInfoForm(JFrame owner, ActionType action,
-      ActionTypeParticipant part, DefinedObjectTypes objs) {
+  public ActionTypeParticipantInfoForm(JFrame owner, ActionType actionInFocus,
+      ActionTypeParticipant part, DefinedObjectTypes objects) {
     super(owner, true);
-    actionInFocus = action;
-    objects = objs;
+    this.actionInFocus = actionInFocus;
+    this.objects = objects;
 
     // make a copy of triggers:
-    triggers = new Vector();
-    Vector tempTrigs = actionInFocus.getAllTriggers();
+    triggers = new Vector<ActionTypeTrigger>();
+    Vector<ActionTypeTrigger> tempTrigs = actionInFocus.getAllTriggers();
     for (int i = 0; i < tempTrigs.size(); i++) {
-      ActionTypeTrigger tempT = (ActionTypeTrigger) tempTrigs.elementAt(i);
+      ActionTypeTrigger tempT = tempTrigs.elementAt(i);
       triggers.add((ActionTypeTrigger) tempT.clone());
     }
 
     // make a copy of destroyers:
-    destroyers = new Vector();
-    Vector tempDests = actionInFocus.getAllDestroyers();
+    destroyers = new Vector<ActionTypeDestroyer>();
+    Vector<ActionTypeDestroyer> tempDests = actionInFocus.getAllDestroyers();
     for (int i = 0; i < tempDests.size(); i++) {
-      ActionTypeDestroyer tempD = (ActionTypeDestroyer) tempDests.elementAt(i);
+      ActionTypeDestroyer tempD = tempDests.elementAt(i);
       destroyers.add((ActionTypeDestroyer) tempD.clone());
     }
 
@@ -135,14 +153,15 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
     checkBoxesLayout = new GridLayout();
     checkBoxesLayout.setRows(6);
     checkBoxesPane = new JPanel(checkBoxesLayout);
-    Vector objTypes = objects.getAllObjectTypesOfType(SimSEObjectTypeTypes
-        .getIntRepresentation((String) (metaTypeList.getSelectedItem())));
+    Vector<SimSEObjectType> objTypes = 
+    	objects.getAllObjectTypesOfType(
+    			SimSEObjectTypeTypes.getIntRepresentation((String) 
+    					(metaTypeList.getSelectedItem())));
     checkBoxesLayout.setColumns((int) (Math.ceil(objTypes.size() / 6)));
-    checkBoxes = new Vector();
+    checkBoxes = new Vector<JCheckBox>();
     for (int i = 0; i < objTypes.size(); i++) {
       JPanel tempPane = new JPanel(new BorderLayout());
-      JCheckBox tempCheckBox = new JCheckBox(((SimSEObjectType) (objTypes
-          .elementAt(i))).getName());
+      JCheckBox tempCheckBox = new JCheckBox(objTypes.elementAt(i).getName());
       tempCheckBox.setAlignmentX(JComponent.LEFT_ALIGNMENT);
       tempCheckBox.addActionListener(this);
       checkBoxes.add(tempCheckBox);
@@ -161,27 +180,24 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
     bottomPane.add(cancelButton);
 
     // initialize participant:
-    if (part != null) // participant being edited
-    {
+    if (part != null) { // participant being edited
       newParticipant = false;
       // make a copy of participant:
       participant = (ActionTypeParticipant) (part.clone());
       originalParticipant = part;
       initializeForm(); // initialize values to reflect participant being edited
-    } else // new participant
-    {
+    } else { // new participant
       // create new participant, triggers, and destroyers:
       participant = new ActionTypeParticipant(SimSEObjectTypeTypes
           .getIntRepresentation((String) (metaTypeList.getSelectedItem())));
 
       for (int i = 0; i < triggers.size(); i++) {
-        ActionTypeTrigger trig = (ActionTypeTrigger) triggers.elementAt(i);
-        trig
-            .addParticipantTrigger(new ActionTypeParticipantTrigger(participant));
+        ActionTypeTrigger trig = triggers.elementAt(i);
+        trig.addParticipantTrigger(
+        		new ActionTypeParticipantTrigger(participant));
       }
       for (int i = 0; i < destroyers.size(); i++) {
-        ActionTypeDestroyer dest = (ActionTypeDestroyer) destroyers
-            .elementAt(i);
+        ActionTypeDestroyer dest = destroyers.elementAt(i);
         dest.addParticipantDestroyer(new ActionTypeParticipantDestroyer(
             participant));
       }
@@ -217,18 +233,16 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource(); // get which component the action came from
-    if (source == guardList) // User has chosen a guard
-    {
+    if (source == guardList) { // User has chosen a guard
       int selectedGuard = Guard.getIntRepresentation((String) guardList
           .getSelectedItem());
       if (selectedGuard == Guard.AT_LEAST_AND_AT_MOST) {
         // enable 2nd text field:
         maxValTextField.setEnabled(true);
-      } else // other guard
-      {
+      } else { // other guard
         // clear and disable 2nd text field:
         maxValTextField.setText(null);
         maxValTextField.setEnabled(false);
@@ -236,43 +250,30 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
       setUpToolTips();
     }
 
-    else if (source == metaTypeList) // user has chosen a meta-type
-    {
+    else if (source == metaTypeList) { // user has chosen a meta-type
       if (SimSEObjectTypeTypes.getIntRepresentation((String) (metaTypeList
-          .getSelectedItem())) != participant.getSimSEObjectTypeType()) // a new
-                                                                        // type
-                                                                        // is
-                                                                        // selected
-                                                                        // (not
-                                                                        // the
-                                                                        // type
-                                                                        // that
-                                                                        // this
-                                                                        // participant
-                                                                        // already
-                                                                        // was)
-      {
+          .getSelectedItem())) != participant.getSimSEObjectTypeType()) { 
+      	// a new type is selected (not the type that this participant already
+        // was)
         participant.setSimSEObjectTypeType(SimSEObjectTypeTypes
             .getIntRepresentation((String) (metaTypeList.getSelectedItem())));
         refreshCheckBoxes();
       }
     }
 
-    else if (source instanceof JCheckBox) // one of the check boxes have been
-                                          // checked or unchecked
-    {
+    else if (source instanceof JCheckBox) { // one of the check boxes have been
+                                          	// checked or unchecked
       // get the text of the check box:
-      String typeName = ((JCheckBox) (source)).getText();
-      if (((JCheckBox) source).isSelected()) // a check box has just been
-                                             // selected
-      {
+    	JCheckBox sourceCheckBox = (JCheckBox)source;
+      String typeName = sourceCheckBox.getText();
+      if (sourceCheckBox.isSelected()) { // a check box has just been selected
         // add this object type to the participant:
         participant.addSimSEObjectType(objects.getObjectType(
             SimSEObjectTypeTypes.getIntRepresentation((String) (metaTypeList
                 .getSelectedItem())), typeName));
         // add a new empty constraint to the participant's triggers:
         for (int i = 0; i < triggers.size(); i++) {
-          ActionTypeTrigger trig = (ActionTypeTrigger) triggers.elementAt(i);
+          ActionTypeTrigger trig = triggers.elementAt(i);
           trig.getParticipantTrigger(participant.getName()).addEmptyConstraint(
               objects.getObjectType(SimSEObjectTypeTypes
                   .getIntRepresentation((String) (metaTypeList
@@ -280,62 +281,54 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
         }
         // add a new empty constraint to the participant's destroyer:
         for (int i = 0; i < destroyers.size(); i++) {
-          ActionTypeDestroyer dest = (ActionTypeDestroyer) destroyers
-              .elementAt(i);
+          ActionTypeDestroyer dest = destroyers.elementAt(i);
           dest.getParticipantDestroyer(participant.getName())
               .addEmptyConstraint(
                   objects.getObjectType(SimSEObjectTypeTypes
                       .getIntRepresentation((String) (metaTypeList
                           .getSelectedItem())), typeName));
         }
-      } else // a check box has just been de-selected
-      {
+      } else { // a check box has just been de-selected
         // remove the object type from the participant:
-        participant.removeSimSEObjectType(((JCheckBox) source).getText());
+        participant.removeSimSEObjectType(sourceCheckBox.getText());
         // remove the constraint from the participant's triggers:
         for (int i = 0; i < triggers.size(); i++) {
-          ActionTypeTrigger trig = (ActionTypeTrigger) triggers.elementAt(i);
+          ActionTypeTrigger trig = triggers.elementAt(i);
           trig.getParticipantTrigger(participant.getName()).removeConstraint(
               typeName);
         }
         // remove the constraint from the participant's destroyer:
         for (int i = 0; i < destroyers.size(); i++) {
-          ActionTypeDestroyer dest = (ActionTypeDestroyer) destroyers
-              .elementAt(i);
+          ActionTypeDestroyer dest = destroyers.elementAt(i);
           dest.getParticipantDestroyer(participant.getName()).removeConstraint(
               typeName);
         }
       }
     }
 
-    else if (source == cancelButton) // cancel button has been pressed
-    {
+    else if (source == cancelButton) { // cancel button has been pressed
       // Close window:
       setVisible(false);
       dispose();
     }
 
-    else if (source == okButton) // okButton has been pressed
-    {
-      Vector errors = inputValid(); // check validity of input
-      if (errors.size() == 0) // input valid
-      {
+    else if (source == okButton) { // okButton has been pressed
+      Vector<String> errors = inputValid(); // check validity of input
+      if (errors.size() == 0) { // input valid
         if (participantNameIsUnique()) {
           addEditParticipant();
         }
-      } else // input not valid
-      {
+      } else { // input not valid
         for (int i = 0; i < errors.size(); i++) {
-          JOptionPane.showMessageDialog(null, ((String) errors.elementAt(i)),
-              "Invalid Input", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null, errors.elementAt(i),
+          		"Invalid Input", JOptionPane.ERROR_MESSAGE);
         }
       }
     }
   }
 
-  private void initializeForm() // initializes the GUI components to reflect the
-                                // participant being edited
-  {
+  // initializes the GUI components to reflect the participant being edited
+  private void initializeForm() { 
     // fill in values:
 
     // name:
@@ -364,11 +357,11 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
 
     // checkboxes:
     refreshCheckBoxes();
-    Vector types = participant.getAllSimSEObjectTypes();
+    Vector<SimSEObjectType> types = participant.getAllSimSEObjectTypes();
     for (int i = 0; i < types.size(); i++) {
-      String name = ((SimSEObjectType) types.elementAt(i)).getName();
+      String name = types.elementAt(i).getName();
       for (int j = 0; j < checkBoxes.size(); j++) {
-        JCheckBox cBox = (JCheckBox) checkBoxes.elementAt(j);
+        JCheckBox cBox = checkBoxes.elementAt(j);
         if (cBox.getText().equals(name)) {
           cBox.setSelected(true);
         }
@@ -381,12 +374,14 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
     toFront();
   }
 
-  private Vector inputValid() // validates the input from the fields; returns
-                              // null if input is valid,
-  // or a Vector of String messages explaining the error(s)
-  {
-    Vector messages = new Vector(); // holds any String messages about invalid
-                                    // input to display to the user
+  /*
+   * validates the input from the fields; returns null if input is valid, or a
+   * Vector of String messages explaining the error(s)
+   */
+  private Vector<String> inputValid() { 
+    Vector<String> messages = new Vector<String>(); // holds any String messages
+    																								// about invalid input to 
+    																								// display to the user
 
     // Check name input:
     String nameInput = nameField.getText();
@@ -403,25 +398,22 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
         || (nameInput.equalsIgnoreCase(SimSEObjectTypeTypes
             .getText(SimSEObjectTypeTypes.PROJECT)))
         || (nameInput.equalsIgnoreCase("action"))
-        || (nameInput.equalsIgnoreCase("compiler"))) // System-wide keywords
-    {
+        || (nameInput.equalsIgnoreCase("compiler"))) { // System-wide keywords
       messages.add("Name must be unique");
     }
 
     // Check for length constraints:
-    if ((cArray.length < 2) || (cArray.length > 40)) // user has entered a
+    if ((cArray.length < 2) || (cArray.length > 40)) { // user has entered a
                                                      // string shorter than 2
                                                      // chars or longer than 40
                                                      // chars
-    {
       messages.add("Name must be between 2 and 40 characters long");
     }
 
     // Check for invalid characters:
     for (int i = 0; i < cArray.length; i++) {
-      if ((Character.isLetter(cArray[i])) == false) // character is not a letter
-                                                    // (hence, invalid)
-      {
+      if ((Character.isLetter(cArray[i])) == false) { // character is not a 
+      																								// letter (hence, invalid)
         messages.add("Name must consist of only alphabetic characters");
         break;
       }
@@ -431,9 +423,8 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
     String quantityInput = quantityTextField.getText();
     String maxValInput = maxValTextField.getText();
     // Check quantity input:
-    if ((quantityInput != null) && (quantityInput.length() > 0)) // field is not
-                                                                 // blank
-    {
+    if ((quantityInput != null) && (quantityInput.length() > 0)) { // field is 
+    																															 // not blank
       try {
         int quantity = Integer.parseInt(quantityInput); // parse the string into
                                                         // an int
@@ -445,9 +436,8 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
       }
     }
     // Check max value input:
-    if ((maxValInput != null) && (maxValInput.length() > 0)) // field is not
-                                                             // blank
-    {
+    if ((maxValInput != null) && (maxValInput.length() > 0)) { // field is not
+                                                             	 // blank
       try {
         int maxVal = Integer.parseInt(maxValInput); // parse the string into an
                                                     // int
@@ -460,16 +450,17 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
     }
     // Check whether max value > min value:
     if ((quantityInput != null) && (quantityInput.length() > 0)
-        && (maxValInput != null) && (maxValInput.length() > 0)) // neither
-    // field is blank
-    {
+        && (maxValInput != null) && (maxValInput.length() > 0)) { // neither
+    																															// field is 
+    																															// blank
       try {
         int quantity = Integer.parseInt(quantityInput);
         int maxVal = Integer.parseInt(maxValInput);
-        if ((maxVal >= 0) && (quantity >= 0) && (maxVal < quantity)) // invalid
-        {
+        if ((maxVal >= 0) && (quantity >= 0) && (maxVal < quantity)) { 
+        	// invalid
           messages
-              .add("'At most' value must be greater than or equal to 'at least' value");
+              .add("'At most' value must be greater than or equal to 'at " +
+              		"least' value");
         }
       } catch (NumberFormatException e) {
         System.out.println(e.getMessage());
@@ -482,7 +473,7 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
     // Check whether at least one checkbox is checked:
     boolean anyChecked = false;
     for (int i = 0; i < checkBoxes.size(); i++) {
-      if (((JCheckBox) (checkBoxes.elementAt(i))).isSelected()) {
+      if (checkBoxes.elementAt(i).isSelected()) {
         anyChecked = true;
         break;
       }
@@ -493,8 +484,7 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
     return messages;
   }
 
-  private void addEditParticipant() // adds/edits the participant in focus
-  {
+  private void addEditParticipant() { // adds/edits the participant in focus
     // set name:
     participant.setName(nameField.getText());
 
@@ -504,11 +494,9 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
 
     // set quantity:
     Integer[] newQuantity = new Integer[2];
-    if (quantityTextField.getText().equals(null)) // quantity text field empty
-    {
+    if (quantityTextField.getText().equals(null)) { // quantity text field empty
       newQuantity[0] = null;
-    } else // quantity text field non-empty
-    {
+    } else { // quantity text field non-empty
       try {
         newQuantity[0] = new Integer(Integer.parseInt(quantityTextField
             .getText()));
@@ -519,11 +507,9 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
         System.out.println(e.getMessage());
       }
     }
-    if (maxValTextField.getText().equals(null)) // max val text field empty
-    {
+    if (maxValTextField.getText().equals(null)) { // max val text field empty
       newQuantity[1] = null;
-    } else // max val text field non-empty
-    {
+    } else { // max val text field non-empty
       try {
         newQuantity[1] = new Integer(Integer
             .parseInt(maxValTextField.getText()));
@@ -536,8 +522,7 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
     }
     participant.getQuantity().setQuantity(newQuantity);
 
-    if (!newParticipant) // this is an existing participant being edited
-    {
+    if (!newParticipant) { // this is an existing participant being edited
       int indexOfPart = actionInFocus.getAllParticipants().indexOf(
           originalParticipant);
       actionInFocus.removeParticipant(originalParticipant); // remove the old
@@ -547,41 +532,26 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
       // the participant trigger to the copy participant that's been edited
       String name = originalParticipant.getName();
       for (int i = 0; i < triggers.size(); i++) {
-        ActionTypeTrigger trig = (ActionTypeTrigger) triggers.elementAt(i);
-        trig.getParticipantTrigger(name).setParticipant(participant); // set the
-                                                                      // participant
-                                                                      // for the
-                                                                      // participant
-                                                                      // trigger
-                                                                      // to the
-                                                                      // copy
-        // participant that's been edited
+        ActionTypeTrigger trig = triggers.elementAt(i);
+        /*
+         * set the participant for the participant trigger to the copy 
+         * participant that's been edited
+         */
+        trig.getParticipantTrigger(name).setParticipant(participant); 
       }
       for (int i = 0; i < destroyers.size(); i++) {
-        ActionTypeDestroyer dest = (ActionTypeDestroyer) destroyers
-            .elementAt(i);
-        dest.getParticipantDestroyer(name).setParticipant(participant); // set
-                                                                        // the
-                                                                        // participant
-                                                                        // for
-                                                                        // the
-                                                                        // participant
-                                                                        // destroyer
-                                                                        // to
-                                                                        // the
-                                                                        // copy
-        // participant that's been edited
+        ActionTypeDestroyer dest = destroyers.elementAt(i);
+        /*
+         * set the participant for the participant destroyer to the copy
+         * participant that's been edited
+         */
+        dest.getParticipantDestroyer(name).setParticipant(participant); 
       }
-      if (indexOfPart != -1) // participant was in the action
-      {
-        actionInFocus.addParticipant(participant, indexOfPart); // add the
-                                                                // edited
-                                                                // participant
-                                                                // at its old
-                                                                // position
+      if (indexOfPart != -1) { // participant was in the action
+      	// add the edited participant at its old position:
+        actionInFocus.addParticipant(participant, indexOfPart); 
       }
-    } else // new participant
-    {
+    } else { // new participant
       // add the new participant to the action in focus:
       actionInFocus.addParticipant(participant);
     }
@@ -597,53 +567,49 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
     dispose();
   }
 
-  private boolean participantNameIsUnique() // returns true if it is unique,
-                                            // false otherwise, and also takes
-                                            // care of asking the user
-  // if they want to overwrite it (and overwriting it, if desired)
-  {
+  /*
+   * returns true if it is unique, false otherwise, and also takes care of
+   * asking the user if they want to overwrite it (and overwriting it, if
+   * desired)
+   */
+  private boolean participantNameIsUnique() { 
     String nameInput = nameField.getText();
     if ((newParticipant)
-        || ((!newParticipant) && (participant.getName().equals(nameInput) == false))) // only
-                                                                                      // perform
-                                                                                      // this
-                                                                                      // check
-                                                                                      // if
-    // this is a newly created participant, or it is an edited participant and
-    // the name has been changed
-    {
-      Vector existingParticipants = actionInFocus.getAllParticipants();
+        || ((!newParticipant) && 
+        		(participant.getName().equals(nameInput) == false))) { 
+    	// only perform this check if this is a newly created participant, or it 
+    	// is an edited participant and the name has been changed
+      Vector<ActionTypeParticipant> existingParticipants = 
+      	actionInFocus.getAllParticipants();
       for (int i = 0; i < existingParticipants.size(); i++) {
-        ActionTypeParticipant tempPart = ((ActionTypeParticipant) existingParticipants
-            .elementAt(i));
-        if (tempPart.getName().equalsIgnoreCase(nameInput)) // name entered is
-                                                            // not unique (there
-                                                            // is already
-                                                            // another
-                                                            // participant of
-        // this action defined with the same name
-        {
+        ActionTypeParticipant tempPart = existingParticipants.elementAt(i);
+        if (tempPart.getName().equalsIgnoreCase(nameInput)) { // name entered is
+                                                            	// not unique 
+        																											// (there is 
+        																											// already
+                                                            	// another
+                                                            	// participant of
+        																											// this action 
+        																											// defined with 
+        																											// the same name
           int choice = JOptionPane
               .showConfirmDialog(
                   null,
-                  ("Previously defined " + tempPart.getName() + " participant will be overwritten. Continue?"),
+                  ("Previously defined " + tempPart.getName() + 
+                  		" participant will be overwritten. Continue?"),
                   "Warning", JOptionPane.YES_NO_OPTION);
           if (choice == JOptionPane.YES_OPTION) {
-            if (!newParticipant) // this is a participant being edited, not a
-                                 // new one
-            {
+            if (!newParticipant) { // this is a participant being edited, not a
+            											 // new one
               // Overwrite existing participants:
               actionInFocus.removeParticipant(tempPart.getName());
               actionInFocus.removeParticipant(participant.getName());
               addEditParticipant();
-            } else // this is a new participant, not one being edited
-            {
+            } else { // this is a new participant, not one being edited
               // Overwrite existing participant:
               actionInFocus.removeParticipant(tempPart.getName());
               addEditParticipant();
             }
-          } else // choice == JOptionPane.NO_OPTION
-          {
           }
           return false;
         }
@@ -652,17 +618,20 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
     return true;
   }
 
-  private void refreshCheckBoxes() // refreshes the check boxes to reflect the
-                                   // meta-type chosen in the meta-type list
-  {
-    Vector objTypes = objects.getAllObjectTypesOfType(SimSEObjectTypeTypes
-        .getIntRepresentation((String) (metaTypeList.getSelectedItem())));
+  /*
+   * refreshes the check boxes to reflect the meta-type chosen in the meta-type
+   * list
+   */
+  private void refreshCheckBoxes() { 
+    Vector<SimSEObjectType> objTypes = 
+    	objects.getAllObjectTypesOfType(
+    			SimSEObjectTypeTypes.getIntRepresentation((String) 
+    					(metaTypeList.getSelectedItem())));
     checkBoxes.clear();
     checkBoxesPane.removeAll(); // clear all the current checkboxes
     for (int i = 0; i < objTypes.size(); i++) {
       JPanel tempPane = new JPanel(new BorderLayout());
-      JCheckBox tempCheckBox = new JCheckBox(((SimSEObjectType) (objTypes
-          .elementAt(i))).getName());
+      JCheckBox tempCheckBox = new JCheckBox(objTypes.elementAt(i).getName());
       tempCheckBox.addActionListener(this);
       checkBoxes.add(tempCheckBox);
       tempPane.add(tempCheckBox, BorderLayout.WEST);
@@ -674,7 +643,8 @@ public class ActionTypeParticipantInfoForm extends JDialog implements
   }
 
   private void setUpToolTips() {
-    if (Guard.getIntRepresentation((String) (guardList.getSelectedItem())) == Guard.AT_LEAST_AND_AT_MOST) {
+    if (Guard.getIntRepresentation((String) (guardList.getSelectedItem())) == 
+    	Guard.AT_LEAST_AND_AT_MOST) {
       quantityTextField.setToolTipText("Enter 'at least' value");
       maxValTextField.setToolTipText("Enter 'at most' value");
     } else {

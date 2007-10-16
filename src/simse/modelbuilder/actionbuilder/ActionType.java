@@ -2,9 +2,13 @@
 
 package simse.modelbuilder.actionbuilder;
 
-import java.util.*;
+import simse.modelbuilder.rulebuilder.CreateObjectsRule;
+import simse.modelbuilder.rulebuilder.DestroyObjectsRule;
+import simse.modelbuilder.rulebuilder.EffectRule;
+import simse.modelbuilder.rulebuilder.Rule;
+import simse.modelbuilder.rulebuilder.RuleTiming;
 
-import simse.modelbuilder.rulebuilder.*;
+import java.util.Vector;
 
 public class ActionType implements Cloneable {
   private String name;
@@ -133,12 +137,11 @@ public class ActionType implements Cloneable {
     joiningAllowed = b;
   }
 
-  public Vector<ActionTypeParticipant> getAllParticipants() { // returns a
-																															// vector of all
-																															// ActionTypeParticipants
-																															// involved in
-																															// this action
-																															// type
+  /*
+   * returns a vector of all ActionTypeParticipants involved in this action
+   * type
+   */
+  public Vector<ActionTypeParticipant> getAllParticipants() { 
     return participants;
   }
   
@@ -152,9 +155,8 @@ public class ActionType implements Cloneable {
     return false;
   }
 
-  public Vector<ActionTypeTrigger> getAllTriggers() { // returns a vector of all
-																											// ActionTypeTriggers for
-																											// this action type
+  // returns a vector of all ActionTypeTriggers for this action type
+  public Vector<ActionTypeTrigger> getAllTriggers() { 
     return triggers;
   }
 
@@ -168,11 +170,8 @@ public class ActionType implements Cloneable {
     return null;
   }
 
-  public Vector<ActionTypeDestroyer> getAllDestroyers() { // returns a vector of
-																													// all
-																													// ActionTypeDestroyers
-																													// for this action
-																													// type
+  // returns a vector of all ActionTypeDestroyers for this action type
+  public Vector<ActionTypeDestroyer> getAllDestroyers() { 
     return destroyers;
   }
 
@@ -190,10 +189,8 @@ public class ActionType implements Cloneable {
     return rules;
   }
 
-  public Vector<CreateObjectsRule> getAllCreateObjectsRules() // returns all 
-  																														// rules of type
-  																														// CreateObjectsRule
-  {
+  // returns all rules of type CreateObjectsRule for this action type
+  public Vector<CreateObjectsRule> getAllCreateObjectsRules() { 
     Vector<CreateObjectsRule> coRules = new Vector<CreateObjectsRule>();
     for (int i = 0; i < rules.size(); i++) {
       Rule tempRule = rules.elementAt(i);
@@ -204,9 +201,8 @@ public class ActionType implements Cloneable {
     return coRules;
   }
 
-  public Vector<DestroyObjectsRule> getAllDestroyObjectsRules() // returns all rules of type
-                                            // DestroyObjectsRule
-  {
+  // returns all rules of type DestroyObjectsRule for this action type
+  public Vector<DestroyObjectsRule> getAllDestroyObjectsRules() { 
     Vector<DestroyObjectsRule> doRules = new Vector<DestroyObjectsRule>();
     for (int i = 0; i < rules.size(); i++) {
       Rule tempRule = rules.elementAt(i);
@@ -217,8 +213,8 @@ public class ActionType implements Cloneable {
     return doRules;
   }
 
-  public Vector<EffectRule> getAllEffectRules() // returns all rules of type EffectRule
-  {
+  // returns all rules of type EffectRule
+  public Vector<EffectRule> getAllEffectRules() { 
     Vector<EffectRule> eRules = new Vector<EffectRule>();
     for (int i = 0; i < rules.size(); i++) {
       Rule tempRule = rules.elementAt(i);
@@ -229,8 +225,8 @@ public class ActionType implements Cloneable {
     return eRules;
   }
 
-  public Rule getRule(String name) // returns the rule with the specified name
-  {
+  // returns the rule with the specified name
+  public Rule getRule(String name) { 
     for (int i = 0; i < rules.size(); i++) {
       Rule tempRule = rules.elementAt(i);
       if (tempRule.getName().equals(name)) {
@@ -240,10 +236,11 @@ public class ActionType implements Cloneable {
     return null;
   }
 
-  public void addRule(Rule newRule) // adds this rule to the action type; if
-                                    // there already exists one with its name,
-                                    // it replaces it
-  {
+  /*
+   * adds this rule to the action type; if there already exists one with its
+   * name, it replaces it with the new one
+   */
+  public void addRule(Rule newRule) { 
     for (int i = 0; i < rules.size(); i++) {
       Rule tempRule = rules.elementAt(i);
       if (tempRule.getName().equals(newRule.getName())) {
@@ -253,11 +250,11 @@ public class ActionType implements Cloneable {
     rules.addElement(newRule);
   }
 
-  public void addRule(Rule newRule, int index) // adds this rule to the action
-                                               // type at the specified index;
-                                               // if there already exists
-  // one with its name, it replaces it
-  {
+  /*
+   * adds this rule to the action type at the specified index; if there already
+   * exists one with its name, it removes the old one first
+   */
+  public void addRule(Rule newRule, int index) { 
     for (int i = 0; i < rules.size(); i++) {
       Rule tempRule = rules.elementAt(i);
       if (tempRule.getName().equals(newRule.getName())) {
@@ -267,9 +264,8 @@ public class ActionType implements Cloneable {
     rules.add(index, newRule);
   }
 
-  public void removeRule(String name) // removes the rule with the specified
-                                      // name from the action type
-  {
+  // removes the rule w/ the specified name from the action type
+  public void removeRule(String name) { 
     for (int i = 0; i < rules.size(); i++) {
       Rule tempRule = rules.elementAt(i);
       if (tempRule.getName().equals(name)) {
@@ -278,12 +274,11 @@ public class ActionType implements Cloneable {
     }
   }
 
-  public void addTrigger(ActionTypeTrigger newTrigger) // adds this trigger to
-                                                       // the action type; if
-                                                       // there already exists
-                                                       // one with its name,
-  // it replaces it
-  {
+  /*
+   * adds this trigger to the action type; if there already exists one with its
+   * name, it replaces it with the new one
+   */
+  public void addTrigger(ActionTypeTrigger newTrigger) { 
     for (int i = 0; i < triggers.size(); i++) {
       ActionTypeTrigger tempTrig = triggers.elementAt(i);
       if (tempTrig.getName().equals(newTrigger.getName())) {
@@ -293,14 +288,11 @@ public class ActionType implements Cloneable {
     triggers.addElement(newTrigger);
   }
 
-  public void addTrigger(ActionTypeTrigger newTrigger, int index) // adds this
-                                                                  // trigger to
-                                                                  // the action
-                                                                  // type at the
-                                                                  // specified
-                                                                  // index; if
-  // there already exists one with its name, it replaces it
-  {
+  /*
+   * adds thsi trigger to the action type at the specified index; if there 
+   * already exists one with its name, it first removes the old one
+   */
+  public void addTrigger(ActionTypeTrigger newTrigger, int index) { 
     for (int i = 0; i < triggers.size(); i++) {
       ActionTypeTrigger tempTrig = triggers.elementAt(i);
       if (tempTrig.getName().equals(newTrigger.getName())) {
@@ -310,10 +302,11 @@ public class ActionType implements Cloneable {
     triggers.add(index, newTrigger);
   }
 
-  public int removeTrigger(String name) // removes the trigger with the
-                                        // specified name from the action type,
-                                        // returns its index
-  {
+  /*
+   * removes the trigger with the specified name from the action type, and
+   * returns its index
+   */
+  public int removeTrigger(String name) { 
     for (int i = 0; i < triggers.size(); i++) {
       ActionTypeTrigger tempTrig = triggers.elementAt(i);
       if (tempTrig.getName().equals(name)) {
@@ -324,10 +317,11 @@ public class ActionType implements Cloneable {
     return -1;
   }
 
-  public void setTriggers(Vector<ActionTypeTrigger> newTrigs) // replaces all existing triggers
-                                           // with the triggers being passed in
-                                           // in the vector
-  {
+  /*
+   * replaces all existing triggers with the triggers being passed in in the
+   * Vector
+   */
+  public void setTriggers(Vector<ActionTypeTrigger> newTrigs) { 
     triggers = newTrigs;
   }
   
@@ -380,13 +374,11 @@ public class ActionType implements Cloneable {
     return false;
   }
 
-  public void addDestroyer(ActionTypeDestroyer newDestroyer) // adds this
-                                                             // destroyer to the
-                                                             // action type; if
-                                                             // there already
-                                                             // exists one with
-  // its name, it replaces it
-  {
+  /*
+   * adds this destroyer to the action type; if there already exists one with
+   * its name, it replaces it
+   */
+  public void addDestroyer(ActionTypeDestroyer newDestroyer) { 
     for (int i = 0; i < destroyers.size(); i++) {
       ActionTypeDestroyer tempDest = destroyers
           .elementAt(i);
@@ -397,19 +389,11 @@ public class ActionType implements Cloneable {
     destroyers.addElement(newDestroyer);
   }
 
-  public void addDestroyer(ActionTypeDestroyer newDestroyer, int index) // adds
-                                                                        // this
-                                                                        // destroyer
-                                                                        // to
-                                                                        // the
-                                                                        // action
-                                                                        // type
-                                                                        // at
-                                                                        // the
-                                                                        // specified
-                                                                        // index;
-  // if there already exists one with its name, it replaces it
-  {
+  /*
+   * adds this destroyer to the action type at the specified index; if there 
+   * exists one with its name, it first removes the old one
+   */
+  public void addDestroyer(ActionTypeDestroyer newDestroyer, int index) { 
     for (int i = 0; i < destroyers.size(); i++) {
       ActionTypeDestroyer tempDest = destroyers
           .elementAt(i);
@@ -420,10 +404,11 @@ public class ActionType implements Cloneable {
     destroyers.add(index, newDestroyer);
   }
 
-  public int removeDestroyer(String name) // removes the destroyer with the
-                                          // specified name from the action
-                                          // type, returns its index
-  {
+  /*
+   * removes the destroyer with the specified name from the action type and
+   * returns its index
+   */
+  public int removeDestroyer(String name) { 
     for (int i = 0; i < destroyers.size(); i++) {
       ActionTypeDestroyer tempDest = destroyers.elementAt(i);
       if (tempDest.getName().equals(name)) {
@@ -434,17 +419,16 @@ public class ActionType implements Cloneable {
     return -1;
   }
 
-  public void setDestroyers(Vector<ActionTypeDestroyer> newDests) // replaces all existing destroyers
-                                             // with the destroyers being passed
-                                             // in in the vector
-  {
+  /*
+   * replaces all existing destroyers with the destroyers being passed in in the
+   * Vector
+   */
+  public void setDestroyers(Vector<ActionTypeDestroyer> newDests) { 
     destroyers = newDests;
   }
 
-  public ActionTypeParticipant getParticipant(String name) // returns the
-                                                           // participant with
-                                                           // the specified name
-  {
+  // returns the participant with the specified name
+  public ActionTypeParticipant getParticipant(String name) { 
     for (int i = 0; i < participants.size(); i++) {
       ActionTypeParticipant tempPart = (participants.elementAt(i));
       if (tempPart.getName().equals(name)) {
@@ -454,11 +438,8 @@ public class ActionType implements Cloneable {
     return null;
   }
   
-  /*
-   * Returns the index of the participant with the specified name
-   */
-  public int getParticipantIndex(String name) 
-  {
+  // Returns the index of the participant with the specified name
+  public int getParticipantIndex(String name) {
     for (int i = 0; i < participants.size(); i++) {
       ActionTypeParticipant p = participants.elementAt(i);
       if (p.getName().equals(name)) {
@@ -473,12 +454,8 @@ public class ActionType implements Cloneable {
     participants.add(part);
   }
 
-  public void addParticipant(ActionTypeParticipant part, int index) // adds the
-                                                                    // participant
-                                                                    // at the
-                                                                    // specified
-                                                                    // position
-  {
+  // adds the participant at the specified position
+  public void addParticipant(ActionTypeParticipant part, int index) { 
     participants.add(index, part);
   }
 
@@ -486,8 +463,7 @@ public class ActionType implements Cloneable {
    * removes the participant with the specified name and returns the position
    * it removed it from; returns -1 if participant was not found
    */
-  public int removeParticipant(String name) 
-  {
+  public int removeParticipant(String name) {
     for (int i = 0; i < participants.size(); i++) {
       ActionTypeParticipant tempPart = (participants.elementAt(i));
       if (tempPart.getName().equals(name)) {
@@ -515,8 +491,7 @@ public class ActionType implements Cloneable {
    * it removed it from, but does not remove the participant triggers and
    * destroyers for the participant; returns -1 if participant was not found
    */
-  public int temporarilyRemoveParticipant(String name) 
-  {
+  public int temporarilyRemoveParticipant(String name) {
     for (int i = 0; i < participants.size(); i++) {
       ActionTypeParticipant tempPart = (participants.elementAt(i));
       if (tempPart.getName().equals(name)) {
@@ -542,9 +517,8 @@ public class ActionType implements Cloneable {
     }
   }
 
-  public boolean hasTriggerRules() // returns true if this action has at least
-                                   // one trigger rule, false otherwise
-  {
+  // returns true if this actio has at least one trigger rule, false otherwise
+  public boolean hasTriggerRules() { 
     // go through all rules:
     for (int i = 0; i < rules.size(); i++) {
       Rule tempRule = rules.elementAt(i);
@@ -555,9 +529,8 @@ public class ActionType implements Cloneable {
     return false;
   }
 
-  public Vector<Rule> getAllTriggerRules() // returns them in prioritized order, from
-                                     // first to execute to last to execute
-  {
+  // returns them in prioritized order, from first to execute to last to execute
+  public Vector<Rule> getAllTriggerRules() { 
     // initialize lists:
     Vector<Rule> nonPrioritizedRules = new Vector<Rule>();
     Vector<Rule> prioritizedRules = new Vector<Rule>();
@@ -566,14 +539,11 @@ public class ActionType implements Cloneable {
       Rule tempRule = rules.elementAt(j);
       if (tempRule.getTiming() == RuleTiming.TRIGGER) {
         int priority = tempRule.getPriority();
-        if (priority == -1) // rule is not prioritized yet
-        {
+        if (priority == -1) { // rule is not prioritized yet
           nonPrioritizedRules.addElement(tempRule);
-        } else // priority >= 0
-        {
-          if (prioritizedRules.size() == 0) // no elements have been added yet
-                                            // to the prioritized rule list
-          {
+        } else { // priority >= 0
+          if (prioritizedRules.size() == 0) { // no elements have been added yet
+                                            	// to the prioritized rule list
             prioritizedRules.add(tempRule);
           } else {
             // find the correct position to insert the rule at:
@@ -583,9 +553,8 @@ public class ActionType implements Cloneable {
                 prioritizedRules.insertElementAt(tempRule, k); // insert the
                                                                // rule info
                 break;
-              } else if (k == (prioritizedRules.size() - 1)) // on the last
-                                                             // element
-              {
+              } else if (k == (prioritizedRules.size() - 1)) { // on the last
+                                                             	 // element
                 prioritizedRules.add(tempRule); // add the rule info to the end
                                                 // of the list
                 break;
@@ -595,18 +564,22 @@ public class ActionType implements Cloneable {
         }
       }
     }
-    // add all of the non-prioritized rules to the end of the prioritized rules
-    // vector (not using addAll() because I'm not sure it'll
-    // maintain the order):
+    /* 
+     * add all of the non-prioritized ruels ot the end of the prioritized rules
+     * vector (not using addAll() because I'm not sure it'll maintain the
+     * order):
+     */
     for (int i = 0; i < nonPrioritizedRules.size(); i++) {
       prioritizedRules.add(nonPrioritizedRules.elementAt(i));
     }
     return prioritizedRules;
   }
 
-  public boolean hasDestroyerRules() // returns true if this action has at least
-                                     // one destroyer rule, false otherwise
-  {
+  /*
+   * returns true if this action has at least one destroyer rule, false
+   * otherwise
+   */
+  public boolean hasDestroyerRules() { 
     // go through all rules:
     for (int i = 0; i < rules.size(); i++) {
       Rule tempRule = rules.elementAt(i);
@@ -617,10 +590,11 @@ public class ActionType implements Cloneable {
     return false;
   }
 
-  public Vector<Rule> getAllDestroyerRules() // returns them in prioritized order,
-                                       // from first to execute to last to
-                                       // execute
-  {
+  /*
+   * returns them in prioritized order, from first to execute to last to
+   * execute
+   */
+  public Vector<Rule> getAllDestroyerRules() { 
     // initialize lists:
     Vector<Rule> nonPrioritizedRules = new Vector<Rule>();
     Vector<Rule> prioritizedRules = new Vector<Rule>();
@@ -629,14 +603,11 @@ public class ActionType implements Cloneable {
       Rule tempRule = rules.elementAt(j);
       if (tempRule.getTiming() == RuleTiming.DESTROYER) {
         int priority = tempRule.getPriority();
-        if (priority == -1) // rule is not prioritized yet
-        {
+        if (priority == -1) { // rule is not prioritized yet
           nonPrioritizedRules.addElement(tempRule);
-        } else // priority >= 0
-        {
-          if (prioritizedRules.size() == 0) // no elements have been added yet
-                                            // to the prioritized rule list
-          {
+        } else { // priority >= 0
+          if (prioritizedRules.size() == 0) { // no elements have been added yet
+          																		// to the prioritized rule list
             prioritizedRules.add(tempRule);
           } else {
             // find the correct position to insert the rule at:
@@ -646,9 +617,8 @@ public class ActionType implements Cloneable {
                 prioritizedRules.insertElementAt(tempRule, k); // insert the
                                                                // rule info
                 break;
-              } else if (k == (prioritizedRules.size() - 1)) // on the last
-                                                             // element
-              {
+              } else if (k == (prioritizedRules.size() - 1)) { // on the last
+                                                             	 // element
                 prioritizedRules.add(tempRule); // add the rule info to the end
                                                 // of the list
                 break;
@@ -658,19 +628,22 @@ public class ActionType implements Cloneable {
         }
       }
     }
-    // add all of the non-prioritized rules to the end of the prioritized rules
-    // vector (not using addAll() because I'm not sure it'll
-    // maintain the order):
+    /*
+     * add all of the non-prioritized rules to the end of the prioritized rules
+     * vector (not using addAll() because I'm not sure it'll maintain the
+     * order):
+     */ 
     for (int i = 0; i < nonPrioritizedRules.size(); i++) {
       prioritizedRules.add(nonPrioritizedRules.elementAt(i));
     }
     return prioritizedRules;
   }
 
-  public boolean hasContinuousRules() // returns true if this action has at
-                                      // least one continuous rule, false
-                                      // otherwise
-  {
+  /*
+   * returns true if this action has at least one continuous rule, false
+   * otherwise
+   */
+  public boolean hasContinuousRules() { 
     // go through all rules:
     for (int i = 0; i < rules.size(); i++) {
       Rule tempRule = rules.elementAt(i);
@@ -681,10 +654,11 @@ public class ActionType implements Cloneable {
     return false;
   }
 
-  public Vector<Rule> getAllContinuousRules() // returns them in prioritized order,
-                                        // from first to execute to last to
-                                        // execute
-  {
+  /*
+   * returns them in prioritized order, from first to execute to last to 
+   * execute
+   */
+  public Vector<Rule> getAllContinuousRules() { 
     // initialize lists:
     Vector<Rule> nonPrioritizedRules = new Vector<Rule>();
     Vector<Rule> prioritizedRules = new Vector<Rule>();
@@ -693,14 +667,11 @@ public class ActionType implements Cloneable {
       Rule tempRule = rules.elementAt(j);
       if (tempRule.getTiming() == RuleTiming.CONTINUOUS) {
         int priority = tempRule.getPriority();
-        if (priority == -1) // rule is not prioritized yet
-        {
+        if (priority == -1) { // rule is not prioritized yet
           nonPrioritizedRules.addElement(tempRule);
-        } else // priority >= 0
-        {
-          if (prioritizedRules.size() == 0) // no elements have been added yet
-                                            // to the prioritized rule list
-          {
+        } else { // priority >= 0
+          if (prioritizedRules.size() == 0) { // no elements have been added yet
+          																		// to the prioritized rule list
             prioritizedRules.add(tempRule);
           } else {
             // find the correct position to insert the rule at:
@@ -710,9 +681,8 @@ public class ActionType implements Cloneable {
                 prioritizedRules.insertElementAt(tempRule, k); // insert the
                                                                // rule info
                 break;
-              } else if (k == (prioritizedRules.size() - 1)) // on the last
-                                                             // element
-              {
+              } else if (k == (prioritizedRules.size() - 1)) { // on the last
+                                                             	 // element
                 prioritizedRules.add(tempRule); // add the rule info to the end
                                                 // of the list
                 break;
@@ -722,18 +692,19 @@ public class ActionType implements Cloneable {
         }
       }
     }
-    // add all of the non-prioritized rules to the end of the prioritized rules
-    // vector (not using addAll() because I'm not sure it'll
-    // maintain the order):
+    /*
+     * add all of the non-prioritized rules to the end of the prioritized rules
+     * vector (not using addAll() because I'm not sure it'll maintain the
+     * order):
+     */ 
     for (int i = 0; i < nonPrioritizedRules.size(); i++) {
       prioritizedRules.add(nonPrioritizedRules.elementAt(i));
     }
     return prioritizedRules;
   }
 
-  public boolean hasGameEndingTrigger() // returns true if this action has one
-                                        // or more game-ending triggers
-  {
+  // returns true if this action has one or more game-ending triggers
+  public boolean hasGameEndingTrigger() { 
     for (int i = 0; i < triggers.size(); i++) {
       if (triggers.elementAt(i).isGameEndingTrigger()) {
         return true;
@@ -742,9 +713,8 @@ public class ActionType implements Cloneable {
     return false;
   }
 
-  public boolean hasGameEndingDestroyer() // returns true if this action has one
-                                          // or more game-ending destroyers
-  {
+  // returns true if this action has one or more game-ending destroyers
+  public boolean hasGameEndingDestroyer() { 
     for (int i = 0; i < destroyers.size(); i++) {
       if (destroyers.elementAt(i).isGameEndingDestroyer()) {
         return true;

@@ -3,14 +3,26 @@
 
 package simse.modelbuilder;
 
-import java.awt.event.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
-import java.io.File;
-import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import java.io.File;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
 
 public class ModelOptionsDialog extends JDialog implements ActionListener {
   private ModelOptions options; // options being edited/viewed
@@ -27,9 +39,9 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
   private JButton okButton; 
   private JButton cancelButton;
 
-  public ModelOptionsDialog(JFrame owner, ModelOptions opts) {
+  public ModelOptionsDialog(JFrame owner, ModelOptions options) {
     super(owner, true);
-    options = opts;
+    this.options = options;
 
     // Set window title:
     setTitle("Model Options");
@@ -137,19 +149,17 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
-    Object source = evt.getSource(); // get which component the action came from
+  public void actionPerformed(ActionEvent evt) { // handles user actions
+  	// get which component the action came from:
+  	Object source = evt.getSource(); 
 
-    if (source == cancelButton) // cancel button has been pressed
-    {
+    if (source == cancelButton) { // cancel button has been pressed
       // Close window:
       setVisible(false);
       dispose();
     }
 
-    else if (source == okButton) // okButton has been pressed
-    {
+    else if (source == okButton) { // okButton has been pressed
       if (inputValid()) {
         options.setEveryoneStopOption(everyoneStopCheckBox.isSelected());
         options.setExplanatoryToolAccessOption(
@@ -157,15 +167,13 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
         options.setAllowBranchingOption(branchingCheckBox.isSelected());
         if (hasNonBlankEntry(iconDirField)) {
           options.setIconDirectory(new File(iconDirField.getText()));
-        }
-        else {
+        } else {
           options.setIconDirectory(null);
         }
         if (hasNonBlankEntry(genDirField)) {
           options.setCodeGenerationDestinationDirectory(new File(
               genDirField.getText()));
-        }
-        else {
+        } else {
           options.setCodeGenerationDestinationDirectory(null);
         }
 
@@ -181,19 +189,16 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
         File iconDir = new File(iconDirField.getText());
         if ((iconDir != null) && (iconDir.exists())) { // icon dir already set
           iconDirFileChooser.setSelectedFile(iconDir);
-        }
-        else { // no icon dir set yet
+        } else { // no icon dir set yet
           iconDirFileChooser.setSelectedFile(new File(""));
         }
-      }
-      else { // icon dir entry blank
+      } else { // icon dir entry blank
         iconDirFileChooser.setSelectedFile(new File(""));
       }
       int dirReturnVal = iconDirFileChooser.showOpenDialog(this);
       if (dirReturnVal == JFileChooser.APPROVE_OPTION) {
         File f = iconDirFileChooser.getSelectedFile();
-        if (f.isDirectory()) // valid
-        {
+        if (f.isDirectory()) { // valid
           iconDirField.setText(f.getAbsolutePath());
         }
       }
@@ -205,28 +210,23 @@ public class ModelOptionsDialog extends JDialog implements ActionListener {
         File genDir = new File(genDirField.getText());
         if ((genDir != null) && (genDir.exists())) { // gen dir already set
           codeGenDirFileChooser.setSelectedFile(genDir);
-        }
-        else { // no gen dir set yet
+        } else { // no gen dir set yet
           codeGenDirFileChooser.setSelectedFile(new File(""));
         }
-      }
-      else { // gen dir entry blank
+      } else { // gen dir entry blank
         codeGenDirFileChooser.setSelectedFile(new File(""));
       }
       int dirReturnVal = codeGenDirFileChooser.showOpenDialog(this);
       if (dirReturnVal == JFileChooser.APPROVE_OPTION) {
         File f = codeGenDirFileChooser.getSelectedFile();
-        if (f.isDirectory()) // valid
-        {
+        if (f.isDirectory()) { // valid
           genDirField.setText(f.getAbsolutePath());
         }
       }
     }
   }
   
-  /*
-   * Initializes the form with existing data
-   */
+  // Initializes the form with existing data
   private void initializeForm() {
     everyoneStopCheckBox.setSelected(options.getEveryoneStopOption());
     expToolAccessCheckBox.setSelected(options.getExplanatoryToolAccessOption());
