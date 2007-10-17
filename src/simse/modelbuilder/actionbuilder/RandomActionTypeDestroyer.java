@@ -8,9 +8,10 @@ public class RandomActionTypeDestroyer extends ActionTypeDestroyer implements
                             // destroyed when all of the destroyer conditions
                             // are met
 
-  public RandomActionTypeDestroyer(String name, ActionType action, double freq) {
+  public RandomActionTypeDestroyer(String name, ActionType action, 
+  		double frequency) {
     super(name, action);
-    frequency = freq;
+    this.frequency = frequency;
   }
 
   public RandomActionTypeDestroyer(String name, ActionType action) {

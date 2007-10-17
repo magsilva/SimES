@@ -7,9 +7,9 @@ public class TimedActionTypeDestroyer extends ActionTypeDestroyer implements
   private int time; // the number of clock ticks that the action remains until
                     // it is automatically destroyed
 
-  public TimedActionTypeDestroyer(String name, ActionType action, int t) {
+  public TimedActionTypeDestroyer(String name, ActionType action, int time) {
     super(name, action);
-    time = t;
+    this.time = time;
   }
 
   public TimedActionTypeDestroyer(String name, ActionType action) {

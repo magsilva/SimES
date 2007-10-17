@@ -1,17 +1,41 @@
 package simse.modelbuilder.graphicsbuilder;
 
-import simse.modelbuilder.*;
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.startstatebuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import simse.modelbuilder.rulebuilder.*;
+import simse.modelbuilder.ModelBuilderGUI;
+import simse.modelbuilder.ModelOptions;
+import simse.modelbuilder.WarningListPane;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.objectbuilder.AttributeTypes;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+import simse.modelbuilder.rulebuilder.CreateObjectsRule;
+import simse.modelbuilder.startstatebuilder.CreatedObjects;
+import simse.modelbuilder.startstatebuilder.SimSEObject;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.io.*;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.io.File;
+
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 	private ModelBuilderGUI mainGUI;
@@ -29,41 +53,23 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 
 	private SopFileManipulator sopFileManip; // for generating/loading .sop files
 
-	private Hashtable<SimSEObject, String> startStateObjsToImgFilenames; // maps
-																																				// SimSEObjects
-																																				// (keys)
-																																				// from
-																																				// the
-																																				// start
-																																				// state
-																																				// to
-																																				// the
-																																				// filename
-																																				// of
-																																				// the
-																																				// associated
-																																				// image
-																																				// file
-																																				// (String)
+	/* 
+	 * maps SimSEObjects (keys) from the start state to the filename of the
+	 * associated image file (String):
+	 */
+	private Hashtable<SimSEObject, String> startStateObjsToImgFilenames; 
 
-	private Hashtable<SimSEObject, String> ruleObjsToImgFilenames; // maps
-																																	// SimSEObjects
-																																	// (keys) from
-																																	// the create
-																																	// objects
-																																	// rules to
-																																	// the
-																																	// filename of
-																																	// the
-																																	// associated
-																																	// image file
-																																	// (String)
+	/* 
+	 * maps SimSEObjects (keys) from the create objects rules to the filename of 
+	 * the associated image file (String):
+	 */
+	private Hashtable<SimSEObject, String> ruleObjsToImgFilenames; 
 
-	private Hashtable<ImageIcon, String> imagesToFilenames; // maps ImageIcons
-																													// (keys) to the
-																													// filename of that
-																													// image's file
-																													// (String) (values)
+	/* 
+	 * maps ImageIcons (keys) to the filename of that image's file (String) 
+	 * (values):
+	 */
+	private Hashtable<ImageIcon, String> imagesToFilenames; 
 	
 	private JList objectList; // list of objects to match pictures to
 
@@ -110,14 +116,7 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 		objectList = new JList();
 		objectList.setVisibleRowCount(10); // make 10 items visible at a time
 		objectList.setFixedCellWidth(650);
-		objectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only
-																																			// allow
-																																			// the
-																																			// user to
-																																			// select
-																																			// one
-																																			// item at
-																																			// a time
+		objectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
 		JScrollPane objectListPane = new JScrollPane(objectList);
 		topPane.add(objectListPane);
 		refreshObjectList();
@@ -173,7 +172,6 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 	public void reload(File tempFile, boolean resetUI) {
 		// reload:
 		generateWarnings(sopFileManip.loadFile(tempFile));
-
 		if (resetUI) {
 			// reset UI stuff:
 			refreshImagePane();
@@ -181,7 +179,6 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 			bottomPanelLabel.setText("Choose an image:");
 			selectedImage.setEnabled(true);
 			objectList.setEnabled(true);
-
 			selectedImage.setIcon(null);
 			refreshObjectList();
 			clearObjectInFocus();
@@ -208,7 +205,6 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent evt) {
 		Object source = evt.getSource();
-
 		if (source == matchButton) {
 			if (objInFocus != null) { // there is an object selected
 				if (selectedImage.getIcon() != null) { // there is an image selected
@@ -218,31 +214,26 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 					if (objects.getAllObjects().contains(objInFocus)) { // a start state
 																															// object
 						startStateObjsToImgFilenames.put(objInFocus, imgFilename);
-					} 
-					else { // a rule-generated object
+					}  else { // a rule-generated object
 						ruleObjsToImgFilenames.put(objInFocus, imgFilename);
 					}
 					mainGUI.setFileModSinceLastSave();
-				} 
-				else {
+				}  else {
 					JOptionPane.showMessageDialog(null,
 							"Please choose an image to match", "Match Unsuccessful",
 							JOptionPane.WARNING_MESSAGE);
 				}
-			} 
-			else {
+			}  else {
 				JOptionPane.showMessageDialog(null, "Please choose an object to match",
 						"Match Unsuccessful", JOptionPane.WARNING_MESSAGE);
 			}
-		} 
-		else if (source instanceof JButton) { // one of the image buttons
+		}  else if (source instanceof JButton) { // one of the image buttons
 			JButton butt = (JButton) source;
 			selectedImage.setText(null);
 			selectedImage.setIcon((ImageIcon) butt.getIcon());
 			if (objectList.isSelectionEmpty() == false) { // an object is selected
 				matchButton.setEnabled(true);
-			} 
-			else { // no object selected
+			}  else { // no object selected
 				matchButton.setEnabled(false);
 			}
 		}
@@ -256,12 +247,10 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 					|| (extension.equalsIgnoreCase("jpg"))
 					|| (extension.equalsIgnoreCase("jpeg"))) {
 				return true;
-			} 
-			else {
+			}  else {
 				return false;
 			}
-		} 
-		else {
+		}  else {
 			return false;
 		}
 	}
@@ -278,10 +267,10 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 			ActionType act = actions.elementAt(i);
 			Vector<CreateObjectsRule> rules = act.getAllCreateObjectsRules();
 			for (int j = 0; j < rules.size(); j++) {
-				CreateObjectsRule rule = (CreateObjectsRule) rules.elementAt(j);
-				Vector objs = rule.getAllSimSEObjects();
+				CreateObjectsRule rule = rules.elementAt(j);
+				Vector<SimSEObject> objs = rule.getAllSimSEObjects();
 				for (int k = 0; k < objs.size(); k++) {
-					currentObjs.add((SimSEObject) objs.elementAt(k));
+					currentObjs.add(objs.elementAt(k));
 				}
 			}
 		}
@@ -289,15 +278,14 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 		// go through all objects and add their info to the list
 		for (int i = 0; i < currentObjs.size(); i++) {
 			StringBuffer data = new StringBuffer();
-			SimSEObject tempObj = (SimSEObject) currentObjs.elementAt(i);
+			SimSEObject tempObj = currentObjs.elementAt(i);
 			data.append(tempObj.getSimSEObjectType().getName()
 					+ " "
 					+ SimSEObjectTypeTypes
 							.getText(tempObj.getSimSEObjectType().getType()) + " ");
 			if (tempObj.getSimSEObjectType().hasKey()
-					&& tempObj.getKey().isInstantiated()) // has key and it is
-			// instantiated
-			{
+					&& tempObj.getKey().isInstantiated()) { // has key and it is
+																									// instantiated
 				data.append(tempObj.getKey().getValue().toString());
 				objectListData.add(data.toString());
 			}
@@ -313,19 +301,15 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 				&& ((!imageDir.exists()) || (!imageDir.isDirectory()))) {
 			String warning = new String("Cannot find icon directory "
 					+ imageDir.getAbsolutePath());
-			Vector warningVector = new Vector();
+			Vector<String> warningVector = new Vector<String>();
 			warningVector.add(warning);
 			generateWarnings(warningVector);
-		} else if ((imageDir != null) && (imageDir.exists())) // image dir exists
-		{
-			String pictureFiles[] = imageDir.list(); // list out all picture
-			// filenames
-			// and store in pictureFiles[]
-
+		} else if ((imageDir != null) && (imageDir.exists())) { // image dir exists
+			// list out all picture filenames and store in pictureFiles[]:
+			String pictureFiles[] = imageDir.list(); 
 			for (int i = 0; i < pictureFiles.length; i++) {
-				if (isImageFile(pictureFiles[i])) // to prevent non-image files from
-				// being loaded
-				{
+				if (isImageFile(pictureFiles[i])) { // to prevent non-image files from
+																						// being loaded
 					ImageIcon img = new ImageIcon(imageDir.getPath().concat(
 							"\\" + pictureFiles[i]));
 					imagesToFilenames.put(img, pictureFiles[i]);
@@ -351,14 +335,12 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 		selectedImage.setEnabled(true);
 		objectList.setEnabled(true);
 		warningPane.clearWarnings();
-		if (f.exists()) // file has been saved before
-		{
+		if (f.exists()) { // file has been saved before
 			reload(f, true);
 		}
 	}
 
-	public void setNoOpenFile() // makes it so there's no open file in the GUI
-	{
+	public void setNoOpenFile() { // makes it so there's no open file in the GUI
 		selectedImage.setIcon(null);
 		selectedImage.setText("No image selected");
 		selectedImage.setEnabled(false);
@@ -374,11 +356,8 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 		warningPane.clearWarnings();
 	}
 
-	private void setupObjectListSelectionListenerStuff() // enables match button
-	// whenever both an
-	// object and an image
-	// are selected
-	{
+	// enables match button whenever both an object and an image are selected
+	private void setupObjectListSelectionListenerStuff() { 
 		// Copied from a Java tutorial:
 		ListSelectionModel rowSM = objectList.getSelectionModel();
 		rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -386,7 +365,6 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 				// Ignore extra messages.
 				if (lse.getValueIsAdjusting())
 					return;
-
 				ListSelectionModel lsm = (ListSelectionModel) lse.getSource();
 				if (lsm.isSelectionEmpty() == false) {
 					// get the selected object information from the selected item in
@@ -394,27 +372,21 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 					String selectedItem = (String) objectList.getSelectedValue();
 					String ssObjType = selectedItem.substring(0, selectedItem
 							.indexOf(' '));
-					String temp = selectedItem.substring(selectedItem.indexOf(' ') + 1); // take
-					// off
-					// SimSEObjectTypeType
+					// take off SimSEObjectTypeType:
+					String temp = selectedItem.substring(selectedItem.indexOf(' ') + 1); 
 					String ssObjTypeType = temp.substring(0, temp.indexOf(' '));
 					String keyAttVal = temp.substring(temp.indexOf(' ') + 1);
 					int metaType = SimSEObjectTypeTypes
 							.getIntRepresentation(ssObjTypeType);
-
 					// set the object in focus:
-					SimSEObjectType objType = objTypes.getObjectType(metaType, ssObjType); // get
-					// the
-					// SimSEObjectType
-					if (objType.hasKey()) // objType has a key attribute specified
-					{
+					SimSEObjectType objType = objTypes.getObjectType(metaType, ssObjType); 
+					if (objType.hasKey()) { // objType has a key attribute specified
 						if (objType.getKey().getType() == AttributeTypes.INTEGER) {
 							try {
 								Integer val = new Integer(keyAttVal);
 								// try to get the object from the CreatedObjects:
 								objInFocus = objects.getObject(metaType, ssObjType, val);
-								if (objInFocus == null) // not a start state object
-								{
+								if (objInFocus == null) { // not a start state object
 									// get it from the rules:
 									objInFocus = getObjectFromRules(metaType, ssObjType, val);
 								}
@@ -426,8 +398,7 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 								Double val = new Double(keyAttVal);
 								// try to get the object from the CreatedObjects:
 								objInFocus = objects.getObject(metaType, ssObjType, val);
-								if (objInFocus == null) // not a start state object
-								{
+								if (objInFocus == null) { // not a start state object
 									// get it from the rules:
 									objInFocus = getObjectFromRules(metaType, ssObjType, val);
 								}
@@ -438,67 +409,46 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 							// try to get the object from the CreatedObjects:
 							objInFocus = objects.getObject(metaType, ssObjType, new Boolean(
 									keyAttVal));
-							if (objInFocus == null) // not a start state object
-							{
+							if (objInFocus == null) { // not a start state object
 								// get it from the rules:
 								objInFocus = getObjectFromRules(metaType, ssObjType,
 										new Boolean(keyAttVal));
 							}
-						} else // string
-						{
+						} else { // string
 							// try to get the object from the CreatedObjects:
 							objInFocus = objects.getObject(metaType, ssObjType, keyAttVal);
-							if (objInFocus == null) // not a start state object
-							{
+							if (objInFocus == null) { // not a start state object
 								// get it from the rules:
 								objInFocus = getObjectFromRules(metaType, ssObjType, keyAttVal);
 							}
 						}
 					}
 
-					if (startStateObjsToImgFilenames.containsKey(objInFocus)) // object in
-					// focus is
-					// a start
-					// state
-					// object
-					// and has
-					// an image
-					// matched
-					// to it
-					{
+					if (startStateObjsToImgFilenames.containsKey(objInFocus)) { 
+						// object in focus is a start state object and has an image matched
+						// to it
 						// display the associated image:
 						selectedImage.setText(null);
 						ImageIcon img = getImage((String) startStateObjsToImgFilenames
 								.get(objInFocus)); // get the image from the filename
 						selectedImage.setIcon(img);
-					} else if (ruleObjsToImgFilenames.containsKey(objInFocus)) // object
-					// in focus
-					// is a
-					// rule-generated
-					// object
-					// and has
-					// an image
-					// matched
-					// to it
-					{
+					} else if (ruleObjsToImgFilenames.containsKey(objInFocus)) { 
+						// object in focus is a rule-generated object and has an image
+						// matched to it
 						// display the associated image:
 						selectedImage.setText(null);
 						ImageIcon img = getImage((String) ruleObjsToImgFilenames
 								.get(objInFocus)); // get the image from the filename
 						selectedImage.setIcon(img);
-					} else // object in focus is not matched to an image
-					{
+					} else { // object in focus is not matched to an image
 						selectedImage.setIcon(null);
 						selectedImage.setText("No image selected");
 					}
-
 					if ((selectedImage.getText() == null)
-							|| (selectedImage.getText().length() == 0)) // image selected
-					{
+							|| (selectedImage.getText().length() == 0)) { // image selected
 						// enable match button:
 						matchButton.setEnabled(true);
-					} else // no image selected
-					{
+					} else { // no image selected
 						// disable match button:
 						matchButton.setEnabled(false);
 					}
@@ -507,31 +457,33 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 		});
 	}
 
-	private ImageIcon getImage(String filename) // returns the image associated
-	// with the specified filename
-	{
-		for (Enumeration imgs = imagesToFilenames.keys(); imgs.hasMoreElements();) {
-			ImageIcon icon = (ImageIcon) imgs.nextElement();
-			if (((String) imagesToFilenames.get(icon)).equals(filename)) {
+	// returns the image associated with the specified filename
+	private ImageIcon getImage(String filename) { 
+		for (Enumeration<ImageIcon> imgs = 
+			imagesToFilenames.keys(); imgs.hasMoreElements();) {
+			ImageIcon icon = imgs.nextElement();
+			if (imagesToFilenames.get(icon).equals(filename)) {
 				return icon;
 			}
 		}
 		return null;
 	}
 
+	/*
+	 * returns the specified object if it is generated by one of the 
+	 * CreateObjectsRules. Otherwise, returns null.
+	 */
 	private SimSEObject getObjectFromRules(int type, String simSEObjectTypeName,
-			Object keyAttValue) // returns the specified object if it is
-	// generated by one of the CreateObjectsRules. Otherwise, returns null
-	{
-		Vector actions = actTypes.getAllActionTypes();
+			Object keyAttValue) { 
+		Vector<ActionType> actions = actTypes.getAllActionTypes();
 		for (int i = 0; i < actions.size(); i++) {
-			ActionType act = (ActionType) actions.elementAt(i);
-			Vector rules = act.getAllCreateObjectsRules();
+			ActionType act = actions.elementAt(i);
+			Vector<CreateObjectsRule> rules = act.getAllCreateObjectsRules();
 			for (int j = 0; j < rules.size(); j++) {
-				CreateObjectsRule rule = (CreateObjectsRule) rules.elementAt(j);
-				Vector objs = rule.getAllSimSEObjects();
+				CreateObjectsRule rule = rules.elementAt(j);
+				Vector<SimSEObject> objs = rule.getAllSimSEObjects();
 				for (int k = 0; k < objs.size(); k++) {
-					SimSEObject tempObj = ((SimSEObject) objs.elementAt(k));
+					SimSEObject tempObj = objs.elementAt(k);
 					if ((tempObj.getSimSEObjectType().getType() == type)
 							&& (tempObj.getName().equals(simSEObjectTypeName))
 							&& (tempObj.getKey().isInstantiated())

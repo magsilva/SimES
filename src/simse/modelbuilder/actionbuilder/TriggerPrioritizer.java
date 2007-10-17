@@ -5,19 +5,31 @@
 
 package simse.modelbuilder.actionbuilder;
 
-import javax.swing.*;
-import java.awt.event.*;
-import javax.swing.event.*;
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.ListSelectionModel;
 
 public class TriggerPrioritizer extends JDialog implements ActionListener {
   private DefinedActionTypes actions; // existing defined action types
-  private Vector nonPrioritizedTriggers; // vector of triggers that haven't been
-                                         // prioritized yet
-  private Vector prioritizedTriggers; // vector of triggers that have been
-                                      // prioritized
-
+  private Vector<String> nonPrioritizedTriggers; // vector of triggers that 
+  																							 // haven't been prioritized yet
+  private Vector<String> prioritizedTriggers; // vector of triggers that have 
+  																						// been prioritized
   private JList nonPrioritizedTriggerList; // JList for non-prioritized triggers
   private JList prioritizedTriggerList; // JList for prioritized triggers
   private JButton rightArrowButton; // for moving triggers to the right
@@ -27,23 +39,23 @@ public class TriggerPrioritizer extends JDialog implements ActionListener {
   private JButton okButton; // for ok'ing the changes made in this form
   private JButton cancelButton; // for cancelling the changes made in this form
 
-  public TriggerPrioritizer(JFrame owner, DefinedActionTypes acts) {
+  public TriggerPrioritizer(JFrame owner, DefinedActionTypes actions) {
     super(owner, true);
-    actions = acts;
+    this.actions = actions;
 
     // Set window title:
     setTitle("Trigger Prioritizer -- SimSE");
 
     // initialize lists:
-    nonPrioritizedTriggers = new Vector();
-    prioritizedTriggers = new Vector();
-    Vector allActions = actions.getAllActionTypes();
+    nonPrioritizedTriggers = new Vector<String>();
+    prioritizedTriggers = new Vector<String>();
+    Vector<ActionType> allActions = actions.getAllActionTypes();
     // go through all action types and add their triggers to the correct list:
     for (int i = 0; i < allActions.size(); i++) {
-      ActionType tempAct = (ActionType) allActions.elementAt(i);
-      Vector allTrigs = tempAct.getAllTriggers();
+      ActionType tempAct = allActions.elementAt(i);
+      Vector<ActionTypeTrigger> allTrigs = tempAct.getAllTriggers();
       for (int j = 0; j < allTrigs.size(); j++) {
-        ActionTypeTrigger trig = (ActionTypeTrigger) allTrigs.elementAt(j);
+        ActionTypeTrigger trig = allTrigs.elementAt(j);
         int priority = trig.getPriority();
         String triggerInfo = new String(trig.getName() + " - "
             + tempAct.getName() + " (");
@@ -54,20 +66,17 @@ public class TriggerPrioritizer extends JDialog implements ActionListener {
         } else if (trig instanceof RandomActionTypeTrigger) {
           triggerInfo = triggerInfo.concat(ActionTypeTrigger.RANDOM + ")");
         }
-        if (priority == -1) // trigger is not prioritized yet
-        {
+        if (priority == -1) { // trigger is not prioritized yet
           nonPrioritizedTriggers.addElement(triggerInfo);
-        } else // priority >= 0
-        {
-          if (prioritizedTriggers.size() == 0) // no elements have been added
-                                               // yet to the prioritized trigger
-                                               // list
-          {
+        } else { // priority >= 0
+          if (prioritizedTriggers.size() == 0) { // no elements have been added
+                                               	 // yet to the prioritized 
+          																			 // trigger list
             prioritizedTriggers.add(triggerInfo);
           } else {
             // find the correct position to insert the trigger at:
             for (int k = 0; k < prioritizedTriggers.size(); k++) {
-              String tempTrigInfo = (String) prioritizedTriggers.elementAt(k);
+              String tempTrigInfo = prioritizedTriggers.elementAt(k);
               String tempTrigName = tempTrigInfo.substring(0, tempTrigInfo
                   .indexOf(' '));
               String tempActName = tempTrigInfo.substring((tempTrigInfo
@@ -79,9 +88,8 @@ public class TriggerPrioritizer extends JDialog implements ActionListener {
                                                                      // the
                                                                      // trigger
                 break;
-              } else if (k == (prioritizedTriggers.size() - 1)) // on the last
-                                                                // element
-              {
+              } else if (k == (prioritizedTriggers.size() - 1)) { // on the last
+                                                                	// element
                 prioritizedTriggers.add(triggerInfo); // add the trigger to the
                                                       // end of the list
                 break;
@@ -96,20 +104,12 @@ public class TriggerPrioritizer extends JDialog implements ActionListener {
     nonPrioritizedTriggerList.setVisibleRowCount(10); // make 10 items visible
                                                       // at a time
     nonPrioritizedTriggerList
-        .setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only allow
-                                                                // the user to
-                                                                // select one
-                                                                // item at a
-                                                                // time
+        .setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
     prioritizedTriggerList = new JList(prioritizedTriggers);
     prioritizedTriggerList.setVisibleRowCount(10); // make 10 items visible at a
                                                    // time
     prioritizedTriggerList
-        .setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only allow
-                                                                // the user to
-                                                                // select one
-                                                                // item at a
-                                                                // time
+        .setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
     setupListSelectionListeners();
 
     // Create main panel:
@@ -190,21 +190,16 @@ public class TriggerPrioritizer extends JDialog implements ActionListener {
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
-
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) {
     Object source = evt.getSource(); // get which component the action came from
-
-    if (source == cancelButton) // cancel button has been pressed
-    {
+    if (source == cancelButton) { // cancel button has been pressed
       // Close window:
       setVisible(false);
       dispose();
-    }
-
-    else if (source == rightArrowButton) {
+    } else if (source == rightArrowButton) {
       int selIndex = nonPrioritizedTriggerList.getSelectedIndex();
-      String tempStr = (String) (nonPrioritizedTriggers.elementAt(selIndex));
+      String tempStr = nonPrioritizedTriggers.elementAt(selIndex);
       nonPrioritizedTriggers.remove(selIndex); // remove trigger from lefthand
                                                // list
       prioritizedTriggers.add(tempStr); // add to righthand list
@@ -213,118 +208,90 @@ public class TriggerPrioritizer extends JDialog implements ActionListener {
       // reset list data:
       prioritizedTriggerList.setListData(prioritizedTriggers);
       // reset selected value:
-      if ((tempSelectedVal != null) && (tempSelectedVal.length() > 0)) // selection
-                                                                       // before
-                                                                       // resetting
-                                                                       // list
-                                                                       // data
-                                                                       // was
-                                                                       // non-empty
-      {
+      if ((tempSelectedVal != null) && (tempSelectedVal.length() > 0)) { 
+      	// selection before resetting list data was non-empty
         prioritizedTriggerList.setSelectedValue(tempSelectedVal, true);
       }
       nonPrioritizedTriggerList.repaint();
       if ((nonPrioritizedTriggers.size() == 0)
-          || (nonPrioritizedTriggerList.getSelectedIndex() > (nonPrioritizedTriggers
-              .size() - 1))) // no
-      // item is selected (had to use nonPrioritizedTriggers.size() - 1 because
-      // it doesn't work using selected index = -1 or
-      // selected value == null!
-      {
+          || (nonPrioritizedTriggerList.getSelectedIndex() > 
+          (nonPrioritizedTriggers.size() - 1))) { // no item is selected (had to
+      																						// use nonPrioritizedTriggers.
+      																						// size() - 1 because it 
+      																						// doesn't work using selected
+      																						// index = -1 or selected 
+      																						// value == null!
         // disable button:
         rightArrowButton.setEnabled(false);
       }
-    }
-
-    else if (source == leftArrowButton) {
+    } else if (source == leftArrowButton) {
       int selIndex = prioritizedTriggerList.getSelectedIndex();
-      String tempStr = (String) (prioritizedTriggers.elementAt(selIndex)); // remove
-                                                                           // trigger
-                                                                           // from
-                                                                           // righthand
-                                                                           // list
-      prioritizedTriggers.remove(selIndex); // remove trigger from righthand
-                                            // list
-      nonPrioritizedTriggers.add(tempStr); // add to lefthand list
+      String tempStr = prioritizedTriggers.elementAt(selIndex);
+      // remove trigger from righthand list:
+      prioritizedTriggers.remove(selIndex); 
+      // add to lefthand list:
+      nonPrioritizedTriggers.add(tempStr); 
       String tempSelectedVal = ((String) (nonPrioritizedTriggerList
           .getSelectedValue()));
       // reset list data:
       nonPrioritizedTriggerList.setListData(nonPrioritizedTriggers);
       // reset selected value:
-      if ((tempSelectedVal != null) && (tempSelectedVal.length() > 0)) // selection
-                                                                       // before
-                                                                       // resetting
-                                                                       // list
-                                                                       // data
-                                                                       // was
-                                                                       // non-empty
-      {
+      if ((tempSelectedVal != null) && (tempSelectedVal.length() > 0)) { 
+      	// selection before resetting list data was non-empty
         nonPrioritizedTriggerList.setSelectedValue(tempSelectedVal, true);
       }
       prioritizedTriggerList.repaint();
       if ((prioritizedTriggers.size() == 0)
           || (prioritizedTriggerList.getSelectedIndex() > (prioritizedTriggers
-              .size() - 1))) // no
-      // item is selected (had to use prioritizedTriggers.size() - 1 because it
-      // doesn't work using selected index = -1 or
-      // selected value == null!
-      {
+              .size() - 1))) { // no item is selected (had to use 
+      												 // prioritizedTriggers.size() - 1 because it
+      												 // doesn't work using selected index = -1 or
+      												 // selected value == null!
         // disable butons:
         leftArrowButton.setEnabled(false);
         moveUpButton.setEnabled(false);
         moveDownButton.setEnabled(false);
       }
-    }
-
-    else if (source == moveUpButton) {
+    } else if (source == moveUpButton) {
       int selIndex = prioritizedTriggerList.getSelectedIndex();
-      if (selIndex > 0) // first list element wasn't chosen
-      {
-        String tempAct = (String) (prioritizedTriggers.remove(selIndex)); // remove
-                                                                          // trigger
+      if (selIndex > 0) { // first list element wasn't chosen
+      	// remove trigger:
+        String tempAct = prioritizedTriggers.remove(selIndex); 
         prioritizedTriggers.insertElementAt(tempAct, (selIndex - 1)); // move up
         prioritizedTriggerList.setSelectedIndex(selIndex - 1);
         prioritizedTriggerList.repaint();
         if ((prioritizedTriggers.size() == 0)
-            || (prioritizedTriggerList.isSelectionEmpty())) // no item is
-                                                            // selected
-        {
+            || (prioritizedTriggerList.isSelectionEmpty())) { // no item is
+                                                            	// selected
           // disable butons:
           leftArrowButton.setEnabled(false);
           moveUpButton.setEnabled(false);
           moveDownButton.setEnabled(false);
         }
       }
-    }
-
-    else if (source == moveDownButton) {
+    } else if (source == moveDownButton) {
       int selIndex = prioritizedTriggerList.getSelectedIndex();
-      if (selIndex < (prioritizedTriggers.size() - 1)) // last list element
-                                                       // wasn't chosen
-      {
-        String tempAct = (String) (prioritizedTriggers.remove(selIndex)); // remove
-                                                                          // trigger
-        prioritizedTriggers.insertElementAt(tempAct, (selIndex + 1)); // move
-                                                                      // down
+      if (selIndex < (prioritizedTriggers.size() - 1)) { // last list element
+                                                       	 // wasn't chosen
+      	// remove trigger:
+        String tempAct = prioritizedTriggers.remove(selIndex); 
+        // move down:
+        prioritizedTriggers.insertElementAt(tempAct, (selIndex + 1)); 
         prioritizedTriggerList.setSelectedIndex(selIndex + 1);
         prioritizedTriggerList.repaint();
         if ((prioritizedTriggers.size() == 0)
-            || (prioritizedTriggerList.isSelectionEmpty())) // no item is
-                                                            // selected
-        {
+            || (prioritizedTriggerList.isSelectionEmpty())) { // no item is
+                                                            	// selected
           // disable butons:
           leftArrowButton.setEnabled(false);
           moveUpButton.setEnabled(false);
           moveDownButton.setEnabled(false);
         }
       }
-    }
-
-    else if (source == okButton) // okButton has been pressed
-    {
+    } else if (source == okButton) { // okButton has been pressed
       // update non-prioritized triggers:
       for (int i = 0; i < nonPrioritizedTriggers.size(); i++) {
-        String tempTrigInfo = (String) nonPrioritizedTriggers.elementAt(i);
+        String tempTrigInfo = nonPrioritizedTriggers.elementAt(i);
         String tempTrigName = tempTrigInfo.substring(0, tempTrigInfo
             .indexOf(' '));
         String tempActName = tempTrigInfo.substring(
@@ -336,7 +303,7 @@ public class TriggerPrioritizer extends JDialog implements ActionListener {
 
       // update prioritized triggers:
       for (int i = 0; i < prioritizedTriggers.size(); i++) {
-        String tempTrigInfo = (String) prioritizedTriggers.elementAt(i);
+        String tempTrigInfo = prioritizedTriggers.elementAt(i);
         String tempTrigName = tempTrigInfo.substring(0, tempTrigInfo
             .indexOf(' '));
         String tempActName = tempTrigInfo.substring(
@@ -352,9 +319,8 @@ public class TriggerPrioritizer extends JDialog implements ActionListener {
     }
   }
 
-  private void setupListSelectionListeners() // enables/disables buttons
-                                             // according to list selections
-  {
+  // enables/disables buttons according to list selections
+  private void setupListSelectionListeners() { 
     // Copied from a Java tutorial:
     ListSelectionModel rowSM = nonPrioritizedTriggerList.getSelectionModel();
     rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -362,7 +328,6 @@ public class TriggerPrioritizer extends JDialog implements ActionListener {
         //Ignore extra messages.
         if (e.getValueIsAdjusting())
           return;
-
         ListSelectionModel lsm = (ListSelectionModel) e.getSource();
         if (lsm.isSelectionEmpty() == false) {
           rightArrowButton.setEnabled(true);
@@ -376,7 +341,6 @@ public class TriggerPrioritizer extends JDialog implements ActionListener {
         //Ignore extra messages.
         if (e.getValueIsAdjusting())
           return;
-
         ListSelectionModel lsm = (ListSelectionModel) e.getSource();
         if (lsm.isSelectionEmpty() == false) {
           leftArrowButton.setEnabled(true);

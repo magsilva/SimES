@@ -8,9 +8,10 @@ public class RandomActionTypeTrigger extends ActionTypeTrigger implements
                             // happening when all of the trigger conditions are
                             // met
 
-  public RandomActionTypeTrigger(String name, ActionType action, double freq) {
+  public RandomActionTypeTrigger(String name, ActionType action, 
+  		double frequency) {
     super(name, action);
-    frequency = freq;
+    this.frequency = frequency;
   }
 
   public RandomActionTypeTrigger(String name, ActionType action) {

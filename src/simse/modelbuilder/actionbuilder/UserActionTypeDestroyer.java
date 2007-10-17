@@ -7,9 +7,10 @@ public class UserActionTypeDestroyer extends ActionTypeDestroyer implements
   private String menuText; // what should appear on a user's menu for destroying
                            // this action
 
-  public UserActionTypeDestroyer(String name, ActionType action, String text) {
+  public UserActionTypeDestroyer(String name, ActionType action, 
+  		String menuText) {
     super(name, action);
-    menuText = text;
+    this.menuText = menuText;
   }
 
   public UserActionTypeDestroyer(String name, ActionType action) {

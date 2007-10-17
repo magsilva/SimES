@@ -18,9 +18,8 @@ public class DefinedActionTypes {
     return actions;
   }
 
-  public ActionType getActionType(String actionName) // returns the action type
-                                                     // with the specified name
-  {
+  // returns the action type with the specified name
+  public ActionType getActionType(String actionName) { 
     for (int i = 0; i < actions.size(); i++) {
       ActionType tempAct = actions.elementAt(i);
       if (actions.elementAt(i).getName().equals(actionName)) {
@@ -30,8 +29,7 @@ public class DefinedActionTypes {
     return null;
   }
 
-  public void addActionType(ActionType act)
-  {
+  public void addActionType(ActionType act) {
 //	  // insert at correct alpha order:
 //	  for (int i = 0; i < actions.size(); i++) {
 //	    ActionType tempAct = (ActionType) actions.elementAt(i);
@@ -54,9 +52,8 @@ public class DefinedActionTypes {
     actions.insertElementAt(act, position);
   }
 
-  public void removeActionType(ActionType act) // removes the specified action
-                                               // type from the data structure
-  {
+  // removes the specified action type from the data structure
+  public void removeActionType(ActionType act) { 
     actions.remove(act);
   }
 
@@ -64,8 +61,7 @@ public class DefinedActionTypes {
    * removes the action with the specified name and returns the position from
    * which it was removed
    */
-  public int removeActionType(String name)
-  {
+  public int removeActionType(String name) {
     for (int i = 0; i < actions.size(); i++) {
       if (actions.elementAt(i).getName().equals(name)) {
         actions.removeElementAt(i);
@@ -85,9 +81,8 @@ public class DefinedActionTypes {
     return -1;
   }
 
-  public void clearAll() // removes all existing action types from the data
-                         // structure
-  {
+  // removes all existing action types from the data structure
+  public void clearAll() {
     actions.removeAllElements();
   }
   
@@ -102,8 +97,8 @@ public class DefinedActionTypes {
 //    }
 //  }
 
-  public void removeAllRules() // removes all rules from all action types
-  {
+  // removes all rules from all action types
+  public void removeAllRules() {
     for (int i = 0; i < actions.size(); i++) {
       actions.elementAt(i).removeAllRules();
     }

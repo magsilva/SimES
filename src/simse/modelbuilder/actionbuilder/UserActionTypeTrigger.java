@@ -10,11 +10,11 @@ public class UserActionTypeTrigger extends ActionTypeTrigger implements
   																		  // confirmation from the user before
   																			// starting
 
-  public UserActionTypeTrigger(String name, ActionType action, String text,
-      boolean confirm) {
+  public UserActionTypeTrigger(String name, ActionType action, String menuText,
+      boolean requiresConfirmation) {
     super(name, action);
-    menuText = text;
-    requiresConfirmation = confirm;
+    this.menuText = menuText;
+    this.requiresConfirmation = requiresConfirmation;
   }
 
   public UserActionTypeTrigger(String name, ActionType action) {
