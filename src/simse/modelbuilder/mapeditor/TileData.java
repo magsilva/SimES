@@ -10,9 +10,9 @@ public class TileData {
   int baseKey;
   int fringeKey;
 
-  public TileData(int b, int f) {
-    baseKey = b;
-    fringeKey = f;
+  public TileData(int baseKey, int fringeKey) {
+    this.baseKey = baseKey;
+    this.fringeKey = fringeKey;
   }
 
   public void setBase(int b) {

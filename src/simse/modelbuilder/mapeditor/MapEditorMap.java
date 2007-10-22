@@ -7,16 +7,27 @@
 
 package simse.modelbuilder.mapeditor;
 
-import simse.modelbuilder.*;
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.startstatebuilder.*;
-import simse.modelbuilder.actionbuilder.*;
+import simse.modelbuilder.ModelBuilderGUI;
+import simse.modelbuilder.ModelOptions;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.startstatebuilder.CreatedObjects;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.io.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Vector;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 
 public class MapEditorMap extends SimSEMap {
   private ModelBuilderGUI mainGUI;
@@ -24,11 +35,10 @@ public class MapEditorMap extends SimSEMap {
   private int clickedX; // x tile which was clicked
   private int clickedY; // y tile which was clicked
 
-  // exactly 12 tiles visible at once
-  private int screenX = MapData.X_MAPSIZE * MapData.TILE_SIZE + 5; //608; // x
+  private int screenX = MapData.X_MAPSIZE * MapData.TILE_SIZE + 5; //608; x
                                                                    // width of
                                                                    // the screen
-  private int screenY = MapData.Y_MAPSIZE * MapData.TILE_SIZE + 54; //659; // y
+  private int screenY = MapData.Y_MAPSIZE * MapData.TILE_SIZE + 54; //659; y
                                                                     // width of
                                                                     // the
                                                                     // screen
@@ -228,9 +238,6 @@ public class MapEditorMap extends SimSEMap {
     return mapRep;
   }
 
-  public void resetObjectTypes() {
-  }
-
   public void setNoOpenFile() {
     // reset the SOP Objects and remove it from the popup menu
     sopUsers.clear();
@@ -245,10 +252,9 @@ public class MapEditorMap extends SimSEMap {
     }
   }
 
-  public Vector loadFile(File inputFile) {
-    Vector v = super.loadFile(inputFile);
+  public Vector<String> loadFile(File inputFile) {
+    Vector<String> v = super.loadFile(inputFile);
     createPopupMenu();
-
     return v;
   }
 
@@ -268,7 +274,6 @@ public class MapEditorMap extends SimSEMap {
 
   private void createPopupMenu() {
     popup.removeAll();
-
     popup.add(walls);
     popup.add(doors);
     popup.add(tables);
@@ -288,8 +293,7 @@ public class MapEditorMap extends SimSEMap {
     for (int i = 0; i < sopUsers.size(); i++) {
       UserData tmp = sopUsers.get(i);
 
-      if (i == ssObjCount)//&& i < sopUsers.size()) // now on rule objects
-      {
+      if (i == ssObjCount) { //&& i < sopUsers.size()) // now on rule objects
         tmp.getUserMenu().setForeground(new Color(200, 0, 0, 255));
         popup.addSeparator();
       }
@@ -313,17 +317,15 @@ public class MapEditorMap extends SimSEMap {
       }
     }
 
-    // draw employees
+    // draw employees:
     for (int i = 0; i < sopUsers.size(); i++) {
       UserData tmp = sopUsers.get(i);
       if (tmp.isDisplayed()) {
         g.drawImage(tmp.getUserIcon(), tmp.getXLocation() * MapData.TILE_SIZE,
             tmp.getYLocation() * MapData.TILE_SIZE, this);
 
-        // if is a rule object, shade it blue to differentiate it
+        // if is a rule object, shade it blue to differentiate it:
         if (!tmp.isActivated()) {
-
-          //System.out.println("MEMAP" + i);
           g.setColor(new Color(0, 100, 200, 60));
           g.fillRect(tmp.getXLocation() * MapData.TILE_SIZE + 1, tmp
               .getYLocation()
@@ -339,8 +341,8 @@ public class MapEditorMap extends SimSEMap {
   }
 
   public void mouseReleased(MouseEvent me) {
-    clickedX = (me.getX()) / MapData.TILE_SIZE; //(me.getX()-5)/MapData.TILE_SIZE;
-    clickedY = (me.getY()) / MapData.TILE_SIZE; //(me.getY()-48)/MapData.TILE_SIZE;
+    clickedX = (me.getX()) / MapData.TILE_SIZE; 
+    clickedY = (me.getY()) / MapData.TILE_SIZE; 
   }
 
   public void mousePressed(MouseEvent me) {
@@ -350,7 +352,6 @@ public class MapEditorMap extends SimSEMap {
   // all actions for the mapeditor tiles
   public void popupMenuActions(JMenuItem source) {
     boolean validOption = true;
-
     // clicked out of boundaries, ignore
     if (clickedX > (MapData.X_MAPSIZE - 1)
         || clickedY > (MapData.Y_MAPSIZE - 1))
@@ -373,7 +374,6 @@ public class MapEditorMap extends SimSEMap {
       mapRep[clickedX][clickedY].setFringe(MapData.TILE_TRASHCANF);
     else if (source == drawPapers)
       mapRep[clickedX][clickedY].setFringe(MapData.TILE_PAPERS);
-
     else if (source == delete) {
       // deletes employee if on tile
       for (int i = 0; i < sopUsers.size(); i++) {
@@ -439,7 +439,7 @@ public class MapEditorMap extends SimSEMap {
         UserData tmp = sopUsers.get(i);
 
         // a employee exists on the current tile so prevent it from being placed
-        // there
+        // there:
         if (tmp.isDisplayed() && tmp.checkXYLocations(clickedX, clickedY)) {
           JOptionPane.showMessageDialog(null, tmp.getName()
               + " currently resides on this tile, please choose another.");
@@ -451,7 +451,7 @@ public class MapEditorMap extends SimSEMap {
         }
       }
 
-      // user to be placed exists and is not on an occupied tile, place him
+      // user to be placed exists and is not on an occupied tile, place him:
       if (userMatched && !tileIsOccupied) {
         user.setDisplayed(true);
         user.setXYLocations(clickedX, clickedY);
@@ -469,7 +469,7 @@ public class MapEditorMap extends SimSEMap {
     JMenuItem source = (JMenuItem) (e.getSource());
 
     // all popupmenu options start with a '-' to differentiate betw menubar and
-    // popup actions
+    // popup actions:
     if (source.getText().startsWith("-")) {
       popupMenuActions(source);
     }

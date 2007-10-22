@@ -5,9 +5,14 @@ package simse.modelbuilder.mapeditor;
 
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
-import java.util.zip.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class ImageLoader {
   public static Image getImageFromZippedURL(String zipURL,
@@ -54,7 +59,7 @@ public class ImageLoader {
       // "";
       dir += tmp;
 
-      // makes the images directory if non existant
+      // makes the images directory if non-existent
       if (tmp.length() > 0)
         new File(dir).mkdir();
 
@@ -69,8 +74,8 @@ public class ImageLoader {
           continue;
         }
 
-        // makes the temp files in the images directory if images dir is non
-        // existant
+        // makes the temp files in the images directory if images dir is non-
+        // existent:
         if (tmp.length() > 0)
           new File(dir + ze.getName()).createNewFile();
 

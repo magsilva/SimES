@@ -13,12 +13,13 @@ public abstract class Attribute implements Cloneable {
                                        // be visible to the player at the end of
                                        // the game
 
-  public Attribute(String n, int t, boolean vis, boolean k, boolean visEnd) {
-    name = new String(n);
-    type = t;
-    visible = vis;
-    key = k;
-    visibleOnCompletion = visEnd;
+  public Attribute(String name, int type, boolean visible, boolean key, 
+  		boolean visibleOnCompletion) {
+    this.name = name;
+    this.type = type;
+    this.visible = visible;
+    this.key = key;
+    this.visibleOnCompletion = visibleOnCompletion;
   }
 
   public Object clone() {

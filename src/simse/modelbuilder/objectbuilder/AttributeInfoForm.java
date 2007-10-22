@@ -241,7 +241,7 @@ public class AttributeInfoForm extends JDialog implements ActionListener {
 
     else if (source == okButton) // okButton has been pressed
     {
-      Vector errors = inputValid(); // check validity of input
+      Vector<String> errors = inputValid(); // check validity of input
       String otherError = maxGreaterThanOrEqualToMin(); // check that max is
                                                         // greater than or equal
                                                         // to min
@@ -314,23 +314,12 @@ public class AttributeInfoForm extends JDialog implements ActionListener {
       maxValTextField.setEnabled(false);
     } else // attribute is a numerical attribute
     {
-      if ((((NumericalAttribute) attribute).isMinBoundless()) == false) // min
-                                                                        // value
-                                                                        // is
-                                                                        // not
-                                                                        // boundless
-      {
-        minValTextField.setText(((NumericalAttribute) attribute).getMinValue()
-            .toString());
+    	NumericalAttribute numAttribute = (NumericalAttribute)attribute;
+      if (!numAttribute.isMinBoundless()) { // min value is not boundless
+        minValTextField.setText(numAttribute.getMinValue().toString());
       }
-      if ((((NumericalAttribute) attribute).isMaxBoundless()) == false) // max
-                                                                        // value
-                                                                        // is
-                                                                        // not
-                                                                        // boundless
-      {
-        maxValTextField.setText(((NumericalAttribute) attribute).getMaxValue()
-            .toString());
+      if (!numAttribute.isMaxBoundless()) { // max value is not boundless
+        maxValTextField.setText(numAttribute.getMaxValue().toString());
       }
       if (attribute.getType() != AttributeTypes.DOUBLE) // non-double attribute
       {
@@ -341,14 +330,10 @@ public class AttributeInfoForm extends JDialog implements ActionListener {
         maxNumDigitsTextField.setEnabled(false);
       } else // double attribute
       {
-        if (((NumericalAttribute) attribute).getMinNumFractionDigits() != null) // has
-                                                                                // min
-                                                                                // num
-                                                                                // fraction
-                                                                                // digits
-        {
-          minNumDigitsTextField.setText(((NumericalAttribute) attribute)
-              .getMinNumFractionDigits().toString());
+        if (numAttribute.getMinNumFractionDigits() != null) { // has min num
+                                                              // fraction digits
+          minNumDigitsTextField.setText(
+          		numAttribute.getMinNumFractionDigits().toString());
         }
         if (((NumericalAttribute) attribute).getMaxNumFractionDigits() != null) // has
                                                                                 // max

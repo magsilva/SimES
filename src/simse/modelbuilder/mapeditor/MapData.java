@@ -11,10 +11,11 @@ import java.awt.Image;
 import java.awt.Toolkit;
 
 public class MapData {
-  static int TILE_SIZE = 50; // size of 1 tile
   public static int X_MAPSIZE = 16; // number of tiles along X axis for map
   public static int Y_MAPSIZE = 10; // number of tiles along Y axis for map
 
+  public static int TILE_SIZE = 50; // size of 1 tile
+  
   static final int TRANSPARENT = -1;
   static final int TILE_GRID = 0;
   static final int TILE_DARK = -2;

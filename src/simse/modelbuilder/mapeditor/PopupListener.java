@@ -1,14 +1,16 @@
 package simse.modelbuilder.mapeditor;
 
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JPopupMenu;
 
 public class PopupListener extends MouseAdapter {
-  JPopupMenu popup;
-  boolean enabled;
+  private JPopupMenu popup;
+  private boolean enabled;
 
-  public PopupListener(JPopupMenu popupMenu) {
-    popup = popupMenu;
+  public PopupListener(JPopupMenu popup) {
+    this.popup = popup;
     enabled = true;
   }
 

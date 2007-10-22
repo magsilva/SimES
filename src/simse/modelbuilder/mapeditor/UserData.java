@@ -1,16 +1,17 @@
+/*
+ * this class contains all information about the objects visible on a SimSE map,
+ * such as the iamge associated with it, where it is located on the map, and
+ * whether it is displayed
+ */ 
+
 package simse.modelbuilder.mapeditor;
 
-// this class contains all pertinent information about the imported SOP
-// objects
-// such as the image associated with it, where it is located on the map, whether
-// it is displayed
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+import simse.modelbuilder.startstatebuilder.SimSEObject;
 
-//import simse.modelbuilder.graphicsbuilder.matchmaker.*;
-
-import simse.modelbuilder.startstatebuilder.*;
-import simse.modelbuilder.objectbuilder.*;
-import java.awt.event.*;
+import java.awt.event.ActionListener;
 import java.awt.Image;
+
 import javax.swing.JMenuItem;
 
 public class UserData {
@@ -22,22 +23,23 @@ public class UserData {
                              // StartStateObject this is automatically true
 
   // grid locations of the SimSEObject
-  // <xLocation,yLocation> where <0,0> is the top left tile
+  // <xLocation,yLocation> where <0,0> is the top left tile:
   private int xLocation;
   private int yLocation;
 
   private JMenuItem userMenu;
 
-  public UserData(SimSEObject obj, String il, ActionListener a, boolean d,
-      boolean ra, int x, int y) {
-    userObject = obj;
-    userIcon = MapData.getImage(il);
+  public UserData(SimSEObject userObject, String imageFilename, 
+  		ActionListener actListener, boolean displayed, boolean activated, 
+  		int x, int y) {
+    this.userObject = userObject;
+    userIcon = MapData.getImage(imageFilename);
 
     userMenu = new JMenuItem(getName());
-    userMenu.addActionListener(a);
+    userMenu.addActionListener(actListener);
 
-    activated = ra;
-    setDisplayed(d);
+    this.activated = activated;
+    setDisplayed(displayed);
     setXYLocations(x, y);
   }
 
