@@ -8,12 +8,10 @@ public class AttributeTypes {
   public static final int INTEGER = 3;
   public static final int DOUBLE = 4;
 
-  public AttributeTypes() {
-  }
+  public AttributeTypes() {}
 
-  public static String getText(int attrType) // returns the text corresponding
-                                             // to the attribute type
-  {
+  // returns the text corresponding to the attribute type
+  public static String getText(int attrType) { 
     switch (attrType) {
     case STRING: {
       return "String";
@@ -31,10 +29,8 @@ public class AttributeTypes {
     return "Error -- Invalid type";
   }
 
-  public static int getIntRepresentation(String attrType) // returns the integer
-                                                          // corresponding to
-                                                          // the attribute type
-  {
+  // returns the integer corresponding to the attribute type
+  public static int getIntRepresentation(String attrType) { 
     if (attrType.equals("String")) {
       return STRING;
     } else if (attrType.equals("Boolean")) {

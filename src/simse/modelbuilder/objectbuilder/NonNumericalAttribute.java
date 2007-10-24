@@ -11,12 +11,11 @@ public class NonNumericalAttribute extends Attribute {
     super(name, type, visible, key, visAtEnd);
   }
 
-  public NonNumericalAttribute(NumericalAttribute n, int newType) // casts n
-                                                                  // into a new
-                                                                  // NonNumericalAttribute
-                                                                  // with type
-                                                                  // newType
-  {
+  /*
+   * casts a NumericalAttribute into a new NonNumericalAttribute with the 
+   * specified type
+   */
+  public NonNumericalAttribute(NumericalAttribute n, int newType) { 
     super(n.getName(), newType, n.isVisible(), n.isKey(), n
         .isVisibleOnCompletion());
   }

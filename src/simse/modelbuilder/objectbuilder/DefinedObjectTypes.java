@@ -5,10 +5,10 @@
 
 package simse.modelbuilder.objectbuilder;
 
-import java.util.*;
+import java.util.Vector;
 
 public class DefinedObjectTypes {
-  Vector<SimSEObjectType> objs; // Vector of SimSEObjectTypes
+  private Vector<SimSEObjectType> objs; // Vector of SimSEObjectTypes
 
   public DefinedObjectTypes(Vector<SimSEObjectType> v) {
     objs = new Vector<SimSEObjectType>(v);
@@ -18,8 +18,8 @@ public class DefinedObjectTypes {
     objs = new Vector<SimSEObjectType>();
   }
 
-  public Vector<SimSEObjectType> getAllObjectTypes() // returns a Vector of SimSEObjectTypes
-  {
+  // returns a Vector of SimSEObjectTypes
+  public Vector<SimSEObjectType> getAllObjectTypes() { 
     return objs;
   }
 
@@ -46,30 +46,26 @@ public class DefinedObjectTypes {
     objs.insertElementAt(newObject, position);
   }
 
-  public Vector<SimSEObjectType> getAllObjectTypesOfType(int type) // returns a Vector of all
-                                                  // SimSEObjectTypes in the
-                                                  // data structure that have
-                                                  // type = to the type
-                                                  // parameter
-  {
+  /*
+   * returns a Vector of all SimSEObjectTypes in the data structure that have
+   * type equal to the type parameter
+   */
+  public Vector<SimSEObjectType> getAllObjectTypesOfType(int type) { 
     Vector<SimSEObjectType> v = new Vector<SimSEObjectType>();
     for (int i = 0; i < objs.size(); i++) {
       SimSEObjectType tempObj = objs.elementAt(i);
-      if (tempObj.getType() == type) // object is of the specified type
-      {
+      if (tempObj.getType() == type) { // object is of the specified type
         v.add(tempObj); // add it to the vector to return
       }
     }
     return v;
   }
 
-  public SimSEObjectType getObjectType(int type, String name) // returns the
-                                                              // object type in
-                                                              // the data
-                                                              // structure with
-                                                              // the specified
-                                                              // type and name
-  {
+  /*
+   * returns the object type in the data structure with the specified type and
+   * name
+   */
+  public SimSEObjectType getObjectType(int type, String name) { 
     for (int i = 0; i < objs.size(); i++) {
       SimSEObjectType tempObj = objs.elementAt(i);
       if ((tempObj.getType() == type) && (tempObj.getName().equals(name))) {
@@ -83,8 +79,7 @@ public class DefinedObjectTypes {
    * removes the object type w/ the specified name and type from the data
    * structure and returns the position it was removed from, or -1 if not found
    */
-  public int removeObjectType(int type, String name) 
-  {
+  public int removeObjectType(int type, String name) {
     for (int i = 0; i < objs.size(); i++) {
       SimSEObjectType tempObj = objs.elementAt(i);
       if ((tempObj.getType() == type) && (tempObj.getName().equals(name))) {
@@ -95,10 +90,8 @@ public class DefinedObjectTypes {
     return -1;
   }
 
-  public boolean hasObjectType(SimSEObjectType type) // returns true if this
-                                                     // object type is there,
-                                                     // false if not
-  {
+  // returns true if this object type is there, false if not
+  public boolean hasObjectType(SimSEObjectType type) { 
     if (objs.contains(type)) {
       return true;
     }
@@ -115,8 +108,8 @@ public class DefinedObjectTypes {
     return -1;
   }
 
-  public void clearAll() // removes all object types
-  {
+  // removes all object types
+  public void clearAll() { // removes all object types
     objs.removeAllElements();
   }
   
