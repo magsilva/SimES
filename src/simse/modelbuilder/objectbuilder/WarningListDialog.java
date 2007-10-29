@@ -5,20 +5,26 @@
 
 package simse.modelbuilder.objectbuilder;
 
-import javax.swing.*;
-import java.awt.event.*;
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 public class WarningListDialog extends JFrame implements ActionListener {
-  private Vector warnings; // vector of strings, each one a warning message
 
   private JList warningList; // list of warnings
   private JButton okButton; 
 
-  public WarningListDialog(Vector warn, String title) {
-    warnings = warn;
-
+  public WarningListDialog(Vector<String> warnings, String title) {
     // Set window title:
     setTitle(title);
 
@@ -55,12 +61,11 @@ public class WarningListDialog extends JFrame implements ActionListener {
     requestFocus();
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource(); // get which component the action came from
 
-    if (source == okButton) // ok button has been pressed
-    {
+    if (source == okButton) { // ok button has been pressed
       // Close window:
       setVisible(false);
       dispose();

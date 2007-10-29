@@ -2,17 +2,17 @@
 
 package simse.modelbuilder.objectbuilder;
 
-import java.util.*;
+import java.util.Vector;
 
 public class SimSEObjectType implements Cloneable {
-  String name; // name of the object
-  Vector<Attribute> attributes; // attributes of this object
-  int type; // type of object (see SimSEObjectTypeTypes class)
+  private String name; // name of the object
+  private Vector<Attribute> attributes; // attributes of this object
+  private int type; // type of object (see SimSEObjectTypeTypes class)
 
-  public SimSEObjectType(Vector<Attribute> attrs, int t, String n) {
-    attributes = attrs;
-    type = t;
-    name = n;
+  public SimSEObjectType(Vector<Attribute> attributes, int type, String name) {
+    this.attributes = attributes;
+    this.type = type;
+    this.name = name;
   }
 
   public SimSEObjectType(int t, String n) {
@@ -21,8 +21,7 @@ public class SimSEObjectType implements Cloneable {
     attributes = new Vector<Attribute>();
   }
 
-  public SimSEObjectType() {
-  }
+  public SimSEObjectType() {}
 
   public String getName() {
     return name;
@@ -44,14 +43,13 @@ public class SimSEObjectType implements Cloneable {
     return null;
   }
 
-  public Vector<Attribute> getAllAttributes() // returns a Vector of Attributes
-  {
+  public Vector<Attribute> getAllAttributes() {
     return attributes;
   }
   
   public Vector<Attribute> getAllVisibleAttributes() {
     Vector<Attribute> visibleAtts = new Vector<Attribute>();
-    for (int i=0; i<attributes.size(); i++) {
+    for (int i = 0; i < attributes.size(); i++) {
       Attribute att = attributes.get(i);
       if (att.isVisible()) {
         visibleAtts.add(att);
@@ -62,7 +60,7 @@ public class SimSEObjectType implements Cloneable {
   
   public Vector<Attribute> getAllVisibleOnCompletionAttributes() {
     Vector<Attribute> visibleAtts = new Vector<Attribute>();
-    for (int i=0; i<attributes.size(); i++) {
+    for (int i = 0; i < attributes.size(); i++) {
       Attribute att = attributes.get(i);
       if (att.isVisibleOnCompletion()) {
         visibleAtts.add(att);
@@ -71,38 +69,25 @@ public class SimSEObjectType implements Cloneable {
     return visibleAtts;
   }
   
-  // CHANGE THESE SO YOU JUST CALL THE PREVIOUS FUNCTIONS AND GET THE SIZES OF THOSE!!!
   public int getNumVisibleAttributes() {
-    int numVisibleAtts = 0;
-    for (int i=0; i<attributes.size(); i++) {
-      Attribute att = attributes.get(i);
-      if (att.isVisible()) {
-        numVisibleAtts++;
-      }
-    }
-    return numVisibleAtts;
+    return getAllVisibleAttributes().size();
   }
   
   public int getNumVisibleOnCompletionAttributes() {
-    int numVisibleAtts = 0;
-    for (int i=0; i<attributes.size(); i++) {
-      Attribute att = attributes.get(i);
-      if (att.isVisibleOnCompletion()) {
-        numVisibleAtts++;
-      }
-    }
-    return numVisibleAtts;
+    return getAllVisibleOnCompletionAttributes().size();
   }
 
   public int getType() {
     return type;
   }
 
-  public Attribute getKey() // returns the attribute that is the "key" of this
-  // object -- the attribute that must be unique
-  {
+  /*
+   * returns the attribute that is the "key" of this object -- the attribute
+   * that must be unique
+   */
+  public Attribute getKey() {
     for (int i = 0; i < attributes.size(); i++) {
-      Attribute tempAttr = (attributes.elementAt(i));
+      Attribute tempAttr = attributes.elementAt(i);
       if (tempAttr.isKey()) {
         return tempAttr;
       }
@@ -110,11 +95,10 @@ public class SimSEObjectType implements Cloneable {
     return null;
   }
 
-  public boolean hasKey() // returns true if this object has a key, false
-  // otherwise
-  {
+  // returns true if this object has a key, false otherwise
+  public boolean hasKey() { 
     for (int i = 0; i < attributes.size(); i++) {
-      Attribute tempAttr = (attributes.elementAt(i));
+      Attribute tempAttr = attributes.elementAt(i);
       if (tempAttr.isKey()) {
         return true;
       }
@@ -134,20 +118,21 @@ public class SimSEObjectType implements Cloneable {
     type = newType;
   }
 
+  // adds the attribute to the end of the Vector
   public void addAttribute(Attribute a) {
-    attributes.add(a); // adds the attribute to the end of the Vector
+    attributes.add(a); 
   }
 
-  public void addAttribute(Attribute a, int index) // adds the attribute at the
-  // specified index
-  {
+  // adds the attribute at the specified index
+  public void addAttribute(Attribute a, int index) {
     attributes.add(index, a);
   }
 
-  public int removeAttribute(String name) // removes the attribute with the
-  // specified name and returns the
-  // position it removed it from
-  {
+  /*
+   * removes the attribute with the specified name and returns the position it
+   * removed it from
+   */
+  public int removeAttribute(String name) { 
     for (int i = 0; i < attributes.size(); i++) {
       Attribute a = attributes.elementAt(i);
       if (a.getName().equals(name)) {
@@ -159,11 +144,8 @@ public class SimSEObjectType implements Cloneable {
     return -1;
   }
   
-  /*
-   * Returns the index of the attribute with the specified name
-   */
-  public int getAttributeIndex(String name) 
-  {
+  // Returns the index of the attribute with the specified name
+  public int getAttributeIndex(String name) { 
     for (int i = 0; i < attributes.size(); i++) {
       Attribute a = attributes.elementAt(i);
       if (a.getName().equals(name)) {
@@ -174,15 +156,13 @@ public class SimSEObjectType implements Cloneable {
     return -1;
   }
 
-  public int getNumAttributes() // returns the number of attributes this object
-  // has
-  {
+  // returns the number of attributes this oibject has
+  public int getNumAttributes() { 
     return attributes.size();
   }
 
-  public Attribute getAttribute(String name) // returns the attribute with the
-  // specified name
-  {
+  // returns the attribute with the specified name
+  public Attribute getAttribute(String name) { 
     for (int i = 0; i < attributes.size(); i++) {
       Attribute a = attributes.elementAt(i);
       if (a.getName().equals(name)) {

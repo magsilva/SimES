@@ -5,17 +5,40 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.startstatebuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import javax.swing.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+import simse.modelbuilder.startstatebuilder.SimSEObject;
 
-import java.awt.event.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
-import javax.swing.event.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class CreateObjectsRuleInfoForm extends JDialog implements
     ActionListener {
@@ -52,13 +75,10 @@ public class CreateObjectsRuleInfoForm extends JDialog implements
     newRule = newOrEdit;
     actualRule = rule;
     actionInFocus = act;
-    if (!newRule) // editing existing rule
-    {
-      ruleInFocus = (CreateObjectsRule) (actualRule.clone()); // make a copy of
-                                                              // the rule for
-                                                              // editing
-    } else // new rule
-    {
+    if (!newRule) { // editing existing rule
+    	// make a copy of the rule for editing:
+      ruleInFocus = (CreateObjectsRule) (actualRule.clone()); 
+    } else { // new rule
       ruleInFocus = rule;
     }
     objects = objs;
@@ -75,10 +95,10 @@ public class CreateObjectsRuleInfoForm extends JDialog implements
     topPane.add(new JLabel("Create:"));
     // object type combo box:
     objTypeList = new JComboBox();
-    Vector allObjs = objects.getAllObjectTypes();
+    Vector<SimSEObjectType> allObjs = objects.getAllObjectTypes();
     // go through each object type and add its type and name to the list:
     for (int i = 0; i < allObjs.size(); i++) {
-      SimSEObjectType tempType = (SimSEObjectType) allObjs.elementAt(i);
+      SimSEObjectType tempType = allObjs.elementAt(i);
       objTypeList.addItem(new String(tempType.getName() + " "
           + SimSEObjectTypeTypes.getText(tempType.getType())));
     }
@@ -95,16 +115,7 @@ public class CreateObjectsRuleInfoForm extends JDialog implements
     createObjsList = new JList();
     createObjsList.setVisibleRowCount(10); // make 10 items visible at a time
     createObjsList.setFixedCellWidth(250);
-    createObjsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only
-                                                                          // allow
-                                                                          // the
-                                                                          // user
-                                                                          // to
-                                                                          // select
-                                                                          // one
-                                                                          // item
-                                                                          // at a
-                                                                          // time
+    createObjsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
     JScrollPane createObjsListPane = new JScrollPane(createObjsList);
     middlePane.add(createObjsListPane);
     refreshCreateObjsList();
@@ -192,36 +203,22 @@ public class CreateObjectsRuleInfoForm extends JDialog implements
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
-
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource(); // get which component the action came from
     if (source == okCreateObjectButton) {
       createObject();
-    }
-
-    else if (source == cancelButton) // cancel button has been pressed
-    {
+    } else if (source == cancelButton) { // cancel button has been pressed
       // Close window:
       setVisible(false);
       dispose();
-    }
-
-    else if (source == viewEditButton) {
+    } else if (source == viewEditButton) {
       editObject();
-    }
-
-    else if (source == removeObjectButton) {
+    } else if (source == removeObjectButton) {
       removeObject();
-    }
-
-    else if (source == annotationButton) // annotation button selected
-    {
-      RuleAnnotationForm form = new RuleAnnotationForm(this, ruleInFocus);
-    }
-
-    else if (source == okButton) // okButton has been pressed
-    {
+    } else if (source == annotationButton) { // annotation button selected
+      new RuleAnnotationForm(this, ruleInFocus);
+    } else if (source == okButton) { // okButton has been pressed
       // set timing:
       if (continuousButton.isSelected()) {
         ruleInFocus.setTiming(RuleTiming.CONTINUOUS);
@@ -235,18 +232,15 @@ public class CreateObjectsRuleInfoForm extends JDialog implements
       ruleInFocus.setVisibilityInExplanatoryTool(visibilityCheckBox
           .isSelected());
 
-      if (!newRule) // existing rule being edited
-      {
+      if (!newRule) { // existing rule being edited
         int indexOfRule = actionInFocus.getAllRules().indexOf(actualRule);
-        actionInFocus.removeRule(actualRule.getName()); // remove old version of
-                                                        // rule
-        if (indexOfRule != -1) // object already exists in the rule
-        {
-          actionInFocus.addRule(ruleInFocus, indexOfRule); // add edited rule at
-                                                           // its old location
+        // remove old version of rule:
+        actionInFocus.removeRule(actualRule.getName()); 
+        if (indexOfRule != -1) { // object already exists in the rule
+        	// add edited rule at its old location:
+          actionInFocus.addRule(ruleInFocus, indexOfRule); 
         }
-      } else // newly created rule
-      {
+      } else { // newly created rule
         actionInFocus.addRule(ruleInFocus); // add new rule
       }
 
@@ -257,10 +251,10 @@ public class CreateObjectsRuleInfoForm extends JDialog implements
   }
 
   private void refreshCreateObjsList() {
-    Vector objNamesAndKeys = new Vector();
-    Vector objs = ruleInFocus.getAllSimSEObjects();
+    Vector<String> objNamesAndKeys = new Vector<String>();
+    Vector<SimSEObject> objs = ruleInFocus.getAllSimSEObjects();
     for (int i = 0; i < objs.size(); i++) {
-      SimSEObject tempObj = (SimSEObject) objs.elementAt(i);
+      SimSEObject tempObj = objs.elementAt(i);
       String keyVal = new String();
       if (tempObj.getKey().isInstantiated()) {
         keyVal = tempObj.getKey().getValue().toString();
@@ -296,12 +290,11 @@ public class CreateObjectsRuleInfoForm extends JDialog implements
     visibilityCheckBox.setSelected(ruleInFocus.isVisibleInExplanatoryTool());
   }
 
-  private void setupCreateObjsListSelectionListenerStuff() // enables view/edit
-                                                           // and remove object
-                                                           // buttons whenever a
-                                                           // list item (object)
-  // is selected
-  {
+  /*
+   * enables view/edit and remove object buttons whenever a list item (object)
+   * is selected
+   */
+  private void setupCreateObjsListSelectionListenerStuff() { 
     // Copied from a Java tutorial:
     ListSelectionModel rowSM = createObjsList.getSelectionModel();
     rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -320,62 +313,53 @@ public class CreateObjectsRuleInfoForm extends JDialog implements
   }
 
   private void createObject() {
-    String selectedItem = (String) (objTypeList.getSelectedItem()); // get the
-                                                                    // object
-                                                                    // type and
-                                                                    // name to
-                                                                    // create
+  	// get the object type and name to create:
+    String selectedItem = (String) (objTypeList.getSelectedItem()); 
     int type = 0;
     String name = new String();
     if (selectedItem.endsWith(SimSEObjectTypeTypes
-        .getText(SimSEObjectTypeTypes.EMPLOYEE))) // employee object type
-    {
+        .getText(SimSEObjectTypeTypes.EMPLOYEE))) { // employee object type
       type = SimSEObjectTypeTypes.EMPLOYEE;
+      // parse object name from selected item:
       name = selectedItem.substring(0, (selectedItem.length()
           - SimSEObjectTypeTypes.getText(SimSEObjectTypeTypes.EMPLOYEE)
               .length() - 1));
-      // parse object name from selected item
     } else if (selectedItem.endsWith(SimSEObjectTypeTypes
-        .getText(SimSEObjectTypeTypes.ARTIFACT))) // artifact object type
-    {
+        .getText(SimSEObjectTypeTypes.ARTIFACT))) { // artifact object type
       type = SimSEObjectTypeTypes.ARTIFACT;
+      // parse object name from selected item:
       name = selectedItem.substring(0, (selectedItem.length()
           - SimSEObjectTypeTypes.getText(SimSEObjectTypeTypes.ARTIFACT)
               .length() - 1));
-      // parse object name from selected item
     } else if (selectedItem.endsWith(SimSEObjectTypeTypes
-        .getText(SimSEObjectTypeTypes.TOOL))) // tool object type
-    {
+        .getText(SimSEObjectTypeTypes.TOOL))) { // tool object type
       type = SimSEObjectTypeTypes.TOOL;
+      // parse object name from selected item:
       name = selectedItem.substring(0,
           (selectedItem.length()
               - SimSEObjectTypeTypes.getText(SimSEObjectTypeTypes.TOOL)
                   .length() - 1));
-      // parse object name from selected item
     } else if (selectedItem.endsWith(SimSEObjectTypeTypes
-        .getText(SimSEObjectTypeTypes.PROJECT))) // project object type
-    {
+        .getText(SimSEObjectTypeTypes.PROJECT))) { // project object type
       type = SimSEObjectTypeTypes.PROJECT;
+      // parse object name from selected item:
       name = selectedItem.substring(0,
           (selectedItem.length()
               - SimSEObjectTypeTypes.getText(SimSEObjectTypeTypes.PROJECT)
                   .length() - 1));
-      // parse object name from selected item
     } else if (selectedItem.endsWith(SimSEObjectTypeTypes
-        .getText(SimSEObjectTypeTypes.CUSTOMER))) // customer object type
-    {
+        .getText(SimSEObjectTypeTypes.CUSTOMER))) { // customer object type
       type = SimSEObjectTypeTypes.CUSTOMER;
+      // parse object name from selected item:
       name = selectedItem.substring(0, (selectedItem.length()
           - SimSEObjectTypeTypes.getText(SimSEObjectTypeTypes.CUSTOMER)
               .length() - 1));
-      // parse object name from selected item
     }
 
-    SimSEObject newObj = new SimSEObject(objects.getObjectType(type, name)); // create
-                                                                             // new
-                                                                             // object
-    CreateObjectsRuleStartingValForm svForm = new CreateObjectsRuleStartingValForm(
-        this, ruleInFocus, newObj, actions);
+    // create new object:
+    SimSEObject newObj = new SimSEObject(objects.getObjectType(type, name)); 
+    CreateObjectsRuleStartingValForm svForm = 
+    	new CreateObjectsRuleStartingValForm(this, ruleInFocus, newObj, actions);
 
     // Makes it so this gui will refresh itself after this rule starting val
     // form closes:
@@ -386,20 +370,20 @@ public class CreateObjectsRuleInfoForm extends JDialog implements
         removeObjectButton.setEnabled(false);
       }
 
-      public void windowGainedFocus(WindowEvent ev) {
-      }
+      public void windowGainedFocus(WindowEvent ev) {}
     };
     svForm.addWindowFocusListener(l);
   }
 
   private void editObject() {
-    if (createObjsList.getSelectedIndex() >= 0) // an object is selected
-    {
-      SimSEObject tempObj = (SimSEObject) (ruleInFocus.getAllSimSEObjects()
-          .elementAt(createObjsList.getSelectedIndex()));
+    if (createObjsList.getSelectedIndex() >= 0) { // an object is selected
+      SimSEObject tempObj = 
+      	ruleInFocus.getAllSimSEObjects().elementAt(
+      			createObjsList.getSelectedIndex());
       // get the selected object
-      CreateObjectsRuleStartingValForm svForm = new CreateObjectsRuleStartingValForm(
-          this, ruleInFocus, tempObj, actions);
+      CreateObjectsRuleStartingValForm svForm = 
+      	new CreateObjectsRuleStartingValForm(this, ruleInFocus, tempObj, 
+      			actions);
 
       // Makes it so this gui will refresh itself after this rule starting val
       // form closes:
@@ -410,19 +394,19 @@ public class CreateObjectsRuleInfoForm extends JDialog implements
           removeObjectButton.setEnabled(false);
         }
 
-        public void windowGainedFocus(WindowEvent ev) {
-        }
+        public void windowGainedFocus(WindowEvent ev) {}
       };
       svForm.addWindowFocusListener(l);
     }
   }
 
   private void removeObject() {
-    if (createObjsList.getSelectedIndex() >= 0) // an item (object) is selected
-    {
+    if (createObjsList.getSelectedIndex() >= 0) { // an item (object) is 
+    																							// selected
       // get the selected object:
-      SimSEObject tempObj = (SimSEObject) (ruleInFocus.getAllSimSEObjects()
-          .elementAt(createObjsList.getSelectedIndex()));
+      SimSEObject tempObj = 
+      	ruleInFocus.getAllSimSEObjects().elementAt(
+      			createObjsList.getSelectedIndex());
 
       String keyVal = new String();
       if (tempObj.getKey().isInstantiated()) {
@@ -440,9 +424,7 @@ public class CreateObjectsRuleInfoForm extends JDialog implements
         viewEditButton.setEnabled(false);
         removeObjectButton.setEnabled(false);
         refreshCreateObjsList();
-      } else // choice == JOptionPane.NO_OPTION
-      {
-      }
+      } 
     }
   }
 }

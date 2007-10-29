@@ -5,13 +5,14 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import java.util.*;
-import simse.modelbuilder.startstatebuilder.*;
-import simse.modelbuilder.actionbuilder.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.startstatebuilder.SimSEObject;
+
+import java.util.Vector;
 
 public class CreateObjectsRule extends Rule implements Cloneable {
-  private Vector<SimSEObject> objects; // Vector of SimSEObjects that this rule creates as
-                          // its effect
+  private Vector<SimSEObject> objects; // Vector of SimSEObjects that this rule 
+  																		 // creates as its effect
 
   public CreateObjectsRule(String name, ActionType act) {
     super(name, act);
@@ -28,9 +29,8 @@ public class CreateObjectsRule extends Rule implements Cloneable {
     return cl;
   }
 
-  public Vector<SimSEObject> getAllSimSEObjects() // returns all SimSEObjects that are
-                                     // created as an effect of this rule
-  {
+  // returns all SimSEObjects that are created as an effect of this rule
+  public Vector<SimSEObject> getAllSimSEObjects() { 
     return objects;
   }
 
@@ -38,47 +38,34 @@ public class CreateObjectsRule extends Rule implements Cloneable {
     objects = newObjs;
   }
 
-  public void addSimSEObject(SimSEObject newObj) // adds the specified
-                                                 // SimSEObject to this rule
-  {
+  // adds the specified SimSEObject to this rule
+  public void addSimSEObject(SimSEObject newObj) { 
     objects.add(newObj);
   }
 
-  public void addSimSEObject(SimSEObject newObj, int index) // adds the
-                                                            // specified
-                                                            // SimSEObject to
-                                                            // this rule in the
-                                                            // specified
-                                                            // position
-  {
+  // adds the specified SimSEObject to this rule in the specified position
+  public void addSimSEObject(SimSEObject newObj, int index) { 
     objects.add(index, newObj);
   }
 
-  public void removeSimSEObject(String name, int type, Object keyVal) // removes
-                                                                      // the
-                                                                      // SimSEObject
-                                                                      // with
-                                                                      // the
-                                                                      // specified
-                                                                      // SimSEObjectType
-  // name, type, and key attribute value from this rule
-  {
+  /*
+   * removes the SimSEObject with the specified SimSEObjectType, name, type, and
+   * key attribute value from this rule
+   */
+  public void removeSimSEObject(String name, int type, Object keyVal) { 
     for (int i = 0; i < objects.size(); i++) {
       SimSEObject tempObj = objects.elementAt(i);
       if ((tempObj.getName().equals(name))
           && (tempObj.getSimSEObjectType().getType() == type)
           && (tempObj.getKey().isInstantiated())
-          && (tempObj.getKey().getValue().equals(keyVal))) // found a match
-      {
+          && (tempObj.getKey().getValue().equals(keyVal))) { // found a match
         objects.removeElementAt(i);
       }
     }
   }
 
-  public void removeSimSEObject(SimSEObject obj) // removes this SimSEObject
-                                                 // from this rule (if it
-                                                 // exists)
-  {
+  // removes this SimSEObject from this rule (if it exists)
+  public void removeSimSEObject(SimSEObject obj) { 
     objects.remove(obj);
   }
 }

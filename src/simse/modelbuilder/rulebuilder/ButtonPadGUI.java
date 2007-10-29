@@ -5,30 +5,27 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import java.awt.event.*;
-import java.awt.*;
-import java.awt.Dimension;
-import javax.swing.*;
-import java.util.*;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class ButtonPadGUI extends JDialog implements ActionListener {
   // button pad:
-  private JButton inputButton; // inputs to the rule
-  private JButton attributeThisPartButton; // attributes of the participant in
-                                           // focus
-  private JButton attributeOtherPartButton; // attributes of the other
-                                            // participants in the action
-  private JButton numObjectsButton; // numbers of objects in the action
-  private JButton numActionsThisPartButton; // number of actions the participant
-                                            // in focus is involved in
-  private JButton numActionsOtherPartButton; // number of actions the other
-                                             // participants in the action are
-                                             // involved in
-  private Vector timeButtons; // numbers relating to time
-  private Vector digitButtons; // 0, 1, 2, 3, ...
-  private Vector operatorButtons; // +, -, *, /, (, )
-  private Vector otherButtons; // e.g., random(min, max)
   private JTextArea echoedTextField; // text field from the effect rule info
                                      // form to be echoed under the button pad
   private JTextField parentTextField; // actual text field for the attribute
@@ -36,25 +33,17 @@ public class ButtonPadGUI extends JDialog implements ActionListener {
   private JButton okButton;
   private JButton cancelButton;
 
-  public ButtonPadGUI(JDialog owner, JButton input, JButton attsThis,
-      JButton attsOther, JButton numObjects, JButton numActionsThis,
-      JButton numActionsOther, Vector time, Vector digits, Vector operators,
-      Vector other, JTextArea echoedTField, JTextField parentTField, 
-      String attDescription) {
+  public ButtonPadGUI(JDialog owner, JButton inputButton, 
+  		JButton attributeThisPartButton, JButton attributeOtherPartButton, 
+  		JButton numObjectsButton, JButton numActionsThisPartButton,
+      JButton numActionsOtherPartButton, Vector<JButton> timeButtons, 
+      Vector<JButton> digitButtons, Vector<JButton> operatorButtons, 
+      Vector<JButton> otherButtons, JTextArea echoedTextField, 
+      JTextField parentTextField, String attDescription) {
     super(owner, true);
-
-    inputButton = input;
-    attributeThisPartButton = attsThis;
-    attributeOtherPartButton = attsOther;
-    numObjectsButton = numObjects;
-    numActionsThisPartButton = numActionsThis;
-    numActionsOtherPartButton = numActionsOther;
-    timeButtons = time;
-    digitButtons = digits;
-    operatorButtons = operators;
-    otherButtons = other;
-    echoedTextField = echoedTField;
-    parentTextField = parentTField;
+    
+    this.echoedTextField = echoedTextField;
+    this.parentTextField = parentTextField;
 
     // Set window title:
     setTitle("Button Pad - " + attDescription);
@@ -74,7 +63,7 @@ public class ButtonPadGUI extends JDialog implements ActionListener {
     topPane.add(numActionsOtherPartButton);
     // time buttons:
     for (int i = 0; i < timeButtons.size(); i++) {
-      topPane.add((JButton) timeButtons.elementAt(i));
+      topPane.add(timeButtons.elementAt(i));
     }
 
     // Middle panel:
@@ -85,21 +74,21 @@ public class ButtonPadGUI extends JDialog implements ActionListener {
     JPanel bottomPane = new JPanel(new GridLayout(0, 4, 3, 3));
     // digit buttons:
     for (int i = 0; i < digitButtons.size(); i++) {
-      bottomPane.add((JButton) digitButtons.elementAt(i));
+      bottomPane.add(digitButtons.elementAt(i));
     }
     // operator buttons:
     for (int i = 0; i < operatorButtons.size(); i++) {
-      bottomPane.add((JButton) operatorButtons.elementAt(i));
+      bottomPane.add(operatorButtons.elementAt(i));
     }
     // other buttons:
     for (int i = 0; i < otherButtons.size(); i++) {
-      bottomPane.add((JButton) otherButtons.elementAt(i));
+      bottomPane.add(otherButtons.elementAt(i));
     }
 
     // Echoed panel:
     JScrollPane echoedPane = new JScrollPane(echoedTextField);
-    echoedPane
-        .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    echoedPane.setHorizontalScrollBarPolicy(
+    		JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     echoedPane.setPreferredSize(new Dimension(660, 100));
 
     // Okay panel:
@@ -147,8 +136,8 @@ public class ButtonPadGUI extends JDialog implements ActionListener {
     dispose();
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource();
     if (source == okButton) {
       okButtonPressed();
@@ -158,5 +147,4 @@ public class ButtonPadGUI extends JDialog implements ActionListener {
       dispose();
     }
   }
-
 }

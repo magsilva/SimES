@@ -20,7 +20,7 @@ public class CreateObjectsRuleStartingValForm extends JDialog implements
                                      // for its attributes
   private DefinedActionTypes actions; // existing defined action types
 
-  private Vector values; // JTextFields (for non-boolean attributes) and
+  private Vector<JComponent> values; // JTextFields (for non-boolean attributes) and
                          // JComboBoxes (for boolean attributes) of starting
                          // values for
   // each attribute of the object in focus
@@ -34,7 +34,7 @@ public class CreateObjectsRuleStartingValForm extends JDialog implements
     objectInFocus = obj;
     actions = acts;
 
-    values = new Vector();
+    values = new Vector<JComponent>();
 
     // Set window title:
     setTitle("Attribute Starting Values");
@@ -52,22 +52,21 @@ public class CreateObjectsRuleStartingValForm extends JDialog implements
     JPanel leftPane = new JPanel(new GridLayout(0, 1));
     // Create right pane (attribute values):
     JPanel rightPane = new JPanel(new GridLayout(0, 1));
-    Vector attributes = objectInFocus.getAllAttributes(); // get all the
+    Vector<InstantiatedAttribute> attributes = objectInFocus.getAllAttributes(); // get all the
                                                           // object's attributes
     if (attributes.size() == 0) // new object, not an existing one being edited
     {
       // instantiate instantiated attributes:
-      Vector uninstantAtts = objectInFocus.getSimSEObjectType()
+      Vector<Attribute> uninstantAtts = objectInFocus.getSimSEObjectType()
           .getAllAttributes();
       for (int i = 0; i < uninstantAtts.size(); i++) {
         InstantiatedAttribute instAtt = new InstantiatedAttribute(
-            (Attribute) uninstantAtts.elementAt(i));
+            uninstantAtts.elementAt(i));
         objectInFocus.addAttribute(instAtt);
       }
     }
     for (int i = 0; i < attributes.size(); i++) {
-      InstantiatedAttribute att = (InstantiatedAttribute) attributes
-          .elementAt(i);
+      InstantiatedAttribute att = attributes.elementAt(i);
 
       // Attribute labels:
       StringBuffer attLabel = new StringBuffer();
@@ -82,15 +81,12 @@ public class CreateObjectsRuleStartingValForm extends JDialog implements
           || (att.getAttribute().getType() == AttributeTypes.DOUBLE)) // double
       // or integer attribute
       {
-        if (((NumericalAttribute) (att.getAttribute())).isMinBoundless() == false) {
-          attLabel.append(", min value = "
-              + ((NumericalAttribute) (att.getAttribute())).getMinValue()
-                  .toString());
+      	NumericalAttribute numAtt =  (NumericalAttribute)att.getAttribute();
+        if (numAtt.isMinBoundless() == false) {
+          attLabel.append(", min value = " + numAtt.getMinValue().toString());
         }
-        if (((NumericalAttribute) (att.getAttribute())).isMaxBoundless() == false) {
-          attLabel.append(", max value = "
-              + ((NumericalAttribute) (att.getAttribute())).getMaxValue()
-                  .toString());
+        if (numAtt.isMaxBoundless() == false) {
+          attLabel.append(", max value = " + numAtt.getMaxValue().toString());
         }
       }
       attLabel.append(")");
@@ -176,7 +172,7 @@ public class CreateObjectsRuleStartingValForm extends JDialog implements
 
     else if (source == okButton) // okButton has been pressed
     {
-      Vector errors = validateInput(); // check validity of input
+      Vector<String> errors = validateInput(); // check validity of input
 
       if (errors.size() == 0) // input valid
       {
@@ -184,17 +180,17 @@ public class CreateObjectsRuleStartingValForm extends JDialog implements
       } else // input not valid
       {
         for (int i = 0; i < errors.size(); i++) {
-          JOptionPane.showMessageDialog(null, ((String) errors.elementAt(i)),
-              "Invalid Input", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null, errors.elementAt(i), 
+          		"Invalid Input", JOptionPane.ERROR_MESSAGE);
         }
       }
     }
   }
 
-  private Vector validateInput() // returns a vector of error messages (if any)
-  {
-    Vector messages = new Vector();
-    Vector attributes = objectInFocus.getAllAttributes(); // get all
+  // returns a vector of error messages (if any)
+  private Vector<String> validateInput() { 
+    Vector<String> messages = new Vector<String>();
+    Vector<InstantiatedAttribute> attributes = objectInFocus.getAllAttributes(); // get all
                                                           // instantiated
                                                           // attributes of the
                                                           // object
@@ -202,8 +198,7 @@ public class CreateObjectsRuleStartingValForm extends JDialog implements
       if (values.elementAt(i) instanceof JTextField) // text field (non-boolean)
                                                      // input
       {
-        InstantiatedAttribute tempAtt = (InstantiatedAttribute) (attributes
-            .elementAt(i)); // get the corresponding attribute
+        InstantiatedAttribute tempAtt = attributes.elementAt(i); // get the corresponding attribute
         // to the text field
         String value = ((JTextField) (values.elementAt(i))).getText();
         if ((value == null) || (value.length() == 0)) // blank entry
@@ -245,18 +240,14 @@ public class CreateObjectsRuleStartingValForm extends JDialog implements
             try {
               double doubleVal = Double.parseDouble(value); // parse the string
                                                             // into a double
-              if (((((NumericalAttribute) (tempAtt.getAttribute()))
-                  .isMinBoundless()) == false)
-                  && ((((NumericalAttribute) (tempAtt.getAttribute()))
-                      .isMaxBoundless()) == false)) // has both a min and a max
-              // value
-              {
-                if ((doubleVal < ((NumericalAttribute) (tempAtt.getAttribute()))
-                    .getMinValue().doubleValue())
-                    || (doubleVal > ((NumericalAttribute) (tempAtt
-                        .getAttribute())).getMaxValue().doubleValue())) // it's
-                // outside of the range
-                {
+              NumericalAttribute numTempAtt = 
+              	(NumericalAttribute)tempAtt.getAttribute();
+              if (!numTempAtt.isMinBoundless() && 
+              		!numTempAtt.isMaxBoundless()) { // has both a min and a max
+              																		// value
+                if ((doubleVal < numTempAtt.getMinValue().doubleValue())
+                    || (doubleVal > numTempAtt.getMaxValue().doubleValue())) { 
+                	// it's outside of the range
                   messages
                       .add(new String(
                           tempAtt.getAttribute().getName()
