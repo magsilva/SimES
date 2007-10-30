@@ -2,13 +2,14 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import java.util.*;
-import simse.modelbuilder.actionbuilder.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+
+import java.util.Vector;
 
 public class EffectRule extends Rule implements Cloneable {
   private Vector<RuleInput> inputs; // Vector of RuleInputs for this rule
-  private Vector<ParticipantRuleEffect> participantRuleEffects; // Vector of ParticipantRuleEffects for
-                                         // this rule
+  private Vector<ParticipantRuleEffect> participantRuleEffects; 
+  // Vector of ParticipantRuleEffects for this rule
 
   public EffectRule(String name, ActionType act) {
     super(name, act);
@@ -42,9 +43,8 @@ public class EffectRule extends Rule implements Cloneable {
     return inputs;
   }
 
-  public RuleInput getRuleInput(String name) // returns the rule input with the
-                                             // specified name
-  {
+  // returns the rule input with the specified name
+  public RuleInput getRuleInput(String name) { 
     for (int i = 0; i < inputs.size(); i++) {
       RuleInput tempInput = inputs.elementAt(i);
       if (tempInput.getName().equals(name)) {
@@ -58,9 +58,8 @@ public class EffectRule extends Rule implements Cloneable {
     inputs.add(newInput);
   }
 
-  public void removeRuleInput(String name) // removes the rule input with the
-                                           // specified name
-  {
+  // removes the rule input with the specified name
+  public void removeRuleInput(String name) { 
     for (int i = 0; i < inputs.size(); i++) {
       RuleInput tempInput = inputs.elementAt(i);
       if (tempInput.getName().equals(name)) {
@@ -81,14 +80,11 @@ public class EffectRule extends Rule implements Cloneable {
     return participantRuleEffects;
   }
 
-  public ParticipantRuleEffect getParticipantRuleEffect(String partName) // returns
-                                                                         // the
-                                                                         // ParticipantRuleEffect
-                                                                         // with
-                                                                         // the
-                                                                         // participant
-  // with the specified name
-  {
+  /*
+   * returns the ParticipantRuleEffect with the participant with the specified
+   * name
+   */
+  public ParticipantRuleEffect getParticipantRuleEffect(String partName) { 
     for (int i = 0; i < participantRuleEffects.size(); i++) {
       ParticipantRuleEffect tempEffect = participantRuleEffects.elementAt(i);
       if (tempEffect.getParticipant().getName().equals(partName)) {
@@ -102,13 +98,11 @@ public class EffectRule extends Rule implements Cloneable {
     participantRuleEffects.add(newEffect);
   }
 
-  public void removeParticipantRuleEffect(String partName) // removes the
-                                                           // ParticipantRuleEffect
-                                                           // for the
-                                                           // participant with
-                                                           // the
-  // specified name
-  {
+  /*
+   * removes the ParticipantRuleEffect for the participant with the specified
+   * name
+   */
+  public void removeParticipantRuleEffect(String partName) { 
     for (int i = 0; i < participantRuleEffects.size(); i++) {
       ParticipantRuleEffect tempEffect = participantRuleEffects.elementAt(i);
       if (tempEffect.getParticipant().getName().equals(partName)) {
@@ -117,13 +111,11 @@ public class EffectRule extends Rule implements Cloneable {
     }
   }
 
-  public boolean hasParticipantRuleEffect(String partName) // returns true if
-                                                           // this effect rule
-                                                           // has a participant
-                                                           // rule effect for
-                                                           // the
-  // participant with the specified name
-  {
+  /*
+   * returns true if this effect rule has a participant rule effect for the
+   * participant with the specified name
+   */
+  public boolean hasParticipantRuleEffect(String partName) { 
     for (int i = 0; i < participantRuleEffects.size(); i++) {
       ParticipantRuleEffect tempEffect = participantRuleEffects.elementAt(i);
       if (tempEffect.getParticipant().getName().equals(partName)) {
