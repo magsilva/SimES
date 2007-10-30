@@ -5,14 +5,35 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.actionbuilder.*;
-import java.awt.event.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
-import javax.swing.*;
-import javax.swing.event.*;
-import java.util.*;
-import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class DestroyObjectsRuleInfoForm extends JDialog implements
     ActionListener {
@@ -22,7 +43,7 @@ public class DestroyObjectsRuleInfoForm extends JDialog implements
   private boolean newRule; // whether this is a newly created rule (true) or
                            // editing an existing one (false)
 
-  private Vector participantNames; // for the JList
+  private Vector<String> participantNames; // for the JList
 
   private JList participantList; // for choosing a participant whose trigger
                                  // conditions to edit
@@ -45,13 +66,10 @@ public class DestroyObjectsRuleInfoForm extends JDialog implements
     newRule = newOrEdit;
     actualRule = rule;
     actionInFocus = act;
-    if (!newRule) // editing existing rule
-    {
-      ruleInFocus = (DestroyObjectsRule) (actualRule.clone()); // make a copy of
-                                                               // the rule for
-                                                               // editing
-    } else // new rule
-    {
+    if (!newRule) { // editing existing rule
+    	// make a copy of the rule for editing:
+      ruleInFocus = (DestroyObjectsRule) (actualRule.clone()); 
+    } else { // new rule
       ruleInFocus = rule;
     }
 
@@ -69,23 +87,13 @@ public class DestroyObjectsRuleInfoForm extends JDialog implements
     participantList = new JList();
     participantList.setVisibleRowCount(10); // make 10 items visible at a time
     participantList.setFixedCellWidth(200);
-    participantList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only
-                                                                           // allow
-                                                                           // the
-                                                                           // user
-                                                                           // to
-                                                                           // select
-                                                                           // one
-                                                                           // item
-                                                                           // at a
-                                                                           // time
+    participantList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
     JScrollPane partListPane = new JScrollPane(participantList);
     // initialize participant names:
-    participantNames = new Vector();
-    Vector parts = actionInFocus.getAllParticipants();
+    participantNames = new Vector<String>();
+    Vector<ActionTypeParticipant> parts = actionInFocus.getAllParticipants();
     for (int i = 0; i < parts.size(); i++) {
-      participantNames.add(((ActionTypeParticipant) (parts.elementAt(i)))
-          .getName());
+      participantNames.add(parts.elementAt(i).getName());
     }
     participantList.setListData(participantNames);
     setUpParticipantListActionListenerStuff();
@@ -169,27 +177,20 @@ public class DestroyObjectsRuleInfoForm extends JDialog implements
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { // handles user actions
     Object source = evt.getSource(); // get which component the action came from
-
     if (source == viewEditButton) {
-      if (participantList.isSelectionEmpty() == false) // a participant is
-                                                       // selected
-      {
+      if (participantList.isSelectionEmpty() == false) { // a participant is
+                                                       	 // selected
         // Bring up form for entering info for the new participant condition:
-        DestroyObjectsRuleParticipantConditionInfoForm condsForm = new DestroyObjectsRuleParticipantConditionInfoForm(
-            this, ruleInFocus.getParticipantCondition((String) (participantList
+        new DestroyObjectsRuleParticipantConditionInfoForm(this, 
+        		ruleInFocus.getParticipantCondition((String) (participantList
                 .getSelectedValue())));
       }
-    }
-
-    else if (source == annotationButton) // annotation button selected
-    {
-      RuleAnnotationForm form = new RuleAnnotationForm(this, ruleInFocus);
-    }
-
-    else if (source == okButton) {
+    } else if (source == annotationButton) { // annotation button selected
+      new RuleAnnotationForm(this, ruleInFocus);
+    } else if (source == okButton) {
       // set timing:
       if (continuousButton.isSelected()) {
         ruleInFocus.setTiming(RuleTiming.CONTINUOUS);
@@ -203,37 +204,29 @@ public class DestroyObjectsRuleInfoForm extends JDialog implements
       ruleInFocus.setVisibilityInExplanatoryTool(visibilityCheckBox
           .isSelected());
 
-      if (!newRule) // existing rule being edited
-      {
+      if (!newRule) { // existing rule being edited
         int indexOfRule = actionInFocus.getAllRules().indexOf(actualRule);
-        actionInFocus.removeRule(actualRule.getName()); // remove old version of
-                                                        // rule
-        if (indexOfRule != -1) // rule already exists
-        {
-          actionInFocus.addRule(ruleInFocus, indexOfRule); // add edited rule at
-                                                           // its old location
+        // remove old version of rule:
+        actionInFocus.removeRule(actualRule.getName()); 
+        if (indexOfRule != -1) { // rule already exists
+        	// add edited rule at its old location:
+          actionInFocus.addRule(ruleInFocus, indexOfRule); 
         }
-      } else // newly created rule
-      {
+      } else { // newly created rule
         actionInFocus.addRule(ruleInFocus); // add new rule
       }
 
       // close window:
       setVisible(false);
       dispose();
-    }
-
-    else if (source == cancelButton) {
+    } else if (source == cancelButton) {
       setVisible(false);
       dispose();
     }
   }
 
-  private void setUpParticipantListActionListenerStuff() // enables view/edit
-                                                         // button whenever a
-                                                         // list item (action)
-                                                         // is selected
-  {
+  // enables view/edit button whenever a list item (action) is selected
+  private void setUpParticipantListActionListenerStuff() { 
     // Copied from a Java tutorial:
     ListSelectionModel rowSM = participantList.getSelectionModel();
     rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -273,10 +266,8 @@ public class DestroyObjectsRuleInfoForm extends JDialog implements
 
   public class ExitListener extends WindowAdapter {
     public void windowClosing(WindowEvent event) {
-      {
-        setVisible(false);
-        dispose();
-      }
+      setVisible(false);
+      dispose();
     }
   }
 }

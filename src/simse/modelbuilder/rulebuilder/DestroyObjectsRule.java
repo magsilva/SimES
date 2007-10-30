@@ -2,13 +2,14 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.actionbuilder.*;
-import java.util.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
+
+import java.util.Vector;
 
 public class DestroyObjectsRule extends Rule implements Cloneable {
-  private Vector<DestroyObjectsRuleParticipantCondition> participantConditions; // vector of
-                                        // DestroyObjectsRuleParticipantConditions
-                                        // for this rule
+  private Vector<DestroyObjectsRuleParticipantCondition> participantConditions; 
+  // vector of DestroyObjectsRuleParticipantConditions for this rule
 
   public DestroyObjectsRule(String name, ActionType act) {
     super(name, act);
@@ -34,14 +35,17 @@ public class DestroyObjectsRule extends Rule implements Cloneable {
     return cl;
   }
 
-  public Vector<DestroyObjectsRuleParticipantCondition> getAllParticipantConditions() {
+  public Vector<DestroyObjectsRuleParticipantCondition> 
+  getAllParticipantConditions() {
     return participantConditions;
   }
 
+  /*
+   * returns the condition for the specified participant to be destroyed by this
+   * rule
+   */
   public DestroyObjectsRuleParticipantCondition getParticipantCondition(
-      String participantName) // returns the condition for the specified
-  // participant to be destroyed by this rule
-  {
+      String participantName) { 
     for (int i = 0; i < participantConditions.size(); i++) {
       DestroyObjectsRuleParticipantCondition tempCond = participantConditions
           .elementAt(i);
@@ -52,64 +56,50 @@ public class DestroyObjectsRule extends Rule implements Cloneable {
     return null;
   }
 
+  /*
+   * adds the specified participant condition to this DestroyObjectsRule; if a
+   * condition for this participant is already there, the new condition 
+   * replaces it
+   */
   public void addParticipantCondition(
-      DestroyObjectsRuleParticipantCondition newCond) // adds the specified
-                                                      // participant condition
-                                                      // to this
-  // DestroyObjectsRule; if a condition for this participant is already there,
-  // the new condition replaces it.
-  {
+      DestroyObjectsRuleParticipantCondition newCond) { 
     boolean notFound = true;
     for (int i = 0; i < participantConditions.size(); i++) {
       DestroyObjectsRuleParticipantCondition tempCond = participantConditions
           .elementAt(i);
       if (tempCond.getParticipant().getName().equals(
-          newCond.getParticipant().getName())) // condition for this participant
-                                               // already
-      // exists, needs to be replaced
-      {
+          newCond.getParticipant().getName())) { // condition for this 
+      																					 // participant already exists, 
+      																					 // needs to be replaced
         participantConditions.setElementAt(newCond, i);
         notFound = false;
         break;
       }
     }
-    if (notFound) // new condition, not a replacement for a previous one
-    {
+    if (notFound) { // new condition, not a replacement for a previous one
       participantConditions.add(newCond);
     }
   }
 
-  public void addEmptyCondition(ActionTypeParticipant part) // adds a new
-                                                            // condition that is
-                                                            // unconstrained to
-                                                            // this
-  // DestroyObjectsRule; if a condition for this participant is already there,
-  // the new condition replaces it.
-  {
+  /*
+   * adds a new condition that is unconstrained to this DestroyObjectsRule; if a
+   * condition for this participant is already there, the new condition replaces
+   * it
+   */
+  public void addEmptyCondition(ActionTypeParticipant part) { 
     for (int i = 0; i < participantConditions.size(); i++) {
       DestroyObjectsRuleParticipantCondition tempCond = participantConditions
           .elementAt(i);
-      if (tempCond.getParticipant().getName().equals(part.getName())) // condition
-                                                                      // for
-                                                                      // this
-                                                                      // participant
-                                                                      // already
-                                                                      // exists,
-                                                                      // needs
-                                                                      // to be
-      // replaced
-      {
+      if (tempCond.getParticipant().getName().equals(part.getName())) { 
+      	// condition for this participant already exists, needs to be replaced
         participantConditions.remove(tempCond);
       }
     }
     participantConditions.add(new DestroyObjectsRuleParticipantCondition(part));
   }
 
-  public void removeParticipantConditions(String partName) // removes the
-                                                           // condition for the
-                                                           // participant with
-                                                           // the specified name
-  {
+  // removes the condition for the participant with the specified name
+  public void removeParticipantConditions(String partName) { 
     for (int i = 0; i < participantConditions.size(); i++) {
       DestroyObjectsRuleParticipantCondition tempCond = participantConditions
           .elementAt(i);
@@ -119,7 +109,8 @@ public class DestroyObjectsRule extends Rule implements Cloneable {
     }
   }
 
-  public void setConditions(Vector<DestroyObjectsRuleParticipantCondition> newConditions) {
+  public void setConditions(
+  		Vector<DestroyObjectsRuleParticipantCondition> newConditions) {
     participantConditions = newConditions;
   }
 }

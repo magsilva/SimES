@@ -2,14 +2,16 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
-import java.util.*;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipantConstraint;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+
+import java.util.Vector;
 
 public class DestroyObjectsRuleParticipantCondition implements Cloneable {
   private ActionTypeParticipant participant; // participant
-  private Vector<ActionTypeParticipantConstraint> constraints; // vector of ActionTypeParticipantConstraints for
-                              // this participant
+  private Vector<ActionTypeParticipantConstraint> constraints; 
+  // vector of ActionTypeParticipantConstraints for this participant
 
   public DestroyObjectsRuleParticipantCondition(ActionTypeParticipant part) {
     participant = part;
@@ -23,12 +25,13 @@ public class DestroyObjectsRuleParticipantCondition implements Cloneable {
 
   public Object clone() {
     try {
-      DestroyObjectsRuleParticipantCondition cl = (DestroyObjectsRuleParticipantCondition) (super
-          .clone());
-      cl.participant = participant; // NOTE: since this is a pointer to the
-                                    // participant, it must remain a pointer to
-                                    // the
-      // participant, even in the clone. So BE CAREFUL!!
+      DestroyObjectsRuleParticipantCondition cl = (
+      		DestroyObjectsRuleParticipantCondition) (super.clone());
+      /*
+       * NOTE: since this is a pointer to the participant, it must remain a
+       * pointer to the participant, even in the clone. So BE CAREFUL!!
+       */
+      cl.participant = participant; 
       Vector<ActionTypeParticipantConstraint> clonedConsts = 
       	new Vector<ActionTypeParticipantConstraint>();
       for (int i = 0; i < constraints.size(); i++) {
@@ -44,9 +47,8 @@ public class DestroyObjectsRuleParticipantCondition implements Cloneable {
     return null;
   }
 
-  public ActionTypeParticipant getParticipant() // returns a COPY of the
-                                                // participant
-  {
+  // returns a COPY of the participant
+  public ActionTypeParticipant getParticipant() { 
     return (ActionTypeParticipant) (participant.clone());
   }
 
@@ -58,14 +60,8 @@ public class DestroyObjectsRuleParticipantCondition implements Cloneable {
     return constraints;
   }
 
-  public ActionTypeParticipantConstraint getConstraint(SimSEObjectType type) // returns
-                                                                             // the
-                                                                             // constraint
-                                                                             // for
-                                                                             // the
-                                                                             // specified
-                                                                             // SimSEObjectType
-  {
+  // returns the constraint for the specified SimSEObjectType
+  public ActionTypeParticipantConstraint getConstraint(SimSEObjectType type) { 
     for (int i = 0; i < constraints.size(); i++) {
       ActionTypeParticipantConstraint tempConst = constraints.elementAt(i);
       if (tempConst.getSimSEObjectType() == type) {
@@ -75,22 +71,12 @@ public class DestroyObjectsRuleParticipantCondition implements Cloneable {
     return null;
   }
 
-  public ActionTypeParticipantConstraint getConstraint(String typeName) // note
-                                                                        // to
-                                                                        // self:
-                                                                        // it's
-                                                                        // okay
-                                                                        // to
-                                                                        // just
-                                                                        // give
-                                                                        // the
-                                                                        // type
-                                                                        // name
-                                                                        // and
-                                                                        // not
-  // the SimSEObjectTypeType because all SimSEObjectTypes in one participant
-  // MUST be of the same SimSEObjectTypeType! Think about it!
-  {
+  /*
+   * note to self: it's okay to just give the type name and not the 
+   * SimSEObjectTypeType because all SimSEObjectTypes in one participant MUST be
+   * of the same SimSEObjectTypeType!
+   */
+  public ActionTypeParticipantConstraint getConstraint(String typeName) { 
     for (int i = 0; i < constraints.size(); i++) {
       ActionTypeParticipantConstraint tempConst = constraints.elementAt(i);
       if (tempConst.getSimSEObjectType().getName().equals(typeName)) {
@@ -100,16 +86,11 @@ public class DestroyObjectsRuleParticipantCondition implements Cloneable {
     return null;
   }
 
-  public void addConstraint(ActionTypeParticipantConstraint newConst) // adds
-                                                                      // the
-                                                                      // specified
-                                                                      // constraint
-                                                                      // to the
-                                                                      // participant;
-                                                                      // if a
-                                                                      // constraint
-  // for its SimSEObjectType is already there, the new constraint replaces it.
-  {
+  /*
+   * adds the specified constraint to the participant; if a constraint for its
+   * SimSEObjectType is already there, the new constraint replaces it
+   */
+  public void addConstraint(ActionTypeParticipantConstraint newConst) {
     boolean notFound = true;
     for (int i = 0; i < constraints.size(); i++) {
       ActionTypeParticipantConstraint tempConst = constraints.elementAt(i);
@@ -120,19 +101,17 @@ public class DestroyObjectsRuleParticipantCondition implements Cloneable {
         break;
       }
     }
-    if (notFound) // new constraint, not a replacement for a previous one
-    {
+    if (notFound) { // new constraint, not a replacement for a previous one
       constraints.add(newConst);
     }
   }
 
-  public void addEmptyConstraint(SimSEObjectType type) // adds a new constraint
-                                                       // (of the specified
-                                                       // SimSEObjectType) that
-                                                       // is
-  // unconstrained to this participant; if a constraint with this type is
-  // already there, the new constraint replaces it.
-  {
+  /*
+   * adds a new constraint (of the specified SimSEObjectType) that is 
+   * unconstrained to this participant; if a constraint with this type is
+   * already there, the new constraint replaces it
+   */
+  public void addEmptyConstraint(SimSEObjectType type) { 
     for (int i = 0; i < constraints.size(); i++) {
       ActionTypeParticipantConstraint tempConst = constraints.elementAt(i);
       if (tempConst.getSimSEObjectType().getName().equals(type.getName())) {
@@ -142,9 +121,8 @@ public class DestroyObjectsRuleParticipantCondition implements Cloneable {
     constraints.add(new ActionTypeParticipantConstraint(type));
   }
 
-  public void removeConstraint(SimSEObjectType type) // removes the constraint
-                                                     // for this SimSEObjectType
-  {
+  // removes the constraint for this SimSEObjectType
+  public void removeConstraint(SimSEObjectType type) {
     for (int i = 0; i < constraints.size(); i++) {
       ActionTypeParticipantConstraint tempConst = constraints.elementAt(i);
       if (tempConst.getSimSEObjectType() == type) {
@@ -153,13 +131,13 @@ public class DestroyObjectsRuleParticipantCondition implements Cloneable {
     }
   }
 
-  public void removeConstraint(String typeName) // removes the constraint for
-                                                // the SimSEObjectType with the
-                                                // specified name; note to self:
-  // it's okay to just give the type name and not the SimSEObjectTypeType
-  // because all SimSEObjectTypes in one participant MUST be of
-  // the same SimSEObjectTypeType! Think about it!
-  {
+  /*
+   * removes the constraint for the SimSEObjectType with the specified name;
+   * note to self: it's okay to just give the type name and not the 
+   * SimSEObjectTypeType because all simSEObjectTypes in one participant MUST
+   * be of the same SimSEObjectTypeType!
+   */
+  public void removeConstraint(String typeName) { 
     for (int i = 0; i < constraints.size(); i++) {
       ActionTypeParticipantConstraint tempConst = constraints.elementAt(i);
       if (tempConst.getSimSEObjectType().getName().equals(typeName)) {
@@ -168,7 +146,8 @@ public class DestroyObjectsRuleParticipantCondition implements Cloneable {
     }
   }
 
-  public void setConstraints(Vector<ActionTypeParticipantConstraint> newConstraints) {
+  public void setConstraints(
+  		Vector<ActionTypeParticipantConstraint> newConstraints) {
     constraints = newConstraints;
   }
 }
