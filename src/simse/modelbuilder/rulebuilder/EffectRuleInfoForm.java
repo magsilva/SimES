@@ -2,16 +2,55 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.objectbuilder.Attribute;
+import simse.modelbuilder.objectbuilder.AttributeTypes;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.NumericalAttribute;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
 
-import java.awt.event.*;
-import java.awt.*;
-import java.awt.Dimension;
-import javax.swing.*;
-import javax.swing.event.*;
-import java.util.*;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+
+import java.util.Arrays;
+import java.util.Vector;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class EffectRuleInfoForm extends JDialog implements ActionListener,
     KeyListener, MouseListener {
@@ -49,16 +88,16 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
   private JButton numActionsOtherPartButton; // number of actions the other
                                              // participants in the action are
                                              // involved in
-  private Vector timeButtons; // numbers relating to time
+  private Vector<JButton> timeButtons; // numbers relating to time
   private JButton timeElapsedButton;
   private JButton actTimeElapsedButton;
-  private Vector digitButtons; // 0, 1, 2, 3, ...
+  private Vector<JButton> digitButtons; // 0, 1, 2, 3, ...
   private JButton buttonDot;
-  private Vector operatorButtons; // +, -, *, /, (, )
+  private Vector<JButton> operatorButtons; // +, -, *, /, (, )
   private JButton buttonMinus;
   private JButton buttonOpenParen;
   private JButton buttonCloseParen;
-  private Vector otherButtons; // e.g., random(min, max)
+  private Vector<JButton> otherButtons; // e.g., random(min, max)
   private JButton randomButton;
   private JButton stringButton;
   private JButton booleanButton;
@@ -69,11 +108,12 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
   private JScrollPane effectsMiddlePane;
   private Box effectsMiddleMiddlePane; // pane for holding all of the
                                        // participant info
-  private Vector textFields; // Vector of text fields, one for each attribute of
-                             // the object type currently in focus
+  private Vector<JTextField> textFields; // Vector of text fields, one for each 
+  																			 // attribute of the object type 
+  																			 // currently in focus
   private JList participantList; // list of participants to choose from for
                                  // editing
-  private Vector partNames; // list of participants for JList
+  private Vector<String> partNames; // list of participants for JList
   private JButton viewEditEffectsButton; // for viewing a participant's effects
   private JButton buttonPadButton; // for bringing up button pad
   private Box otherActEffectPanel; // main panel for the specifying effect on
@@ -119,16 +159,14 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     newRule = newOrEdit;
     actualRule = rule;
     actionInFocus = act;
-    if (!newRule) // editing existing rule
-    {
-      ruleInFocus = (EffectRule) (actualRule.clone()); // make a copy of the
-                                                       // rule for editing
-    } else // new rule
-    {
+    if (!newRule) { // editing existing rule
+    	// make a copy of the rule for editing:
+      ruleInFocus = (EffectRule) (actualRule.clone()); 
+    } else { // new rule
       ruleInFocus = rule;
     }
     actions = acts;
-    textFields = new Vector();
+    textFields = new Vector<JTextField>();
     echoedTextField = new JTextArea(50, 100);//250);
     echoedTextField.setEditable(false);
     echoedTextField.setLineWrap(true);
@@ -220,7 +258,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     numActionsOtherPartButton.addActionListener(this);
     numActionsOtherPartButton.addKeyListener(this);
     // initialize time buttons:
-    timeButtons = new Vector();
+    timeButtons = new Vector<JButton>();
     timeElapsedButton = new JButton("totalTimeElapsed");
     timeElapsedButton.addActionListener(this);
     timeElapsedButton.addKeyListener(this);
@@ -231,7 +269,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     timeButtons.add(actTimeElapsedButton);
 
     // initialize digit buttons:
-    digitButtons = new Vector();
+    digitButtons = new Vector<JButton>();
     JButton button0 = new JButton("0");
     digitButtons.add(button0);
     JButton button1 = new JButton("1");
@@ -256,13 +294,13 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     digitButtons.add(buttonDot);
 
     for (int i = 0; i < digitButtons.size(); i++) {
-      JButton b = (JButton) digitButtons.get(i);
+      JButton b = digitButtons.get(i);
       b.addActionListener(this);
       b.addKeyListener(this);
     }
 
     // initialize operator buttons:
-    operatorButtons = new Vector();
+    operatorButtons = new Vector<JButton>();
     JButton buttonPlus = new JButton("+");
     operatorButtons.add(buttonPlus);
     buttonMinus = new JButton("-");
@@ -277,13 +315,13 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     operatorButtons.add(buttonCloseParen);
 
     for (int i = 0; i < operatorButtons.size(); i++) {
-      JButton b = (JButton) operatorButtons.get(i);
+      JButton b = operatorButtons.get(i);
       b.addActionListener(this);
       b.addKeyListener(this);
     }
 
     // initialize other buttons:
-    otherButtons = new Vector();
+    otherButtons = new Vector<JButton>();
     randomButton = new JButton("Random(min, max)");
     randomButton.setMnemonic('R');
     otherButtons.add(randomButton);
@@ -297,7 +335,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     otherButtons.add(backspaceButton);
 
     for (int i = 0; i < otherButtons.size(); i++) {
-      JButton b = (JButton) otherButtons.get(i);
+      JButton b = otherButtons.get(i);
       b.addActionListener(this);
       b.addKeyListener(this);
     }
@@ -311,16 +349,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     participantList.addMouseListener(this);
     participantList.setVisibleRowCount(5); // make 5 items visible at a time
     participantList.setFixedCellWidth(250);
-    participantList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only
-                                                                           // allow
-                                                                           // the
-                                                                           // user
-                                                                           // to
-                                                                           // select
-                                                                           // one
-                                                                           // item
-                                                                           // at a
-                                                                           // time
+    participantList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
     JScrollPane participantListPane = new JScrollPane(participantList);
     effectsBottomPane.add(participantListPane);
     refreshParticipantList();
@@ -350,16 +379,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     ruleInputList = new JList();
     ruleInputList.setVisibleRowCount(5); // make 5 items visible at a time
     ruleInputList.setFixedCellWidth(250);
-    ruleInputList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only
-                                                                         // allow
-                                                                         // the
-                                                                         // user
-                                                                         // to
-                                                                         // select
-                                                                         // one
-                                                                         // item
-                                                                         // at a
-                                                                         // time
+    ruleInputList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
     ruleInputList.addMouseListener(this);
     JScrollPane inputListPane = new JScrollPane(ruleInputList);
     refreshRuleInputList();
@@ -404,8 +424,9 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     JPanel joinPane = new JPanel();
     joinCheckBox = new JCheckBox(
         "Re-execute rule with each joining/un-joining participant");
-    joinCheckBox
-        .setToolTipText("Re-execute this rule for all participants whenever any participant joins (for a trigger rule) or un-joins (for a destroyer rule)");
+    joinCheckBox.setToolTipText("Re-execute this rule for all participants " +
+    		"whenever any participant joins (for a trigger rule) or un-joins (for" +
+    		" a destroyer rule)");
     joinPane.add(joinCheckBox);
 
     refreshTimingButtons();
@@ -482,9 +503,8 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       if (o == participantList && viewEditEffectsButton.isEnabled()) {
         viewEditEffects();
         handled = true;
-      } else if (o == ruleInputList)//&& ruleInputList.getSelectedIndex() >= 0
-                                    // )
-      {
+      } else if (o == ruleInputList) { //&& ruleInputList.getSelectedIndex() >= 
+                                    	 // 0)
         editRuleInput(ruleInFocus.getRuleInput((String) ruleInputList
             .getSelectedValue()));
         handled = true;
@@ -494,17 +514,13 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
 
   }
 
-  public void mousePressed(MouseEvent me) {
-  }
+  public void mousePressed(MouseEvent me) {}
 
-  public void mouseReleased(MouseEvent me) {
-  }
+  public void mouseReleased(MouseEvent me) {}
 
-  public void mouseEntered(MouseEvent me) {
-  }
+  public void mouseEntered(MouseEvent me) {}
 
-  public void mouseExited(MouseEvent me) {
-  }
+  public void mouseExited(MouseEvent me) {}
 
   public void keyPressed(KeyEvent ke) {
     int key = ke.getKeyCode();
@@ -554,7 +570,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     case KeyEvent.VK_NUMPAD8:
     case KeyEvent.VK_NUMPAD9:
       for (int i = 0; i < digitButtons.size(); i++) {
-        JButton b = (JButton) digitButtons.get(i);
+        JButton b = digitButtons.get(i);
         if (b.getText().trim().equalsIgnoreCase(ke.getKeyChar() + ""))
           enabled = b.isEnabled();
       }
@@ -565,24 +581,22 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
 
     boolean found = false;
     for (int i = 0; !found && i < digitButtons.size(); i++) {
-      JButton abtn = (JButton) digitButtons.get(i);
+      JButton abtn = digitButtons.get(i);
       if (abtn.isEnabled()) {
         abtn.requestFocus();
         found = true;
       }
     }
     for (int i = 0; !found && i < otherButtons.size(); i++) {
-      JButton abtn = (JButton) otherButtons.get(i);
+      JButton abtn = otherButtons.get(i);
       if (abtn.isEnabled()) {
         abtn.requestFocus();
         found = true;
       }
     }
-
   }
 
-  public void keyReleased(KeyEvent ke) {
-  }
+  public void keyReleased(KeyEvent ke) {}
 
   public void keyTyped(KeyEvent ke) {
     char keyChar = ke.getKeyChar();
@@ -595,19 +609,18 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
 	  case '(':
 	  case ')':
 	    for (int i = 0; i < operatorButtons.size(); i++) {
-	      JButton b = (JButton) operatorButtons.get(i);
+	      JButton b = operatorButtons.get(i);
 	      if (b.getText().trim().equalsIgnoreCase(keyChar + ""))
 	        enabled = b.isEnabled();
 	    }
 	    if (enabled)
 	      operatorButtonChosen(new JButton(keyChar + ""));
 	    break;
-	
 	  }
 	
 	  boolean found = false;
 	  for (int i = 0; !found && i < operatorButtons.size(); i++) {
-	    JButton abtn = (JButton) operatorButtons.get(i);
+	    JButton abtn = operatorButtons.get(i);
 	    if (abtn.isEnabled()) {
 	      abtn.requestFocus();
 	      found = true;
@@ -615,51 +628,34 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
 	  }
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     if (buttGUI != null)
       buttGUI.requestFocus();
 
     Object source = evt.getSource();
     if (source == viewEditEffectsButton) {
       viewEditEffects();
-    }
-
-    else if (source == buttonPadButton) {
+    } else if (source == buttonPadButton) {
       newButtonPad();
-    }
-
-    // buttons on button pad:
-    else if (source == inputButton) {
+    } else if (source == inputButton) {
       inputButtonChosen();
-    }
-
-    else if (source == attributeThisPartButton) {
+    } else if (source == attributeThisPartButton) {
       attributeThisPartButtonChosen();
-    }
-
-    else if (source == attributeOtherPartButton) {
+    } else if (source == attributeOtherPartButton) {
       attributeOtherPartButtonChosen();
-    }
-
-    else if (source == numObjectsButton) {
+    } else if (source == numObjectsButton) {
       numObjectsButtonChosen();
-    }
-
-    else if (source == numActionsThisPartButton) {
+    } else if (source == numActionsThisPartButton) {
       numActionsThisPartButtonChosen();
-    }
-
-    else if (source == numActionsOtherPartButton) {
+    } else if (source == numActionsOtherPartButton) {
       numActionsOtherPartButtonChosen();
-    }
-
-    else if (source == timeElapsedButton) {
+    } else if (source == timeElapsedButton) {
       // append the text to the text field:
-      if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
-          && (getLastToken(echoedTextField.getText()).equals("-"))) // negative
-      // sign was last token
-      {
+      if ((getLastTokenType(echoedTextField.getText()) == DIGIT) && 
+      		(getLastToken(echoedTextField.getText()).equals("-"))) { // negative
+      																														 // sign was 
+      																														 // last token
         setEchoedTextFieldText(echoedTextField.getText().trim().concat(
             "totalTimeElapsed "));
       } else {
@@ -667,88 +663,49 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
             "totalTimeElapsed "));
       }
       refreshButtonPad(NUMBER);
-    }
-
-    else if (source == actTimeElapsedButton) {
+    } else if (source == actTimeElapsedButton) {
       actTimeElapsedButtonChosen();
-    }
-
-    else if (source == randomButton) {
+    } else if (source == randomButton) {
       randomButtonChosen();
-    }
-    
-    else if (source == activateButton) {
+    } else if (source == activateButton) {
       setActionListsEnabled(false);
-    }
-    
-    else if (source == deactivateButton) {
+    } else if (source == deactivateButton) {
       setActionListsEnabled(false);
-    }
-    
-    else if (source == noneButton) {
+    } else if (source == noneButton) {
       setActionListsEnabled(false);
-    }
-    
-    else if (source == specificButton) {
+    } else if (source == specificButton) {
       setActionListsEnabled(true);
       refreshActionLists();
-    }
-
-    else if (source == newRuleInputButton) {
+    } else if (source == newRuleInputButton) {
       newRuleInput();
-    }
-
-    else if (source == viewEditInputButton) {
-      if (ruleInputList.getSelectedIndex() >= 0) // a rule input is selected
-      {
+    } else if (source == viewEditInputButton) {
+      if (ruleInputList.getSelectedIndex() >= 0) { // a rule input is selected
         editRuleInput(ruleInFocus.getRuleInput((String) ruleInputList
             .getSelectedValue()));
       }
-    }
-
-    else if (source == removeInputButton) {
-      if (ruleInputList.getSelectedIndex() >= 0) // a rule input is selected
-      {
+    } else if (source == removeInputButton) {
+      if (ruleInputList.getSelectedIndex() >= 0) { // a rule input is selected
         removeRuleInput((String) ruleInputList.getSelectedValue());
       }
-    }
-
-    else if (source == triggerButton) // trigger button has been clicked
-    {
+    } else if (source == triggerButton) { // trigger button has been clicked
       joinCheckBox.setEnabled(true);
-    }
-
-    else if (source == destroyerButton) // destroyer button has been clicked
-    {
+    } else if (source == destroyerButton) { // destroyer button has been clicked
       joinCheckBox.setEnabled(true);
-    }
-
-    else if (source == continuousButton) // continuous button has been clicked
-    {
+    } else if (source == continuousButton) { // continuous button has been 
+    																				 // clicked
       joinCheckBox.setEnabled(false);
-    }
-
-    else if (source == annotationButton) // annotation button selected
-    {
-      RuleAnnotationForm form = new RuleAnnotationForm(this, ruleInFocus);
-    }
-
-    else if (source == cancelButton) // cancel button has been pressed
-    {
+    } else if (source == annotationButton) { // annotation button selected
+      new RuleAnnotationForm(this, ruleInFocus);
+    } else if (source == cancelButton) { // cancel button has been pressed
       // Close window:
       setVisible(false);
       dispose();
-    }
-
-    else if (source == okButton) // okButton has been pressed
-    {
+    } else if (source == okButton) { // okButton has been pressed
       setParticipantInFocusDataFromForm();
-      Vector errors = validateInput(); // check validity of input of object type
-                                       // currently in focus
-      if (errors.size() == 0) // input valid
-      {
-        if (!newRule) // existing rule being edited
-        {
+      // check validity of input of object type currently in focus:
+      Vector<String> errors = validateInput(); 
+      if (errors.size() == 0) { // input valid
+        if (!newRule) { // existing rule being edited
           // set the values to the actual participant from the copy whose values
           // have been edited:
           actualRule.setParticipantRuleEffects(ruleInFocus
@@ -759,103 +716,81 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
               .isVisibleInExplanatoryTool());
           actualRule.setAnnotation(ruleInFocus.getAnnotation());
           actualRule.setExecuteOnJoins(ruleInFocus.getExecuteOnJoins());
-        } else // new rule
-        {
+        } else { // new rule
           actionInFocus.addRule(ruleInFocus);
         }
 
         // close window:
         setVisible(false);
         dispose();
-      } else // input not valid
-      {
+      } else { // input not valid
         for (int i = 0; i < errors.size(); i++) {
-          JOptionPane.showMessageDialog(null, ((String) errors.elementAt(i)),
-              "Invalid Input", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null, errors.elementAt(i),
+          		"Invalid Input", JOptionPane.ERROR_MESSAGE);
         }
       }
-    }
-
-    else if (source == stringButton) {
+    } else if (source == stringButton) {
       stringButtonChosen();
-    }
-
-    else if (source == booleanButton) {
+    } else if (source == booleanButton) {
       booleanButtonChosen();
-    }
-
-    else if (source == backspaceButton) {
+    } else if (source == backspaceButton) {
       backspaceButtonChosen();
-    }
-
-    else if ((source instanceof JButton)
-        && (((JButton) source).getText().length() == 1)
-        && ((Character.isDigit(((JButton) source).getText().toCharArray()[0])) || (((JButton) source)
-            .getText().toCharArray()[0] == '.')))
-    // digit button (or '.' button)
-    {
-      digitButtonChosen((JButton) source);
-    }
-
-    else if ((source instanceof JButton)
-        && ((((JButton) source).getText().equals("+"))
-            || (((JButton) source).getText().equals("-"))
-            || (((JButton) source).getText().equals("*")) || (((JButton) source)
-            .getText().equals("/")))) // operator button chosen
-    {
-      operatorButtonChosen((JButton) source);
-    }
-
-    else if ((source instanceof JButton)
-        && (((JButton) source).getText().equals("("))) {
-      // append the text to the text field:
-      if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
-          && (getLastToken(echoedTextField.getText()).equals("-"))) // negative
-      // sign was last token
-      {
-        setEchoedTextFieldText(echoedTextField.getText().trim().concat(
-            "("));
-      } else {
-        setEchoedTextFieldText(echoedTextField.getText().concat("("));
-      }
-      refreshButtonPad(OPEN_PAREN);
-    }
-
-    else if ((source instanceof JButton)
-        && (((JButton) source).getText().equals(")"))) {
-      // append the text to the text field:
-      setEchoedTextFieldText(echoedTextField.getText().trim()
-          .concat(") "));
-      refreshButtonPad(CLOSED_PAREN);
+    } else if (source instanceof JButton) {
+    	JButton buttonSource = (JButton)source;
+      if ((buttonSource.getText().length() == 1) && 
+      		((Character.isDigit(buttonSource.getText().toCharArray()[0])) || 
+      				(buttonSource.getText().toCharArray()[0] == '.'))) { // digit 
+      																														 // button (or
+      																														 // '.' 
+      																														 // button)
+	      digitButtonChosen(buttonSource);
+	    } else if ((buttonSource.getText().equals("+")) || 
+	    		(buttonSource.getText().equals("-")) || 
+	    		(buttonSource.getText().equals("*")) || 
+	    		(buttonSource.getText().equals("/"))) { // operator button chosen
+	      operatorButtonChosen((JButton) source);
+	    } else if (buttonSource.getText().equals("(")) {
+	      // append the text to the text field:
+	      if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
+	          && (getLastToken(echoedTextField.getText()).equals("-"))) { 
+	      	// negative sign was last token
+	        setEchoedTextFieldText(echoedTextField.getText().trim().concat(
+	            "("));
+	      } else {
+	        setEchoedTextFieldText(echoedTextField.getText().concat("("));
+	      }
+	      refreshButtonPad(OPEN_PAREN);
+	    } else if (buttonSource.getText().equals(")")) {
+	      // append the text to the text field:
+	      setEchoedTextFieldText(echoedTextField.getText().trim()
+	          .concat(") "));
+	      refreshButtonPad(CLOSED_PAREN);
+	    }
     }
   }
 
   private void refreshParticipantList() {
-    partNames = new Vector();
-    Vector parts = actionInFocus.getAllParticipants();
+    partNames = new Vector<String>();
+    Vector<ActionTypeParticipant> parts = actionInFocus.getAllParticipants();
     for (int i = 0; i < parts.size(); i++) {
-      ActionTypeParticipant tempPart = (ActionTypeParticipant) parts
-          .elementAt(i);
+      ActionTypeParticipant tempPart = parts.elementAt(i);
       partNames.add(tempPart.getName() + ":"); // add each participant's name to
                                                // the list
-      Vector objTypes = tempPart.getAllSimSEObjectTypes();
+      Vector<SimSEObjectType> objTypes = tempPart.getAllSimSEObjectTypes();
       for (int j = 0; j < objTypes.size(); j++) {
-        SimSEObjectType tempType = (SimSEObjectType) objTypes.elementAt(j);
+        SimSEObjectType tempType = objTypes.elementAt(j);
         partNames.add("--" + tempType.getName() + " "
             + SimSEObjectTypeTypes.getText(tempType.getType()));
       }
-
     }
     participantList.setListData(partNames);
   }
 
-  private void setupParticipantListSelectionListenerStuff() // enables view/edit
-                                                            // effects button
-                                                            // whenever a list
-                                                            // item
-                                                            // (participant's
-  // object type) is selected
-  {
+  /*
+   * enables view/edit effects button whenever a list item (participant's object
+   * type) is selected
+   */
+  private void setupParticipantListSelectionListenerStuff() { 
     // Copied from a Java tutorial:
     ListSelectionModel rowSM = participantList.getSelectionModel();
     rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -865,15 +800,13 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
           return;
 
         ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-        if ((lsm.isSelectionEmpty() == false)
-            && (((String) participantList.getSelectedValue()).startsWith("--"))) // a
-        // object type is selected (not a participant name)
-        {
+        if ((lsm.isSelectionEmpty() == false) && 
+        		(((String) participantList.getSelectedValue()).startsWith("--"))) { 
+        	// an object type is selected (not a participant name)
           viewEditEffectsButton.setEnabled(true);
-        } else if ((lsm.isSelectionEmpty() == false)
-            && (((String) participantList.getSelectedValue()).startsWith("--")) == false)
-        // a participant name is selected
-        {
+        } else if ((lsm.isSelectionEmpty() == false) && 
+        		(((String) participantList.getSelectedValue()).startsWith("--")) == 
+        			false) { // a participant name is selected
           viewEditEffectsButton.setEnabled(false);
         }
       }
@@ -881,10 +814,10 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
   }
 
   private void refreshRuleInputList() {
-    Vector inputs = ruleInFocus.getAllRuleInputs();
-    Vector inputNames = new Vector();
+    Vector<RuleInput> inputs = ruleInFocus.getAllRuleInputs();
+    Vector<String> inputNames = new Vector<String>();
     for (int i = 0; i < inputs.size(); i++) {
-      inputNames.add(((RuleInput) inputs.elementAt(i)).getName());
+      inputNames.add(inputs.elementAt(i).getName());
     }
     ruleInputList.setListData(inputNames);
   }
@@ -915,14 +848,13 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
      * make a Vector of the names of all possible actions this object 
      * could participate in:
      */
-    Vector relevantActs = new Vector();
-    Vector allActs = actions.getAllActionTypes();
+    Vector<String> relevantActs = new Vector<String>();
+    Vector<ActionType> allActs = actions.getAllActionTypes();
     for (int i = 0; i < allActs.size(); i++) {
-      ActionType tempAct = (ActionType) allActs.elementAt(i);
-      Vector parts = tempAct.getAllParticipants();
+      ActionType tempAct = allActs.elementAt(i);
+      Vector<ActionTypeParticipant> parts = tempAct.getAllParticipants();
       for (int j = 0; j < parts.size(); j++) {
-        ActionTypeParticipant tempPart = 
-          (ActionTypeParticipant) parts.elementAt(j);
+        ActionTypeParticipant tempPart = parts.elementAt(j);
         if (tempPart.hasSimSEObjectType(objectTypeInFocus.getName())) {
           relevantActs.add(tempAct.getName());
           break;
@@ -935,13 +867,13 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     actionsToDeactivateList.clearSelection();
     
     // set the proper actions to activate to selected/unselected:
-    Vector actActions = ruleInFocus.getParticipantRuleEffect(
+    Vector<ActionType> actActions = ruleInFocus.getParticipantRuleEffect(
         participantInFocus.getName()).getParticipantTypeEffect(
             objectTypeInFocus).getOtherActionsEffect().getActionsToActivate();
     for (int i = 0; i < actActions.size(); i ++) {
-      ActionType tempAct = (ActionType) actActions.elementAt(i);
+      ActionType tempAct = actActions.elementAt(i);
       for (int j = 0; j < relevantActs.size(); j++) {
-        String listActName = (String) relevantActs.elementAt(j);
+        String listActName = relevantActs.elementAt(j);
         if (tempAct.getName().equals(listActName)) {
           actionsToActivateList.addSelectionInterval(j, j);
           break;
@@ -950,14 +882,14 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     }
     
     // set the proper actions to deactivate selected/unselected:
-    Vector deactActions = ruleInFocus.getParticipantRuleEffect(
+    Vector<ActionType> deactActions = ruleInFocus.getParticipantRuleEffect(
         participantInFocus.getName()).getParticipantTypeEffect(
             objectTypeInFocus).getOtherActionsEffect().
             getActionsToDeactivate();
     for (int i = 0; i < deactActions.size(); i ++) {
-      ActionType tempAct = (ActionType) deactActions.elementAt(i);
+      ActionType tempAct = deactActions.elementAt(i);
       for (int j = 0; j < relevantActs.size(); j++) {
-        String listActName = (String) relevantActs.elementAt(j);
+        String listActName = relevantActs.elementAt(j);
         if (tempAct.getName().equals(listActName)) {
           actionsToDeactivateList.addSelectionInterval(j, j);
           break;
@@ -974,13 +906,11 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     visibilityCheckBox.setSelected(ruleInFocus.isVisibleInExplanatoryTool());
   }
 
-  private void setupRuleInputListSelectionListenerStuff() // enables view/edit
-                                                          // and remove buttons
-                                                          // whenever a list
-                                                          // item (rule input)
-                                                          // is
-  // selected
-  {
+  /*
+   * enables view/edit and remove buttons whenever a list item (rule input) is
+   * selected
+   */
+  private void setupRuleInputListSelectionListenerStuff() { 
     // Copied from a Java tutorial:
     ListSelectionModel rowSM = ruleInputList.getSelectionModel();
     rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -1000,37 +930,28 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
 
   private void viewEditEffects() {
     int selectedIndex = participantList.getSelectedIndex();
-    if (selectedIndex >= 0) // a participant is selected
-    {
+    if (selectedIndex >= 0) { // a participant is selected
       String selectedString = (String) participantList.getSelectedValue();
       // move up in the list from the selected item 'til you find the
       // participant name:
       int i = (selectedIndex - 1);
-      String item = (String) partNames.elementAt(i);
+      String item = partNames.elementAt(i);
       while (item.startsWith("--")) {
         i--;
-        item = (String) partNames.elementAt(i);
+        item = partNames.elementAt(i);
       }
+      // trim off the colon to get the participant name:
       ActionTypeParticipant tempPart = actionInFocus.getParticipant(item
-          .substring(0, (item.length() - 1))); // trim off
-      // the colon to get the participant name
+          .substring(0, (item.length() - 1))); 
+      // trim off dashes at beginning to get the type name:
       SimSEObjectType tempType = tempPart.getSimSEObjectType(selectedString
           .substring(2, selectedString.indexOf(" ")));
-      // trim off dashes at beginning to get the type name
-      if ((objectTypeInFocus != null)
-          && (((tempPart == participantInFocus) && (tempType != objectTypeInFocus)) || (tempPart != participantInFocus))) // selection
-                                                                                                                          // is
-                                                                                                                          // not
-                                                                                                                          // the
-                                                                                                                          // SimSEObjectType
-                                                                                                                          // and
-                                                                                                                          // participant
-                                                                                                                          // that
-                                                                                                                          // was
-                                                                                                                          // already
-                                                                                                                          // in
-                                                                                                                          // focus
-      {
+      if ((objectTypeInFocus != null) && (((tempPart == participantInFocus) && 
+      		(tempType != objectTypeInFocus)) || 
+      		(tempPart != participantInFocus))) { // selection is not the 
+      																				 // SimSEObjectType and 
+      																				 // participant that was already 
+      																				 // in focus
         setParticipantInFocusDataFromForm();
         setParticipantInFocus(tempPart, tempType); // set the new focus
       } else if (objectTypeInFocus == null) {
@@ -1039,35 +960,34 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     }
   }
 
-  private Vector validateInput() // returns a vector of error messages (if any)
-  {
-    Vector messages = new Vector();
-    Vector partEffects = ruleInFocus.getAllParticipantRuleEffects();
+  // returns a vector of error messages (if any)
+  private Vector<String> validateInput() { 
+    Vector<String> messages = new Vector<String>();
+    Vector<ParticipantRuleEffect> partEffects = 
+    	ruleInFocus.getAllParticipantRuleEffects();
     // go through all ParticipantRuleEffects to validate them:
     for (int i = 0; i < partEffects.size(); i++) {
-      ParticipantRuleEffect tempRuleEffect = (ParticipantRuleEffect) partEffects
-          .elementAt(i);
-      Vector partTypeEffects = tempRuleEffect.getAllParticipantTypeEffects();
+      ParticipantRuleEffect tempRuleEffect = partEffects.elementAt(i);
+      Vector<ParticipantTypeRuleEffect> partTypeEffects = 
+      	tempRuleEffect.getAllParticipantTypeEffects();
 
       // go through all ParticipantTypeRuleEffects to validate them:
       for (int j = 0; j < partTypeEffects.size(); j++) {
-        ParticipantTypeRuleEffect tempTypeRuleEffect = (ParticipantTypeRuleEffect) partTypeEffects
-            .elementAt(j);
-        Vector attRuleEffects = tempTypeRuleEffect.getAllAttributeEffects();
+        ParticipantTypeRuleEffect tempTypeRuleEffect = 
+        	partTypeEffects.elementAt(j);
+        Vector<ParticipantAttributeRuleEffect> attRuleEffects = 
+        	tempTypeRuleEffect.getAllAttributeEffects();
         // go through all ParticipantAttributeRuleEffects to validate them:
         for (int k = 0; k < attRuleEffects.size(); k++) {
           String message = new String();
-          ParticipantAttributeRuleEffect tempAttEffect = (ParticipantAttributeRuleEffect) attRuleEffects
-              .elementAt(k);
-          if ((tempAttEffect.getAttribute().getType() == AttributeTypes.INTEGER)
-              || (tempAttEffect.getAttribute().getType() == AttributeTypes.DOUBLE)) // numerical
-                                                                                    // attribute
-                                                                                    // (needs
-                                                                                    // checking)
-          {
+          ParticipantAttributeRuleEffect tempAttEffect = 
+          	attRuleEffects.elementAt(k);
+          if ((tempAttEffect.getAttribute().getType() == 
+          	AttributeTypes.INTEGER) || 
+          	(tempAttEffect.getAttribute().getType() == AttributeTypes.DOUBLE)) {
+          	// numerical attribute (needs checking)
             String effect = tempAttEffect.getEffect();
-            if ((effect != null) && (effect.length() > 0)) // non-empty
-            {
+            if ((effect != null) && (effect.length() > 0)) { // non-empty
               // Check for num open paren > num close paren:
               int numOpen = 0;
               int numClose = 0;
@@ -1087,7 +1007,9 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
                     + " "
                     + SimSEObjectTypeTypes.getText(tempTypeRuleEffect
                         .getSimSEObjectType().getType()) + " "
-                    + tempAttEffect.getAttribute().getName() + " attribute: number of opening parentheses > number of closing parentheses");
+                    + tempAttEffect.getAttribute().getName() + " attribute: " +
+                    		"number of opening parentheses > number of closing " +
+                    		"parentheses");
               }
 
               // Check for ending with an invalid ending token:
@@ -1096,17 +1018,15 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
               if ((lastToken.trim().equals("-"))
                   || (lastToken.trim().equals("."))
                   || (lastTokenType == OPEN_PAREN)
-                  || (lastTokenType == OPERATOR)) // invalid ending tokens
-              {
-                if ((message != null) && (message.length() > 0)) // message
-                                                                 // already has
-                                                                 // some text
-                {
+                  || (lastTokenType == OPERATOR)) { // invalid ending tokens
+                if ((message != null) && (message.length() > 0)) { // message
+                                                                 	 // already 
+                																									 // has some 
+                																									 // text
                   // just concatenate the rest of it:
                   message = message
                       .concat("; incomplete expression / invalid ending token");
-                } else // message empty at this point
-                {
+                } else { // message empty at this point
                   message = ("Invalid expression for "
                       + tempRuleEffect.getParticipant().getName()
                       + " "
@@ -1114,12 +1034,12 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
                       + " "
                       + SimSEObjectTypeTypes.getText(tempTypeRuleEffect
                           .getSimSEObjectType().getType()) + " "
-                      + tempAttEffect.getAttribute().getName() + ": incomplete expression / invalid ending token");
+                      + tempAttEffect.getAttribute().getName() + 
+                      ": incomplete expression / invalid ending token");
                 }
               }
-              if ((message != null) && (message.length() > 0)) // message got
-                                                               // instantiated
-              {
+              if ((message != null) && (message.length() > 0)) { // message got
+                                                               	 // instantiated
                 messages.add(message);
               }
             }
@@ -1153,10 +1073,10 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     ruleInFocus.setVisibilityInExplanatoryTool(visibilityCheckBox.isSelected());
 
     if (objectTypeInFocus != null) {
-      Vector attributes = objectTypeInFocus.getAllAttributes();
+      Vector<Attribute> attributes = objectTypeInFocus.getAllAttributes();
       for (int i = 0; i < attributes.size(); i++) {
         // get the participant attribute rule effect for the attribute:
-        Attribute tempAtt = (Attribute) (attributes.elementAt(i));
+        Attribute tempAtt = attributes.elementAt(i);
         ParticipantAttributeRuleEffect attEffect = ruleInFocus
             .getParticipantRuleEffect(participantInFocus.getName())
             .getParticipantTypeEffect(objectTypeInFocus).getAttributeEffect(
@@ -1167,30 +1087,29 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       }
 
       // set the other actions effects:
-      if (activateButton.isSelected()) // activate all
-      {
-        ruleInFocus.getParticipantRuleEffect(participantInFocus.getName())
-            .getParticipantTypeEffect(objectTypeInFocus).getOtherActionsEffect().
-            setEffect(OtherActionsEffect.ACTIVATE_ALL);
+      if (activateButton.isSelected()) { // activate all
+        ruleInFocus.getParticipantRuleEffect(
+        		participantInFocus.getName()).getParticipantTypeEffect(
+        				objectTypeInFocus).getOtherActionsEffect().setEffect(
+        						OtherActionsEffect.ACTIVATE_ALL);
       } 
-      else if (deactivateButton.isSelected()) // deactivate all
-      {
-        ruleInFocus.getParticipantRuleEffect(participantInFocus.getName())
-            .getParticipantTypeEffect(objectTypeInFocus).getOtherActionsEffect().
-            setEffect(OtherActionsEffect.DEACTIVATE_ALL);
+      else if (deactivateButton.isSelected()) { // deactivate all
+        ruleInFocus.getParticipantRuleEffect(
+        		participantInFocus.getName()).getParticipantTypeEffect(
+        				objectTypeInFocus).getOtherActionsEffect().setEffect(
+        						OtherActionsEffect.DEACTIVATE_ALL);
       } 
-      else if (noneButton.isSelected()) // none
-      {
-        ruleInFocus.getParticipantRuleEffect(participantInFocus.getName())
-            .getParticipantTypeEffect(objectTypeInFocus).getOtherActionsEffect().
-            setEffect(OtherActionsEffect.NONE);
+      else if (noneButton.isSelected()) { // none
+        ruleInFocus.getParticipantRuleEffect(
+        		participantInFocus.getName()).getParticipantTypeEffect(
+        				objectTypeInFocus).getOtherActionsEffect().setEffect(
+        						OtherActionsEffect.NONE);
       }
-      else if (specificButton.isSelected()) // specific
-      {
-        ruleInFocus.getParticipantRuleEffect(participantInFocus.getName())
-            .getParticipantTypeEffect(objectTypeInFocus).
-            getOtherActionsEffect().setEffect(
-                OtherActionsEffect.ACTIVATE_DEACTIVATE_SPECIFIC_ACTIONS);
+      else if (specificButton.isSelected()) { // specific
+        ruleInFocus.getParticipantRuleEffect(
+        		participantInFocus.getName()).getParticipantTypeEffect(
+        				objectTypeInFocus).getOtherActionsEffect().setEffect(
+        						OtherActionsEffect.ACTIVATE_DEACTIVATE_SPECIFIC_ACTIONS);
         
         // clear current settings for specific actions to activate/deactivate:
         ruleInFocus.getParticipantRuleEffect(participantInFocus.getName())
@@ -1229,10 +1148,9 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     }
   }
 
+  // makes the specified participant and object type the focus of the gui
   private void setParticipantInFocus(ActionTypeParticipant part,
-      SimSEObjectType type) // makes the specified participant and object
-  // type the focus of the gui
-  {
+      SimSEObjectType type) { 
     participantInFocus = part;
     objectTypeInFocus = type;
 
@@ -1250,27 +1168,22 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     JPanel equalsPanel = new JPanel(new GridLayout(0, 1, 0, 3));
     JPanel expPanel = new JPanel(new GridLayout(0, 1, 0, 1));
     // get all attributes:
-    Vector attributes = type.getAllAttributes();
-    for (int index = 0; index < attributes.size(); index++) // go through each
-                                                            // one and add its
-                                                            // info:
-    {
-      Attribute att = (Attribute) (attributes.elementAt(index));
-
+    Vector<Attribute> attributes = type.getAllAttributes();
+    // go through each one and add its info:
+    for (int index = 0; index < attributes.size(); index++) { 
+      Attribute att = attributes.elementAt(index);
       // name and type info:
       StringBuffer attLabel = new StringBuffer(att.getName() + " ("
           + AttributeTypes.getText(att.getType())); // attribute name & type
       if ((att.getType() == AttributeTypes.INTEGER)
-          || (att.getType() == AttributeTypes.DOUBLE)) // double or integer
-                                                       // attribute
-      {
-        if (((NumericalAttribute) att).isMinBoundless() == false) {
-          attLabel.append(", min value = "
-              + ((NumericalAttribute) att).getMinValue().toString());
+          || (att.getType() == AttributeTypes.DOUBLE)) { // double or integer
+                                                       	 // attribute
+      	NumericalAttribute numAtt = (NumericalAttribute)att;
+        if (!numAtt.isMinBoundless()) {
+          attLabel.append(", min value = " + numAtt.getMinValue().toString());
         }
-        if (((NumericalAttribute) att).isMaxBoundless() == false) {
-          attLabel.append(", max value = "
-              + ((NumericalAttribute) att).getMaxValue().toString());
+        if (!numAtt.isMaxBoundless()) {
+          attLabel.append(", max value = " + numAtt.getMaxValue().toString());
         }
       }
       attLabel.append(")");
@@ -1287,8 +1200,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       JTextField expTextField = new JTextField(500);
       if (att.isKey()) {
         expTextField.setEditable(false);
-      }
-      else {
+      } else {
         expTextField.addMouseListener(this);
 	      // set the text field to the correct value:
 	      ParticipantRuleEffect a = ruleInFocus
@@ -1297,39 +1209,34 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
 	          .getParticipantTypeEffect(objectTypeInFocus);
 	      ParticipantAttributeRuleEffect c = b.getAttributeEffect(att.getName());
 	      String exp = c.getEffect();
-	      if ((exp != null) && (exp.length() > 0)) // non-empty
-	      {
+	      if ((exp != null) && (exp.length() > 0)) { // non-empty
 	        expTextField.setText(exp);
 	      }
 	
-	      // make it so whenever the text field gains focus, the button pad will be
-	      // refreshed:
+	      // make it so whenever the text field gains focus, the button pad will 
+	      // be refreshed:
 	      FocusListener l = new FocusListener() {
 	        public void focusGained(FocusEvent ev) {
-	          if (!justClosedButtonPad) // valid focus gained, not just as a result
-	                                    // of closing the button pad -- if you don't
-	                                    // do this, it
-	          // will bring the first text field into focus every time you close the
-	          // button pad.
-	          {
-	            if (lastFocusedTextField != null) // there was a text field in focus
-	                                              // before
-	            {
+	          if (!justClosedButtonPad) { // valid focus gained, not just as a 
+	          														// result of closing the button pad -- 
+	          														// if you don't do this, it will bring 
+	          														// the first text field into focus every
+	          														// time you close the button pad.
+	            if (lastFocusedTextField != null) { // there was a text field in 
+	            																		// focus before
 	              lastFocusedTextField.setBackground(null);
 	            }
 	            lastFocusedTextField = (JTextField) ev.getSource();
 	            lastFocusedTextField.setBackground(Color.YELLOW);
 	            refreshButtonPad();
 	            buttonPadButton.setEnabled(true);
-	          } else // just closed button pad
-	          {
+	          } else { // just closed button pad
 	            lastFocusedTextField.requestFocus();
 	            justClosedButtonPad = false;
 	          }
 	        }
 	
-	        public void focusLost(FocusEvent ev) {
-	        }
+	        public void focusLost(FocusEvent ev) {}
 	      };
 	      expTextField.addFocusListener(l);
       }
@@ -1349,8 +1256,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       noneButton.setSelected(false);
       specificButton.setSelected(false);
       setActionListsEnabled(false);
-    } 
-    else if (ruleInFocus.getParticipantRuleEffect(participantInFocus
+    } else if (ruleInFocus.getParticipantRuleEffect(participantInFocus
         .getName()).getParticipantTypeEffect(objectTypeInFocus)
         .getOtherActionsEffect().getEffect().equals(
             OtherActionsEffect.DEACTIVATE_ALL)) {
@@ -1360,8 +1266,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       specificButton.setSelected(false);
       actDeactActsListsPane.setEnabled(false);
       setActionListsEnabled(false);
-    }
-    else if (ruleInFocus.getParticipantRuleEffect(participantInFocus
+    } else if (ruleInFocus.getParticipantRuleEffect(participantInFocus
         .getName()).getParticipantTypeEffect(objectTypeInFocus)
         .getOtherActionsEffect().getEffect().equals(
             OtherActionsEffect.ACTIVATE_DEACTIVATE_SPECIFIC_ACTIONS)) {
@@ -1372,9 +1277,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       actDeactActsListsPane.setEnabled(true);
       setActionListsEnabled(true);
       refreshActionLists();      
-    }
-    else // no other actions effect
-    {
+    } else { // no other actions effect
       noneButton.setSelected(true);
       activateButton.setSelected(false);
       deactivateButton.setSelected(false);
@@ -1401,25 +1304,22 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     actionsToDeactivateList.setEnabled(enable);
   }
 
-  private void newRuleInput() // creates a new rule input and adds it to the
-                              // action in focus
-  {
+  // creates a new rule input and adds it to the action in focus
+  private void newRuleInput() { 
     String response = JOptionPane.showInputDialog(null,
         "Enter a name for this Rule Input:", "Enter Rule Input Name",
         JOptionPane.QUESTION_MESSAGE); // Show input dialog
     if (response != null) {
-      if (ruleInputNameInputValid(response) == false) // input is invalid
-      {
+      if (ruleInputNameInputValid(response) == false) { // input is invalid
+      	// warn user to enter a valid name:
         JOptionPane
             .showMessageDialog(
                 null,
-                "Please enter a unique name, between 1 and 40 alphanumeric characters, and no spaces",
-                "Invalid Input", JOptionPane.WARNING_MESSAGE); // warn user to
-                                                               // enter a valid
-                                                               // name
+                "Please enter a unique name, between 1 and 40 alphanumeric " +
+                "characters, and no spaces",
+                "Invalid Input", JOptionPane.WARNING_MESSAGE); 
         newRuleInput(); // try again
-      } else // user has entered valid input
-      {
+      } else { // user has entered valid input
         RuleInput newInput = new RuleInput(response); // create new rule input
         RuleInputInfoForm rInfoForm = new RuleInputInfoForm(this, ruleInFocus,
             newInput);
@@ -1433,53 +1333,46 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
             removeInputButton.setEnabled(false);
           }
 
-          public void windowGainedFocus(WindowEvent ev) {
-          }
+          public void windowGainedFocus(WindowEvent ev) {}
         };
         rInfoForm.addWindowFocusListener(l);
       }
     }
   }
 
-  private boolean ruleInputNameInputValid(String input) // returns true if input
-                                                        // is a valid rule input
-                                                        // name, false if not
-  {
+  // returns true if input is a valid rule input name, false if not
+  private boolean ruleInputNameInputValid(String input) { 
     char[] cArray = input.toCharArray();
 
     // Check for length constraints:
-    if ((cArray.length == 0) || (cArray.length > 40)) // user has entered
-                                                      // nothing or a string
-                                                      // longer than 40 chars
-    {
+    if ((cArray.length == 0) || (cArray.length > 40)) { // user has entered
+                                                      	// nothing or a string
+                                                      	// longer than 40 chars
       return false;
     }
 
     // Check for invalid characters:
     for (int i = 0; i < cArray.length; i++) {
-      if ((Character.isLetterOrDigit(cArray[i])) == false) // character is not a
-                                                           // letter or a digit
-                                                           // (hence, invalid)
-      {
+      if (!Character.isLetterOrDigit(cArray[i])) { // character is not a letter 
+      																						 // or a digit (hence, 
+      																						 // invalid)
         return false;
       }
     }
 
     // Check for uniqueness of name:
-    Vector existingInputs = ruleInFocus.getAllRuleInputs();
+    Vector<RuleInput> existingInputs = ruleInFocus.getAllRuleInputs();
     for (int i = 0; i < existingInputs.size(); i++) {
-      RuleInput tempInput = (RuleInput) existingInputs.elementAt(i);
-      if (tempInput.getName().equalsIgnoreCase(input)) // name not unique
-      {
+      RuleInput tempInput = existingInputs.elementAt(i);
+      if (tempInput.getName().equalsIgnoreCase(input)) { // name not unique
         return false;
       }
     }
     return true; // none of the invalid conditions exist
   }
 
-  private void editRuleInput(RuleInput input) // brings up the window for
-                                              // editing an existing rule input
-  {
+  // brings up the window for editing an existing rule input
+  private void editRuleInput(RuleInput input) { 
     RuleInputInfoForm rInfoForm = new RuleInputInfoForm(this, ruleInFocus,
         input);
 
@@ -1492,45 +1385,31 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
         removeInputButton.setEnabled(false);
       }
 
-      public void windowGainedFocus(WindowEvent ev) {
-      }
+      public void windowGainedFocus(WindowEvent ev) {}
     };
     rInfoForm.addWindowFocusListener(l);
   }
 
-  private void removeRuleInput(String inputName) // removes the rule input with
-                                                 // the specified name from the
-                                                 // rule in focus
-  {
-
+  // removes the rule input with the specified name from the rule in focus
+  private void removeRuleInput(String inputName) { 
     int choice = JOptionPane.showConfirmDialog(null, ("Really remove "
         + inputName + "rule input?"), "Confirm Rule Input Removal",
         JOptionPane.YES_NO_OPTION);
     if (choice == JOptionPane.YES_OPTION) {
-      ruleInFocus.removeRuleInput((String) ruleInputList.getSelectedValue()); // remove
-                                                                              // rule
-                                                                              // input
-                                                                              // from
-                                                                              // rule
-                                                                              // in
-                                                                              // focus
+    	// remove rule input from rule in focus:
+      ruleInFocus.removeRuleInput((String) ruleInputList.getSelectedValue()); 
       viewEditInputButton.setEnabled(false);
       removeInputButton.setEnabled(false);
       refreshRuleInputList();
-    } else // choice == JOptionPane.NO_OPTION
-    {
     }
   }
   
-  private void newButtonPad() // creates a new button pad for the participant in
-                              // focus
-  {
+  // creates a new button pad for the participant in focus
+  private void newButtonPad() { 
     // bring up new button pad:
     echoedTextField.setText(lastFocusedTextField.getText());
     refreshButtonPad();
     refreshButtonPad(getLastTokenType(lastFocusedTextField.getText()));
-    Vector attributes = objectTypeInFocus.getAllAttributes();
-
     buttGUI = new ButtonPadGUI(this, inputButton, attributeThisPartButton,
         attributeOtherPartButton, numObjectsButton, numActionsThisPartButton,
         numActionsOtherPartButton, timeButtons, digitButtons, operatorButtons,
@@ -1545,36 +1424,34 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
         justClosedButtonPad = true;
       }
 
-      public void windowGainedFocus(WindowEvent ev) {
-      }
+      public void windowGainedFocus(WindowEvent ev) {}
     };
     buttGUI.addWindowFocusListener(l);
 
     buttonPadButton.setEnabled(false);
   }
 
-  private void refreshButtonPad() // refreshes the button pad by
-                                  // enabling/disabling buttons
-  // according to the attribute in focus and what's in the field in focus
-  {
+  /*
+   * refreshes the button pad by enabling/disabling buttons according to the
+   * attribute in focus and what's in the field in focus
+   */
+  private void refreshButtonPad() { 
     // get the attInFocus:
     Attribute attInFocus = getAttributeInFocus();
 
-    if ((attInFocus != null)
-        && ((attInFocus.getType() == AttributeTypes.STRING) || (attInFocus
-            .getType() == AttributeTypes.BOOLEAN))) // string or boolean
-    // attribute
-    {
-      Vector inputs = ruleInFocus.getAllRuleInputs();
+    if ((attInFocus != null) && 
+    		((attInFocus.getType() == AttributeTypes.STRING) || 
+    				(attInFocus.getType() == AttributeTypes.BOOLEAN))) { // string or 
+    																														 // boolean
+    																														 // attribute
+      Vector<RuleInput> inputs = ruleInFocus.getAllRuleInputs();
       inputButton.setEnabled(false);
-      if (attInFocus.getType() == AttributeTypes.STRING) // string attribute
-      {
+      if (attInFocus.getType() == AttributeTypes.STRING) { // string attribute
         // enable/disable input button, depending on what kind of inputs
         // currently exist:
         for (int i = 0; i < inputs.size(); i++) {
-          if (((RuleInput) inputs.elementAt(i)).getType().equals(
-              InputType.STRING)) // string rule input type
-          {
+          if (inputs.elementAt(i).getType().equals(InputType.STRING)) { 
+          	// string rule input type
             inputButton.setEnabled(true);
             break;
           }
@@ -1583,15 +1460,13 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
         stringButton.setEnabled(true);
         // disable boolean button:
         booleanButton.setEnabled(false);
-      } else if (attInFocus.getType() == AttributeTypes.BOOLEAN) // boolean
-                                                                 // attribute
-      {
+      } else if (attInFocus.getType() == AttributeTypes.BOOLEAN) { // boolean
+                                                                 	 // attribute
         // enable/disable input button, depending on what kind of inputs
         // currently exist:
         for (int i = 0; i < inputs.size(); i++) {
-          if (((RuleInput) inputs.elementAt(i)).getType().equals(
-              InputType.BOOLEAN)) // boolean rule input type
-          {
+          if (inputs.elementAt(i).getType().equals(InputType.BOOLEAN)) { 
+          	// boolean rule input type
             inputButton.setEnabled(true);
             break;
           }
@@ -1610,30 +1485,28 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       numActionsThisPartButton.setEnabled(false);
       numActionsOtherPartButton.setEnabled(false);
       for (int i = 0; i < timeButtons.size(); i++) {
-        ((JButton) timeButtons.elementAt(i)).setEnabled(false);
+        timeButtons.elementAt(i).setEnabled(false);
       }
       for (int i = 0; i < digitButtons.size(); i++) {
-        ((JButton) digitButtons.elementAt(i)).setEnabled(false);
+        digitButtons.elementAt(i).setEnabled(false);
       }
       for (int i = 0; i < operatorButtons.size(); i++) {
-        ((JButton) operatorButtons.elementAt(i)).setEnabled(false);
+        operatorButtons.elementAt(i).setEnabled(false);
       }
       randomButton.setEnabled(false);
-    } else if ((attInFocus != null)
-        && ((attInFocus.getType() == AttributeTypes.INTEGER) || (attInFocus
-            .getType() == AttributeTypes.DOUBLE))) // integer or double
-    // attribute
-    {
+    } else if ((attInFocus != null) && 
+    		((attInFocus.getType() == AttributeTypes.INTEGER) || 
+    				(attInFocus.getType() == AttributeTypes.DOUBLE))) { // integer or 
+    																														// double
+    																														// attribute
       // enable or disable input button, depending on the types of inputs that
       // currently exist:
-      Vector inputs = ruleInFocus.getAllRuleInputs();
+      Vector<RuleInput> inputs = ruleInFocus.getAllRuleInputs();
       inputButton.setEnabled(false);
       for (int i = 0; i < inputs.size(); i++) {
-        if ((((RuleInput) inputs.elementAt(i)).getType()
-            .equals(InputType.INTEGER))
-            || (((RuleInput) inputs.elementAt(i)).getType()
-                .equals(InputType.DOUBLE))) // numerical rule input type
-        {
+        if ((inputs.elementAt(i).getType().equals(InputType.INTEGER)) || 
+        		(inputs.elementAt(i).getType().equals(InputType.DOUBLE))) { 
+        	// numerical rule input type
           inputButton.setEnabled(true);
           break;
         }
@@ -1648,50 +1521,43 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       numActionsThisPartButton.setEnabled(true);
       numActionsOtherPartButton.setEnabled(true);
       for (int i = 0; i < timeButtons.size(); i++) {
-        ((JButton) timeButtons.elementAt(i)).setEnabled(true);
+        timeButtons.elementAt(i).setEnabled(true);
       }
       for (int i = 0; i < digitButtons.size(); i++) {
-        ((JButton) digitButtons.elementAt(i)).setEnabled(true);
+        digitButtons.elementAt(i).setEnabled(true);
       }
       for (int i = 0; i < operatorButtons.size(); i++) {
-        ((JButton) operatorButtons.elementAt(i)).setEnabled(true);
+        operatorButtons.elementAt(i).setEnabled(true);
       }
       randomButton.setEnabled(true);
-      refreshButtonPad(OPERATOR); // refresh the button pad as if an operator
-                                  // has just been entered
+      // refresh the button pad as if an operator has just been entered:
+      refreshButtonPad(OPERATOR); 
     }
   }
 
-  private void refreshButtonPad(int lastTokenType) // refreshes the button pad
-                                                   // by disabling buttons
-                                                   // according to what the last
-                                                   // entry into
-  // the field was
-  {
-    if ((getAttributeInFocus().getType() == AttributeTypes.STRING)
-        || (getAttributeInFocus().getType() == AttributeTypes.BOOLEAN))
-    // boolean or string attribute
-    {
-      if ((echoedTextField.getText() != null)
-          && (echoedTextField.getText().length() > 0)) // non-empty text
-                                                            // field
-      {
+  /*
+   * refreshes the button pad by disabling buttons according to what the last
+   * entry into the field was
+   */
+  private void refreshButtonPad(int lastTokenType) { 
+    if ((getAttributeInFocus().getType() == AttributeTypes.STRING) || 
+    		(getAttributeInFocus().getType() == AttributeTypes.BOOLEAN)) { 
+    	// boolean or string attribute
+      if ((echoedTextField.getText() != null) && 
+      		(echoedTextField.getText().length() > 0)) { // non-empty text field
         disableAllButtons();
-      } else // empty text field
-      {
+      } else { // empty text field
         // Rule input button:
-        if (inputButton.isEnabled()) // if button is enabled, check if you need
-                                     // to disable it or not:
-        {
+        if (inputButton.isEnabled()) { // if button is enabled, check if you 
+        															 // need to disable it or not:
           Attribute attInFocus = getAttributeInFocus();
-          Vector inputs = ruleInFocus.getAllRuleInputs();
-          if (attInFocus.getType() == AttributeTypes.STRING) // string attribute
-          {
+          Vector<RuleInput> inputs = ruleInFocus.getAllRuleInputs();
+          if (attInFocus.getType() == AttributeTypes.STRING) { // string 
+          																										 // attribute
             boolean disableButt = true;
             for (int i = 0; i < inputs.size(); i++) {
-              if (((RuleInput) inputs.elementAt(i)).getType().equals(
-                  InputType.STRING)) // string rule input type
-              {
+              if (inputs.elementAt(i).getType().equals(InputType.STRING)) { 
+              	// string rule input type
                 disableButt = false;
                 break;
               }
@@ -1699,14 +1565,12 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
             if (disableButt) {
               inputButton.setEnabled(false);
             }
-          } else if (attInFocus.getType() == AttributeTypes.BOOLEAN) // boolean
-                                                                     // attribute
-          {
+          } else if (attInFocus.getType() == AttributeTypes.BOOLEAN) { 
+          	// boolean attribute
             boolean disableButt = true;
             for (int i = 0; i < inputs.size(); i++) {
-              if (((RuleInput) inputs.elementAt(i)).getType().equals(
-                  InputType.BOOLEAN)) // boolean rule input type
-              {
+              if (inputs.elementAt(i).getType().equals(InputType.BOOLEAN)) { 
+              	// boolean rule input type
                 disableButt = false;
                 break;
               }
@@ -1721,7 +1585,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       if (lastTokenType == OPEN_PAREN) {
         // disable all operator buttons:
         for (int i = 0; i < operatorButtons.size(); i++) {
-          ((JButton) operatorButtons.elementAt(i)).setEnabled(false);
+          operatorButtons.elementAt(i).setEnabled(false);
         }
         // enable neg. sign button:
         buttonMinus.setEnabled(true);
@@ -1740,15 +1604,13 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
         numActionsThisPartButton.setEnabled(true);
         numActionsOtherPartButton.setEnabled(true);
         for (int i = 0; i < timeButtons.size(); i++) {
-          ((JButton) timeButtons.elementAt(i)).setEnabled(true);
+          timeButtons.elementAt(i).setEnabled(true);
         }
         for (int i = 0; i < digitButtons.size(); i++) {
-          ((JButton) digitButtons.elementAt(i)).setEnabled(true);
+          digitButtons.elementAt(i).setEnabled(true);
         }
         randomButton.setEnabled(true);
-      }
-
-      else if ((lastTokenType == CLOSED_PAREN) || (lastTokenType == NUMBER)) {
+      } else if ((lastTokenType == CLOSED_PAREN) || (lastTokenType == NUMBER)) {
         // disable all buttons except operators (enable those):
         inputButton.setEnabled(false);
         attributeThisPartButton.setEnabled(false);
@@ -1757,13 +1619,13 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
         numActionsThisPartButton.setEnabled(false);
         numActionsOtherPartButton.setEnabled(false);
         for (int i = 0; i < timeButtons.size(); i++) {
-          ((JButton) timeButtons.elementAt(i)).setEnabled(false);
+          timeButtons.elementAt(i).setEnabled(false);
         }
         for (int i = 0; i < digitButtons.size(); i++) {
-          ((JButton) digitButtons.elementAt(i)).setEnabled(false);
+          digitButtons.elementAt(i).setEnabled(false);
         }
         for (int i = 0; i < operatorButtons.size(); i++) {
-          ((JButton) operatorButtons.elementAt(i)).setEnabled(true);
+          operatorButtons.elementAt(i).setEnabled(true);
         }
         randomButton.setEnabled(false);
         // disable open paren:
@@ -1772,22 +1634,20 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
         if (numOpenParen() <= numClosingParen()) {
           buttonCloseParen.setEnabled(false);
         }
-      }
-
-      else if (lastTokenType == OPERATOR) {
+      } else if (lastTokenType == OPERATOR) {
         // disable all operator buttons:
         for (int i = 0; i < operatorButtons.size(); i++) {
-          ((JButton) operatorButtons.elementAt(i)).setEnabled(false);
+          operatorButtons.elementAt(i).setEnabled(false);
         }
         // enable neg. sign button:
         buttonMinus.setEnabled(true);
         // enable all other buttons:
         for (int i = 0; i < digitButtons.size(); i++) {
-          ((JButton) digitButtons.elementAt(i)).setEnabled(true);
+          digitButtons.elementAt(i).setEnabled(true);
         }
         randomButton.setEnabled(true);
         for (int i = 0; i < timeButtons.size(); i++) {
-          ((JButton) timeButtons.elementAt(i)).setEnabled(true);
+          timeButtons.elementAt(i).setEnabled(true);
         }
         inputButton.setEnabled(true);
         attributeThisPartButton.setEnabled(true);
@@ -1797,13 +1657,11 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
         numActionsOtherPartButton.setEnabled(true);
         // enable open paren button:
         buttonOpenParen.setEnabled(true);
-      }
-
-      else if (lastTokenType == DIGIT) {
+      } else if (lastTokenType == DIGIT) {
         // disable all other number buttons:
         randomButton.setEnabled(false);
         for (int i = 0; i < timeButtons.size(); i++) {
-          ((JButton) timeButtons.elementAt(i)).setEnabled(false);
+          timeButtons.elementAt(i).setEnabled(false);
         }
         inputButton.setEnabled(false);
         attributeThisPartButton.setEnabled(false);
@@ -1814,18 +1672,17 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
 
         // enable other buttons:
         for (int i = 0; i < operatorButtons.size(); i++) {
-          ((JButton) operatorButtons.elementAt(i)).setEnabled(true);
+          operatorButtons.elementAt(i).setEnabled(true);
         }
         for (int i = 0; i < digitButtons.size(); i++) {
-          ((JButton) digitButtons.elementAt(i)).setEnabled(true);
+          digitButtons.elementAt(i).setEnabled(true);
         }
 
         // disable "." button if necessary:
         String textFieldText = echoedTextField.getText();
-        if (getLastToken(textFieldText).indexOf('.') != -1) // dot has already
-                                                            // appeared in this
-                                                            // number
-        {
+        if (getLastToken(textFieldText).indexOf('.') != -1) { // dot has already
+                                                            	// appeared in 
+        																											// this number
           buttonDot.setEnabled(false);
         }
         // disable open paren:
@@ -1836,15 +1693,14 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
           buttonCloseParen.setEnabled(false);
         }
 
-        if (getLastToken(echoedTextField.getText()).equals("-")) // negative
-                                                                      // sign
-        {
+        if (getLastToken(echoedTextField.getText()).equals("-")) { // negative
+                                                                   // sign
           // disable minus button:
           buttonMinus.setEnabled(false);
           // enable number buttons:
           randomButton.setEnabled(true);
           for (int i = 0; i < timeButtons.size(); i++) {
-            ((JButton) timeButtons.elementAt(i)).setEnabled(true);
+            timeButtons.elementAt(i).setEnabled(true);
           }
           inputButton.setEnabled(true);
           attributeThisPartButton.setEnabled(true);
@@ -1854,15 +1710,15 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
           numActionsOtherPartButton.setEnabled(true);
           // disable operator buttons:
           for (int i = 0; i < operatorButtons.size(); i++) {
-            ((JButton) operatorButtons.elementAt(i)).setEnabled(false);
+            operatorButtons.elementAt(i).setEnabled(false);
           }
           // enable open paren:
           buttonOpenParen.setEnabled(true);
-        } else if (getLastToken(echoedTextField.getText()).endsWith(".")) // dot
-        {
+        } else if (getLastToken(echoedTextField.getText()).endsWith(".")) { 
+        	// dot
           // disable operator buttons:
           for (int i = 0; i < operatorButtons.size(); i++) {
-            ((JButton) operatorButtons.elementAt(i)).setEnabled(false);
+            operatorButtons.elementAt(i).setEnabled(false);
           }
           // disable closing parens:
           buttonCloseParen.setEnabled(false);
@@ -1870,25 +1726,21 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       }
 
       // Rule input button:
-      if (inputButton.isEnabled()) // if button is enabled, check if you need to
-                                   // disable it or not:
-      {
+      if (inputButton.isEnabled()) { // if button is enabled, check if you need
+      															 // to disable it or not:
         Attribute attInFocus = getAttributeInFocus();
-        Vector inputs = ruleInFocus.getAllRuleInputs();
-        if ((attInFocus.getType() == AttributeTypes.INTEGER)
-            || (attInFocus.getType() == AttributeTypes.DOUBLE)) // integer or
-                                                                // double
-        // attribute
-        {
+        Vector<RuleInput> inputs = ruleInFocus.getAllRuleInputs();
+        if ((attInFocus.getType() == AttributeTypes.INTEGER) || 
+        		(attInFocus.getType() == AttributeTypes.DOUBLE)) { // integer or
+                                                               // double
+        																											 // attribute
           // enable or disable input button, depending on the types of inputs
           // that currently exist:
           boolean disableButt = true;
           for (int i = 0; i < inputs.size(); i++) {
-            if ((((RuleInput) inputs.elementAt(i)).getType()
-                .equals(InputType.INTEGER))
-                || (((RuleInput) inputs.elementAt(i)).getType()
-                    .equals(InputType.DOUBLE))) // numerical rule input type
-            {
+            if ((inputs.elementAt(i).getType().equals(InputType.INTEGER)) || 
+            		(inputs.elementAt(i).getType().equals(InputType.DOUBLE))) { 
+            	// numerical rule input type
               disableButt = false;
               break;
             }
@@ -1901,9 +1753,8 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     }
   }
 
-  private int numOpenParen() // returns the number of open parentheses that are
-                             // in the echoed text field
-  {
+  // returns the number of open parentheses that are in the echoed text field
+  private int numOpenParen() { 
     int num = 0;
     char[] text = echoedTextField.getText().toCharArray();
     for (int i = 0; i < text.length; i++) {
@@ -1914,9 +1765,8 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     return num;
   }
 
-  private int numClosingParen() // returns the number of closing parentheses
-                                // that are in the echoed text field
-  {
+  // returns the number of closing parentheses that are in the echoed text field
+  private int numClosingParen() { 
     int num = 0;
     char[] text = echoedTextField.getText().toCharArray();
     for (int i = 0; i < text.length; i++) {
@@ -1927,9 +1777,8 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     return num;
   }
 
-  private void disableAllButtons() // disables all buttons in the button pad GUI
-                                   // (except backspace)
-  {
+  // disables all buttons in the button pad GUI except backspace
+  private void disableAllButtons() { 
     inputButton.setEnabled(false);
     attributeThisPartButton.setEnabled(false);
     attributeOtherPartButton.setEnabled(false);
@@ -1937,76 +1786,74 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     numActionsThisPartButton.setEnabled(false);
     numActionsOtherPartButton.setEnabled(false);
     for (int i = 0; i < timeButtons.size(); i++) {
-      ((JButton) timeButtons.elementAt(i)).setEnabled(false);
+      timeButtons.elementAt(i).setEnabled(false);
     }
     for (int i = 0; i < digitButtons.size(); i++) {
-      ((JButton) digitButtons.elementAt(i)).setEnabled(false);
+      digitButtons.elementAt(i).setEnabled(false);
     }
     for (int i = 0; i < operatorButtons.size(); i++) {
-      ((JButton) operatorButtons.elementAt(i)).setEnabled(false);
+      operatorButtons.elementAt(i).setEnabled(false);
     }
     randomButton.setEnabled(false);
     stringButton.setEnabled(false);
     booleanButton.setEnabled(false);
   }
 
-  private Attribute getAttributeInFocus() // returns the Attribute that is
-                                          // currently in focus, according to
-                                          // the most recently focused
-  // text field
-  {
+  /*
+   * returns the Attribute that is currently in focus, according to the most
+   * recently-focused text field
+   */
+  private Attribute getAttributeInFocus() { 
     // figure out the index of the text field most recently in focus:
     for (int i = 0; i < textFields.size(); i++) {
-      if (((JTextField) textFields.elementAt(i)) == lastFocusedTextField) {
+      if (textFields.elementAt(i) == lastFocusedTextField) {
         // get the attribute in focus:
-        return ((Attribute) (objectTypeInFocus.getAllAttributes().elementAt(i)));
+        return (objectTypeInFocus.getAllAttributes().elementAt(i));
       }
     }
     return null;
   }
 
-  private void inputButtonChosen() // takes care of what happens when the user
-                                   // clicks the input button on the button pad
-  {
-    Vector inputs = ruleInFocus.getAllRuleInputs();
+  /*
+   * takes care of what happens when the user clicks the input button on the
+   * button pad
+   */
+  private void inputButtonChosen() { 
+    Vector<RuleInput> inputs = ruleInFocus.getAllRuleInputs();
 
     // get attInFocus:
     Attribute attInFocus = getAttributeInFocus();
 
     // make a vector of rule input names for choosing from:
-    Vector choices = new Vector();
-    if (attInFocus.getType() == AttributeTypes.STRING) // string attribute
-    {
+    Vector<String> choices = new Vector<String>();
+    if (attInFocus.getType() == AttributeTypes.STRING) { // string attribute
       for (int i = 0; i < inputs.size(); i++) {
-        RuleInput tempInput = (RuleInput) inputs.elementAt(i);
+        RuleInput tempInput = inputs.elementAt(i);
         if (tempInput.getType().equals(InputType.STRING)) {
-          choices.add(((RuleInput) inputs.elementAt(i)).getName());
+          choices.add(inputs.elementAt(i).getName());
         }
       }
-    } else if (attInFocus.getType() == AttributeTypes.BOOLEAN) // boolean
-                                                               // attribute
-    {
+    } else if (attInFocus.getType() == AttributeTypes.BOOLEAN) { // boolean
+                                                               	 // attribute
       for (int i = 0; i < inputs.size(); i++) {
-        RuleInput tempInput = (RuleInput) inputs.elementAt(i);
+        RuleInput tempInput = inputs.elementAt(i);
         if (tempInput.getType().equals(InputType.BOOLEAN)) {
-          choices.add(((RuleInput) inputs.elementAt(i)).getName());
+          choices.add(inputs.elementAt(i).getName());
         }
       }
-    } else if ((attInFocus.getType() == AttributeTypes.INTEGER)
-        || (attInFocus.getType() == AttributeTypes.DOUBLE)) // numerical
-    // attribute
-    {
+    } else if ((attInFocus.getType() == AttributeTypes.INTEGER) || 
+    		(attInFocus.getType() == AttributeTypes.DOUBLE)) { // numerical 
+    																											 // attribute
       for (int i = 0; i < inputs.size(); i++) {
-        RuleInput tempInput = (RuleInput) inputs.elementAt(i);
+        RuleInput tempInput = inputs.elementAt(i);
         if ((tempInput.getType().equals(InputType.INTEGER))
             || (tempInput.getType().equals(InputType.DOUBLE))) {
-          choices.add(((RuleInput) inputs.elementAt(i)).getName());
+          choices.add(inputs.elementAt(i).getName());
         }
       }
     }
     Object choiceInFocus;
-    if (choices.size() == 0) // no inputs
-    {
+    if (choices.size() == 0) { // no inputs
       choiceInFocus = null;
     } else {
       choiceInFocus = choices.elementAt(0);
@@ -2015,13 +1862,12 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     String response = (String) JOptionPane.showInputDialog(this,
         "Choose a rule input:", "Rule Input", JOptionPane.PLAIN_MESSAGE, null,
         choices.toArray(), choiceInFocus);
-    if ((response != null) && (response.length() > 0)) // a selection was made
-    {
+    if ((response != null) && (response.length() > 0)) { // a selection was made
       // append the text for the selected input to the text field:
-      if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
-          && (getLastToken(echoedTextField.getText()).equals("-")))
-      // negative sign was last token
-      {
+      if ((getLastTokenType(echoedTextField.getText()) == DIGIT) && 
+      		(getLastToken(echoedTextField.getText()).equals("-"))) { // negative 
+      																														 // sign was 
+      																														 // last token
         setEchoedTextFieldText(echoedTextField.getText().trim().concat(
             "input-" + response + " "));
       } else {
@@ -2031,54 +1877,48 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       if ((attInFocus.getType() == AttributeTypes.INTEGER)
           || (attInFocus.getType() == AttributeTypes.DOUBLE)) {
         refreshButtonPad(NUMBER);
-      } else // string/boolean attribute
-      {
+      } else { // string/boolean attribute
         disableAllButtons();
       }
     }
   }
 
-  private void attributeThisPartButtonChosen() // takes care of what to do when
-                                               // this button is clicked
-  {
+  // takes care of what to do when this button is clicked
+  private void attributeThisPartButtonChosen() { 
     // attributes of the object type in focus:
-    Vector atts = objectTypeInFocus.getAllAttributes();
+    Vector<Attribute> atts = objectTypeInFocus.getAllAttributes();
     Attribute attInFocus = getAttributeInFocus();
 
     // make a vector of attribute names for choosing from:
-    Vector choices = new Vector();
-    if (attInFocus.getType() == AttributeTypes.STRING) // string attribute
-    {
+    Vector<String> choices = new Vector<String>();
+    if (attInFocus.getType() == AttributeTypes.STRING) { // string attribute
       for (int i = 0; i < atts.size(); i++) {
-        Attribute tempAtt = (Attribute) atts.elementAt(i);
+        Attribute tempAtt = atts.elementAt(i);
         if (tempAtt.getType() == AttributeTypes.STRING) {
-          choices.add(((Attribute) atts.elementAt(i)).getName());
+          choices.add(atts.elementAt(i).getName());
         }
       }
     }
-    if (attInFocus.getType() == AttributeTypes.BOOLEAN) // boolean attribute
-    {
+    if (attInFocus.getType() == AttributeTypes.BOOLEAN) { // boolean attribute
       for (int i = 0; i < atts.size(); i++) {
-        Attribute tempAtt = (Attribute) atts.elementAt(i);
+        Attribute tempAtt = atts.elementAt(i);
         if (tempAtt.getType() == AttributeTypes.BOOLEAN) {
-          choices.add(((Attribute) atts.elementAt(i)).getName());
+          choices.add(atts.elementAt(i).getName());
         }
       }
-    } else if ((attInFocus.getType() == AttributeTypes.INTEGER)
-        || (attInFocus.getType() == AttributeTypes.DOUBLE)) // numerical
-    // attribute
-    {
+    } else if ((attInFocus.getType() == AttributeTypes.INTEGER) || 
+    		(attInFocus.getType() == AttributeTypes.DOUBLE)) { // numerical 
+    																											 // attribute
       for (int i = 0; i < atts.size(); i++) {
-        Attribute tempAtt = (Attribute) atts.elementAt(i);
+        Attribute tempAtt = atts.elementAt(i);
         if ((tempAtt.getType() == AttributeTypes.INTEGER)
             || (tempAtt.getType() == AttributeTypes.DOUBLE)) {
-          choices.add(((Attribute) atts.elementAt(i)).getName());
+          choices.add(atts.elementAt(i).getName());
         }
       }
     }
     Object choiceInFocus;
-    if (choices.size() == 0) // no inputs
-    {
+    if (choices.size() == 0) { // no inputs
       choiceInFocus = null;
     } else {
       choiceInFocus = choices.elementAt(0);
@@ -2087,13 +1927,12 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     String response = (String) JOptionPane.showInputDialog(this,
         "Choose an attribute:", "Attribute", JOptionPane.PLAIN_MESSAGE, null,
         choices.toArray(), choiceInFocus);
-    if ((response != null) && (response.length() > 0)) // a selection was made
-    {
+    if ((response != null) && (response.length() > 0)) { // a selection was made
       // append the text for the selected input to the text field:
-      if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
-          && (getLastToken(echoedTextField.getText()).equals("-")))
-      // negative sign was last token
-      {
+      if ((getLastTokenType(echoedTextField.getText()) == DIGIT) && 
+      		(getLastToken(echoedTextField.getText()).equals("-"))) { // negative 
+      																														 // sign was 
+      																														 // last token
         setEchoedTextFieldText(echoedTextField.getText().trim().concat(
             "this" + objectTypeInFocus.getName() + "-"
                 + SimSEObjectTypeTypes.getText(objectTypeInFocus.getType())
@@ -2107,120 +1946,106 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       if ((attInFocus.getType() == AttributeTypes.INTEGER)
           || (attInFocus.getType() == AttributeTypes.DOUBLE)) {
         refreshButtonPad(NUMBER);
-      } else // string/boolean attribute
-      {
+      } else { // string/boolean attribute
         disableAllButtons();
       }
     }
   }
 
-  private void attributeOtherPartButtonChosen() // takes care of what to do when
-                                                // this button is clicked
-  {
+  // takes care of what to do when this button is clicked
+  private void attributeOtherPartButtonChosen() { 
     Attribute attInFocus = getAttributeInFocus();
-    String oldText = echoedTextField.getText(); // temporarily hold the
-                                                     // text from the text field
+    // temporarily hold the text from the text field:
+    String oldText = echoedTextField.getText(); 
     boolean trimWhitespace = false;
-    if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
-        && (getLastToken(echoedTextField.getText()).equals("-")))
-    // negative sign was last token
-    {
+    if ((getLastTokenType(echoedTextField.getText()) == DIGIT) && 
+    		(getLastToken(echoedTextField.getText()).equals("-"))) { // negative 
+    																														 // sign was 
+    																														 // last token
       trimWhitespace = true;
     }
-    OtherParticipantAttributeDialog opad = new OtherParticipantAttributeDialog(
-        this, actionInFocus.getAllParticipants(), echoedTextField, 
-        attInFocus.getType(), trimWhitespace);
+    new OtherParticipantAttributeDialog(this, 
+    		actionInFocus.getAllParticipants(), echoedTextField, 
+    		attInFocus.getType(), trimWhitespace);
     if ((attInFocus.getType() == AttributeTypes.INTEGER)
         || (attInFocus.getType() == AttributeTypes.DOUBLE)) {
-      if (echoedTextField.getText().equals(oldText) == false) // text has
-                                                                   // changed
-      {
+      if (echoedTextField.getText().equals(oldText) == false) { // text has
+                                                                // changed
         refreshButtonPad(NUMBER);
       }
-    } else // string/boolean attribute
-    {
-      if (echoedTextField.getText().equals(oldText) == false) // text has
-                                                                   // changed
-      {
+    } else { // string/boolean attribute
+      if (echoedTextField.getText().equals(oldText) == false) { // text has
+                                                                // changed
         disableAllButtons();
       }
     }
   }
 
-  private void numObjectsButtonChosen() // takes care of what to do when this
-                                        // button is clicked
-  {
-    String oldText = echoedTextField.getText(); // temporarily hold the
-                                                     // text from the text field
+  // takes care of what to do when this button is clicked
+  private void numObjectsButtonChosen() { 
+  	// temporarily hold the text from the text field:
+    String oldText = echoedTextField.getText(); 
     boolean trimWhitespace = false;
-    if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
-        && (getLastToken(echoedTextField.getText()).equals("-")))
-    // negative sign was last token
-    {
+    if ((getLastTokenType(echoedTextField.getText()) == DIGIT) && 
+    		(getLastToken(echoedTextField.getText()).equals("-"))) { // negative 
+    																														 // sign was 
+    																														 // last token
       trimWhitespace = true;
     }
-    NumParticipantsDialog npd = new NumParticipantsDialog(this, actionInFocus
-        .getAllParticipants(), echoedTextField, trimWhitespace);
-    if (echoedTextField.getText().equals(oldText) == false) // text has
-                                                                 // changed
-    {
+    new NumParticipantsDialog(this, actionInFocus.getAllParticipants(), 
+    		echoedTextField, trimWhitespace);
+    if (echoedTextField.getText().equals(oldText) == false) { // text has
+                                                              // changed
       refreshButtonPad(NUMBER);
     }
   }
 
-  private void numActionsThisPartButtonChosen() // takes care of what to do when
-                                                // this button is clicked
-  {
-    String oldText = echoedTextField.getText(); // temporarily hold the
-                                                     // text from the text field
+  // takes care of what to do when this button is clicked
+  private void numActionsThisPartButtonChosen() { 
+  	// temporarily hold the text from the text field:
+    String oldText = echoedTextField.getText(); 
     boolean trimWhitespace = false;
-    if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
-        && (getLastToken(echoedTextField.getText()).equals("-")))
-    // negative sign was last token
-    {
+    if ((getLastTokenType(echoedTextField.getText()) == DIGIT) && 
+    		(getLastToken(echoedTextField.getText()).equals("-"))) { // negative 
+    																														 // sign was 
+    																														 // last token
       trimWhitespace = true;
     }
-    NumActionsThisPartDialog dialog = new NumActionsThisPartDialog(this,
-        participantInFocus, objectTypeInFocus, actions, echoedTextField, 
-        trimWhitespace);
-    if (echoedTextField.getText().equals(oldText) == false) // text has
-                                                                 // changed
-    {
+    new NumActionsThisPartDialog(this, participantInFocus, objectTypeInFocus, 
+    		actions, echoedTextField, trimWhitespace);
+    if (echoedTextField.getText().equals(oldText) == false) { // text has
+                                                              // changed
       refreshButtonPad(NUMBER);
     }
   }
 
-  private void numActionsOtherPartButtonChosen() // takes care of what to do
-                                                 // when this button is clicked
-  {
-    String oldText = echoedTextField.getText(); // temporarily hold the
-                                                     // text from the text field
+  // takes care of what to do when this button is clicked
+  private void numActionsOtherPartButtonChosen() { 
+  	// temporarily hold the text from the text field:
+    String oldText = echoedTextField.getText(); 
     boolean trimWhitespace = false;
-    if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
-        && (getLastToken(echoedTextField.getText()).equals("-")))
-    // negative sign was last token
-    {
+    if ((getLastTokenType(echoedTextField.getText()) == DIGIT) && 
+    		(getLastToken(echoedTextField.getText()).equals("-"))) {  // negative 
+    																															// sign was 
+    																															// last token
       trimWhitespace = true;
     }
-    NumActionsOtherPartDialog dialog = new NumActionsOtherPartDialog(this,
-        actionInFocus.getAllParticipants(), actions, echoedTextField, 
-        trimWhitespace);
-    if (echoedTextField.getText().equals(oldText) == false) // text has
-                                                                 // changed
-    {
+    new NumActionsOtherPartDialog(this, actionInFocus.getAllParticipants(), 
+    		actions, echoedTextField, trimWhitespace);
+    if (echoedTextField.getText().equals(oldText) == false) { // text has
+                                                              // changed
       refreshButtonPad(NUMBER);
     }
   }
 
-  private void actTimeElapsedButtonChosen() // takes care of what to do when
-                                            // this button is clicked
-  {
+  // takes care of what to do when this button is clicked
+  private void actTimeElapsedButtonChosen() { 
     String text = "actionTimeElapsed";
     // append the text for the selected input to the text field:
-    if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
-        && (getLastToken(echoedTextField.getText()).equals("-")))
-    // negative sign was last token
-    {
+    if ((getLastTokenType(echoedTextField.getText()) == DIGIT) && 
+    		(getLastToken(echoedTextField.getText()).equals("-"))) { // negative 
+    																														 // sign was 
+    																														 // last token
       setEchoedTextFieldText(echoedTextField.getText().trim().concat(
           text + " "));
     } else {
@@ -2229,44 +2054,37 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     refreshButtonPad(NUMBER);
   }
 
-  private void randomButtonChosen() // takes care of what to do when this button
-                                    // is clicked
-  {
+  // takes care of what to do when this button is clicked
+  private void randomButtonChosen() { 
+  	// temporarily hold the text from the text field:
     String oldText = echoedTextField.getText(); // temporarily hold the
                                                      // text from the text field
     boolean trimWhitespace = false;
-    if ((getLastTokenType(echoedTextField.getText()) == DIGIT)
-        && (getLastToken(echoedTextField.getText()).equals("-")))
-    // negative sign was last token
-    {
+    if ((getLastTokenType(echoedTextField.getText()) == DIGIT) && 
+    		(getLastToken(echoedTextField.getText()).equals("-"))) { // negative 
+    																														 // sign was 
+    																														 // last token
       trimWhitespace = true;
     }
-    RandomFunctionDialog dialog = new RandomFunctionDialog(this, 
-        echoedTextField, trimWhitespace);
-    if (echoedTextField.getText().equals(oldText) == false) // text has
-                                                                 // changed
-    {
+    new RandomFunctionDialog(this, echoedTextField, trimWhitespace);
+    if (echoedTextField.getText().equals(oldText) == false) { // text has
+                                                              // changed
       refreshButtonPad(NUMBER);
     }
   }
 
-  private void digitButtonChosen(JButton digitButt) // takes care of what to do
-                                                    // when this button is
-                                                    // clicked
-  {
+  // takes care of what to do when this button is clicked
+  private void digitButtonChosen(JButton digitButt) { 
     //System.out.println("*********** At the beginning of digitButtonChosen for
     // butt w/ this text: *" + digitButt.getText() + "*");
-    if (getLastToken(echoedTextField.getText()) == null) // empty text
-                                                              // field
-    {
+    if (getLastToken(echoedTextField.getText()) == null) { // empty text field
       //System.out.println("Last token = null");
       //System.out.println("About to append the text *" + digitButt.getText() +
       // "* plus a space");
       // append the text:
       setEchoedTextFieldText(echoedTextField.getText().concat(
           digitButt.getText() + " "));
-    } else // non-empty text field
-    {
+    } else { // non-empty text field
       //System.out.println("Last token = *" +
       // getLastToken(lastFocusedTextField.getText()) + "*");
       int tokenType = getLastTokenType(echoedTextField.getText());
@@ -2293,10 +2111,8 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     // this text: *" + digitButt.getText() + "*");
   }
 
-  private void operatorButtonChosen(JButton opButt) // takes care of what to do
-                                                    // when this button is
-                                                    // clicked
-  {
+  // takes care of what to do when this button is clicked
+  private void operatorButtonChosen(JButton opButt) { 
     if (opButt.getText().equals("-")) {
       //System.out.println("************* At the beginning of
       // operatorButtonChosen function, and - button chosen");
@@ -2304,23 +2120,14 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       //System.out.println("Last token = " + lastToken);
       //System.out.println("Last token type = " +
       // getLastTokenType(lastFocusedTextField.getText()));
-      if ((lastToken == null) || (lastToken.length() == 0)
-          || (getLastTokenType(echoedTextField.getText()) == OPERATOR)
-          || (getLastTokenType(echoedTextField.getText()) == OPEN_PAREN)) // "-"
-                                                                               // counts
-                                                                               // for
-                                                                               // a
-                                                                               // negative
-                                                                               // sign
-                                                                               // in
-                                                                               // this
-                                                                               // case
-      {
+      if ((lastToken == null) || (lastToken.length() == 0) || 
+      		(getLastTokenType(echoedTextField.getText()) == OPERATOR) || 
+      		(getLastTokenType(echoedTextField.getText()) == OPEN_PAREN)) { 
+      	// "-" counts for a negative sign in this case
         //System.out.println("About to call digitButtonChosen -- minus button
         // counts for a digit");
         digitButtonChosen(opButt);
-      } else // "-" counts for a minus operator
-      {
+      } else { // "-" counts for a minus operator
         //System.out.println("About to append minus sign plus a space -- minus
         // button counts for a operator");
         // append text:
@@ -2332,8 +2139,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       }
       //System.out.println("************* At the end of operatorButtonChosen
       // function, and - button chosen");
-    } else // another operator
-    {
+    } else { // another operator
       //System.out.println("A non minus sign operator chosen, about to append
       // text: *" + opButt.getText() + "* plus a space");
       // append text:
@@ -2347,73 +2153,62 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     }
   }
 
-  private void stringButtonChosen() // takes care of what to do when this button
-                                    // is clicked
-  {
+  // takes care of what to do when this button is clicked
+  private void stringButtonChosen() { 
     String response = JOptionPane.showInputDialog(null, "Enter the string:",
         "String", JOptionPane.QUESTION_MESSAGE); // Show input dialog
     if (response != null) {
       char[] cArray = response.toCharArray();
 
       // Check for length constraints:
-      if ((cArray.length == 0) || (cArray.length > 500)) // user has entered
-                                                         // nothing or a string
-                                                         // longer than 500
-                                                         // chars
-      {
+      if ((cArray.length == 0) || (cArray.length > 500)) { // user has entered
+                                                         	 // nothing or a 
+      																										 // string longer than
+      																										 // 500 chars
         JOptionPane.showMessageDialog(null,
             "Please enter a string between 1 and 500 characters",
             "Invalid Input", JOptionPane.WARNING_MESSAGE); // warn user to enter
                                                            // valid input
         stringButtonChosen(); // try again
-      } else // valid input
-      {
+      } else { // valid input
         setEchoedTextFieldText("\"" + response + "\"");
         disableAllButtons();
       }
     }
   }
 
-  private void booleanButtonChosen() // takes care of what to do when this
-                                     // button is clicked
-  {
+  // takes care of what to do when this button is clicked
+  private void booleanButtonChosen() { 
     Object[] choices = { "true", "false" };
     // bring up dialog for choosing a boolean value:
     String response = (String) JOptionPane.showInputDialog(this,
         "Choose a Boolean value:", "Boolean", JOptionPane.PLAIN_MESSAGE, null,
         choices, choices[0]);
-    if ((response != null) && (response.length() > 0)) // a selection was made
-    {
+    if ((response != null) && (response.length() > 0)) { // a selection was made
       // set the text field:
       setEchoedTextFieldText(response);
       disableAllButtons();
     }
   }
 
-  private void backspaceButtonChosen() // takes care of what to do when this
-                                       // button is clicked
-  {
-    if ((getAttributeInFocus().getType() == AttributeTypes.STRING)
-        || (getAttributeInFocus().getType() == AttributeTypes.BOOLEAN))
-    // string or boolean attribute
-    {
+  // takes care of what to do when this button is clicked
+  private void backspaceButtonChosen() { 
+    if ((getAttributeInFocus().getType() == AttributeTypes.STRING) || 
+    		(getAttributeInFocus().getType() == AttributeTypes.BOOLEAN)) { 
+    	// string or boolean attribute
       setEchoedTextFieldText(null); // clear text
       refreshButtonPad();
-    } else // numerical attribute
-    {
+    } else { // numerical attribute
       String lastToken = getLastToken(echoedTextField.getText());
-      if ((lastToken != null) && (lastToken.length() > 0)) // there was text in
-                                                           // the field
-      {
-        if (getLastTokenType(echoedTextField.getText()) == DIGIT) // digit
-                                                                       // token
-        {
+      if ((lastToken != null) && (lastToken.length() > 0)) { // there was text 
+      																											 // in the field
+        if (getLastTokenType(echoedTextField.getText()) == DIGIT) { // digit
+                                                                    // token
           // remove the last character:
           setEchoedTextFieldText(echoedTextField.getText().trim()
               .substring(0,
                   (echoedTextField.getText().trim().length() - 1)));
-        } else // non-digit token
-        {
+        } else { // non-digit token
           // remove the last token:
           setEchoedTextFieldText(echoedTextField.getText().trim()
               .substring(
@@ -2421,27 +2216,15 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
                   (echoedTextField.getText().trim().length() - lastToken
                       .length())));
         }
-        if ((getLastTokenType(echoedTextField.getText()) != -1)
-            && (getLastTokenType(echoedTextField.getText()) != OPEN_PAREN)) // last
-                                                                                 // token
-                                                                                 // was
-                                                                                 // not
-                                                                                 // null,
-                                                                                 // not
-                                                                                 // digit,
-                                                                                 // and
-                                                                                 // not
-                                                                                 // open
-                                                                                 // paren
-        {
+        if ((getLastTokenType(echoedTextField.getText()) != -1) && 
+        		(getLastTokenType(echoedTextField.getText()) != OPEN_PAREN)) { 
+        	// last token was not null, not digit, and not open paren
           // add a space to the text field:
           setEchoedTextFieldText(echoedTextField.getText().trim() + " ");
         }
-        if ((echoedTextField.getText() == null)
-            || (echoedTextField.getText().length() == 0)) // all of the
-                                                               // text has been
-        // removed
-        {
+        if ((echoedTextField.getText() == null) || 
+        		(echoedTextField.getText().length() == 0)) { // all of the text has 
+        																								 // been removed
           refreshButtonPad(); // refresh button pad based on attribute type only
         } else {
           // refresh button pad based on last token type:
@@ -2451,16 +2234,13 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     }
   }
 
-  private int getLastTokenType(String tokenString) // returns the type of the
-                                                   // last token in the token
-                                                   // string
-  {
+  // returns the type of the last token in the token string
+  private int getLastTokenType(String tokenString) { 
     //System.out.println("************* At the beginning of getLastTokenType
     // with *" + tokenString + "* as thte argument");
     String token = getLastToken(tokenString);
     //System.out.println("Last token = *" + token + "*");
-    if ((token == null) || (token.length() == 0)) // no last token
-    {
+    if ((token == null) || (token.length() == 0)) { // no last token
       //System.out.println("No last token!");
       //System.out.println("*********At the end of getLastTokenType for
       // tokenstring = *" + tokenString + "*, and about to return -1");
@@ -2488,16 +2268,14 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
       //System.out.println("Last last token = *" + lastLastToken + "*");
       int lastLastTokenType = getLastTokenType(lastLastToken);
       //System.out.println("Last last token type = " + lastLastTokenType);
-      if ((lastLastTokenType == OPERATOR) || (lastLastTokenType == OPEN_PAREN)
-          || (lastLastTokenType == -1)) // "-" counts for a
-      // negative sign in this case
-      {
+      if ((lastLastTokenType == OPERATOR) || 
+      		(lastLastTokenType == OPEN_PAREN)|| (lastLastTokenType == -1)) { 
+      	// "-" counts for a negative sign in this case
         //System.out.println("*********At the end of getLastTokenType for
         // tokenstring = *" + tokenString + "*, and about to return DIGIT");
         return DIGIT;
-      } else //((lastLastTokenType == NUMBER) || (lastLastTokenType == DIGIT))
-             // // "-" counts for a minus sign in this case
-      {
+      } else { //((lastLastTokenType == NUMBER) || (lastLastTokenType == DIGIT))
+             	 // "-" counts for a minus sign in this case
         //System.out.println("*********At the end of getLastTokenType for
         // tokenstring = *" + tokenString + "*, and about to return OPERATOR");
         return OPERATOR;
@@ -2518,9 +2296,8 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     }
   }
 
-  private String getLastToken(String tokenString) // returns the last token in
-                                                  // the token string
-  {
+  // returns the last token in the token string
+  private String getLastToken(String tokenString) { 
     //System.out.println("********** At the beginning of getLastToken for
     // tokenString = *" + tokenString + "*");
     //System.out.println("(tokenString.trim().indexOf(' ') = " +
@@ -2529,33 +2306,30 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     // tokenString.trim().indexOf('('));
     //System.out.println("(tokenString.trim().indexOf(')') = " +
     // tokenString.trim().indexOf(')'));
-    if ((tokenString.equals(null)) || (tokenString.length() == 0)) // empty text
-                                                                   // field
-    {
+    if ((tokenString.equals(null)) || (tokenString.length() == 0)) { // empty 
+    																																 // text
+                                                                   	 // field
       //System.out.println("Empty tokenString!");
       return null;
-    } else if ((tokenString.trim().indexOf(' ') < 0)
-        && (tokenString.indexOf('(') < 0) && (tokenString.indexOf(')') < 0)) // no
-    // spaces & no parentheses -- must be only one token
-    {
+    } else if ((tokenString.trim().indexOf(' ') < 0) && 
+    		(tokenString.indexOf('(') < 0) && (tokenString.indexOf(')') < 0)) { 
+    	// no spaces & no parentheses -- must be only one token
       //System.out.println("Only one token!");
       //System.out.println("********** At the end of getLastToken for
       // tokenString = *" + tokenString +
       //"* and About to return tokenString.trim(), which = *" +
       // tokenString.trim() + "*");
-      if ((tokenString.startsWith("-"))
-          && (tokenString.trim().equals("-") == false)) // begins w/ a neg. sign
-                                                        // but is not just a
-      // neg. sign
-      {
+      if ((tokenString.startsWith("-")) && 
+      		(tokenString.trim().equals("-") == false)) { // begins w/ a neg. sign
+                                                       // but is not just a neg.
+      																								 // sign
         return tokenString.trim().substring(1); // return token w/out neg. sign
       } else {
         return tokenString.trim();
       }
     } else if (tokenString.equals("(")) {
       return "(";
-    } else // multiple tokens
-    {
+    } else { // multiple tokens
       //System.out.println("Multiple tokens!");
       String lastBlock = tokenString.trim().substring(
           tokenString.trim().lastIndexOf(' ') + 1);
@@ -2574,18 +2348,15 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
         // lastBlock.substring(1) + "*");
         return lastBlock.substring(1); // return what comes after the
                                        // parenthesis
-      } else if (lastBlock.indexOf("(") > 0) // open paren somewhere in the
-                                             // middle
-      {
+      } else if (lastBlock.indexOf("(") > 0) { // open paren somewhere in the
+                                             	 // middle
         return lastBlock.substring(lastBlock.lastIndexOf("(") + 1);
-      } else if ((lastBlock.startsWith("-"))
-          && (lastBlock.trim().equals("-") == false)) // begins w/ a neg. sign
-                                                      // but is not just a
-      // neg. sign
-      {
+      } else if ((lastBlock.startsWith("-")) && 
+      		(lastBlock.trim().equals("-") == false)) { // begins w/ a neg. sign
+                                                     // but is not just a neg. 
+      																							 // sign
         return lastBlock.substring(1); // return token w/out neg. sign
-      } else // no parentheses
-      {
+      } else { // no parentheses
         //System.out.println("************No parentheses, at the end of
         // getLastToken for tokenString = *" + tokenString +
         //" and about to return lastBlock, which = *" + lastBlock + "*");
@@ -2594,8 +2365,7 @@ public class EffectRuleInfoForm extends JDialog implements ActionListener,
     }
   }
 
-  private void setEchoedTextFieldText(String text)
-  {
+  private void setEchoedTextFieldText(String text) {
     echoedTextField.setText(text);
   }
 }

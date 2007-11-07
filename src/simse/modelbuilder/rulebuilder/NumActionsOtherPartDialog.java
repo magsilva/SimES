@@ -5,18 +5,32 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
 
-import java.awt.event.*;
-import java.awt.*;
-import javax.swing.*;
-import java.util.*;
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 public class NumActionsOtherPartDialog extends JDialog implements
     ActionListener {
-  private Vector participants; // participants to choose from
+  private Vector<ActionTypeParticipant> participants; // participants to choose 
+  																										// from
   private DefinedActionTypes actions; // currently defined action types
   private JTextArea echoedField; // echoed field in ButtonPadGUI to edit
   private boolean trimWhitespace; // whether or not to trim the trailing
@@ -29,8 +43,9 @@ public class NumActionsOtherPartDialog extends JDialog implements
   private JButton okButton;
   private JButton cancelButton;
 
-  public NumActionsOtherPartDialog(JDialog owner, Vector parts,
-      DefinedActionTypes acts, JTextArea echoedTField, boolean trim) {
+  public NumActionsOtherPartDialog(JDialog owner, 
+  		Vector<ActionTypeParticipant> parts, DefinedActionTypes acts, 
+  		JTextArea echoedTField, boolean trim) {
     super(owner, true);
     setTitle("Num Actions");
 
@@ -102,15 +117,13 @@ public class NumActionsOtherPartDialog extends JDialog implements
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource();
     if (source == cancelButton) {
       setVisible(false);
       dispose();
-    }
-
-    else if (source == okButton) {
+    } else if (source == okButton) {
       String active = (String) activeList.getSelectedItem();
       String activeString = new String();
       if (active.equals("All")) {
@@ -141,15 +154,13 @@ public class NumActionsOtherPartDialog extends JDialog implements
 
   private void refreshPartList() {
     for (int i = 0; i < participants.size(); i++) {
-      ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
-          .elementAt(i);
+      ActionTypeParticipant tempPart = participants.elementAt(i);
       // add participant name:
       partList.addItem(tempPart.getName());
-      Vector types = tempPart.getAllSimSEObjectTypes();
-      for (int j = 0; j < types.size(); j++) // add all of this participant's
-                                             // SimSEObjectTypes to the list:
-      {
-        SimSEObjectType tempType = (SimSEObjectType) types.elementAt(j);
+      Vector<SimSEObjectType> types = tempPart.getAllSimSEObjectTypes();
+      for (int j = 0; j < types.size(); j++) { 
+      	// add all of this participant's SimSEObjectTypes to the list:
+        SimSEObjectType tempType = types.elementAt(j);
         partList.addItem(tempPart.getName() + " " + tempType.getName() + " "
             + SimSEObjectTypeTypes.getText(tempType.getType()));
       }
@@ -158,15 +169,14 @@ public class NumActionsOtherPartDialog extends JDialog implements
 
   private void refreshActionList() {
     actionList.addItem("* (any)");
-    Vector acts = actions.getAllActionTypes();
+    Vector<ActionType> acts = actions.getAllActionTypes();
     for (int i = 0; i < acts.size(); i++) {
-      actionList.addItem(((ActionType) acts.elementAt(i)).getName());
+      actionList.addItem(acts.elementAt(i).getName());
     }
   }
 
-  private void setFocusedTextFieldText(String text) // sets echoed text field
-                                                    // to the specified text
-  {
+  // sets echoed text field to the specified text
+  private void setFocusedTextFieldText(String text) { 
     echoedField.setText(text);
   }
 }
