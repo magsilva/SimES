@@ -444,7 +444,7 @@ public class ClockPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("ArrayList list = new ArrayList();");
+      writer.write("ArrayList<Image> list = new ArrayList<Image>();");
       writer.write(NEWLINE);
       writer.write("String s = \"\" + time;");
       writer.write(NEWLINE);

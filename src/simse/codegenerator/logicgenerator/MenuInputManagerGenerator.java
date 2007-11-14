@@ -126,13 +126,13 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("boolean hasStr = false;");
       writer.write(NEWLINE);
-      writer.write("Vector menu = e.getMenu();");
+      writer.write("Vector<String> menu = e.getMenu();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<menu.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("String menuItem = (String)menu.elementAt(i);");
+      writer.write("String menuItem = menu.elementAt(i);");
       writer.write(NEWLINE);
       writer.write("if(menuItem.equals(s))");
       writer.write(NEWLINE);
@@ -243,13 +243,13 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	      writer.write(OPEN_BRACK);
 	      writer.write(NEWLINE);
 	      writer
-	          .write("Vector allEmps = state.getEmployeeStateRepository().getAll();");
+	          .write("Vector<Employee> allEmps = state.getEmployeeStateRepository().getAll();");
 	      writer.write(NEWLINE);
 	      writer.write("for(int z=0; z<allEmps.size(); z++)");
 	      writer.write(NEWLINE);
 	      writer.write(OPEN_BRACK);
 	      writer.write(NEWLINE);
-	      writer.write("Employee emp = (Employee)allEmps.elementAt(z);");
+	      writer.write("Employee emp = allEmps.elementAt(z);");
 	      writer.write(NEWLINE);
 	
 	      // user destroyers:
@@ -275,7 +275,8 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	        writer.write("// "
 	            + outerDest.getMenuText() + ":");
 	        writer.write(NEWLINE);
-	        writer.write("Vector allActions" + j
+	        writer.write("Vector<" + CodeGeneratorUtils.getUpperCaseLeading(
+	        		act.getName()) +  "Action> allActions" + j
 	            + " = state.getActionStateRepository().get"
 	            + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
 	            + "ActionStateRepository().getAllActions();");
@@ -287,9 +288,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	        writer.write(OPEN_BRACK);
 	        writer.write(NEWLINE);
 	        writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
-	        		"Action b" + j + " = (" + 
-	        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
-	        		"Action)allActions" + j + ".elementAt(i);");
+	        		"Action b" + j + " = allActions" + j + ".elementAt(i);");
 	        writer.write(NEWLINE);
 	        writer.write("if(b" + j + ".getAllParticipants().contains(emp))");
 	        writer.write(NEWLINE);
@@ -310,9 +309,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	        writer.write(OPEN_BRACK);
 	        writer.write(NEWLINE);
 	        writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
-	        		"Action b" + j + " = (" + 
-	        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
-	        		"Action)allActions" + j + ".elementAt(i);");
+	        		"Action b" + j + " = allActions" + j + ".elementAt(i);");
 	        writer.write(NEWLINE);
 	        // go through all participants:
 	        Vector<ActionTypeParticipant> parts = act.getAllParticipants();
@@ -355,14 +352,14 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	            writer.write(OPEN_BRACK);
 	            writer.write(NEWLINE);
 	            writer
-	                .write("Vector c" + j + " = b" + j + 
+	                .write("Vector<SSObject> c" + j + " = b" + j + 
 	                		".getAllParticipants();");
 	            writer.write(NEWLINE);
 	            writer.write("for(int j=0; j<c" + j + ".size(); j++)");
 	            writer.write(NEWLINE);
 	            writer.write(OPEN_BRACK);
 	            writer.write(NEWLINE);
-	            writer.write("SSObject d" + j + " = (SSObject)c" + j
+	            writer.write("SSObject d" + j + " = c" + j
 	                + ".elementAt(j);");
 	            writer.write(NEWLINE);
 	            writer.write("if(d" + j + " instanceof Employee)");
@@ -501,7 +498,10 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	        writer.write(NEWLINE);
 	        writer.write(OPEN_BRACK);
 	        writer.write(NEWLINE);
-	        writer.write("Vector b" + j + " = new Vector();");
+	        writer.write("Vector<" + CodeGeneratorUtils.getUpperCaseLeading(
+	        		act.getName()) +  "Action> b" + j + " = new Vector<" + 
+	        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+	        		"Action>();");
 	        writer.write(NEWLINE);
 	        writer.write("for(int i=0; i<allActions" + j + ".size(); i++)");
 	        writer.write(NEWLINE);
@@ -532,8 +532,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	        }
 	        writer.write(CLOSED_BRACK);
 	        writer.write(NEWLINE);
-	        writer.write("ChooseActionToDestroyDialog z" + j
-	            + " = new ChooseActionToDestroyDialog(parent, b" + j
+	        writer.write("new ChooseActionToDestroyDialog(parent, b" + j
 	            + ", state, emp, ruleExec, s);");
 	        writer.write(NEWLINE);
 	        writer.write(CLOSED_BRACK);
@@ -602,9 +601,11 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         	outerTrig.getAllParticipantTriggers();
         for (int j = 0; j < triggers.size(); j++) {
           ActionTypeParticipantTrigger trig = triggers.elementAt(j);
-          writer.write("Vector "
+          String metaTypeName = SimSEObjectTypeTypes.getText(
+          		trig.getParticipant().getSimSEObjectTypeType());
+          writer.write("Vector<" + metaTypeName + "> "
               + trig.getParticipant().getName().toLowerCase() + "s" + j
-              + " = new Vector();");
+              + " = new Vector<" + metaTypeName + ">();");
           writer.write(NEWLINE);
           Vector<ActionTypeParticipantConstraint> constraints = 
           	trig.getAllConstraints();
@@ -614,8 +615,8 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
             String objTypeName = constraint.getSimSEObjectType().getName();
             if (vectorContainsString(vectors, (objTypeName.toLowerCase() + "s"))
             		== false) { // this vector has not been generated already
-              writer.write("Vector "
-                  + objTypeName.toLowerCase()
+              writer.write("Vector<" + CodeGeneratorUtils.getUpperCaseLeading(
+              		objTypeName) + "> "+ objTypeName.toLowerCase()
                   + "s = state.get"
                   + CodeGeneratorUtils.getUpperCaseLeading(
                   		SimSEObjectTypeTypes.getText(
@@ -633,8 +634,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
             writer.write(CodeGeneratorUtils.getUpperCaseLeading(objTypeName) + 
-            		" a = (" + CodeGeneratorUtils.getUpperCaseLeading(objTypeName) +
-            		")" + objTypeName.toLowerCase() + "s.elementAt(i);");
+            		" a = " + objTypeName.toLowerCase() + "s.elementAt(i);");
             writer.write(NEWLINE);
 
             if (CodeGenerator.allowHireFire
@@ -656,7 +656,9 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
             																			// of these actions in this 
             																			// role at a time
               writer
-                  .write("Vector allActions = state.getActionStateRepository().get"
+                  .write("Vector<" + CodeGeneratorUtils.getUpperCaseLeading(
+                  		act.getName()) + 
+                  		"Action> allActions = state.getActionStateRepository().get"
                       + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
                       + "ActionStateRepository().getAllActions(a);");
               writer.write(NEWLINE);
@@ -665,9 +667,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
               writer.write(OPEN_BRACK);
               writer.write(NEWLINE);
               writer.write(CodeGeneratorUtils.getUpperCaseLeading(
-              		act.getName()) + "Action b = (" + 
-              		CodeGeneratorUtils.getUpperCaseLeading(act.getName())+ 
-              		"Action)allActions.elementAt(j);");
+              		act.getName()) + "Action b = allActions.elementAt(j);");
               writer.write(NEWLINE);
               writer.write("if(b.getAll" + trig.getParticipant().getName()
                   + "s().contains(a))");
@@ -739,7 +739,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("Vector c = new Vector();");
+        writer.write("Vector<String> c = new Vector<String>();");
         writer.write(NEWLINE);
 
         // NOTE: this following stuff was commented out because it wasn't
@@ -802,7 +802,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         				act.getName()) + "Action();");
         writer.write(NEWLINE);
         writer
-            .write("ParticipantSelectionDialogsDriver g = new ParticipantSelectionDialogsDriver(parent, c, d, f, state, ruleExec, destChecker, e, s);");
+            .write("new ParticipantSelectionDialogsDriver(parent, c, d, f, state, ruleExec, destChecker, e, s);");
         /*
          * if(!moreThan1RoleForSameEmployeeType) // NOT more than one
          * participant role for the same employee SimSEObjectType {
@@ -830,19 +830,22 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("Vector a = state.getActionStateRepository().get"
+        writer.write("Vector<" + CodeGeneratorUtils.getUpperCaseLeading(
+        		act.getName()) + "Action> a = state.getActionStateRepository().get"
             + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
             + "ActionStateRepository().getAllActions();");
         writer.write(NEWLINE);
-        writer.write("Vector b = new Vector();");
+        writer.write("Vector<" + CodeGeneratorUtils.getUpperCaseLeading(
+        		act.getName()) + "Action> b = new Vector<" + 
+        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+        		"Action>();");
         writer.write(NEWLINE);
         writer.write("for(int i=0; i<a.size(); i++)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
         writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
-        		"Action c = (" + CodeGeneratorUtils.getUpperCaseLeading(
-        				act.getName()) + "Action)a.elementAt(i);");
+        		"Action c = a.elementAt(i);");
         writer.write(NEWLINE);
         // go through all participants:
         for (int j = 0; j < triggers.size(); j++) {
@@ -864,7 +867,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
         writer
-            .write("ChooseActionToJoinDialog catjd = new ChooseActionToJoinDialog(parent, b, e, state, \""
+            .write("new ChooseActionToJoinDialog(parent, b, e, state, \""
                 + outerTrig.getMenuText() + "\", ruleExec);");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
@@ -893,7 +896,9 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("Vector allActions = state.getActionStateRepository().get"
+        writer.write("Vector<" + 
+        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+        		"Action> allActions = state.getActionStateRepository().get"
             + CodeGeneratorUtils.getUpperCaseLeading(act.getName())
             + "ActionStateRepository().getAllActions();");
         writer.write(NEWLINE);
@@ -904,9 +909,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
         writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
-        		"Action b = (" + 
-        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
-        		"Action)allActions.elementAt(i);");
+        		"Action b = allActions.elementAt(i);");
         writer.write(NEWLINE);
         writer.write("if(b.getAllParticipants().contains(e))");
         writer.write(NEWLINE);
@@ -927,8 +930,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
         writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
-        		"Action b = (" + CodeGeneratorUtils.getUpperCaseLeading(
-        				act.getName()) + "Action)allActions.elementAt(i);");
+        		"Action b = allActions.elementAt(i);");
         writer.write(NEWLINE);
         // go through all participants:
         Vector<ActionTypeParticipant> parts = act.getAllParticipants();
@@ -971,13 +973,13 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
-            writer.write("Vector c = b.getAllParticipants();");
+            writer.write("Vector<SSObject> c = b.getAllParticipants();");
             writer.write(NEWLINE);
             writer.write("for(int j=0; j<c.size(); j++)");
             writer.write(NEWLINE);
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
-            writer.write("SSObject d = (SSObject)c.elementAt(j);");
+            writer.write("SSObject d = c.elementAt(j);");
             writer.write(NEWLINE);
             writer.write("if(d instanceof Employee)");
             writer.write(NEWLINE);
@@ -1142,7 +1144,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
         writer
-            .write("ChooseActionToDestroyDialog z = new ChooseActionToDestroyDialog(parent, b, state, e, ruleExec, s);");
+            .write("new ChooseActionToDestroyDialog(parent, b, state, e, ruleExec, s);");
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
@@ -1154,13 +1156,13 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
       writer.write("// update all employees' menus:");
       writer.write(NEWLINE);
       writer
-          .write("Vector allEmps = state.getEmployeeStateRepository().getAll();");
+          .write("Vector<Employee> allEmps = state.getEmployeeStateRepository().getAll();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<allEmps.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("((Employee)allEmps.elementAt(i)).clearMenu();");
+      writer.write("allEmps.elementAt(i).clearMenu();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);

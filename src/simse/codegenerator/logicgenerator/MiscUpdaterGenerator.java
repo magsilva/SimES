@@ -73,15 +73,15 @@ public class MiscUpdaterGenerator implements CodeGeneratorConstants {
       writer.write("// clear menus and overhead texts:");
       writer.write(NEWLINE);
       writer
-          .write("Vector employees = state.getEmployeeStateRepository().getAll();");
+          .write("Vector<Employee> employees = state.getEmployeeStateRepository().getAll();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<employees.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("((Employee)employees.elementAt(i)).clearOverheadText();");
+      writer.write("employees.elementAt(i).clearOverheadText();");
       writer.write(NEWLINE);
-      writer.write("((Employee)employees.elementAt(i)).clearMenu();");
+      writer.write("employees.elementAt(i).clearMenu();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -89,14 +89,14 @@ public class MiscUpdaterGenerator implements CodeGeneratorConstants {
       writer.write("// update actions' time elapsed:");
       writer.write(NEWLINE);
       writer
-          .write("Vector actions = state.getActionStateRepository().getAllActions();");
+          .write("Vector<simse.adts.actions.Action> actions = state.getActionStateRepository().getAllActions();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<actions.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("simse.adts.actions.Action act = (simse.adts.actions.Action)actions.elementAt(i);");
+          .write("simse.adts.actions.Action act = actions.elementAt(i);");
       writer.write(NEWLINE);
       writer.write("act.incrementTimeElapsed();");
       writer.write(NEWLINE);
@@ -118,7 +118,9 @@ public class MiscUpdaterGenerator implements CodeGeneratorConstants {
       // generate code for action types w/ timed destroyers:
       for (int i = 0; i < timedActs.size(); i++) {
         ActionType act = timedActs.elementAt(i);
-        writer.write("Vector " + act.getName().toLowerCase() + 
+        writer.write("Vector<" + 
+        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action>" + 
+        		act.getName().toLowerCase() + 
         		"Actions = state.getActionStateRepository().get" + 
         		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
         		"ActionStateRepository().getAllActions();");
@@ -127,8 +129,7 @@ public class MiscUpdaterGenerator implements CodeGeneratorConstants {
         		"Actions.size(); i++) {");
         writer.write(NEWLINE);
         writer.write(CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
-        		"Action act = (" + 
-        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action) " +
+        		"Action act = " +
         		act.getName().toLowerCase() + "Actions.elementAt(i);");
         writer.write(NEWLINE);
         writer.write("act.decrementTimeToLive();");

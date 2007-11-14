@@ -109,7 +109,7 @@ public class SimSEMapGenerator implements CodeGeneratorConstants {
       writer.write("protected TileData[][] mapRep;");
       writer.write(NEWLINE);
       writer
-          .write("protected ArrayList sopUsers; // all of the DisplayedEmployees in the state");
+          .write("protected ArrayList<DisplayedEmployee> sopUsers; // all of the DisplayedEmployees in the state");
       writer.write(NEWLINE);
       writer.write("protected int ssObjCount;");
       writer.write(NEWLINE);
@@ -134,19 +134,19 @@ public class SimSEMapGenerator implements CodeGeneratorConstants {
       writer
           .write("mapRep[j][i] = new TileData(MapData.TILE_GRID, MapData.TRANSPARENT);");
       writer.write(NEWLINE);
-      writer.write("sopUsers = new ArrayList();");
+      writer.write("sopUsers = new ArrayList<DisplayedEmployee>();");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// get all of the employees from the state:");
       writer.write(NEWLINE);
       writer
-          .write("Vector allEmps = state.getEmployeeStateRepository().getAll();");
+          .write("Vector<Employee> allEmps = state.getEmployeeStateRepository().getAll();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<allEmps.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Employee tempEmp = (Employee)allEmps.elementAt(i);");
+      writer.write("Employee tempEmp = allEmps.elementAt(i);");
       writer.write(NEWLINE);
       writer
           .write("DisplayedEmployee tmpUser = new DisplayedEmployee(tempEmp, null, this, false, false, -1, -1);");
@@ -163,7 +163,7 @@ public class SimSEMapGenerator implements CodeGeneratorConstants {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("DisplayedEmployee user = (DisplayedEmployee)sopUsers.get(i);");
+          .write("DisplayedEmployee user = sopUsers.get(i);");
       writer.write(NEWLINE);
       writer
           .write("user.setXYLocations(getXYCoordinates(user.getEmployee())[0], getXYCoordinates(user.getEmployee())[1]);");

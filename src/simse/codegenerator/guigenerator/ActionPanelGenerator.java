@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class ActionPanelGenerator implements CodeGeneratorConstants {
   private DefinedObjectTypes objTypes; // holds all of the defined object types
@@ -100,15 +101,15 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private JPanel actionPaneMain;");
       writer.write(NEWLINE);
-      writer.write("private Hashtable empsToEmpPanels;");
+      writer.write("private Hashtable<Employee, JPanel> empsToEmpPanels;");
       writer.write(NEWLINE);
-      writer.write("private Hashtable empsToPicPanels;");
+      writer.write("private Hashtable<Employee, JPanel> empsToPicPanels;");
       writer.write(NEWLINE);
       writer.write("//private Hashtable empsToActPanels;");
       writer.write(NEWLINE);
-      writer.write("private Hashtable empsToPicLabels;");
+      writer.write("private Hashtable<Employee, JLabel> empsToPicLabels;");
       writer.write(NEWLINE);
-      writer.write("private Hashtable empsToKeyLabels;");
+      writer.write("private Hashtable<Employee, JLabel> empsToKeyLabels;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
@@ -143,15 +144,15 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
       writer.write("actionPane.setPreferredSize(new Dimension(225, 495));");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("empsToEmpPanels = new Hashtable();");
+      writer.write("empsToEmpPanels = new Hashtable<Employee, JPanel>();");
       writer.write(NEWLINE);
-      writer.write("empsToPicPanels = new Hashtable();");
+      writer.write("empsToPicPanels = new Hashtable<Employee, JPanel>();");
       writer.write(NEWLINE);
       writer.write("//empsToActPanels = new Hashtable();");
       writer.write(NEWLINE);
-      writer.write("empsToPicLabels = new Hashtable();");
+      writer.write("empsToPicLabels = new Hashtable<Employee, JLabel>();");
       writer.write(NEWLINE);
-      writer.write("empsToKeyLabels = new Hashtable();");
+      writer.write("empsToKeyLabels = new Hashtable<Employee, JLabel>();");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("JPanel titlePanel = new JPanel(new BorderLayout());");
@@ -216,13 +217,13 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector menuItems = selectedEmp.getMenu();");
+      writer.write("Vector<String> menuItems = selectedEmp.getMenu();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<menuItems.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("String item = (String)menuItems.elementAt(i);");
+      writer.write("String item = menuItems.elementAt(i);");
       writer.write(NEWLINE);
       writer.write("JMenuItem tempItem = new JMenuItem(item);");
       writer.write(NEWLINE);
@@ -280,13 +281,13 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
       writer.write("actionPaneMain.removeAll();");
       writer.write(NEWLINE);
       writer
-          .write("Vector allEmps = state.getEmployeeStateRepository().getAll();");
+          .write("Vector<Employee> allEmps = state.getEmployeeStateRepository().getAll();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<allEmps.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Employee emp = (Employee)allEmps.elementAt(i);");
+      writer.write("Employee emp = allEmps.elementAt(i);");
       writer.write(NEWLINE);
 
       if (CodeGenerator.allowHireFire) {
@@ -334,11 +335,11 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("}*/");
       writer.write(NEWLINE);
-      writer.write("JPanel empPanel = (JPanel)empsToEmpPanels.get(emp);");
+      writer.write("JPanel empPanel = empsToEmpPanels.get(emp);");
       writer.write(NEWLINE);
       writer.write("empPanel.removeAll();");
       writer.write(NEWLINE);
-      writer.write("JPanel picPanel = (JPanel)empsToPicPanels.get(emp);");
+      writer.write("JPanel picPanel = empsToPicPanels.get(emp);");
       writer.write(NEWLINE);
       writer.write("picPanel.removeAll();");
       writer.write(NEWLINE);
@@ -385,7 +386,7 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("JLabel picLabel = (JLabel)empsToPicLabels.get(emp);");
+      writer.write("JLabel picLabel = empsToPicLabels.get(emp);");
       writer.write(NEWLINE);
       writer.write("picLabel.setHorizontalAlignment(SwingConstants.LEFT);");
       writer.write(NEWLINE);
@@ -436,7 +437,7 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(CLOSED_BRACK);
         writer.write(NEWLINE);
-        writer.write("JLabel keyLabel = (JLabel)empsToKeyLabels.get(e);");
+        writer.write("JLabel keyLabel = empsToKeyLabels.get(e);");
         writer.write(NEWLINE);
         writer.write("picPanel.add(keyLabel);");
         writer.write(NEWLINE);
@@ -467,14 +468,14 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
       writer.write("actsPanel.setBackground(new Color(102, 102, 102, 255));");
       writer.write(NEWLINE);
       writer
-          .write("Vector acts = state.getActionStateRepository().getAllActions(emp);");
+          .write("Vector<simse.adts.actions.Action> acts = state.getActionStateRepository().getAllActions(emp);");
       writer.write(NEWLINE);
       writer.write("for(int j=0; j<acts.size(); j++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("simse.adts.actions.Action tempAct = (simse.adts.actions.Action)acts.elementAt(j);");
+          .write("simse.adts.actions.Action tempAct = acts.elementAt(j);");
       writer.write(NEWLINE);
 
       // go through all action types and generate code for those that are
@@ -686,13 +687,13 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("for(Enumeration keys=empsToPicLabels.keys(); keys.hasMoreElements();)");
+          .write("for(Enumeration<Employee> keys=empsToPicLabels.keys(); keys.hasMoreElements();)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Employee keyEmp = (Employee)keys.nextElement();");
+      writer.write("Employee keyEmp = keys.nextElement();");
       writer.write(NEWLINE);
-      writer.write("if(((JLabel)(empsToPicLabels.get(keyEmp))) == label)");
+      writer.write("if(empsToPicLabels.get(keyEmp) == label)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -710,11 +711,11 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
       // getEmpFromPanel function:
       writer.write("private Employee getEmpFromPanel(JPanel panel) {");
       writer.write(NEWLINE);
-      writer.write("for (Enumeration keys = empsToEmpPanels.keys(); keys.hasMoreElements();) {");
+      writer.write("for (Enumeration<Employee> keys = empsToEmpPanels.keys(); keys.hasMoreElements();) {");
       writer.write(NEWLINE);
-      writer.write("Employee keyEmp = (Employee) keys.nextElement();");
+      writer.write("Employee keyEmp = keys.nextElement();");
       writer.write(NEWLINE);
-      writer.write("if (((JPanel) (empsToEmpPanels.get(keyEmp))) == panel) {");
+      writer.write("if (empsToEmpPanels.get(keyEmp) == panel) {");
       writer.write(NEWLINE);
       writer.write("return keyEmp;");
       writer.write(NEWLINE);
@@ -722,11 +723,11 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
-      writer.write("for (Enumeration keys = empsToPicPanels.keys(); keys.hasMoreElements();) {");
+      writer.write("for (Enumeration<Employee> keys = empsToPicPanels.keys(); keys.hasMoreElements();) {");
       writer.write(NEWLINE);
-      writer.write("Employee keyEmp = (Employee) keys.nextElement();");
+      writer.write("Employee keyEmp = keys.nextElement();");
       writer.write(NEWLINE);
-      writer.write("if (((JPanel) (empsToPicPanels.get(keyEmp))) == panel) {");
+      writer.write("if (empsToPicPanels.get(keyEmp) == panel) {");
       writer.write(NEWLINE);
       writer.write("return keyEmp;");
       writer.write(NEWLINE);

@@ -160,10 +160,10 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
       writer.write("private SimSEGUI gui;");
       writer.write(NEWLINE);
       writer
-          .write("private Hashtable objsToImages; // maps Objects (keys) to ImageIcons (values)");
+          .write("private Hashtable<SSObject, ImageIcon> objsToImages; // maps Objects (keys) to ImageIcons (values)");
       writer.write(NEWLINE);
       writer
-          .write("private Hashtable buttonsToObjs; // maps JButtons (keys) to Objects (values)");
+          .write("private Hashtable<JButton, SSObject> buttonsToObjs; // maps JButtons (keys) to Objects (values)");
       writer.write(NEWLINE);
       writer.write("private JPanel buttonsPane;");
       writer.write(NEWLINE);
@@ -626,7 +626,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("attributePane.setGUIChanged();");
       writer.write(NEWLINE);
-      writer.write("objInFocus = (SSObject)buttonsToObjs.get(button);");
+      writer.write("objInFocus = buttonsToObjs.get(button);");
       writer.write(NEWLINE);
       writer.write("String filename = getImage(objInFocus);");
       writer.write(NEWLINE);
@@ -634,13 +634,13 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
           .write("attributePane.setObjectInFocus(objInFocus, (new ImageIcon(ImageLoader.getImageFromURL(filename))));");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("Enumeration buttons = buttonsToObjs.keys();");
+      writer.write("Enumeration<JButton> buttons = buttonsToObjs.keys();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<buttonsToObjs.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("JButton key = (JButton)buttons.nextElement();");
+      writer.write("JButton key = buttons.nextElement();");
       writer.write(NEWLINE);
       writer.write("key.setBackground(Color.WHITE);");
       writer.write(NEWLINE);
@@ -702,7 +702,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
         writer.write("hireableButtonsPane.removeAll();");
         writer.write(NEWLINE);
         writer
-            .write("Vector tmpEmps = state.getEmployeeStateRepository().getAll();");
+            .write("Vector<Employee> tmpEmps = state.getEmployeeStateRepository().getAll();");
         writer.write(NEWLINE);
         writer
             .write("setButtonConstraints(hireableEmployeeButton,hireableButtonsPane);");
@@ -713,7 +713,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("Employee e = (Employee)(tmpEmps.elementAt(i));");
+        writer.write("Employee e = tmpEmps.elementAt(i);");
         writer.write(NEWLINE);
         writer.write("boolean hired = e.getHired();");
         writer.write(NEWLINE);
@@ -725,7 +725,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write("button.setEnabled(true);");
         writer.write(NEWLINE);
-        writer.write("button.setIcon((ImageIcon)(objsToImages.get(e)));");
+        writer.write("button.setIcon(objsToImages.get(e));");
         writer.write(NEWLINE);
         writer.write("if(e.equals(objInFocus))");
         writer.write(NEWLINE);
@@ -758,14 +758,14 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
         writer.write("p.removeAll();");
         writer.write(NEWLINE);
 
-        writer.write("Vector v = e.getMenu();");
+        writer.write("Vector<String> v = e.getMenu();");
         writer.write(NEWLINE);
         writer.write("for (int k = 0; k < v.size();k++)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
         writer
-            .write("JMenuItem tempItem = new JMenuItem((String)v.elementAt(k));");
+            .write("JMenuItem tempItem = new JMenuItem(v.elementAt(k));");
         writer.write(NEWLINE);
         writer.write("tempItem.addActionListener(this);");
         writer.write(NEWLINE);
@@ -860,7 +860,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("JButton[] buttonList;");
       writer.write(NEWLINE);
-      writer.write("Vector objs;");
+      writer.write("Vector<SSObject> objs;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("switch (index)");
@@ -976,7 +976,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("SSObject obj = (SSObject)objs.elementAt(i);");
+      writer.write("SSObject obj = objs.elementAt(i);");
       writer.write(NEWLINE);
       writer.write("JButton button = null;");
       writer.write(NEWLINE);
@@ -1032,14 +1032,14 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
       writer.write("p.removeAll();");
       writer.write(NEWLINE);
 
-      writer.write("Vector v = e.getMenu();");
+      writer.write("Vector<String> v = e.getMenu();");
       writer.write(NEWLINE);
       writer.write("for (int k = 0; k < v.size();k++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("JMenuItem tempItem = new JMenuItem((String)v.elementAt(k));");
+          .write("JMenuItem tempItem = new JMenuItem(v.elementAt(k));");
       writer.write(NEWLINE);
       writer.write("tempItem.addActionListener(this);");
       writer.write(NEWLINE);
@@ -1052,7 +1052,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
 
       writer.write("button.setEnabled(true);");
       writer.write(NEWLINE);
-      writer.write("button.setIcon((ImageIcon)(objsToImages.get(obj)));");
+      writer.write("button.setIcon(objsToImages.get(obj));");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("if(obj.equals(objInFocus))");
@@ -1107,7 +1107,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector objs;");
+      writer.write("Vector<SSObject> objs;");
       writer.write(NEWLINE);
       writer.write("switch(index)");
       writer.write(NEWLINE);
@@ -1145,7 +1145,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("default:");
       writer.write(NEWLINE);
-      writer.write("objs = new Vector();");
+      writer.write("objs = new Vector<SSObject>();");
       writer.write(NEWLINE);
       writer.write("break;");
       writer.write(NEWLINE);

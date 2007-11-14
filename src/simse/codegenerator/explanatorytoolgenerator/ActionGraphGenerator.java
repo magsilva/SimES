@@ -89,8 +89,6 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import org.jfree.data.Range;");
       writer.write(NEWLINE);
-      writer.write("import org.jfree.data.xy.XYDataItem;");
-      writer.write(NEWLINE);
       writer.write("import org.jfree.data.xy.XYDataset;");
       writer.write(NEWLINE);
       writer.write("import org.jfree.data.xy.XYSeries;");
@@ -162,10 +160,10 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
     	writer.write("private XYSeriesCollection dataset;");
     	writer.write(NEWLINE);
       writer
-          .write("private Hashtable series = new Hashtable(); // a Hashtable to map action ids to XYSeries");
+          .write("private Hashtable<Integer, XYSeries> series = new Hashtable<Integer, XYSeries>(); // a Hashtable to map action ids to XYSeries");
       writer.write(NEWLINE);
       writer
-          .write("private ArrayList indices = new ArrayList(); // an ArrayList to map action indices to series names");
+          .write("private ArrayList<String> indices = new ArrayList<String>(); // an ArrayList to map action indices to series names");
       writer.write(NEWLINE);
       writer
           .write("private int actionIndex = 1; // counter for used action indices to be used for their y-values");
@@ -180,8 +178,8 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
           writer.write("private int " + lCaseName
                   + "Index = 1; // index to be used for labeling multiple actions of the same type");
           writer.write(NEWLINE);
-          writer.write("private ArrayList " + lCaseName
-                  + "Indices = new ArrayList(); // an ArrayList to map indices for "
+          writer.write("private ArrayList<Integer> " + lCaseName
+                  + "Indices = new ArrayList<Integer>(); // an ArrayList to map indices for "
                   + act.getName() + " Action labels to action ids");
           writer.write(NEWLINE);
         }
@@ -295,7 +293,7 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
           writer.write("State state = log.get(j);");
           writer.write(NEWLINE);
-          writer.write("Vector " + lCaseName
+          writer.write("Vector<" + uCaseName + "Action> " + lCaseName
               + "Actions = state.getActionStateRepository().get" + uCaseName
               + "ActionStateRepository().getAllActions();");
           writer.write(NEWLINE);
@@ -305,8 +303,7 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
           writer.write("for (int k = 0; k < " + lCaseName
               + "Actions.size(); k++) {");
           writer.write(NEWLINE);
-          writer.write(uCaseName + "Action action = (" + uCaseName + "Action)"
-              + lCaseName + "Actions.get(k);");
+          writer.write(uCaseName + "Action action = " + lCaseName + "Actions.get(k);");
           writer.write(NEWLINE);
           writer.write(NEWLINE);
           writer.write("// update series:");
@@ -464,7 +461,7 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write("else {");
       writer.write(NEWLINE);
       writer
-          .write("XYSeries oldSeries = (XYSeries) series.get(new Integer(action.getId()));");
+          .write("XYSeries oldSeries = series.get(new Integer(action.getId()));");
       writer.write(NEWLINE);
       writer.write("int index = 0;");
       writer.write(NEWLINE);
@@ -532,7 +529,7 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("// get the series name of the action:");
       writer.write(NEWLINE);
-      writer.write("String seriesName = (String) indices.get(yVal);");
+      writer.write("String seriesName = indices.get(yVal);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// get the action id:");
@@ -549,7 +546,7 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer.write("// bring up ActionInfo window:");
       writer.write(NEWLINE);
       writer
-          .write("ActionInfoWindow actWindow = new ActionInfoWindow(this, seriesName, action, xVal);");
+          .write("new ActionInfoWindow(this, seriesName, action, xVal);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -691,13 +688,13 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
       writer
           .write("private int getIdOfActionWithSeriesName(String seriesName) {");
       writer.write(NEWLINE);
-      writer.write("Enumeration keys = series.keys();");
+      writer.write("Enumeration<Integer> keys = series.keys();");
       writer.write(NEWLINE);
       writer.write("while (keys.hasMoreElements()) {");
       writer.write(NEWLINE);
-      writer.write("Integer id = (Integer) keys.nextElement();");
+      writer.write("Integer id = keys.nextElement();");
       writer.write(NEWLINE);
-      writer.write("XYSeries xys = (XYSeries) series.get(id);");
+      writer.write("XYSeries xys = series.get(id);");
       writer.write(NEWLINE);
       writer.write("if (xys.getKey().equals(seriesName)) {");
       writer.write(NEWLINE);
@@ -745,7 +742,7 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
           writer.write("State state = log.get(log.size() - 1);");
           writer.write(NEWLINE);
-          writer.write("Vector " + lCaseName
+          writer.write("Vector<" + uCaseName + "Action> " + lCaseName
               + "Actions = state.getActionStateRepository().get" + uCaseName
               + "ActionStateRepository().getAllActions();");
           writer.write(NEWLINE);
@@ -755,8 +752,8 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
           writer.write("for (int k = 0; k < " + lCaseName
               + "Actions.size(); k++) {");
           writer.write(NEWLINE);
-          writer.write(uCaseName + "Action action = (" + uCaseName + "Action)"
-              + lCaseName + "Actions.get(k);");
+          writer.write(uCaseName + "Action action = " + lCaseName + 
+          		"Actions.get(k);");
           writer.write(NEWLINE);
           writer.write(NEWLINE);
           writer.write("// update series:");

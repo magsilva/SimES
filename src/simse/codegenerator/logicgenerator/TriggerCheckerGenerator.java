@@ -148,8 +148,12 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
       	outerTrig.getAllParticipantTriggers();
       for (int j = 0; j < triggers.size(); j++) {
         ActionTypeParticipantTrigger trig = triggers.elementAt(j);
-        writer.write("Vector " + trig.getParticipant().getName().toLowerCase()
-            + "s" + counter + " = new Vector();");
+        String metaTypeName = CodeGeneratorUtils.getUpperCaseLeading(
+        		SimSEObjectTypeTypes.getText(
+        				trig.getParticipant().getSimSEObjectTypeType()));
+        writer.write("Vector <" + metaTypeName + "> " + 
+        		trig.getParticipant().getName().toLowerCase()
+            + "s" + counter + " = new Vector<" + metaTypeName + ">();");
         writer.write(NEWLINE);
         Vector<ActionTypeParticipantConstraint> constraints = 
         	trig.getAllConstraints();
@@ -161,7 +165,9 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
           																									 // not been 
           																									 // generated 
           																									 // already
-            writer.write("Vector "
+            String uCaseObjTypeName = 
+            	CodeGeneratorUtils.getUpperCaseLeading(objTypeName);
+          	writer.write("Vector <" + uCaseObjTypeName + "> "
                 + objTypeName.toLowerCase()
                 + "s = state.get"
                 + CodeGeneratorUtils.getUpperCaseLeading(
@@ -185,11 +191,12 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
           writer.write(CodeGeneratorUtils.getUpperCaseLeading(objTypeName) + 
-          		" a = (" + CodeGeneratorUtils.getUpperCaseLeading(objTypeName) + 
-          		")" + objTypeName.toLowerCase() + "s.elementAt(i);");
+          		" a = " + objTypeName.toLowerCase() + "s.elementAt(i);");
           writer.write(NEWLINE);
           writer
-              .write("Vector allActions = state.getActionStateRepository().get"
+              .write("Vector<" + CodeGeneratorUtils.getUpperCaseLeading(
+              		action.getName()) + 
+              		"Action> allActions = state.getActionStateRepository().get"
                   + CodeGeneratorUtils.getUpperCaseLeading(action.getName())
                   + "ActionStateRepository().getAllActions(a);");
           writer.write(NEWLINE);
@@ -208,9 +215,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
             writer.write(OPEN_BRACK);
             writer.write(NEWLINE);
             writer.write(CodeGeneratorUtils.getUpperCaseLeading(
-            		action.getName()) + "Action b = (" + 
-            		CodeGeneratorUtils.getUpperCaseLeading(action.getName()) + 
-            		"Action)allActions.elementAt(j);");
+            		action.getName()) + "Action b = allActions.elementAt(j);");
             writer.write(NEWLINE);
             writer.write("if(b.getAll" + trig.getParticipant().getName()
                 + "s().contains(a))");
@@ -340,9 +345,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
           writer.write(CodeGeneratorUtils.getUpperCaseLeading(
           		SimSEObjectTypeTypes.getText(part.getSimSEObjectTypeType())) + 
-          		" a" + k + " = (" + CodeGeneratorUtils.getUpperCaseLeading(
-          				SimSEObjectTypeTypes.getText(
-          						part.getSimSEObjectTypeType())) + ")" + 
+          		" a" + k + " = " + 
           						part.getName().toLowerCase() + "s" + counter);
           if ((part.getSimSEObjectTypeType() == SimSEObjectTypeTypes.ARTIFACT)
           		|| (part.getSimSEObjectTypeType() == 
@@ -384,13 +387,13 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
         }
         writer.write("// set all overhead texts:");
         writer.write(NEWLINE);
-        writer.write("Vector allPart = a.getAllParticipants();");
+        writer.write("Vector<SSObject> allPart = a.getAllParticipants();");
         writer.write(NEWLINE);
         writer.write("for(int i=0; i<allPart.size(); i++)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("SSObject tempObj = (SSObject)allPart.elementAt(i);");
+        writer.write("SSObject tempObj = allPart.elementAt(i);");
         writer.write(NEWLINE);
         writer.write("if(tempObj instanceof Employee)");
         writer.write(NEWLINE);

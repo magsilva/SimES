@@ -389,11 +389,6 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("viewRulesTitlePane.add(new JLabel(\"View Rules:\"));");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("// Create rulesPane:");
-      writer.write(NEWLINE);
-      writer.write("Box rulesPane = Box.createVerticalBox();");
-      writer.write(NEWLINE);
-      writer.write(NEWLINE);
       writer.write("// Create actionsComboBoxPane:");
       writer.write(NEWLINE);
       writer.write("JPanel actionComboBoxPane = new JPanel();");
@@ -639,7 +634,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("String[] words = selectedObj.split(\"\\\\s\");");
       writer.write(NEWLINE);
       writer
-          .write("String title = ((String)objectList.getSelectedItem()) + \" Attributes\";");
+          .write("String title = selectedObj + \" Attributes\";");
       writer.write(NEWLINE);
       writer.write("String objType = words[0];");
       writer.write(NEWLINE);
@@ -723,7 +718,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("String[] words = selectedObj.split(\"\\\\s\");");
       writer.write(NEWLINE);
       writer
-          .write("String title = ((String) objectList.getSelectedItem()) + \" Attributes\";");
+          .write("String title = selectedObj + \" Attributes\";");
       writer.write(NEWLINE);
       writer.write("String objType = words[0];");
       writer.write(NEWLINE);

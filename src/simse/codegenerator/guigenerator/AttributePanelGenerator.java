@@ -100,7 +100,7 @@ public class AttributePanelGenerator implements CodeGeneratorConstants {
       writer.write("private JList attributeListRight;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("private Vector attributes;");
+      writer.write("private Vector<String> attributes;");
       writer.write(NEWLINE);
       writer.write("private SSObject objInFocus = null;");
       writer.write(NEWLINE);
@@ -148,7 +148,7 @@ public class AttributePanelGenerator implements CodeGeneratorConstants {
       writer.write("numFormat = NumberFormat.getNumberInstance(Locale.US);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("attributes = new Vector();");
+      writer.write("attributes = new Vector<String>();");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("attributeListLeft = new JList();");
@@ -499,7 +499,7 @@ public class AttributePanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("// distribute attributes to both sides, if needed:");
       writer.write(NEWLINE);
-      writer.write("Vector rightHandAtts = new Vector();");
+      writer.write("Vector<String> rightHandAtts = new Vector<String>();");
       writer.write(NEWLINE);
       writer
           .write("if(attributes.size() > ATTRIBUTE_LIST_CAPACITY) // need to use 2nd list");

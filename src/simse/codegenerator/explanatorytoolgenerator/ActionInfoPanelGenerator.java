@@ -447,28 +447,33 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
           }
           writer.write("if (action instanceof " + uCaseName + "Action) {");
           writer.write(NEWLINE);
+    			writer.write(uCaseName + "Action " + uCaseName.toLowerCase() +
+    					"Action = (" + uCaseName + "Action)action;");
+    			writer.write(NEWLINE);
           writer.write(NEWLINE);
 
           // go through all participants:
           Vector<ActionTypeParticipant> participants = act.getAllParticipants();
           for (ActionTypeParticipant part : participants) {
+            String metaType = SimSEObjectTypeTypes.getText(part
+                .getSimSEObjectTypeType());
             String lCasePartName = part.getName().toLowerCase();
             writer.write(" // " + part.getName() + " participant:");
             writer.write(NEWLINE);
-            writer.write("Vector " + lCasePartName + "s = ((" + uCaseName
-                + "Action)action).getAll" + part.getName() + "s();");
+            writer.write("Vector<" + metaType + "> " + lCasePartName + "s = " +
+            		uCaseName.toLowerCase() + "Action.getAll" + part.getName() + 
+            		"s();");
             writer.write(NEWLINE);
             writer
-                .write("Vector active" + part.getName() + "s = ((" + uCaseName
-                    + "Action)action).getAllActive" + part.getName() + "s();");
+                .write("Vector<" + metaType + "> active" + part.getName() + 
+                		"s = " + uCaseName.toLowerCase() + "Action.getAllActive" + 
+                		part.getName() + "s();");
             writer.write(NEWLINE);
             writer.write("for (int i = 0; i < " + lCasePartName
                 + "s.size(); i++) {");
             writer.write(NEWLINE);
-            String metaType = SimSEObjectTypeTypes.getText(part
-                .getSimSEObjectTypeType());
-            writer.write(metaType + " " + lCasePartName + " = (" + metaType
-                + ")" + lCasePartName + "s.get(i);");
+            writer.write(metaType + " " + lCasePartName + " = " + 
+            		lCasePartName + "s.get(i);");
             writer.write(NEWLINE);
             writer.write("data[index][0] = \"" + part.getName() + "\";");
             writer.write(NEWLINE);
@@ -479,6 +484,8 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
               SimSEObjectType type = types.get(k);
               String uCaseTypeName = 
               	CodeGeneratorUtils.getUpperCaseLeading(type.getName());
+              String uCasePartName =
+              	CodeGeneratorUtils.getUpperCaseLeading(part.getName());
               if (k < 0) {
                 writer.write("else ");
               }
@@ -488,9 +495,13 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
               Attribute keyAtt = type.getKey();
               String uCaseAttName = 
               	CodeGeneratorUtils.getUpperCaseLeading(keyAtt.getName());
+              writer.write(uCaseTypeName + " " + uCaseTypeName.toLowerCase() +
+              		uCasePartName + " = (" + uCaseTypeName + ")" + lCasePartName +
+              		";");
+              writer.write(NEWLINE);
               writer.write("data[index][1] = \"" + type.getName() + " "
-                  + metaType + " \" + ((" + uCaseTypeName + ")" + lCasePartName
-                  + ").get" + uCaseAttName + "();");
+                  + metaType + " \" + " + uCaseTypeName.toLowerCase() +
+              		uCasePartName + ".get" + uCaseAttName + "();");
               writer.write(NEWLINE);
               writer.write(NEWLINE);
               writer.write("// find out whether it's active or not:");
@@ -500,8 +511,8 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
               writer.write("for (int j = 0; j < active" + part.getName()
                   + "s.size(); j++) {");
               writer.write(NEWLINE);
-              writer.write(metaType + " active" + part.getName() + " = ("
-                  + metaType + ")active" + part.getName() + "s.get(j);");
+              writer.write(metaType + " active" + part.getName() + " = active" +
+              		part.getName() + "s.get(j);");
               writer.write(NEWLINE);
               writer.write("if ((active" + part.getName() + " instanceof "
                   + uCaseTypeName + ") && ((" + uCaseTypeName + ")active"

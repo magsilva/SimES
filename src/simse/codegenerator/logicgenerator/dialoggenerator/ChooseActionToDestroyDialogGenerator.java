@@ -84,7 +84,7 @@ public class ChooseActionToDestroyDialogGenerator implements
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       // member variables:
-      writer.write("private Vector actions;");
+      writer.write("private Vector<? extends simse.adts.actions.Action> actions;");
       writer.write(NEWLINE);
       writer.write("private State state;");
       writer.write(NEWLINE);
@@ -96,7 +96,7 @@ public class ChooseActionToDestroyDialogGenerator implements
       writer.write(NEWLINE);
       writer.write("private JFrame gui;");
       writer.write(NEWLINE);
-      writer.write("private Vector checkBoxes;");
+      writer.write("private Vector<JCheckBox> checkBoxes;");
       writer.write(NEWLINE);
       writer.write("private JButton okButton;");
       writer.write(NEWLINE);
@@ -104,7 +104,7 @@ public class ChooseActionToDestroyDialogGenerator implements
       writer.write(NEWLINE);
       // constructor:
       writer
-          .write("public ChooseActionToDestroyDialog(JFrame owner, Vector acts, State s, Employee e, RuleExecutor r, String mText)");
+          .write("public ChooseActionToDestroyDialog(JFrame owner, Vector<? extends simse.adts.actions.Action> acts, State s, Employee e, RuleExecutor r, String mText)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -122,7 +122,7 @@ public class ChooseActionToDestroyDialogGenerator implements
       writer.write(NEWLINE);
       writer.write("menuText = mText;");
       writer.write(NEWLINE);
-      writer.write("checkBoxes = new Vector();");
+      writer.write("checkBoxes = new Vector<JCheckBox>();");
       writer.write(NEWLINE);
       writer.write("setTitle(\"Stop Action(s)\");");
       writer.write(NEWLINE);
@@ -135,7 +135,7 @@ public class ChooseActionToDestroyDialogGenerator implements
       writer.write("String actionName = new String();");
       writer.write(NEWLINE);
       writer
-          .write("simse.adts.actions.Action tempAct = (simse.adts.actions.Action)actions.elementAt(0);");
+          .write("simse.adts.actions.Action tempAct = actions.elementAt(0);");
       writer.write(NEWLINE);
 
       // make a Vector of all the action types with user destroyers:
@@ -211,8 +211,9 @@ public class ChooseActionToDestroyDialogGenerator implements
           ActionTypeParticipant tempPart = parts.elementAt(k);
           writer.write("label.append(\"" + tempPart.getName() + "(s); \");");
           writer.write(NEWLINE);
-          writer.write("Vector all" + tempPart.getName() + "s = act.getAll"
-              + tempPart.getName() + "s();");
+          writer.write("Vector<" + SimSEObjectTypeTypes.getText(tempPart
+              .getSimSEObjectTypeType()) + "> all" + tempPart.getName() + 
+              "s = act.getAll" + tempPart.getName() + "s();");
           writer.write(NEWLINE);
           writer.write("for(int j=0; j<all" + tempPart.getName()
               + "s.size(); j++)");
@@ -229,9 +230,7 @@ public class ChooseActionToDestroyDialogGenerator implements
           writer.write(NEWLINE);
           writer.write(SimSEObjectTypeTypes.getText(tempPart
               .getSimSEObjectTypeType())
-              + " a = ("
-              + SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType())
-              + ")all" + tempPart.getName() + "s.elementAt(j);");
+              + " a = all" + tempPart.getName() + "s.elementAt(j);");
           writer.write(NEWLINE);
           // go through all allowable SimSEObjectTypes for this participant:
           Vector<SimSEObjectType> ssObjTypes = 
@@ -356,7 +355,7 @@ public class ChooseActionToDestroyDialogGenerator implements
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("JCheckBox tempCBox = (JCheckBox)checkBoxes.elementAt(i);");
+      writer.write("JCheckBox tempCBox = checkBoxes.elementAt(i);");
       writer.write(NEWLINE);
       writer.write("if(tempCBox.isSelected())");
       writer.write(NEWLINE);
@@ -385,14 +384,14 @@ public class ChooseActionToDestroyDialogGenerator implements
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("JCheckBox cBox = (JCheckBox)checkBoxes.elementAt(i);");
+      writer.write("JCheckBox cBox = checkBoxes.elementAt(i);");
       writer.write(NEWLINE);
       writer.write("if(cBox.isSelected())");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("simse.adts.actions.Action tempAct = (simse.adts.actions.Action)actions.elementAt(i);");
+          .write("simse.adts.actions.Action tempAct = actions.elementAt(i);");
       writer.write(NEWLINE);
       // go through all action types w/ user destroyers:
       for (int i = 0; i < userDestActs.size(); i++) {
@@ -477,14 +476,14 @@ public class ChooseActionToDestroyDialogGenerator implements
           writer.write(NEWLINE);
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
-          writer.write("Vector c = " + tempAct.getName().toLowerCase()
+          writer.write("Vector<SSObject> c = " + tempAct.getName().toLowerCase()
               + "Act.getAllParticipants();");
           writer.write(NEWLINE);
           writer.write("for(int j=0; j<c.size(); j++)");
           writer.write(NEWLINE);
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
-          writer.write("SSObject d = (SSObject)c.elementAt(j);");
+          writer.write("SSObject d = c.elementAt(j);");
           writer.write(NEWLINE);
           writer.write("if(d instanceof Employee)");
           writer.write(NEWLINE);

@@ -111,14 +111,14 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("Vector actions = state.getActionStateRepository().getAllActions();");
+          .write("Vector<simse.adts.actions.Action> actions = state.getActionStateRepository().getAllActions();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<actions.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("simse.adts.actions.Action tempAct = (simse.adts.actions.Action)actions.elementAt(i);");
+          .write("simse.adts.actions.Action tempAct = actions.elementAt(i);");
       writer.write(NEWLINE);
       // go through each destroyer:
       for (int i = 0; i < allDestroyers.size(); i++) {
@@ -135,25 +135,29 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
+        writer.write(CodeGeneratorUtils.getUpperCaseLeading(
+        		tempAct.getName()) + "Action " + tempAct.getName().toLowerCase() +
+        		"TempAct = (" + CodeGeneratorUtils.getUpperCaseLeading(
+        				tempAct.getName()) + "Action)tempAct;");
+        writer.write(NEWLINE);
 
         if (tempDest instanceof TimedActionTypeDestroyer) { // timed destroyer
           writer.write("if(!updateUserDestsOnly)");
           writer.write(NEWLINE);
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
-          writer.write("if(((" + 
-          		CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
-          		"Action)tempAct).getTimeToLive() == 0)");
+          writer.write("if(" + tempAct.getName().toLowerCase() + "TempAct" +
+          		".getTimeToLive() == 0)");
           writer.write(NEWLINE);
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
-          writer.write("Vector b = tempAct.getAllParticipants();");
+          writer.write("Vector<SSObject> b = tempAct.getAllParticipants();");
           writer.write(NEWLINE);
           writer.write("for(int j=0; j<b.size(); j++)");
           writer.write(NEWLINE);
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
-          writer.write("SSObject c = (SSObject)b.elementAt(j);");
+          writer.write("SSObject c = b.elementAt(j);");
           writer.write(NEWLINE);
           writer.write("if(c instanceof Employee)");
           writer.write(NEWLINE);
@@ -192,9 +196,8 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants {
           }
           writer.write("state.getActionStateRepository().get"
               + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
-              + "ActionStateRepository().remove(("
-              + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
-              "Action)tempAct);");
+              + "ActionStateRepository().remove(" + 
+              tempAct.getName().toLowerCase() + "TempAct);");
           writer.write(NEWLINE);
           writer.write("trigCheck.update(true, gui);");
           writer.write(NEWLINE);
@@ -313,9 +316,11 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants {
             ActionTypeParticipantDestroyer dest = destroyers.elementAt(j);
             ActionTypeParticipant part = dest.getParticipant();
 
-            writer.write("Vector " + part.getName().toLowerCase() + "s = (("
-                + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
-                + "Action)tempAct).getAll" + part.getName() + "s();");
+            writer.write("Vector<" + SimSEObjectTypeTypes.getText(part
+                .getSimSEObjectTypeType()) + "> " + 
+                part.getName().toLowerCase() + "s = " + 
+                tempAct.getName().toLowerCase() + "TempAct.getAll" + 
+                part.getName() + "s();");
             writer.write(NEWLINE);
             writer.write("for(int j=0; j<" + part.getName().toLowerCase()
                 + "s.size(); j++)");
@@ -324,9 +329,7 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             writer.write(SimSEObjectTypeTypes.getText(part
                 .getSimSEObjectTypeType())
-                + " a = ("
-                + SimSEObjectTypeTypes.getText(part.getSimSEObjectTypeType())
-                + ")" + part.getName().toLowerCase() + "s.elementAt(j);");
+                + " a = " + part.getName().toLowerCase() + "s.elementAt(j);");
             writer.write(NEWLINE);
             // go through all participant constraints:
             Vector<ActionTypeParticipantConstraint> constraints = 
@@ -406,13 +409,13 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants {
           writer.write(NEWLINE);
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
-          writer.write("Vector b = tempAct.getAllParticipants();");
+          writer.write("Vector<SSObject> b = tempAct.getAllParticipants();");
           writer.write(NEWLINE);
           writer.write("for(int j=0; j<b.size(); j++)");
           writer.write(NEWLINE);
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
-          writer.write("SSObject c = (SSObject)b.elementAt(j);");
+          writer.write("SSObject c = b.elementAt(j);");
           writer.write(NEWLINE);
           writer.write("if(c instanceof Employee)");
           writer.write(NEWLINE);
@@ -468,9 +471,8 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants {
             }
             writer.write("state.getActionStateRepository().get"
                 + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName())
-                + "ActionStateRepository().remove(("
-                + CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) + 
-                "Action)tempAct);");
+                + "ActionStateRepository().remove(" + 
+                tempAct.getName().toLowerCase() + "TempAct);");
             writer.write(NEWLINE);
             writer.write("trigCheck.update(true, gui);");
             writer.write(NEWLINE);

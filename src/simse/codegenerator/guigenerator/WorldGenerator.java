@@ -201,13 +201,13 @@ public class WorldGenerator {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector menuItems = selectedUser.getEmployee().getMenu();");
+      writer.write("Vector<String> menuItems = selectedUser.getEmployee().getMenu();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<menuItems.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("String item = (String)menuItems.elementAt(i);");
+      writer.write("String item = menuItems.elementAt(i);");
       writer.write(NEWLINE);
       writer.write("JMenuItem tempItem = new JMenuItem(item);");
       writer.write(NEWLINE);
@@ -348,7 +348,7 @@ public class WorldGenerator {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("DisplayedEmployee tmp = (DisplayedEmployee)sopUsers.get(i);");
+          .write("DisplayedEmployee tmp = sopUsers.get(i);");
       writer.write(NEWLINE);
       writer.write("if(tmp.isDisplayed() && tmp.isActivated())");
       writer.write(NEWLINE);
@@ -372,7 +372,7 @@ public class WorldGenerator {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("DisplayedEmployee tempEmp = (DisplayedEmployee)sopUsers.get(i);");
+          .write("DisplayedEmployee tempEmp = sopUsers.get(i);");
       writer.write(NEWLINE);
       writer
           .write("String overheadText = tempEmp.getEmployee().getOverheadText();");
@@ -418,7 +418,7 @@ public class WorldGenerator {
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("ArrayList oldSopUsers = new ArrayList(sopUsers);");
+      writer.write("ArrayList<DisplayedEmployee> oldSopUsers = new ArrayList<DisplayedEmployee>(sopUsers);");
       writer.write(NEWLINE);
       writer.write("sopUsers.clear();");
       writer.write(NEWLINE);
@@ -431,7 +431,7 @@ public class WorldGenerator {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("DisplayedEmployee tempDisEmp = (DisplayedEmployee)oldSopUsers.get(i);");
+          .write("DisplayedEmployee tempDisEmp = oldSopUsers.get(i);");
       writer.write(NEWLINE);
       writer
           .write("if(state.getEmployeeStateRepository().getAll().contains(tempDisEmp.getEmployee())) // employee is still there");
@@ -452,13 +452,13 @@ public class WorldGenerator {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("Vector allEmps = state.getEmployeeStateRepository().getAll();");
+          .write("Vector<Employee> allEmps = state.getEmployeeStateRepository().getAll();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<allEmps.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Employee tempEmp = (Employee)allEmps.elementAt(i);");
+      writer.write("Employee tempEmp = allEmps.elementAt(i);");
       writer.write(NEWLINE);
       writer.write("boolean newEmp = true;");
       writer.write(NEWLINE);
@@ -467,7 +467,7 @@ public class WorldGenerator {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("DisplayedEmployee tempDisEmp = (DisplayedEmployee)sopUsers.get(j);");
+          .write("DisplayedEmployee tempDisEmp = sopUsers.get(j);");
       writer.write(NEWLINE);
       writer.write("if(tempDisEmp.getEmployee().equals(tempEmp))");
       writer.write(NEWLINE);
@@ -552,7 +552,7 @@ public class WorldGenerator {
       writer.write("int scount = 0, tmpW = 0;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("ArrayList strList = new ArrayList();");
+      writer.write("ArrayList<String> strList = new ArrayList<String>();");
       writer.write(NEWLINE);
       writer.write("FontMetrics f = getFontMetrics(getFont());");
       writer.write(NEWLINE);
@@ -602,7 +602,7 @@ public class WorldGenerator {
       writer.write("scount++;");
       writer.write(NEWLINE);
       writer
-          .write("String[] strings = (String[])strList.toArray(new String[1]);");
+          .write("String[] strings = strList.toArray(new String[1]);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer
@@ -679,7 +679,7 @@ public class WorldGenerator {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("DisplayedEmployee tmp = (DisplayedEmployee)sopUsers.get(j);");
+          .write("DisplayedEmployee tmp = sopUsers.get(j);");
       writer.write(NEWLINE);
       writer
           .write("boolean clash = tmp.checkXYLocations(xLoc+i,yLoc+(2*yOffset)) || tmp.checkXYLocations(xLoc+i,yLoc+yOffset) || tmp.checkXYLocations(xLoc+i,yLoc);");
@@ -735,7 +735,7 @@ public class WorldGenerator {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("DisplayedEmployee tmp = (DisplayedEmployee)sopUsers.get(j);");
+          .write("DisplayedEmployee tmp = sopUsers.get(j);");
       writer.write(NEWLINE);
       writer
           .write("boolean clash = tmp.checkXYLocations(xLoc-i,yLoc+(2*yOffset)) || tmp.checkXYLocations(xLoc-i,yLoc+yOffset) || tmp.checkXYLocations(xLoc-i,yLoc);");
@@ -826,7 +826,7 @@ public class WorldGenerator {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("DisplayedEmployee tmp = (DisplayedEmployee)sopUsers.get(j);");
+          .write("DisplayedEmployee tmp = sopUsers.get(j);");
       writer.write(NEWLINE);
       writer
           .write("boolean clash = tmp.checkXYLocations(xLoc-i,yLoc+(2*yOffset)) || tmp.checkXYLocations(xLoc-i,yLoc+yOffset) || tmp.checkXYLocations(xLoc-i,yLoc);");
@@ -878,7 +878,7 @@ public class WorldGenerator {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("DisplayedEmployee tmp = (DisplayedEmployee)sopUsers.get(j);");
+          .write("DisplayedEmployee tmp = sopUsers.get(j);");
       writer.write(NEWLINE);
       writer
           .write("boolean clash = tmp.checkXYLocations(xLoc+i,yLoc+(2*yOffset)) || tmp.checkXYLocations(xLoc+i,yLoc+yOffset) || tmp.checkXYLocations(xLoc+i,yLoc);");
@@ -931,7 +931,7 @@ public class WorldGenerator {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("DisplayedEmployee tmp = (DisplayedEmployee)sopUsers.get(j);");
+          .write("DisplayedEmployee tmp = sopUsers.get(j);");
       writer.write(NEWLINE);
       writer
           .write("boolean clash = tmp.checkXYLocations(xLoc+i,yLoc+(2*yOffset)) || tmp.checkXYLocations(xLoc+i,yLoc+yOffset) || tmp.checkXYLocations(xLoc+i,yLoc);");
@@ -1113,7 +1113,7 @@ public class WorldGenerator {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("DisplayedEmployee tmp = (DisplayedEmployee)sopUsers.get(i);");
+          .write("DisplayedEmployee tmp = sopUsers.get(i);");
       writer.write(NEWLINE);
       writer
           .write("if(tmp.checkXYLocations(clickedX,clickedY) && tmp.isActivated())");
@@ -1154,7 +1154,7 @@ public class WorldGenerator {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("DisplayedEmployee tmp = (DisplayedEmployee)sopUsers.get(i);");
+          .write("DisplayedEmployee tmp = sopUsers.get(i);");
       writer.write(NEWLINE);
       writer
           .write("if (tmp.checkXYLocations(clickedX,clickedY) && tmp.isActivated())");

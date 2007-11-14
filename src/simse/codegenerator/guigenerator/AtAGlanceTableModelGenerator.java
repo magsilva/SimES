@@ -78,9 +78,9 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("private Vector columnNames; // column names");
+      writer.write("private Vector<String> columnNames; // column names");
       writer.write(NEWLINE);
-      writer.write("private Vector data; // data in table");
+      writer.write("private Vector<Vector<Object>> data; // data in table");
       writer.write(NEWLINE);
       writer.write("private State state;");
       writer.write(NEWLINE);
@@ -96,9 +96,9 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("state = s;");
       writer.write(NEWLINE);
-      writer.write("columnNames = new Vector();");
+      writer.write("columnNames = new Vector<String>();");
       writer.write(NEWLINE);
-      writer.write("data = new Vector();");
+      writer.write("data = new Vector<Vector<Object>>();");
       writer.write(NEWLINE);
       writer.write("numFormat = NumberFormat.getNumberInstance(Locale.US);");
       writer.write(NEWLINE);
@@ -128,7 +128,7 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("if (data.size() > 0) {");
       writer.write(NEWLINE);
-      writer.write("return ((Vector) data.elementAt(0)).size();");
+      writer.write("return data.elementAt(0).size();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write("return 0;");
@@ -142,7 +142,7 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("return ((String)columnNames.elementAt(col));");
+      writer.write("return columnNames.elementAt(col);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -157,7 +157,7 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("String colName = (String)columnNames.elementAt(i);");
+      writer.write("String colName = columnNames.elementAt(i);");
       writer.write(NEWLINE);
       writer.write("if(colName.equals(columnName))");
       writer.write(NEWLINE);
@@ -180,7 +180,7 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("return ((Vector)data.elementAt(col)).elementAt(row);");
+      writer.write("return data.elementAt(col).elementAt(row);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -191,7 +191,7 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("((Vector)data.elementAt(col)).add(value);");
+      writer.write("data.elementAt(col).add(value);");
       writer.write(NEWLINE);
       writer.write("fireTableCellUpdated(row, col);");
       writer.write(NEWLINE);
@@ -228,21 +228,23 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("if (!state.getClock().isStopped()) {");
       writer.write(NEWLINE);
-      writer.write("Vector " + type.getName().toLowerCase() + "s = state.get" + 
+      writer.write("Vector<" + 
+      		CodeGeneratorUtils.getUpperCaseLeading(type.getName()) + "> " + 
+      		type.getName().toLowerCase() + "s = state.get" + 
       		SimSEObjectTypeTypes.getText(type.getType()) + 
       		"StateRepository().get" + 
       		CodeGeneratorUtils.getUpperCaseLeading(type.getName()) + 
       		"StateRepository().getAll();");
       writer.write(NEWLINE);
-      writer.write("Vector ");
-      writer.write("temp = new Vector();");
+      writer.write("Vector<Object> ");
+      writer.write("temp = new Vector<Object>();");
       writer.write(NEWLINE);
       for (int i = 0; i < atts.size(); i++) {
         Attribute a = atts.elementAt(i);
         if (a.isVisible()) {
           writer.write("// Initialize " + a.getName() + ":");
           writer.write(NEWLINE);
-          writer.write("temp = new Vector();");
+          writer.write("temp = new Vector<Object>();");
           writer.write(NEWLINE);
           writer.write("for(int i=0; i<" + type.getName().toLowerCase()
               + "s.size(); i++)");
@@ -250,23 +252,20 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
           writer.write(OPEN_BRACK);
           writer.write(NEWLINE);
           if (a.getType() == AttributeTypes.STRING) {
-            writer.write("temp.add(((" + 
-            		CodeGeneratorUtils.getUpperCaseLeading(type.getName()) + ")" + 
-            		type.getName().toLowerCase() + "s.elementAt(i)).get" + 
+            writer.write("temp.add(" + type.getName().toLowerCase() + 
+            		"s.elementAt(i).get" + 
             		CodeGeneratorUtils.getUpperCaseLeading(a.getName()) + "());");
           } else if (a.getType() == AttributeTypes.BOOLEAN) {
-            writer.write("temp.add(new Boolean(((" + 
-            		CodeGeneratorUtils.getUpperCaseLeading(type.getName()) + ")" + 
-            		type.getName().toLowerCase() + "s.elementAt(i)).get" + 
+            writer.write("temp.add(new Boolean(" + 
+            		type.getName().toLowerCase() + "s.elementAt(i).get" + 
             		CodeGeneratorUtils.getUpperCaseLeading(a.getName()) + "()));");
           } else if (a.getType() == AttributeTypes.INTEGER) {
             writer.write("numFormat.setMinimumFractionDigits(0);");
             writer.write(NEWLINE);
             writer.write("numFormat.setMaximumFractionDigits(0);");
             writer.write(NEWLINE);
-            writer.write("temp.add(numFormat.format(((" + 
-            		CodeGeneratorUtils.getUpperCaseLeading(type.getName()) + ")" + 
-            		type.getName().toLowerCase() + "s.elementAt(i)).get" + 
+            writer.write("temp.add(numFormat.format(" + 
+            		type.getName().toLowerCase() + "s.elementAt(i).get" + 
             		CodeGeneratorUtils.getUpperCaseLeading(a.getName()) + "()));");
           } else if (a.getType() == AttributeTypes.DOUBLE) {
             NumericalAttribute numAtt = (NumericalAttribute) a;
@@ -290,9 +289,8 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
             }
             writer.write(");");
             writer.write(NEWLINE);
-            writer.write("temp.add(numFormat.format(((" + 
-            		CodeGeneratorUtils.getUpperCaseLeading(type.getName()) + ")" + 
-            		type.getName().toLowerCase() + "s.elementAt(i)).get" + 
+            writer.write("temp.add(numFormat.format(" + 
+            		type.getName().toLowerCase() + "s.elementAt(i).get" + 
             		CodeGeneratorUtils.getUpperCaseLeading(a.getName()) + "()));");
             writer.write(NEWLINE);
           }
@@ -332,14 +330,16 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
       writer.write("columnNames.clear();");
       writer.write(NEWLINE);
 
-      writer.write("Vector " + type.getName().toLowerCase() + "s = state.get" + 
+      writer.write("Vector<" + 
+      		CodeGeneratorUtils.getUpperCaseLeading(type.getName()) + "> " + 
+      				type.getName().toLowerCase() + "s = state.get" + 
       		SimSEObjectTypeTypes.getText(type.getType()) + 
       		"StateRepository().get" + 
       		CodeGeneratorUtils.getUpperCaseLeading(type.getName()) + 
       		"StateRepository().getAll();");
       writer.write(NEWLINE);
-      writer.write("Vector ");
-      writer.write("temp = new Vector();");
+      writer.write("Vector<Object> ");
+      writer.write("temp = new Vector<Object>();");
       writer.write(NEWLINE);
       index = 0;
 	    for (int i = 0; i < atts.size(); i++) {
@@ -355,7 +355,7 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
 	        writer.write("columnNames.add(\"" + a.getName() + "\");");
 	        writer.write(NEWLINE);
 	        writer.write(CLOSED_BRACK);
-	        writer.write("temp = new Vector();");
+	        writer.write("temp = new Vector<Object>();");
 	        writer.write(NEWLINE);
 	        writer.write("for(int i=0; i<" + type.getName().toLowerCase()
 	            + "s.size(); i++)");
@@ -363,23 +363,20 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
 	        writer.write(OPEN_BRACK);
 	        writer.write(NEWLINE);
 	        if (a.getType() == AttributeTypes.STRING) {
-	          writer.write("temp.add(((" + 
-	          		CodeGeneratorUtils.getUpperCaseLeading(type.getName()) + ")" + 
-	          		type.getName().toLowerCase() + "s.elementAt(i)).get" + 
+	          writer.write("temp.add(" + 
+	          		type.getName().toLowerCase() + "s.elementAt(i).get" + 
 	          		CodeGeneratorUtils.getUpperCaseLeading(a.getName()) + "());");
 	        } else if (a.getType() == AttributeTypes.BOOLEAN) {
-	          writer.write("temp.add(new Boolean(((" + 
-	          		CodeGeneratorUtils.getUpperCaseLeading(type.getName()) + ")" + 
-	          		type.getName().toLowerCase() + "s.elementAt(i)).get" + 
+	          writer.write("temp.add(new Boolean(" + 
+	          		type.getName().toLowerCase() + "s.elementAt(i).get" + 
 	          		a.getName() + "()));");
 	        } else if (a.getType() == AttributeTypes.INTEGER) {
 	          writer.write("numFormat.setMinimumFractionDigits(0);");
 	          writer.write(NEWLINE);
 	          writer.write("numFormat.setMaximumFractionDigits(0);");
 	          writer.write(NEWLINE);
-	          writer.write("temp.add(numFormat.format(((" + 
-	          		CodeGeneratorUtils.getUpperCaseLeading(type.getName()) + ")" + 
-	          		type.getName().toLowerCase() + "s.elementAt(i)).get" + 
+	          writer.write("temp.add(numFormat.format(" + 
+	          		type.getName().toLowerCase() + "s.elementAt(i).get" + 
 	          		a.getName() + "()));");
 	        } else if (a.getType() == AttributeTypes.DOUBLE) {
 	          NumericalAttribute numAtt = (NumericalAttribute) a;
@@ -401,9 +398,8 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
 	          }
 	          writer.write(");");
 	          writer.write(NEWLINE);
-	          writer.write("temp.add(numFormat.format((("
-	              + CodeGeneratorUtils.getUpperCaseLeading(type.getName()) + ")"
-	              + type.getName().toLowerCase() + "s.elementAt(i)).get"
+	          writer.write("temp.add(numFormat.format("
+	              + type.getName().toLowerCase() + "s.elementAt(i).get"
 	              + a.getName() + "()));");
 	          writer.write(NEWLINE);
 	        }

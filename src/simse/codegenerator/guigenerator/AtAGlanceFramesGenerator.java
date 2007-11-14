@@ -392,15 +392,13 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
       writer.write("popup.removeAll();");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("int rowIndex = table.rowAtPoint(p);");
-      writer.write(NEWLINE);
       writer.write("int colIndex = table.columnAtPoint(p);");
       writer.write(NEWLINE);
       writer
           .write("realColumnIndex = table.convertColumnIndexToModel(colIndex);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("Vector hiddenCols = getAllHiddenColumnIndices(table);");
+      writer.write("Vector<Integer> hiddenCols = getAllHiddenColumnIndices(table);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer
@@ -433,7 +431,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("int index = ((Integer)hiddenCols.elementAt(i)).intValue();");
+          .write("int index = hiddenCols.elementAt(i).intValue();");
       writer.write(NEWLINE);
       writer
           .write("JMenuItem tempItem = new JMenuItem(table.getColumnName(index));");
@@ -565,13 +563,13 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(NEWLINE);
 
-      writer.write("// getAllHiddenColumnIndices function:");
+      // getAllHiddenColumnIndices function:
       writer.write(NEWLINE);
-      writer.write("private Vector getAllHiddenColumnIndices(JTable table)");
+      writer.write("private Vector<Integer> getAllHiddenColumnIndices(JTable table)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector hiddenCols = new Vector();");
+      writer.write("Vector<Integer> hiddenCols = new Vector<Integer>();");
       writer.write(NEWLINE);
       writer.write("int numCols = table.getColumnModel().getColumnCount();");
       writer.write(NEWLINE);
