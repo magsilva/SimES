@@ -5,8 +5,9 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import java.util.Vector;
 import simse.modelbuilder.actionbuilder.ActionType;
+
+import java.util.Vector;
 
 public class OtherActionsEffect implements Cloneable {
   public static final String ACTIVATE_ALL = "Activate all other actions";

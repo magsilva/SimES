@@ -2,44 +2,42 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.actionbuilder.*;
-import javax.swing.table.*;
-import java.util.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+
+import java.util.Vector;
+
+import javax.swing.table.AbstractTableModel;
 
 public class RuleTableModel extends AbstractTableModel {
-  Vector data; // data in table
-  ActionType action; // ActionType in focus, whose participants are being
-                     // displayed in the table
-  String[] columnNames = { "Name", "Type", "Timing" }; // column names
+  private Vector<Vector<Object>> data; // data in table
+  private ActionType action; // ActionType in focus, whose participants are 
+  													 // being displayed in the table
+  private String[] columnNames = { "Name", "Type", "Timing" }; // column names
 
   public RuleTableModel(ActionType act) {
     action = act;
-    data = new Vector();
+    data = new Vector<Vector<Object>>();
     refreshData();
   }
 
-  public RuleTableModel() // Creates an empty table
-  {
-    data = new Vector();
+  // creates an empty table
+  public RuleTableModel() { 
+    data = new Vector<Vector<Object>>();
   }
 
-  public void setActionTypeInFocus(ActionType act) // sets the table to display
-                                                   // the participants of this
-                                                   // action type
-  {
+  // sets the table to display the participants of this action type
+  public void setActionTypeInFocus(ActionType act) { 
     action = act;
     refreshData();
   }
 
-  public ActionType getActionTypeInFocus() // returns the action type currently
-                                           // in focus
-  {
+  // returns the action type currently in focus
+  public ActionType getActionTypeInFocus() {
     return action;
   }
 
-  public void clearActionTypeInFocus() // clears the action type currently in
-                                       // focus
-  {
+  // clears the action type currently in focus
+  public void clearActionTypeInFocus() { 
     action = null;
     data.removeAllElements();
     fireTableDataChanged(); // notify listeners that data has changed
@@ -53,7 +51,7 @@ public class RuleTableModel extends AbstractTableModel {
     if (data.size() == 0) {
       return 0;
     }
-    return ((Vector) data.elementAt(0)).size();
+    return data.elementAt(0).size();
   }
 
   public String getColumnName(int col) {
@@ -65,63 +63,57 @@ public class RuleTableModel extends AbstractTableModel {
   }
 
   public void setValueAt(Object value, int row, int col) {
-    ((Vector) data.elementAt(col)).add(value);
+    data.elementAt(col).add(value);
     fireTableCellUpdated(row, col);
   }
 
   // Initialize/refresh table data:
   public void refreshData() {
-    Vector temp = new Vector();
-    Vector rules = action.getAllRules();
+    Vector<Object> temp = new Vector<Object>();
+    Vector<Rule> rules = action.getAllRules();
 
     if (rules != null) {
       // Initialize rule names:
       for (int i = 0; i < rules.size(); i++) {
-        temp.add(((Rule) rules.elementAt(i)).getName());
+        temp.add(rules.elementAt(i).getName());
       }
-      if (data.isEmpty()) // first-time initialization
-      {
+      if (data.isEmpty()) { // first-time initialization
         data.add(temp);
-      } else // refreshing value
-      {
+      } else { // refreshing value
         data.setElementAt(temp, 0);
       }
 
       // Initialize rule types:
-      temp = new Vector();
+      temp = new Vector<Object>();
       for (int i = 0; i < rules.size(); i++) {
-        if (((Rule) rules.elementAt(i)) instanceof CreateObjectsRule) {
+        if (rules.elementAt(i) instanceof CreateObjectsRule) {
           temp.add(Rule.CREATE_OBJECTS_RULE);
-        } else if (((Rule) rules.elementAt(i)) instanceof DestroyObjectsRule) {
+        } else if (rules.elementAt(i) instanceof DestroyObjectsRule) {
           temp.add(Rule.DESTROY_OBJECTS_RULE);
-        } else if (((Rule) rules.elementAt(i)) instanceof EffectRule) {
+        } else if (rules.elementAt(i) instanceof EffectRule) {
           temp.add(Rule.EFFECT_RULE);
         }
       }
-      if (data.size() < 2) // first-time initialization
-      {
+      if (data.size() < 2) { // first-time initialization
         data.add(temp);
-      } else // refreshing value
-      {
+      } else { // refreshing value
         data.setElementAt(temp, 1);
       }
 
       // Initialize rule timing:
-      temp = new Vector();
+      temp = new Vector<Object>();
       for (int i = 0; i < rules.size(); i++) {
-        if (((Rule) rules.elementAt(i)).getTiming() == RuleTiming.CONTINUOUS) {
+        if (rules.elementAt(i).getTiming() == RuleTiming.CONTINUOUS) {
           temp.add("Continuous");
-        } else if (((Rule) rules.elementAt(i)).getTiming() == RuleTiming.TRIGGER) {
+        } else if (rules.elementAt(i).getTiming() == RuleTiming.TRIGGER) {
           temp.add("Trigger");
-        } else if (((Rule) rules.elementAt(i)).getTiming() == RuleTiming.DESTROYER) {
+        } else if (rules.elementAt(i).getTiming() == RuleTiming.DESTROYER) {
           temp.add("Destroyer");
         }
       }
-      if (data.size() < 3) // first-time initialization
-      {
+      if (data.size() < 3) { // first-time initialization
         data.add(temp);
-      } else // refreshing value
-      {
+      } else { // refreshing value
         data.setElementAt(temp, 2);
       }
     }

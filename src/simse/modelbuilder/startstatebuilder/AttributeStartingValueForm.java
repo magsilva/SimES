@@ -5,13 +5,28 @@
 
 package simse.modelbuilder.startstatebuilder;
 
-import simse.modelbuilder.objectbuilder.*;
-import javax.swing.*;
-import java.awt.event.*;
+import simse.modelbuilder.objectbuilder.Attribute;
+import simse.modelbuilder.objectbuilder.AttributeTypes;
+import simse.modelbuilder.objectbuilder.NumericalAttribute;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class AttributeStartingValueForm extends JDialog implements
     ActionListener {
@@ -85,33 +100,30 @@ public class AttributeStartingValueForm extends JDialog implements
     }
     mainPane.add(keyLabelPane);
 
-    if ((attribute.getAttribute().getType() == AttributeTypes.INTEGER)
-        || (attribute.getAttribute().getType() == AttributeTypes.DOUBLE))
+    if ((attribute.getAttribute().getType() == AttributeTypes.INTEGER) || 
+    		(attribute.getAttribute().getType() == AttributeTypes.DOUBLE)) {
     // numerical attribute
-    {
-
+    	NumericalAttribute numAttribute = 
+    		(NumericalAttribute)attribute.getAttribute();
       // Create minVal label pane:
       JPanel minValLabelPane = new JPanel();
-      if (((NumericalAttribute) (attribute.getAttribute())).isMinBoundless()) {
+      if (numAttribute.isMinBoundless()) {
         minValLabelPane.add(new JLabel("Min Value: Boundless"));
-      } else // min is not boundless
-      {
-        minValLabelPane.add(new JLabel("Min Value: "
-            + ((NumericalAttribute) (attribute.getAttribute())).getMinValue()));
+      } else { // min is not boundless
+        minValLabelPane.add(new JLabel("Min Value: " + 
+        		numAttribute.getMinValue()));
       }
       mainPane.add(minValLabelPane);
 
       // Create maxVal label pane:
       JPanel maxValLabelPane = new JPanel();
-      if (((NumericalAttribute) (attribute.getAttribute())).isMaxBoundless()) {
+      if (numAttribute.isMaxBoundless()) {
         maxValLabelPane.add(new JLabel("Max Value: Boundless"));
-      } else // max is not boundless
-      {
-        maxValLabelPane.add(new JLabel("Max Value: "
-            + ((NumericalAttribute) (attribute.getAttribute())).getMaxValue()));
+      } else { // max is not boundless
+        maxValLabelPane.add(new JLabel("Max Value: " + 
+        		numAttribute.getMaxValue()));
       }
       mainPane.add(maxValLabelPane);
-
     }
 
     // Create startVal pane:
@@ -121,13 +133,11 @@ public class AttributeStartingValueForm extends JDialog implements
     booleanStartValList = new JComboBox();
     booleanStartValList.addItem("True");
     booleanStartValList.addItem("False");
-    if (attribute.getAttribute().getType() == AttributeTypes.BOOLEAN) // boolean
-                                                                      // attribute
-    {
+    if (attribute.getAttribute().getType() == AttributeTypes.BOOLEAN) { 
+    	// boolean attribute
       startValPane.add(booleanStartValList);
       booleanStartValList.requestFocusInWindow();
-    } else // non-boolean attribute
-    {
+    } else { // non-boolean attribute
       startValPane.add(startValTextField);
       startValTextField.requestFocusInWindow();
     }
@@ -143,12 +153,9 @@ public class AttributeStartingValueForm extends JDialog implements
     okCancelButtonPane.add(cancelButton);
     mainPane.add(okCancelButtonPane);
 
-    if ((attribute instanceof InstantiatedAttribute)
-        && (((InstantiatedAttribute) (attribute)).getValue() != null)) // editing
-                                                                       // an
-                                                                       // existing
-    //attribute
-    {
+    if ((attribute instanceof InstantiatedAttribute) && 
+    		(((InstantiatedAttribute) (attribute)).getValue() != null)) { 
+    	// editing an existing attribute
       initializeForm(); // initialize value to reflect attribute being edited
     }
 
@@ -169,66 +176,55 @@ public class AttributeStartingValueForm extends JDialog implements
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource(); // get which component the action came from
 
-    if (source == cancelButton) // cancel button has been pressed
-    {
+    if (source == cancelButton) { // cancel button has been pressed
       // Close window:
       setVisible(false);
       dispose();
-    }
-
-    else if (source == okButton) // okButton has been pressed
-    {
-      Vector errors = inputValid(); // check validity of input
-      if (errors.size() > 0) // input not valid
-      {
+    } else if (source == okButton) { // okButton has been pressed
+      Vector<String> errors = inputValid(); // check validity of input
+      if (errors.size() > 0) { // input not valid
         for (int i = 0; i < errors.size(); i++) {
-          JOptionPane.showMessageDialog(null, ((String) errors.elementAt(i)),
+          JOptionPane.showMessageDialog(null, errors.elementAt(i),
               "Invalid Input", JOptionPane.ERROR_MESSAGE);
         }
-      } else // input valid
-      {
-        if (attribute.getAttribute().isKey() && attribute.getValue() == null) // new
-                                                                              // object
-        {
+      } else { // input valid
+        if (attribute.getAttribute().isKey() && attribute.getValue() == null) { 
+        	// new object
           addKeyAttribute();
-        } else // not a new object
-        {
+        } else { // not a new object
           editAttribute();
         }
       }
     }
   }
 
-  private boolean keyValueIsUnique(Object value) // returns true if there is no
-                                                 // other created object with
-                                                 // the same object type as
-  // the object in focus and key attribute value as the one that is being passed
-  // into this function
-  {
-    if ((attribute.getValue() == null)
-        || ((attribute.getValue() != null) && (attribute.getValue().equals(
-            value) == false)))
-    // the new value that the user is trying to set this attribute to is
-    // different than its previous value
-    {
-      Vector alreadyCreatedObjs = createdObjs.getAllObjects(); // get all
-                                                               // already
-                                                               // created
-                                                               // objects
+  /*
+   * returns true if there is no other created object with the same object type
+   * as the object in focus and key attribute value as the one that is being
+   * passed into this function
+   */
+  private boolean keyValueIsUnique(Object value) { 
+    if ((attribute.getValue() == null) || ((attribute.getValue() != null) && 
+    		(attribute.getValue().equals(value) == false))) { // the new value that 
+    																											// the user is trying 
+    																											// to set this 
+    																											// attribute to is
+    																											// different than its 
+    																											// previous value
+    	// get all already created objects:
+      Vector<SimSEObject> alreadyCreatedObjs = createdObjs.getAllObjects(); 
       for (int i = 0; i < alreadyCreatedObjs.size(); i++) {
-        SimSEObject tempObj = (SimSEObject) (alreadyCreatedObjs.elementAt(i));
-        if (tempObj.getKey().isInstantiated()) // has a key value
-        {
+        SimSEObject tempObj = alreadyCreatedObjs.elementAt(i);
+        if (tempObj.getKey().isInstantiated()) { // has a key value
           if ((tempObj.getKey().getValue().equals(value))
               && (tempObj.getSimSEObjectType().getName().equals(objectInFocus
                   .getSimSEObjectType().getName()))
               && (tempObj.getSimSEObjectType().getType() == objectInFocus
-                  .getSimSEObjectType().getType())) // found a match
-          {
+                  .getSimSEObjectType().getType())) { // found a match
             return false;
           }
         }
@@ -238,16 +234,14 @@ public class AttributeStartingValueForm extends JDialog implements
   }
 
   private void addKeyAttribute() {
-    if (attribute.getAttribute().getType() == AttributeTypes.BOOLEAN) // boolean
-                                                                      // attribute
-    {
-      String value = (String) (booleanStartValList.getSelectedItem()); // get
-                                                                       // value
+    if (attribute.getAttribute().getType() == AttributeTypes.BOOLEAN) { 
+    	// boolean attribute
+    	// get value:
+      String value = (String) (booleanStartValList.getSelectedItem()); 
       if (value.equals("True")) {
         Boolean newVal = new Boolean(true);
-        if (keyValueIsUnique(newVal)) // no other object of the same object type
-                                      // has the same key attribute value
-        {
+        if (keyValueIsUnique(newVal)) { // no other object of the same object 
+        																// type has the same key attribute value
           // add instantiated attribute:
           attribute.setValue(newVal);
           objectInFocus.addAttribute(attribute);
@@ -259,12 +253,10 @@ public class AttributeStartingValueForm extends JDialog implements
         } else {
           showNonUniqueKeyValueWarning();
         }
-      } else // false
-      {
+      } else { // false
         Boolean newVal = new Boolean(false);
-        if (keyValueIsUnique(newVal)) // no other object of the same object type
-                                      // has the same key attribute value
-        {
+        if (keyValueIsUnique(newVal)) { // no other object of the same object 
+        																// type has the same key attribute value
           // add instantiated attribute:
           attribute.setValue(newVal);
           objectInFocus.addAttribute(attribute);
@@ -277,15 +269,11 @@ public class AttributeStartingValueForm extends JDialog implements
           showNonUniqueKeyValueWarning();
         }
       }
-    }
-
-    else if (attribute.getAttribute().getType() == AttributeTypes.STRING) // string
-                                                                          // attribute
-    {
+    } else if (attribute.getAttribute().getType() == AttributeTypes.STRING) { 
+    	// string attribute
       String newVal = new String(startValTextField.getText());
-      if (keyValueIsUnique(newVal)) // no other object of the same object type
-                                    // has the same key attribute value
-      {
+      if (keyValueIsUnique(newVal)) { // no other object of the same object type
+                                    	// has the same key attribute value
         // add instantiated attribute:
         attribute.setValue(newVal);
         objectInFocus.addAttribute(attribute);
@@ -297,17 +285,13 @@ public class AttributeStartingValueForm extends JDialog implements
       } else {
         showNonUniqueKeyValueWarning();
       }
-    }
-
-    else if (attribute.getAttribute().getType() == AttributeTypes.DOUBLE) // double
-                                                                          // attribute
-    {
+    } else if (attribute.getAttribute().getType() == AttributeTypes.DOUBLE) { 
+    	// double attribute
       String value = startValTextField.getText();
       try {
         Double newVal = new Double(Double.parseDouble(value));
-        if (keyValueIsUnique(newVal)) // no other object of the same object type
-                                      // has the same key attribute value
-        {
+        if (keyValueIsUnique(newVal)) { // no other object of the same object 
+        																// type has the same key attribute value
           // add instantiated attribute:
           attribute.setValue(newVal);
           objectInFocus.addAttribute(attribute);
@@ -322,17 +306,13 @@ public class AttributeStartingValueForm extends JDialog implements
       } catch (NumberFormatException e) {
         System.out.println(e.getMessage());
       }
-    }
-
-    else if (attribute.getAttribute().getType() == AttributeTypes.INTEGER) // integer
-                                                                           // attribute
-    {
+    } else if (attribute.getAttribute().getType() == AttributeTypes.INTEGER) { 
+    	// integer attribute
       String value = startValTextField.getText();
       try {
         Integer newVal = new Integer(Integer.parseInt(value));
-        if (keyValueIsUnique(newVal)) // no other object of the same object type
-                                      // has the same key attribute value
-        {
+        if (keyValueIsUnique(newVal)) { // no other object of the same object 
+        																// type has the same key attribute value
           // add instantiated attribute:
           attribute.setValue(newVal);
           objectInFocus.addAttribute(attribute);
@@ -350,63 +330,58 @@ public class AttributeStartingValueForm extends JDialog implements
     }
 
     if (objectInFocus.getAllAttributes().size() < objectInFocus
-        .getSimSEObjectType().getAllAttributes().size()) // not all of the
-    // attributes from the object's type have been initialized and added to the
-    // object as instantiated attributes yet
-    {
-      Vector atts = objectInFocus.getSimSEObjectType().getAllAttributes(); // get
-                                                                           // all
-                                                                           // attributes
+        .getSimSEObjectType().getAllAttributes().size()) { // not all of the
+    																											 // attributes from 
+    																											 // the object's type 
+    																											 // have been 
+    																											 // initialized and 
+    																											 // added to the 
+    																											 // object as 
+    																											 // instantiated 
+    																											 // attributes yet
+    	// get all attributes:
+      Vector<Attribute> atts = 
+      	objectInFocus.getSimSEObjectType().getAllAttributes(); 
       for (int i = 0; i < atts.size(); i++) {
-        Attribute a = (Attribute) (atts.elementAt(i));
-        if (a.isKey() == false) // this attribute is not the key, which has
-                                // already been added
-        {
+        Attribute a = atts.elementAt(i);
+        if (a.isKey() == false) { // this attribute is not the key, which has
+                                	// already been added
           objectInFocus.addAttribute(new InstantiatedAttribute(a));
         }
       }
     }
   }
 
-  private void editAttribute() // sets the starting value of the attribute to
-                               // the one typed in
-  {
-    if (attribute.getAttribute().getType() == AttributeTypes.BOOLEAN) // boolean
-                                                                      // attribute
-    {
-      String value = (String) (booleanStartValList.getSelectedItem()); // get
-                                                                       // value
+  // sets the starting value of the attribute to the one typed int
+  private void editAttribute() { 
+    if (attribute.getAttribute().getType() == AttributeTypes.BOOLEAN) { 
+    	// boolean attribute
+    	// get value:
+      String value = (String) (booleanStartValList.getSelectedItem()); 
       Boolean newVal;
       if (value.equals("True")) {
         newVal = new Boolean(true);
-      } else // false
-      {
+      } else { // false
         newVal = new Boolean(false);
       }
-      if ((attribute.getAttribute().isKey() && (keyValueIsUnique(newVal)))
-          || (attribute.getAttribute().isKey() == false)) // if the
-      // attribute is key it has a unique value
-      {
+      if ((attribute.getAttribute().isKey() && (keyValueIsUnique(newVal))) || 
+      		(attribute.getAttribute().isKey() == false)) { // if the attribute is 
+      																									 // key it has a unique 
+      																									 // value
         // set value of instantiated attribute:
         ((InstantiatedAttribute) (attribute)).setValue(newVal);
         attTblMod.refreshData();
         setVisible(false);
         dispose();
-      } else // non-unique key value
-      {
+      } else { // non-unique key value
         showNonUniqueKeyValueWarning();
       }
-    }
-
-    else if (attribute.getAttribute().getType() == AttributeTypes.STRING) // string
-                                                                          // attribute
-    {
+    } else if (attribute.getAttribute().getType() == AttributeTypes.STRING) { 
+    	// string attribute
       String newVal = new String(startValTextField.getText());
-      if ((attribute.getAttribute().isKey() && (keyValueIsUnique(newVal)))
-          || (attribute.getAttribute().isKey() == false)) // if the attribute is
-                                                          // key it has
-      // a unique value
-      {
+      if ((attribute.getAttribute().isKey() && (keyValueIsUnique(newVal))) || 
+      		!attribute.getAttribute().isKey()) { // if the attribute is key it has
+      																				 // a unique value
         // set value of instantiated attribute:
         ((InstantiatedAttribute) (attribute)).setValue(newVal);
         attTblMod.refreshData();
@@ -415,18 +390,14 @@ public class AttributeStartingValueForm extends JDialog implements
       } else {
         showNonUniqueKeyValueWarning();
       }
-    }
-
-    else if (attribute.getAttribute().getType() == AttributeTypes.DOUBLE) // double
-                                                                          // attribute
-    {
+    } else if (attribute.getAttribute().getType() == AttributeTypes.DOUBLE) { 
+    	// double attribute
       String value = startValTextField.getText();
       try {
         Double newVal = new Double(Double.parseDouble(value));
-        if ((attribute.getAttribute().isKey() && (keyValueIsUnique(newVal)))
-            || (attribute.getAttribute().isKey() == false)) // if the
-        // attribute is key it has a unique value
-        {
+        if ((attribute.getAttribute().isKey() && (keyValueIsUnique(newVal))) || 
+        		!attribute.getAttribute().isKey()) { // if the attribute is key it 
+        																				 // has a unique value
           // set value of instantiated attribute:
           ((InstantiatedAttribute) (attribute)).setValue(newVal);
           attTblMod.refreshData();
@@ -438,18 +409,14 @@ public class AttributeStartingValueForm extends JDialog implements
       } catch (NumberFormatException e) {
         System.out.println(e.getMessage());
       }
-    }
-
-    else if (attribute.getAttribute().getType() == AttributeTypes.INTEGER) // integer
-                                                                           // attribute
-    {
+    } else if (attribute.getAttribute().getType() == AttributeTypes.INTEGER) { 
+    	// integer attribute
       String value = startValTextField.getText();
       try {
         Integer newVal = new Integer(Integer.parseInt(value));
-        if ((attribute.getAttribute().isKey() && (keyValueIsUnique(newVal)))
-            || (attribute.getAttribute().isKey() == false)) // if the
-        // attribute is key it has a unique value
-        {
+        if ((attribute.getAttribute().isKey() && (keyValueIsUnique(newVal))) || 
+        		!attribute.getAttribute().isKey()) { // if the attribute is key it 
+        																				 // has a unique value
           // set value of instantiated attribute:
           ((InstantiatedAttribute) (attribute)).setValue(newVal);
           attTblMod.refreshData();
@@ -464,84 +431,56 @@ public class AttributeStartingValueForm extends JDialog implements
     }
   }
 
-  private Vector inputValid() // validates the input from the text field;
-                              // returns null if input is valid,
-  // or a Vector of String messages explaining the error(s)
-  {
-    Vector messages = new Vector(); // holds any String messages about invalid
-                                    // input to display to the user
-
-    if (attribute.getAttribute().getType() != AttributeTypes.BOOLEAN) // only
-                                                                      // need to
-                                                                      // check
-                                                                      // for
-                                                                      // non-boolean
-                                                                      // attributes
-                                                                      // since
-                                                                      // boolean
-    // attributes use a combo box to get the value
-    {
+  /*
+   * validates the input from the text field; returns null if input is valid, or
+   * a Vector of String messages explaining the error(s)
+   */
+  private Vector<String> inputValid() { 
+    Vector<String> messages = new Vector<String>(); 
+    if (attribute.getAttribute().getType() != AttributeTypes.BOOLEAN) { 
+    	// only need to check for non-boolean attributes since boolean attributes 
+    	// use a combo box to get the value
       // Get input:
       String value = startValTextField.getText();
 
-      if (attribute.getAttribute().getType() == AttributeTypes.STRING) // string
-                                                                       // attribute
-      {
+      if (attribute.getAttribute().getType() == AttributeTypes.STRING) { 
+      	// string attribute
         char[] cArray = value.toCharArray();
         // Check for length constraints:
-        if ((cArray.length == 0) || (cArray.length > 100)) // user has entered
-                                                           // nothing or a string
-                                                           // longer than 100
-                                                           // chars
-        {
-          messages.add(new String("Value must be between 1 and 100 characters"));
+        if ((cArray.length == 0) || (cArray.length > 100)) { // user has entered
+                                                           	 // nothing or a 
+        																										 // string longer 
+        																										 // than 100 chars
+          messages.add(new String(
+          		"Value must be between 1 and 100 characters"));
         }
-      }
-
-      else if (attribute.getAttribute().getType() == AttributeTypes.DOUBLE) // double
-                                                                            // attribute
-      {
-        if ((value != null) && (value.length() > 0)) // field is not blank
-        {
+      } else if (attribute.getAttribute().getType() == AttributeTypes.DOUBLE) {
+      	// double attribute
+        if ((value != null) && (value.length() > 0)) { // field is not blank
           try {
             double doubleVal = Double.parseDouble(value); // parse the string
                                                           // into a double
-            if (((((NumericalAttribute) (attribute.getAttribute()))
-                .isMinBoundless()) == false)
-                && ((((NumericalAttribute) (attribute.getAttribute()))
-                    .isMaxBoundless()) == false)) // has both a min and a max
-            // value
-            {
-              if ((doubleVal < ((NumericalAttribute) (attribute.getAttribute()))
-                  .getMinValue().doubleValue())
-                  || (doubleVal > ((NumericalAttribute) (attribute
-                      .getAttribute())).getMaxValue().doubleValue())) // it's
-                                                                      // outside
-                                                                      // of the
-                                                                      // range
-              {
+            NumericalAttribute numAttribute = 
+            	(NumericalAttribute)attribute.getAttribute();
+            if (!numAttribute.isMinBoundless() && 
+            		!numAttribute.isMaxBoundless()) { // has both a min and a max
+              if ((doubleVal < numAttribute.getMinValue().doubleValue()) || 
+              		(doubleVal > numAttribute.getMaxValue().doubleValue())) {
+              	// it's outside of the range
                 messages.add(new String(
                     "Value must be within minimum/maximum value ranges"));
               }
-            } else if (((((NumericalAttribute) (attribute.getAttribute()))
-                .isMinBoundless()) == false)
-                && ((((NumericalAttribute) (attribute.getAttribute()))
-                    .isMaxBoundless()) == true)) // has only a min value
-            {
-              if (doubleVal < ((NumericalAttribute) (attribute.getAttribute()))
-                  .getMinValue().doubleValue()) // below the minimum value
-              {
+            } else if (!numAttribute.isMinBoundless() && 
+            		numAttribute.isMaxBoundless()) { // has only a min value
+              if (doubleVal < numAttribute.getMinValue().doubleValue()) {
+              	// below the minimum value
                 messages.add(new String(
                     "Value must be within minimum/maximum value ranges"));
               }
-            } else if (((((NumericalAttribute) (attribute.getAttribute()))
-                .isMinBoundless()) == true)
-                && ((((NumericalAttribute) (attribute.getAttribute()))
-                    .isMaxBoundless()) == false)) // has only a max value
-            {
-              if (doubleVal > ((NumericalAttribute) (attribute.getAttribute()))
-                  .getMaxValue().doubleValue()) // above the maximum value
-              {
+            } else if (numAttribute.isMinBoundless() && 
+            		!numAttribute.isMaxBoundless()) { // has only a max value
+              if (doubleVal > numAttribute.getMaxValue().doubleValue()) { 
+              	// above the maximum value
                 messages.add(new String(
                     "Value must be within minimum/maximum value ranges"));
               }
@@ -549,53 +488,40 @@ public class AttributeStartingValueForm extends JDialog implements
           } catch (NumberFormatException e) {
             messages.add(new String("Value must be a valid double number"));
           }
-        } else // field is blank
-        {
+        } else { // field is blank
           messages.add(new String("Value must be a valid double number"));
         }
-      }
-
-      else if (attribute.getAttribute().getType() == AttributeTypes.INTEGER) // integer
-                                                                             // attribute
-      {
-        if ((value != null) && (value.length() > 0)) // field is not blank
-        {
+      } else if (attribute.getAttribute().getType() == AttributeTypes.INTEGER) {
+      	// integer attribute
+        if ((value != null) && (value.length() > 0)) { // field is not blank
           try {
             int intVal = Integer.parseInt(value); // parse the string into an
                                                   // int
-            if (((((NumericalAttribute) (attribute.getAttribute()))
-                .isMinBoundless()) == false)
-                && ((((NumericalAttribute) (attribute.getAttribute()))
-                    .isMaxBoundless()) == false)) // has both a min and a max
-            // value
-            {
-              if ((intVal < ((NumericalAttribute) (attribute.getAttribute()))
-                  .getMinValue().intValue())
-                  || (intVal > ((NumericalAttribute) (attribute.getAttribute()))
-                      .getMaxValue().intValue())) // it's outside of the range
-              {
+            NumericalAttribute numAttribute = 
+            	(NumericalAttribute)attribute.getAttribute();
+            if (!numAttribute.isMinBoundless() && 
+            		!numAttribute.isMaxBoundless()) { // has both a min and a max
+              if ((intVal < numAttribute.getMinValue().intValue()) || 
+              		(intVal > numAttribute.getMaxValue().intValue())) { // it's 
+              																												// outside
+              																												// of the 
+              																												// range
                 messages.add(new String(
                     "Value must be within minimum/maximum value ranges"));
               }
-            } else if (((((NumericalAttribute) (attribute.getAttribute()))
-                .isMinBoundless()) == false)
-                && ((((NumericalAttribute) (attribute.getAttribute()))
-                    .isMaxBoundless()) == true)) // has only a min value
-            {
-              if (intVal < ((NumericalAttribute) (attribute.getAttribute()))
-                  .getMinValue().intValue()) // below the minimum value
-              {
+            } else if (!numAttribute.isMinBoundless() && 
+            		numAttribute.isMaxBoundless()) { // has only a min value
+              if (intVal < numAttribute.getMinValue().intValue()) { // below the
+              																											// minimum 
+              																											// value
                 messages.add(new String(
                     "Value must be within minimum/maximum value ranges"));
               }
-            } else if (((((NumericalAttribute) (attribute.getAttribute()))
-                .isMinBoundless()) == true)
-                && ((((NumericalAttribute) (attribute.getAttribute()))
-                    .isMaxBoundless()) == false)) // has only a max value
-            {
-              if (intVal > ((NumericalAttribute) (attribute.getAttribute()))
-                  .getMaxValue().intValue()) // above the maximum value
-              {
+            } else if (numAttribute.isMinBoundless() && 
+            		!numAttribute.isMaxBoundless()) { // has only a max value
+              if (intVal > numAttribute.getMaxValue().intValue()) { // above the
+              																											// maximum 
+              																											// value
                 messages.add(new String(
                     "Value must be within minimum/maximum value ranges"));
               }
@@ -603,8 +529,7 @@ public class AttributeStartingValueForm extends JDialog implements
           } catch (NumberFormatException e) {
             messages.add(new String("Value must be a valid integer"));
           }
-        } else // field is blank
-        {
+        } else { // field is blank
           messages.add(new String("Value must be a valid integer"));
         }
       }
@@ -612,11 +537,11 @@ public class AttributeStartingValueForm extends JDialog implements
     return messages;
   }
 
-  private void showNonUniqueKeyValueWarning() // brings up a warning dialog box
-                                              // that says that the value
-                                              // they're trying to assign to
-  // a key attribute's value is not unique
-  {
+  /*
+   * brings up a warning dialog box that says that the value they're trying to
+   * assign to a key attribute's value is not unique
+   */
+  private void showNonUniqueKeyValueWarning() { 
     JOptionPane.showMessageDialog(null, (new String("There is already a "
         + objectInFocus.getSimSEObjectType().getName()
         + " "
@@ -625,25 +550,22 @@ public class AttributeStartingValueForm extends JDialog implements
         "Non-Unique Key Value", JOptionPane.ERROR_MESSAGE);
   }
 
-  private void initializeForm() // initializes the value
-  {
-    if (attribute.getAttribute().getType() == AttributeTypes.BOOLEAN) // boolean
-                                                                      // attribute
-    {
-      if ((((InstantiatedAttribute) (attribute)).isInstantiated())
-          && (((InstantiatedAttribute) (attribute)).getValue() instanceof Boolean)
-          && ((Boolean) (((InstantiatedAttribute) (attribute)).getValue()))
-              .booleanValue() == true) {
+  // initializes the value
+  private void initializeForm() { 
+  	InstantiatedAttribute instantiatedAttribute = 
+  		(InstantiatedAttribute)attribute;
+    if (attribute.getAttribute().getType() == AttributeTypes.BOOLEAN) { 
+    	// boolean attribute
+      if (instantiatedAttribute.isInstantiated() && 
+      		(instantiatedAttribute.getValue() instanceof Boolean) && 
+      		((Boolean) instantiatedAttribute.getValue()).booleanValue() == true) {
         booleanStartValList.setSelectedItem("True");
-      } else // false
-      {
+      } else { // false
         booleanStartValList.setSelectedItem("False");
       }
-    } else // non-boolean attribute
-    {
-      if (((InstantiatedAttribute) (attribute)).isInstantiated()) {
-        startValTextField.setText((((InstantiatedAttribute) (attribute))
-            .getValue()).toString());
+    } else { // non-boolean attribute
+      if (instantiatedAttribute.isInstantiated()) {
+        startValTextField.setText(instantiatedAttribute.getValue().toString());
       }
     }
   }

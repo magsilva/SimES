@@ -79,9 +79,11 @@ public class RuleInput implements Cloneable {
     condition = c;
   }
 
-  public void clearCondition() // clears the condition value and sets its guard
-                               // to the default, RuleInputGuard.LESS_THAN
-  {
+  /*
+   * clears the condition value and sets its guard to the default,
+   * RuleInputGurad.LESS_THAN
+   */
+  public void clearCondition() { 
     condition.setGuard(RuleInputGuard.LESS_THAN);
     condition.setValue(null);
   }

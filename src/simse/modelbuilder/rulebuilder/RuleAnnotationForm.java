@@ -5,19 +5,25 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import javax.swing.*;
-import java.awt.event.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class RuleAnnotationForm extends JDialog implements ActionListener {
   private Rule rule; // the rule the annotation is attached to
   private JTextArea textArea; // for entering the narrative
   private JButton okButton; // for ok'ing the creating/editing of an annotation
-  private JButton cancelButton; // for canceling the creating/editing of an
-
-  // annotation
+  private JButton cancelButton; // for canceling the creating/editing of an 
+  															// annotation
 
   public RuleAnnotationForm(JDialog owner, Rule rule) {
     super(owner, true);
@@ -70,18 +76,14 @@ public class RuleAnnotationForm extends JDialog implements ActionListener {
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource();
-    if (source == cancelButton) // cancel button has been pressed
-    {
+    if (source == cancelButton) { // cancel button has been pressed
       // Close window:
       setVisible(false);
       dispose();
-    }
-
-    else if (source == okButton) // okButton has been pressed
-    {
+    } else if (source == okButton) { // okButton has been pressed
       rule.setAnnotation(textArea.getText());
 
       // Close window:

@@ -2,25 +2,25 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.actionbuilder.*;
+import simse.modelbuilder.actionbuilder.ActionType;
 
 public abstract class Rule implements Cloneable {
-  private String name; // name of the rule
+  // rule type constants:
+  public static final String CREATE_OBJECTS_RULE = "Create objects Rule";
+  public static final String DESTROY_OBJECTS_RULE = "Destroy objects Rule";
+  public static final String EFFECT_RULE = "Effect Rule";
+	
+	private String name; // name of the rule
   private int timing; // timing of the rule (defined by RuleTiming class)
   private int priority; // priority of this rule for execution
   private boolean expVisibility; // whether or not this rule is visible in the
                                  // explanatory tool
   private String annotation; // annotation that describes this rule
   private boolean executeOnJoins; // whether or not this rule is to be executed
-                                  // for each joining
-  // participant; only for rules with trigger or destroyer timings
+                                  // for each joining participant; only for 
+  																// rules with trigger or destroyer timings
   private ActionType actType; // POINTER TO action type that this rule is
                               // attached to
-
-  // rule type constants:
-  public static final String CREATE_OBJECTS_RULE = "Create objects Rule";
-  public static final String DESTROY_OBJECTS_RULE = "Destroy objects Rule";
-  public static final String EFFECT_RULE = "Effect Rule";
 
   public Rule(String n, ActionType act) {
     name = n;
@@ -42,8 +42,8 @@ public abstract class Rule implements Cloneable {
       cl.annotation = annotation;
       cl.executeOnJoins = executeOnJoins;
       cl.actType = actType; // NOTE: since this is a pointer to the action type,
-                            // it must remain a pointer to the
-      // action type, even in the clone. So BE CAREFUL!!
+                            // it must remain a pointer to the action type, even
+      											// in the clone. So BE CAREFUL!!
       return cl;
     } catch (CloneNotSupportedException c) {
       System.out.println(c.getMessage());
@@ -99,8 +99,8 @@ public abstract class Rule implements Cloneable {
     executeOnJoins = newJoin;
   }
 
-  public ActionType getActionType() // returns a COPY of the action type
-  {
+  // returns a COPY of the action type
+  public ActionType getActionType() { 
     return (ActionType) actType.clone();
   }
 }

@@ -5,22 +5,36 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
+import simse.modelbuilder.objectbuilder.Attribute;
+import simse.modelbuilder.objectbuilder.AttributeTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
 
-import java.awt.event.*;
-import java.awt.*;
-import javax.swing.*;
-import java.util.*;
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 public class OtherParticipantAttributeDialog extends JDialog implements
     ActionListener {
-  private Vector participants; // participants to choose from
+  private Vector<ActionTypeParticipant> participants; // participants to choose 
+  																										// from
   private JTextArea echoedField; // echoed text field in button pad gui
   private int attributeType; // type of the attribute in focus
-  boolean trimWhitespace; // whether or not to trim the trailing whitespace b4
-                          // appending to the text field
+  private boolean trimWhitespace; // whether or not to trim the trailing 
+  																// whitespace b4 appending to the text field
 
   private JComboBox activeList; // list of active statuses
   private JComboBox partList; // list of participants
@@ -28,8 +42,9 @@ public class OtherParticipantAttributeDialog extends JDialog implements
   private JButton okButton;
   private JButton cancelButton;
 
-  public OtherParticipantAttributeDialog(JDialog owner, Vector parts, 
-      JTextArea echoedTField, int attType, boolean trim) {
+  public OtherParticipantAttributeDialog(JDialog owner, 
+  		Vector<ActionTypeParticipant> parts, JTextArea echoedTField, int attType, 
+  		boolean trim) {
     super(owner, true);
     setTitle("Other Participant(s) Attribute");
 
@@ -103,20 +118,15 @@ public class OtherParticipantAttributeDialog extends JDialog implements
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource();
-    if (source == partList) // a participant has been selected
-    {
+    if (source == partList) { // a participant has been selected
       refreshAttList();
-    }
-
-    else if (source == cancelButton) {
+    } else if (source == cancelButton) {
       setVisible(false);
       dispose();
-    }
-
-    else if (source == okButton) {
+    } else if (source == okButton) {
       String active = (String) activeList.getSelectedItem();
       String activeString = new String();
       if (active.equals("All")) {
@@ -144,13 +154,12 @@ public class OtherParticipantAttributeDialog extends JDialog implements
 
   private void refreshPartList() {
     for (int i = 0; i < participants.size(); i++) {
-      ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
-          .elementAt(i);
-      Vector types = tempPart.getAllSimSEObjectTypes();
-      for (int j = 0; j < types.size(); j++) // add all of this participant's
-                                             // SimSEObjectTypes to the list:
-      {
-        SimSEObjectType tempType = (SimSEObjectType) types.elementAt(j);
+      ActionTypeParticipant tempPart = participants.elementAt(i);
+      Vector<SimSEObjectType> types = tempPart.getAllSimSEObjectTypes();
+      for (int j = 0; j < types.size(); j++) { 
+      	// add all of this participant's
+      	// SimSEObjectTypes to the list:
+        SimSEObjectType tempType = types.elementAt(j);
         partList.addItem(tempPart.getName() + " " + tempType.getName() + " "
             + SimSEObjectTypeTypes.getText(tempType.getType()));
       }
@@ -167,37 +176,32 @@ public class OtherParticipantAttributeDialog extends JDialog implements
         .lastIndexOf(' '));
     // find the participant:
     for (int i = 0; i < participants.size(); i++) {
-      ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
-          .elementAt(i);
-      if (tempPart.getName().equals(partName)) // found it
-      {
-        Vector atts = tempPart.getSimSEObjectType(typeName).getAllAttributes();
+      ActionTypeParticipant tempPart = participants.elementAt(i);
+      if (tempPart.getName().equals(partName)) { // found it
+        Vector<Attribute> atts = 
+        	tempPart.getSimSEObjectType(typeName).getAllAttributes();
         // add each attribute to the list:
         for (int j = 0; j < atts.size(); j++) {
-          Attribute tempAtt = (Attribute) atts.elementAt(j);
-          if ((attributeType == AttributeTypes.INTEGER)
-              || (attributeType == AttributeTypes.DOUBLE))
-          // numerical attribute
-          {
-            if ((tempAtt.getType() == AttributeTypes.INTEGER)
-                || (tempAtt.getType() == AttributeTypes.DOUBLE)) // numerical
-            // attribute also
-            {
+          Attribute tempAtt = atts.elementAt(j);
+          if ((attributeType == AttributeTypes.INTEGER) || 
+          		(attributeType == AttributeTypes.DOUBLE)) { // numerical attribute
+            if ((tempAtt.getType() == AttributeTypes.INTEGER) || 
+            		(tempAtt.getType() == AttributeTypes.DOUBLE)) { // numerical
+            																										// attribute 
+            																										// also
               attList.addItem(tempAtt.getName());
             }
-          } else if (attributeType == AttributeTypes.STRING) // string attribute
-          {
-            if (tempAtt.getType() == AttributeTypes.STRING) // string attribute
-                                                            // also
-            {
+          } else if (attributeType == AttributeTypes.STRING) { // string 
+          																										 // attribute
+            if (tempAtt.getType() == AttributeTypes.STRING) { // string 
+            																									// attribute
+                                                            	// also
               attList.addItem(tempAtt.getName());
             }
-          } else if (attributeType == AttributeTypes.BOOLEAN) // boolean
-                                                              // attribute
-          {
-            if (tempAtt.getType() == AttributeTypes.BOOLEAN) // boolean
-                                                             // attribute also
-            {
+          } else if (attributeType == AttributeTypes.BOOLEAN) { // boolean
+                                                              	// attribute
+            if (tempAtt.getType() == AttributeTypes.BOOLEAN) { // boolean
+                                                             	 // attribute also
               attList.addItem(tempAtt.getName());
             }
           }
@@ -205,10 +209,9 @@ public class OtherParticipantAttributeDialog extends JDialog implements
         break;
       }
     }
-    if (attList.getItemCount() == 0) // empty attribute list
-    {
-      okButton.setEnabled(false); // don't allow the user to press ok with an
-                                  // empty attribute selection
+    if (attList.getItemCount() == 0) { // empty attribute list
+    	// don't allow the user to press ok with an empty attribute selection:
+      okButton.setEnabled(false); 
     } else {
       okButton.setEnabled(true);
     }
@@ -217,9 +220,8 @@ public class OtherParticipantAttributeDialog extends JDialog implements
     repaint();
   }
 
-  private void setEchoedTextFieldText(String text) // sets the echoed field
-                                                    // to the specified text
-  {
+  // sets the echoed field to the specified text
+  private void setEchoedTextFieldText(String text) { 
     echoedField.setText(text);
   }
 }

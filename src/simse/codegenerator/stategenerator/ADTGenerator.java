@@ -483,6 +483,8 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write("package simse.adts.actions;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      writer.write("import simse.adts.objects.SSObject;");
+      writer.write(NEWLINE);
       writer.write("import simse.util.IDGenerator;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
@@ -568,17 +570,17 @@ public class ADTGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // "getAllParticipants" abstract method:
-      writer.write("public abstract Vector getAllParticipants();");
+      writer.write("public abstract Vector<SSObject> getAllParticipants();");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "getAllActiveParticipants" abstract method:
-      writer.write("public abstract Vector getAllActiveParticipants();");
+      writer.write("public abstract Vector<SSObject> getAllActiveParticipants();");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // "getAllInactiveParticipants" abstract method:
-      writer.write("public abstract Vector getAllInactiveParticipants();");
+      writer.write("public abstract Vector<SSObject> getAllInactiveParticipants();");
       writer.write(NEWLINE);
 
       writer.write(CLOSED_BRACK);
@@ -1005,7 +1007,9 @@ public class ADTGenerator implements CodeGeneratorConstants {
         		SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType()) +
         		", Boolean>");
         writer.write("Hashtable" + typeString + " cloned" + 
-        		tempPart.getName().toLowerCase() + "s = new Hashtable();");
+        		tempPart.getName().toLowerCase() + "s = new Hashtable<" + 
+        		SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType()) +
+        		", Boolean>();");
         writer.write(NEWLINE);
         writer.write("cloned" + tempPart.getName().toLowerCase() + "s.putAll(" +
             tempPart.getName().toLowerCase() + "s);");

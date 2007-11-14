@@ -5,9 +5,9 @@
 
 package simse.modelbuilder.startstatebuilder;
 
-import simse.modelbuilder.objectbuilder.*;
+import simse.modelbuilder.objectbuilder.Attribute;
 
-public class InstantiatedAttribute implements Cloneable //extends Attribute
+public class InstantiatedAttribute implements Cloneable 
 {
   private Object value; // starting value of this attribute
   private Attribute attribute; // Attribute this is based on
@@ -33,7 +33,7 @@ public class InstantiatedAttribute implements Cloneable //extends Attribute
       } else if (value instanceof Boolean) {
         cl.value = new Boolean(((Boolean) value).booleanValue());
       }
-      cl.attribute = attribute;//(Attribute)(attribute.clone());
+      cl.attribute = attribute;
       return cl;
     } catch (CloneNotSupportedException c) {
       System.out.println(c.getMessage());
@@ -58,14 +58,12 @@ public class InstantiatedAttribute implements Cloneable //extends Attribute
     attribute = a;
   }
 
-  public boolean isInstantiated() // returns true if this attribute has a value,
-                                  // false otherwise
-  {
+  // returns true if this attribute has a value, false otherwise
+  public boolean isInstantiated() { 
     if (value != null) {
       return true;
     } else {
       return false;
     }
   }
-
 }

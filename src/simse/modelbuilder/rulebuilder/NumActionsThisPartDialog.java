@@ -5,16 +5,31 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
+import simse.modelbuilder.actionbuilder.DefinedActionTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
 
-import java.awt.event.*;
-import java.awt.*;
-import javax.swing.*;
-import java.util.*;
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class NumActionsThisPartDialog extends JDialog implements ActionListener {
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+
+
+public class NumActionsThisPartDialog extends JDialog implements 
+ActionListener {
   private ActionTypeParticipant participant; // participant in focus
   private SimSEObjectType objType; // object type in focus
   private DefinedActionTypes actions; // defined action types
@@ -95,15 +110,13 @@ public class NumActionsThisPartDialog extends JDialog implements ActionListener 
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource();
     if (source == cancelButton) {
       setVisible(false);
       dispose();
-    }
-
-    else if (source == okButton) {
+    } else if (source == okButton) {
       String active = (String) activeList.getSelectedItem();
       String activeString = new String();
       if (active.equals("All")) {
@@ -137,15 +150,14 @@ public class NumActionsThisPartDialog extends JDialog implements ActionListener 
 
   private void refreshActionList() {
     actionList.addItem("* (any)");
-    Vector acts = actions.getAllActionTypes();
+    Vector<ActionType> acts = actions.getAllActionTypes();
     for (int i = 0; i < acts.size(); i++) {
-      actionList.addItem(((ActionType) acts.elementAt(i)).getName());
+      actionList.addItem(acts.elementAt(i).getName());
     }
   }
-
-  private void setFocusedTextFieldText(String text) // sets echoed text field
-                                                    // to the specified text
-  {
+  
+  // sets echoed text field to the specified text
+  private void setFocusedTextFieldText(String text) { 
     echoedField.setText(text);
   }
 }

@@ -1,12 +1,21 @@
-/* This class defines the window through which a narrative can be entered/edited */
+/* This class defines the window through which a narrative can be 
+ * entered/edited */
 
 package simse.modelbuilder.startstatebuilder;
 
-import javax.swing.*;
-import java.awt.event.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class NarrativeDialog extends JDialog implements ActionListener {
   private CreatedObjects createdObjs; // objects already created
@@ -47,10 +56,9 @@ public class NarrativeDialog extends JDialog implements ActionListener {
     okCancelButtonPane.add(cancelButton);
     mainPane.add(okCancelButtonPane);
 
-    if ((createdObjs.getStartingNarrative().equals(null) == false)
-        && (createdObjs.getStartingNarrative().length() > 0)) // has a starting
-    // narrative
-    {
+    if (!createdObjs.getStartingNarrative().equals(null) && 
+    		(createdObjs.getStartingNarrative().length() > 0)) { // has a starting
+    																												 // narrative
       textArea.setText(createdObjs.getStartingNarrative());
       textArea.setCaretPosition(0);
     }
@@ -72,19 +80,15 @@ public class NarrativeDialog extends JDialog implements ActionListener {
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource(); // get which component the action came from
 
-    if (source == cancelButton) // cancel button has been pressed
-    {
+    if (source == cancelButton) { // cancel button has been pressed
       // Close window:
       setVisible(false);
       dispose();
-    }
-
-    else if (source == okButton) // okButton has been pressed
-    {
+    } else if (source == okButton) { // okButton has been pressed
       createdObjs.setStartingNarrative(textArea.getText());
       // Close window:
       setVisible(false);

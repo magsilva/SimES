@@ -40,9 +40,8 @@ public class RuleInputCondition implements Cloneable {
     return value;
   }
 
-  public boolean isConstrained() // returns true if there is a value for this
-                                 // condition, false otherwise
-  {
+  // returns true if there is a value for this condition, false otherwise
+  public boolean isConstrained() { 
     if (value == null) {
       return false;
     } else {
@@ -58,4 +57,3 @@ public class RuleInputCondition implements Cloneable {
     value = newVal;
   }
 }
-

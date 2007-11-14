@@ -5,13 +5,13 @@
 
 package simse.modelbuilder.startstatebuilder;
 
-import simse.modelbuilder.objectbuilder.*;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
 
-import java.util.*;
+import java.util.Vector;
 
 public class CreatedObjects {
-  Vector<SimSEObject> objs; // Vector of SimSEObjects
-  String startingNarrative; // starting narrative
+  private Vector<SimSEObject> objs; // Vector of SimSEObjects
+  private String startingNarrative; // starting narrative
 
   public CreatedObjects(Vector<SimSEObject> v, String s) {
     objs = v;
@@ -23,23 +23,12 @@ public class CreatedObjects {
     startingNarrative = new String();
   }
 
-  public Vector<SimSEObject> getAllObjects() 
-  {
+  public Vector<SimSEObject> getAllObjects() {
     return objs;
   }
 
-  public Vector<SimSEObject> getAllObjectsOfType(SimSEObjectType type) { // returns
-																																					// a
-																																					// Vector
-																																					// of
-																																					// SimSEObjects,
-																																					// all
-																																					// of
-																																					// them
-																																					// having
-																																					// the
-																																					// type
-																																					// specified
+  // returns a Vector of SimSEObjects, all of them having the type specified
+  public Vector<SimSEObject> getAllObjectsOfType(SimSEObjectType type) { 
     Vector<SimSEObject> v = new Vector<SimSEObject>();
     for (int i = 0; i < objs.size(); i++) {
       SimSEObject obj = objs.elementAt(i);
@@ -112,23 +101,11 @@ public class CreatedObjects {
     objs.insertElementAt(obj, position);
   }
   
-  public SimSEObject getObject(int type, String name, Object keyAttValue) // returns
-                                                                          // the
-                                                                          // object
-                                                                          // in
-                                                                          // the
-                                                                          // data
-                                                                          // structure
-                                                                          // with
-                                                                          // the
-                                                                          // specified
-                                                                          // type,
-                                                                          // name,
-                                                                          // and
-                                                                          // key
-                                                                          // attribute
-                                                                          // value
-  {
+  /*
+   * returns the object in the data structure with the specified type, name, and
+   * key attribute value
+   */
+  public SimSEObject getObject(int type, String name, Object keyAttValue) { 
     for (int i = 0; i < objs.size(); i++) {
       SimSEObject tempObj = objs.elementAt(i);
       if ((tempObj.getSimSEObjectType().getType() == type)
@@ -146,8 +123,7 @@ public class CreatedObjects {
    * SimSEObjectType name ("name"), and key attribute value ("keyAttValue"),
    * and returns the position from which it was removed, or -1 if not found
    */
-  public int removeObject(int type, String name, Object keyAttValue) 
-  {
+  public int removeObject(int type, String name, Object keyAttValue) {
     for (int i = 0; i < objs.size(); i++) {
       SimSEObject tempObj = objs.elementAt(i);
       if ((tempObj.getSimSEObjectType().getType() == type)
@@ -167,7 +143,7 @@ public class CreatedObjects {
   
   public int getIndexOf(SimSEObject obj) {
     for (int i = 0; i < objs.size(); i++) {
-      SimSEObject tempObj = (SimSEObject) objs.elementAt(i);
+      SimSEObject tempObj = objs.elementAt(i);
       if (tempObj.getName().equals(obj.getName())) {
         return objs.indexOf(obj);
       }
@@ -175,8 +151,8 @@ public class CreatedObjects {
     return -1;
   }
 
-  public void clearAll() // removes all objects
-  {
+  // removes all objects
+  public void clearAll() { 
     objs.removeAllElements();
   }
 
@@ -188,10 +164,8 @@ public class CreatedObjects {
     startingNarrative = s;
   }
 
-  public void updateAllInstantiatedAttributes() // calls
-                                                // updateAllInstantiatedAttributes()
-                                                // for all created objects
-  {
+  // calls updateAllInstantiatedAttributes() for all created objects
+  public void updateAllInstantiatedAttributes() { 
     for (int i = 0; i < objs.size(); i++) {
       SimSEObject tempObj = objs.elementAt(i);
       tempObj.updateInstantiatedAttributes();

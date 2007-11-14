@@ -2,17 +2,39 @@
 
 package simse.modelbuilder.startstatebuilder;
 
-import simse.modelbuilder.*;
-import simse.modelbuilder.objectbuilder.*;
+import simse.modelbuilder.ModelBuilderGUI;
+import simse.modelbuilder.WarningListPane;
+import simse.modelbuilder.objectbuilder.DefinedObjectTypes;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
 
-import java.awt.event.*;
 import java.awt.Dimension;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 
-import java.util.*;
-import java.io.*;
+import java.io.File;
+
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class StartStateBuilderGUI extends JPanel implements ActionListener,
     ListSelectionListener, MouseListener {
@@ -77,12 +99,17 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
     // Create "attribute table" pane:
     attTblMod = new StartStateAttributeTableModel();
     attributeTable = new JTable(attTblMod);
-    DefaultTableCellRenderer rightAlignRenderer = new DefaultTableCellRenderer();
+    DefaultTableCellRenderer rightAlignRenderer = 
+    	new DefaultTableCellRenderer();
 		rightAlignRenderer.setHorizontalAlignment(JLabel.RIGHT);
-		attributeTable.getColumnModel().getColumn(3).setCellRenderer(rightAlignRenderer);
-		attributeTable.getColumnModel().getColumn(4).setCellRenderer(rightAlignRenderer);
-		attributeTable.getColumnModel().getColumn(5).setCellRenderer(rightAlignRenderer);
-		attributeTable.getColumnModel().getColumn(6).setCellRenderer(rightAlignRenderer);
+		attributeTable.getColumnModel().getColumn(3).setCellRenderer(
+				rightAlignRenderer);
+		attributeTable.getColumnModel().getColumn(4).setCellRenderer(
+				rightAlignRenderer);
+		attributeTable.getColumnModel().getColumn(5).setCellRenderer(
+				rightAlignRenderer);
+		attributeTable.getColumnModel().getColumn(6).setCellRenderer(
+				rightAlignRenderer);
     attributeTable.addMouseListener(this);
     attributeTablePane = new JScrollPane(attributeTable);
     attributeTablePane
@@ -106,16 +133,7 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
     createdObjectsList = new JList();
     createdObjectsList.setVisibleRowCount(7); // make 7 items visible at a time
     createdObjectsList.setFixedCellWidth(500);
-    createdObjectsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only
-                                                                              // allow
-                                                                              // the
-                                                                              // user
-                                                                              // to
-                                                                              // select
-                                                                              // one
-                                                                              // item
-                                                                              // at a
-                                                                              // time
+    createdObjectsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
     createdObjectsList.addListSelectionListener(this);
     JScrollPane createdObjectsListPane = new JScrollPane(createdObjectsList);
     createdObjectsPane.add(createdObjectsListPane);
@@ -166,34 +184,28 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
   }
 
   public void valueChanged(ListSelectionEvent e) {
-    if (createdObjectsList.getSelectedIndex() >= 0) // an item (object) is
-                                                    // selected
-    {
-      SimSEObject tempObj = (SimSEObject) (objects.getAllObjects()
-          .elementAt(createdObjectsList.getSelectedIndex()));
+    if (createdObjectsList.getSelectedIndex() >= 0) { // an item (object) is
+                                                    	// selected
+      SimSEObject tempObj = objects.getAllObjects().elementAt(
+      		createdObjectsList.getSelectedIndex());
       // get the selected object type
       setObjectInFocus(tempObj);
     }
   }
 
-  public void mousePressed(MouseEvent me) {
-  }
+  public void mousePressed(MouseEvent me) {}
 
-  public void mouseReleased(MouseEvent me) {
-  }
+  public void mouseReleased(MouseEvent me) {}
 
-  public void mouseEntered(MouseEvent me) {
-  }
+  public void mouseEntered(MouseEvent me) {}
 
-  public void mouseExited(MouseEvent me) {
-  }
+  public void mouseExited(MouseEvent me) {}
 
   public void mouseClicked(MouseEvent me) {
     int clicks = me.getClickCount();
 
     if (me.getButton() == MouseEvent.BUTTON1 && clicks >= 2) {
-      if (attributeTable.getSelectedRow() >= 0) // a row is selected
-      {
+      if (attributeTable.getSelectedRow() >= 0) { // a row is selected
         InstantiatedAttribute tempAttr = attTblMod.getObjectInFocus()
             .getAttribute(
                 (String) (attTblMod.getValueAt(attributeTable.getSelectedRow(),
@@ -212,10 +224,9 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
    * reloads the start state objects from a temporary file; if resetUI is
    * true, it clears the current selections in the UI
    */
-  public void reload(File tempFile, boolean resetUI) 
-  {
+  public void reload(File tempFile, boolean resetUI) {
     // reload:
-    Vector warnings = ssFileManip.loadFile(tempFile);
+    Vector<String> warnings = ssFileManip.loadFile(tempFile);
     generateWarnings(warnings);
 
     // reset UI stuff:
@@ -227,12 +238,12 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
 	    createNewObjLabel.setEnabled(false);
 	    createObjectList.setEnabled(false);
 	    okCreateObjectButton.setEnabled(false);
-	    Vector objTypes = objectTypes.getAllObjectTypes();
-	    if (objTypes.size() > 0) // there is at least one object type
-	    {
-	      // make sure there is at least one object type w/ at least one attribute:
+	    Vector<SimSEObjectType> objTypes = objectTypes.getAllObjectTypes();
+	    if (objTypes.size() > 0) { // there is at least one object type
+	      // make sure there is at least one object type w/ at least one 
+	    	// attribute:
 	      for (int i = 0; i < objTypes.size(); i++) {
-	        SimSEObjectType type = (SimSEObjectType) objTypes.elementAt(i);
+	        SimSEObjectType type = objTypes.elementAt(i);
 	        // check if it has at least one attribute:
 	        if (type.getAllAttributes().size() > 0) {
 	          createNewObjLabel.setEnabled(true);
@@ -249,28 +260,22 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
     }
   }
 
-  private void generateWarnings(Vector warnings) // displays warnings of errors
-                                                 // found during checking for
-                                                 // inconsistencies
-  {
-    if (warnings.size() > 0) // there is at least 1 warning
-    {
+  // displays warnings of errors found during checking for inconsistencies
+  private void generateWarnings(Vector<String> warnings) { 
+    if (warnings.size() > 0) { // there is at least 1 warning
       warningPane.setWarnings(warnings);
     }
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
-    Object source = evt.getSource(); // get which component the action came from
-    if (source == okCreateObjectButton) // User has ok'ed the creation of a new
-                                        // object
-    {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
+  	// get which component the action came from:
+    Object source = evt.getSource(); 
+    if (source == okCreateObjectButton) { // User has ok'ed the creation of a 
+    																			// new object
       createObject((String) createObjectList.getSelectedItem());
-    }
-
-    else if (source == editStartingValButton) {
-      if (attributeTable.getSelectedRow() >= 0) // a row is selected
-      {
+    } else if (source == editStartingValButton) {
+      if (attributeTable.getSelectedRow() >= 0) { // a row is selected
         InstantiatedAttribute tempAttr = attTblMod.getObjectInFocus()
             .getAttribute(
                 (String) (attTblMod.getValueAt(attributeTable.getSelectedRow(),
@@ -278,66 +283,54 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
         editStartingVal(tempAttr);
         editStartingValButton.setEnabled(false);
       }
-    }
-    
-    else if (source == moveObjectUpButton) {
-      if (createdObjectsList.getSelectedIndex() >= 0) // an item (object) is
-                                                      // selected
-      {
-        SimSEObject tempObj = (SimSEObject) (objects.getAllObjects()
-            .elementAt(createdObjectsList.getSelectedIndex()));
+    } else if (source == moveObjectUpButton) {
+      if (createdObjectsList.getSelectedIndex() >= 0) { // an item (object) is
+                                                      	// selected
+        SimSEObject tempObj = objects.getAllObjects().elementAt(
+        		createdObjectsList.getSelectedIndex());
         moveObjectUp(tempObj);
       }
-    }
-    
-    else if (source == moveObjectDownButton) {
-      if (createdObjectsList.getSelectedIndex() >= 0) // an item (object) is
-                                                      // selected
-      {
+    } else if (source == moveObjectDownButton) {
+      if (createdObjectsList.getSelectedIndex() >= 0) { // an item (object) is
+                                                      	// selected
         SimSEObject tempObj = (SimSEObject) (objects.getAllObjects()
             .elementAt(createdObjectsList.getSelectedIndex()));
         moveObjectDown(tempObj);
       }
-    }
-
-    else if (source == removeObjectButton) {
-      if (createdObjectsList.getSelectedIndex() >= 0) // an item (object) is
-                                                      // selected
-      {
-        SimSEObject tempObj = (SimSEObject) (objects.getAllObjects()
-            .elementAt(createdObjectsList.getSelectedIndex()));
+    } else if (source == removeObjectButton) {
+      if (createdObjectsList.getSelectedIndex() >= 0) { // an item (object) is
+                                                      	// selected
+        SimSEObject tempObj = objects.getAllObjects().elementAt(
+        		createdObjectsList.getSelectedIndex());
         // get the selected object
         removeObject(tempObj);
       }
     }
   }
 
-  private void createObject(String selectedItem) // creates a new SimSE object
-                                                 // of the type based on
-                                                 // selectedItem and adds it to
-                                                 // the data structure
-  {
+  /*
+   * creates a new SimSE object of the type based on selectedItem and adds it to
+   * the data structure
+   */
+  private void createObject(String selectedItem) { 
     int type = 0;
     String name = new String();
     if (selectedItem.endsWith(SimSEObjectTypeTypes
-        .getText(SimSEObjectTypeTypes.EMPLOYEE))) // employee object type
-    {
+        .getText(SimSEObjectTypeTypes.EMPLOYEE))) { // employee object type
       type = SimSEObjectTypeTypes.EMPLOYEE;
       name = selectedItem.substring(0, (selectedItem.length()
           - SimSEObjectTypeTypes.getText(SimSEObjectTypeTypes.EMPLOYEE)
               .length() - 1));
       // parse object name from selected item
     } else if (selectedItem.endsWith(SimSEObjectTypeTypes
-        .getText(SimSEObjectTypeTypes.ARTIFACT))) // artifact object type
-    {
+        .getText(SimSEObjectTypeTypes.ARTIFACT))) { // artifact object type
       type = SimSEObjectTypeTypes.ARTIFACT;
       name = selectedItem.substring(0, (selectedItem.length()
           - SimSEObjectTypeTypes.getText(SimSEObjectTypeTypes.ARTIFACT)
               .length() - 1));
       // parse object name from selected item
     } else if (selectedItem.endsWith(SimSEObjectTypeTypes
-        .getText(SimSEObjectTypeTypes.TOOL))) // tool object type
-    {
+        .getText(SimSEObjectTypeTypes.TOOL))) { // tool object type
       type = SimSEObjectTypeTypes.TOOL;
       name = selectedItem.substring(0,
           (selectedItem.length()
@@ -345,8 +338,7 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
                   .length() - 1));
       // parse object name from selected item
     } else if (selectedItem.endsWith(SimSEObjectTypeTypes
-        .getText(SimSEObjectTypeTypes.PROJECT))) // project object type
-    {
+        .getText(SimSEObjectTypeTypes.PROJECT))) { // project object type
       type = SimSEObjectTypeTypes.PROJECT;
       name = selectedItem.substring(0,
           (selectedItem.length()
@@ -354,8 +346,7 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
                   .length() - 1));
       // parse object name from selected item
     } else if (selectedItem.endsWith(SimSEObjectTypeTypes
-        .getText(SimSEObjectTypeTypes.CUSTOMER))) // customer object type
-    {
+        .getText(SimSEObjectTypeTypes.CUSTOMER))) { // customer object type
       type = SimSEObjectTypeTypes.CUSTOMER;
       name = selectedItem.substring(0, (selectedItem.length()
           - SimSEObjectTypeTypes.getText(SimSEObjectTypeTypes.CUSTOMER)
@@ -364,41 +355,33 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
     }
 
     SimSEObjectType objType = objectTypes.getObjectType(type, name);
-    SimSEObject newObj = new SimSEObject(objectTypes.getObjectType(type, name)); // create
-                                                                                 // new
-                                                                                 // object
+    // create new object:
+    SimSEObject newObj = new SimSEObject(objectTypes.getObjectType(type, name)); 
     InstantiatedAttribute instAtt = new InstantiatedAttribute(objType.getKey());
-    aInfo = new AttributeStartingValueForm(
-        mainGUI,
-        newObj,
-        instAtt,
-        ("Enter a starting value for this " + selectedItem + "'s key attribute:"),
-        objects, attTblMod);
+    aInfo = new AttributeStartingValueForm(mainGUI, newObj, instAtt,
+    		("Enter a starting value for this " + selectedItem +
+    				"'s key attribute:"), objects, attTblMod);
 
     // Makes it so attribute starting val form window holds focus exclusively:
     WindowFocusListener l = new WindowFocusListener() {
       public void windowLostFocus(WindowEvent ev) {
         aInfo.requestFocus();
         if (attTblMod.getObjectInFocus() != null) {
-          setObjectInFocus(attTblMod.getObjectInFocus()); // set newly created
-                                                          // object to be the
-                                                          // focus of the GUI
+        	// set newly created object to be the focus of the GUI:
+          setObjectInFocus(attTblMod.getObjectInFocus()); 
         }
         updateCreatedObjectsList();
         ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
         editStartingValButton.setEnabled(false);
       }
 
-      public void windowGainedFocus(WindowEvent ev) {
-      }
+      public void windowGainedFocus(WindowEvent ev) {}
     };
     aInfo.addWindowFocusListener(l);
   }
 
-  private void editStartingVal(InstantiatedAttribute att) // allows user to edit
-                                                          // starting val of
-                                                          // this attribute
-  {
+  // allows user to edit starting val of this attribute
+  private void editStartingVal(InstantiatedAttribute att) { 
     aInfo = new AttributeStartingValueForm(mainGUI, attTblMod
         .getObjectInFocus(), att, ("Edit starting value:"), objects, attTblMod);
 
@@ -407,9 +390,8 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
       public void windowLostFocus(WindowEvent ev) {
         aInfo.requestFocus();
         if (attTblMod.getObjectInFocus() != null) {
-          setObjectInFocus(attTblMod.getObjectInFocus()); // set newly created
-                                                          // object to be the
-                                                          // focus of the GUI
+        	// set newly created object to be the focus of the GUI:
+          setObjectInFocus(attTblMod.getObjectInFocus()); 
         }
         updateCreatedObjectsList();
         ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
@@ -422,19 +404,18 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
     aInfo.addWindowFocusListener(l);
   }
 
-  private void setObjectInFocus(SimSEObject newObj) // sets the given object as
-                                                    // the focus of this GUI
-  {
-    attTblMod.setObjectInFocus(newObj); // set focus of attribute table to new
-                                        // object
+  // sets the given object as the focus of this GUI
+  private void setObjectInFocus(SimSEObject newObj) {
+  	// set the focus of attribute table to new object:
+    attTblMod.setObjectInFocus(newObj); 
     String keyVal = new String();
     if (newObj.getKey().isInstantiated()) {
       keyVal = newObj.getKey().getValue().toString();
     }
+    // change title of table to reflect new object:
     attributeTableTitle.setText((newObj.getName()) + " "
         + (SimSEObjectTypeTypes.getText(newObj.getSimSEObjectType().getType()))
-        + " " + keyVal + " Attributes:"); // change title of table to reflect
-                                          // new object
+        + " " + keyVal + " Attributes:"); 
     // disable buttons:
     editStartingValButton.setEnabled(false);
     
@@ -448,12 +429,8 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
         ListSelectionModel.SINGLE_SELECTION);
   }
 
-  private void setupAttributeTableSelectionListenerStuff() // enables edit
-                                                           // starting val
-                                                           // button whenever a
-                                                           // row (attribute) is
-                                                           // selected
-  {
+  // enables edit starting val button whenever a row (attribute) is selected
+  private void setupAttributeTableSelectionListenerStuff() { 
     // Copied from a Java tutorial:
     ListSelectionModel rowSM = attributeTable.getSelectionModel();
     rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -470,13 +447,8 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
     });
   }
 
-  private void setupCreatedObjectsListSelectionListenerStuff() // enables
-                                                               // buttons
-                                                               // whenever a
-                                                               // list item
-                                                               // (object) is
-                                                               // selected
-  {
+  // enables buttons whenever a list item (object) is selected
+  private void setupCreatedObjectsListSelectionListenerStuff() {
     // Copied from a Java tutorial:
     ListSelectionModel rowSM = createdObjectsList.getSelectionModel();
     rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -498,16 +470,15 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
   }
 
   private void updateCreatedObjectsList() {
-    Vector objectNamesTypesAndKeys = new Vector();
-    Vector currentObjs = objects.getAllObjects();
+    Vector<String> objectNamesTypesAndKeys = new Vector<String>();
+    Vector<SimSEObject> currentObjs = objects.getAllObjects();
     for (int i = 0; i < currentObjs.size(); i++) {
-      SimSEObject tempObj = (SimSEObject) (currentObjs.elementAt(i));
+      SimSEObject tempObj = currentObjs.elementAt(i);
       String name = tempObj.getName();
       String type = SimSEObjectTypeTypes.getText(tempObj.getSimSEObjectType()
           .getType());
       String keyVal = new String();
-      if (tempObj.getKey().getValue() != null) // has a key value
-      {
+      if (tempObj.getKey().getValue() != null) { // has a key value
         keyVal = tempObj.getKey().getValue().toString();
       }
       objectNamesTypesAndKeys.add(name + " " + type + " " + keyVal);
@@ -515,9 +486,8 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
     createdObjectsList.setListData(objectNamesTypesAndKeys);
   }
 
-  private void removeObject(SimSEObject obj) // removes this object from the
-                                             // data structure
-  {
+  // removes this object from the data structure
+  private void removeObject(SimSEObject obj) { 
     String keyVal = new String();
     if (obj.getKey().isInstantiated()) {
       keyVal = obj.getKey().getValue().toString();
@@ -531,9 +501,8 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
       if ((attTblMod.getObjectInFocus() != null)
           && (attTblMod.getObjectInFocus().getName() == obj.getName())
           && (attTblMod.getObjectInFocus().getSimSEObjectType().getType() == obj
-              .getSimSEObjectType().getType())) // removing object
-      // currently in focus
-      {
+              .getSimSEObjectType().getType())) { // removing object currently 
+      																						// in focus
         clearObjectInFocus(); // set it so that there's no object in focus
       }
       objects.removeObject(obj.getSimSEObjectType().getType(), obj.getName(),
@@ -543,14 +512,11 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
       removeObjectButton.setEnabled(false);
       updateCreatedObjectsList();
       ((ModelBuilderGUI) mainGUI).setFileModSinceLastSave();
-    } else // choice == JOptionPane.NO_OPTION
-    {
-    }
+    } 
   }
 
-  private void clearObjectInFocus() // clears the GUI so that it doesn't have an
-                                    // object in focus
-  {
+  // clears the GUI so that it doesn't have an object in focus
+  private void clearObjectInFocus() { 
     attTblMod.clearObjectInFocus(); // clear the attribute table
     attributeTableTitle.setText("No object selected");
     // disable button:
@@ -563,14 +529,13 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
     resetCreateObjectList();
     updateCreatedObjectsList();
     warningPane.clearWarnings();
-    if (f.exists()) // file has been saved before
-    {
+    if (f.exists()) { // file has been saved before
       reload(f, true);
     }
   }
 
-  public void setNoOpenFile() // makes it so there's no open file in the GUI
-  {
+  // makes it so there's not open file in the GUI
+  public void setNoOpenFile() { 
     clearObjectInFocus();
     objects.clearAll();
     resetCreateObjectList();
@@ -584,12 +549,11 @@ public class StartStateBuilderGUI extends JPanel implements ActionListener,
 
   private void resetCreateObjectList() {
     createObjectList.removeAllItems(); // clear list
-    Vector types = objectTypes.getAllObjectTypes();
-    for (int i = 0; i < types.size(); i++) // go through all of the defined
-                                           // object types
-    {
-      // add its name and type to the list IF it has at least one attribute:
-      SimSEObjectType tempType = (SimSEObjectType) (types.elementAt(i));
+    Vector<SimSEObjectType> types = objectTypes.getAllObjectTypes();
+    for (int i = 0; i < types.size(); i++) { 
+    	// go through all of the defined object types, and add its name and type 
+    	// to the list IF it has at least one attribute:
+      SimSEObjectType tempType = types.elementAt(i);
       if (tempType.getAllAttributes().size() > 0) {
         String tempStr = new String(tempType.getName() + " "
             + SimSEObjectTypeTypes.getText(tempType.getType()));

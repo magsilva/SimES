@@ -5,10 +5,24 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import javax.swing.*;
-import java.awt.event.*;
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
 
 public class RuleInputInfoForm extends JDialog implements ActionListener {
   private EffectRule ruleInFocus; // rule whose input is being edited
@@ -32,12 +46,10 @@ public class RuleInputInfoForm extends JDialog implements ActionListener {
 
     // set newInput:
     newInput = true;
-    Vector inputs = ruleInFocus.getAllRuleInputs();
+    Vector<RuleInput> inputs = ruleInFocus.getAllRuleInputs();
     for (int i = 0; i < inputs.size(); i++) {
-      if (((RuleInput) inputs.elementAt(i)) == inputInFocus) // input in focus
-                                                             // already exists
-                                                             // in the rule in
-                                                             // focus
+      if (inputs.elementAt(i) == inputInFocus) // input in focus already exists
+      																				 // in the rule in focus
         newInput = false;
     }
 
@@ -122,143 +134,118 @@ public class RuleInputInfoForm extends JDialog implements ActionListener {
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
-
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource(); // get which component the action came from
 
-    if (source == cancelButton) // cancel button has been pressed
-    {
+    if (source == cancelButton) { // cancel button has been pressed
       // Close window:
       setVisible(false);
       dispose();
-    }
-
-    else if (source == typeList) {
+    } else if (source == typeList) {
       String selectedString = (String) typeList.getSelectedItem();
-      if ((selectedString.equals(InputType.STRING))
-          || (selectedString.equals(InputType.BOOLEAN))) // string or boolean
-                                                         // selected
-      {
+      if ((selectedString.equals(InputType.STRING)) || 
+      		(selectedString.equals(InputType.BOOLEAN))) { // string or boolean
+                                                        // selected
         // disable condition stuff:
         guardList.setEnabled(false);
         conditionTextField.setEnabled(false);
-      } else // integer or double type selected
-      {
+      } else { // integer or double type selected
         // enable condition stuff:
         guardList.setEnabled(true);
         conditionTextField.setEnabled(true);
       }
-    }
+    } else if (source == okButton) { // okButton has been pressed
+      Vector<String> errors = validateInput(); // check validity of input
 
-    else if (source == okButton) // okButton has been pressed
-    {
-      Vector errors = validateInput(); // check validity of input
-
-      if (errors.size() == 0) // input valid
-      {
+      if (errors.size() == 0) { // input valid
         addEditInput();
-      } else // input not valid
-      {
+      } else { // input not valid
         for (int i = 0; i < errors.size(); i++) {
-          JOptionPane.showMessageDialog(null, ((String) errors.elementAt(i)),
+          JOptionPane.showMessageDialog(null, errors.elementAt(i),
               "Invalid Input", JOptionPane.ERROR_MESSAGE);
         }
       }
     }
   }
 
-  private Vector validateInput() // returns a vector of error messages (if any)
-  {
-    Vector messages = new Vector();
+  // returns a vector of error messages (if any)
+  private Vector<String> validateInput() { 
+    Vector<String> messages = new Vector<String>();
 
     // validate prompt:
     String prompt = promptTextField.getText();
-    if ((prompt == null) || (prompt.length() == 0) || (prompt.length() > 400)) // string
-                                                                               // empty
-                                                                               // or
-                                                                               // longer
-                                                                               // than
-                                                                               // 400
-                                                                               // chars
-    {
+    if ((prompt == null) || (prompt.length() == 0) || (prompt.length() > 400)) {
+    	// string empty or longer than 400 chars
       messages.add("Please enter a prompt between 1 and 400 characters");
     }
 
     // get input type:
     String type = (String) typeList.getSelectedItem();
     String condition = conditionTextField.getText();
-    if ((condition != null) && (condition.length() > 0)) // not blank
-    {
-      if (type.equals(InputType.INTEGER)) // integer type
-      {
+    if ((condition != null) && (condition.length() > 0)) { // not blank
+      if (type.equals(InputType.INTEGER)) { // integer type
         try {
-          int intVal = Integer.parseInt(condition);
+          Integer.parseInt(condition);
         } catch (NumberFormatException e) {
           messages
-              .add("Please enter a valid integer for the condition or else leave it blank");
+              .add("Please enter a valid integer for the condition or else " +
+              		"leave it blank");
         }
-      } else if (type.equals(InputType.DOUBLE)) // double type
-      {
+      } else if (type.equals(InputType.DOUBLE)) { // double type
         try {
-          double doubleVal = Double.parseDouble(condition);
+          Double.parseDouble(condition);
         } catch (NumberFormatException e) {
           messages
-              .add("Please enter a valid double value for the condition or else leave it blank");
+              .add("Please enter a valid double value for the condition or " +
+              		"else leave it blank");
         }
       }
     }
     return messages;
   }
 
-  private void addEditInput() // sets the values of the RuleInput in focus from
-                              // the existing info in the form and adds it to
-                              // the
-  // rule in focus. Note: validateInput() should be called before calling this
-  // function to ensure that you're adding a valid rule
-  // input
-  {
+  /*
+   * sets the values of the RuleInput in focus from the existing info in the 
+   * form and adds it to the rule in focus. Note: validateInput() should be
+   * called before calling this function to ensure that you're adding a valid
+   * rule input
+   */
+  private void addEditInput() { 
     String type = (String) typeList.getSelectedItem();
     inputInFocus.setType(type); // set type
-    if ((type.equals(InputType.STRING)) || (type.equals(InputType.BOOLEAN))) // string
-                                                                             // or
-                                                                             // boolean
-    {
+    if ((type.equals(InputType.STRING)) || (type.equals(InputType.BOOLEAN))) {
+    	// string or boolean
       // clear condition:
       inputInFocus.clearCondition();
-    } else if (type.equals(InputType.INTEGER)) // integer input type
-    {
+    } else if (type.equals(InputType.INTEGER)) { // integer input type
       inputInFocus.getCondition()
           .setGuard((String) guardList.getSelectedItem()); // set guard
       String condition = conditionTextField.getText();
       try {
         int intVal = Integer.parseInt(condition);
-        inputInFocus.getCondition().setValue(new Integer(intVal)); // set
-                                                                   // condition
-                                                                   // value
+        // set condition value:
+        inputInFocus.getCondition().setValue(new Integer(intVal)); 
       } catch (NumberFormatException e) {
-        System.out.println(e.getMessage()); // NOTE: this exception should never
-                                            // be thrown since validateInput()
-                                            // should
-        // always be called before this function to ensure that the input is
-        // valid
+      	// NOTE: this exception should never be thrown since validateInput()
+      	// should always be called before this function to ensure that the input
+      	// is valid
+        System.out.println(e.getMessage()); 
       }
-    } else if (type.equals(InputType.DOUBLE)) // double input type
-    {
+    } else if (type.equals(InputType.DOUBLE)) { // double input type
       inputInFocus.getCondition()
           .setGuard((String) guardList.getSelectedItem()); // set guard
       String condition = conditionTextField.getText();
       try {
         double doubleVal = Double.parseDouble(condition);
-        inputInFocus.getCondition().setValue(new Double(doubleVal)); // set
-                                                                     // condition
-                                                                     // value
+        // set condition value:
+        inputInFocus.getCondition().setValue(new Double(doubleVal)); 
       } catch (NumberFormatException e) {
-        System.out.println(e.getMessage()); // NOTE: this exception should never
-                                            // be thrown since validateInput()
-                                            // should
-        // always be called before this function to ensure that the input is
-        // valid
+      	
+        System.out.println(e.getMessage()); 
+      	// NOTE: this exception should never be thrown since validateInput()
+      	// should always be called before this function to ensure that the input
+      	// is valid
       }
     }
 
@@ -268,10 +255,9 @@ public class RuleInputInfoForm extends JDialog implements ActionListener {
     // set cancelable:
     inputInFocus.setCancelable(cancelableBox.isSelected());
 
-    if (newInput) // newly created rule input
-    {
-      ruleInFocus.addRuleInput(inputInFocus); // add the input to the rule in
-                                              // focus
+    if (newInput) { // newly created rule input
+    	// add the input to the rule in focus:
+      ruleInFocus.addRuleInput(inputInFocus); 
     }
 
     setVisible(false);
@@ -279,12 +265,11 @@ public class RuleInputInfoForm extends JDialog implements ActionListener {
   }
 
   private void initializeForm() {
-    if (!newInput) // editing existing input; initialize form with input's
-                   // values
-    {
+    if (!newInput) { // editing existing input; initialize form with input's
+                   	 // values
       typeList.setSelectedItem(inputInFocus.getType()); // set type
-      guardList.setSelectedItem(inputInFocus.getCondition().getGuard()); // set
-                                                                         // guard
+      // set guard:
+      guardList.setSelectedItem(inputInFocus.getCondition().getGuard()); 
       if (inputInFocus.getCondition().isConstrained()) {
         conditionTextField.setText(inputInFocus.getCondition().getValue()
             .toString()); // set condition value
@@ -293,10 +278,8 @@ public class RuleInputInfoForm extends JDialog implements ActionListener {
     }
     cancelableBox.setSelected(inputInFocus.isCancelable());
     String type = (String) typeList.getSelectedItem();
-    if ((type.equals(InputType.STRING)) || (type.equals(InputType.BOOLEAN))) // string
-                                                                             // or
-                                                                             // boolean
-    {
+    if ((type.equals(InputType.STRING)) || (type.equals(InputType.BOOLEAN))) { 
+    	// string or boolean
       // disable condition stuff:
       guardList.setEnabled(false);
       conditionTextField.setEnabled(false);

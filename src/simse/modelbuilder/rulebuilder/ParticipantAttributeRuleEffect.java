@@ -5,7 +5,7 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.objectbuilder.*;
+import simse.modelbuilder.objectbuilder.Attribute;
 
 public class ParticipantAttributeRuleEffect implements Cloneable {
   private Attribute attribute; // attribute of this effect
@@ -18,12 +18,12 @@ public class ParticipantAttributeRuleEffect implements Cloneable {
 
   public Object clone() {
     try {
-      ParticipantAttributeRuleEffect cl = (ParticipantAttributeRuleEffect) (super
-          .clone());
+      ParticipantAttributeRuleEffect cl = 
+      	(ParticipantAttributeRuleEffect) (super.clone());
       // attribute:
       cl.attribute = attribute; // NOTE: since this is a pointer to the
                                 // attribute, it must remain a pointer to the
-      // attribute, even in the clone. So BE CAREFUL!!
+      													// attribute, even in the clone. So BE CAREFUL!!
       // effect:
       cl.effect = effect;
       return cl;
@@ -33,8 +33,8 @@ public class ParticipantAttributeRuleEffect implements Cloneable {
     return null;
   }
 
-  public Attribute getAttribute() // returns a COPY of the attribute
-  {
+  // returns a COPY of the attribute
+  public Attribute getAttribute() { 
     return (Attribute) attribute.clone();
   }
 

@@ -5,19 +5,34 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.actionbuilder.*;
-import javax.swing.*;
-import java.awt.event.*;
-import javax.swing.event.*;
-import java.awt.*;
-import java.util.*;
+import simse.modelbuilder.actionbuilder.ActionType;
+
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class TriggerRulePrioritizer extends JDialog implements ActionListener {
   private ActionType action; // action type whose trigger rules are being
                              // prioritized
-  private Vector nonPrioritizedRules; // vector of rules that haven't been
-                                      // prioritized yet
-  private Vector prioritizedRules; // vector of rules that have been prioritized
+  private Vector<String> nonPrioritizedRules; // vector of rules that haven't 
+  																						// been prioritized yet
+  private Vector<String> prioritizedRules; // vector of rules that have been 
+  																				 // prioritized
 
   private JList nonPrioritizedRuleList; // JList for non-prioritized rules
   private JList prioritizedRuleList; // JList for prioritized rules
@@ -36,39 +51,33 @@ public class TriggerRulePrioritizer extends JDialog implements ActionListener {
     setTitle(action.getName() + " Trigger Rule Prioritizer -- SimSE");
 
     // initialize lists:
-    nonPrioritizedRules = new Vector();
-    prioritizedRules = new Vector();
+    nonPrioritizedRules = new Vector<String>();
+    prioritizedRules = new Vector<String>();
 
-    Vector rules = action.getAllTriggerRules();
+    Vector<Rule> rules = action.getAllTriggerRules();
     // go through each rule and add them to the correct list:
     for (int j = 0; j < rules.size(); j++) {
-      Rule tempRule = (Rule) rules.elementAt(j);
+      Rule tempRule = rules.elementAt(j);
       int priority = tempRule.getPriority();
-      if (priority == -1) // rule is not prioritized yet
-      {
+      if (priority == -1) { // rule is not prioritized yet
         nonPrioritizedRules.addElement(tempRule.getName());
-      } else // priority >= 0
-      {
-        if (prioritizedRules.size() == 0) // no elements have been added yet to
-                                          // the prioritized rule list
-        {
+      } else { // priority >= 0
+        if (prioritizedRules.size() == 0) { // no elements have been added yet 
+        																		// to the prioritized rule list
           prioritizedRules.add(tempRule.getName());
         } else {
           // find the correct position to insert the rule at:
           for (int k = 0; k < prioritizedRules.size(); k++) {
-            String tempRuleName = (String) prioritizedRules.elementAt(k);
+            String tempRuleName = prioritizedRules.elementAt(k);
             Rule tempR = action.getRule(tempRuleName);
             if (priority <= tempR.getPriority()) {
-              prioritizedRules.insertElementAt(tempRule.getName(), k); // insert
-                                                                       // the
-                                                                       // rule
-                                                                       // name
+            	// insert the rule name:
+              prioritizedRules.insertElementAt(tempRule.getName(), k); 
               break;
-            } else if (k == (prioritizedRules.size() - 1)) // on the last
-                                                           // element
-            {
-              prioritizedRules.add(tempRule.getName()); // add the rule name to
-                                                        // the end of the list
+            } else if (k == (prioritizedRules.size() - 1)) { // on the last
+                                                           	 // element
+            	// add the rule name to the end of the list:
+              prioritizedRules.add(tempRule.getName()); 
               break;
             }
           }
@@ -77,27 +86,13 @@ public class TriggerRulePrioritizer extends JDialog implements ActionListener {
     }
 
     nonPrioritizedRuleList = new JList(nonPrioritizedRules);
-    nonPrioritizedRuleList.setVisibleRowCount(10); // make 10 items visible at a
-                                                   // time
+    // make 10 items visible at a time:
+    nonPrioritizedRuleList.setVisibleRowCount(10); 
     nonPrioritizedRuleList
-        .setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only allow
-                                                                // the user to
-                                                                // select one
-                                                                // item at a
-                                                                // time
+        .setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     prioritizedRuleList = new JList(prioritizedRules);
-    prioritizedRuleList.setVisibleRowCount(10); // make 10 items visible at a
-                                                // time
-    prioritizedRuleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // only
-                                                                               // allow
-                                                                               // the
-                                                                               // user
-                                                                               // to
-                                                                               // select
-                                                                               // one
-                                                                               // item
-                                                                               // at a
-                                                                               // time
+    prioritizedRuleList.setVisibleRowCount(10); 
+    prioritizedRuleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
     setupListSelectionListeners();
 
     // Create main panel:
@@ -178,21 +173,17 @@ public class TriggerRulePrioritizer extends JDialog implements ActionListener {
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
-
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource(); // get which component the action came from
 
-    if (source == cancelButton) // cancel button has been pressed
-    {
+    if (source == cancelButton) { // cancel button has been pressed
       // Close window:
       setVisible(false);
       dispose();
-    }
-
-    else if (source == rightArrowButton) {
+    } else if (source == rightArrowButton) {
       int selIndex = nonPrioritizedRuleList.getSelectedIndex();
-      String tempStr = (String) (nonPrioritizedRules.elementAt(selIndex));
+      String tempStr = nonPrioritizedRules.elementAt(selIndex);
       nonPrioritizedRules.remove(selIndex); // remove rule from lefthand list
       prioritizedRules.add(tempStr); // add to righthand list
       String tempSelectedVal = ((String) (prioritizedRuleList
@@ -200,120 +191,91 @@ public class TriggerRulePrioritizer extends JDialog implements ActionListener {
       // reset list data:
       prioritizedRuleList.setListData(prioritizedRules);
       // reset selected value:
-      if ((tempSelectedVal != null) && (tempSelectedVal.length() > 0)) // selection
-                                                                       // before
-                                                                       // resetting
-                                                                       // list
-                                                                       // data
-                                                                       // was
-                                                                       // non-empty
-      {
+      if ((tempSelectedVal != null) && (tempSelectedVal.length() > 0)) { 
+      	// selection before resetting list data was non-empty
         prioritizedRuleList.setSelectedValue(tempSelectedVal, true);
       }
       nonPrioritizedRuleList.repaint();
-      if ((nonPrioritizedRules.size() == 0)
-          || (nonPrioritizedRuleList.getSelectedIndex() > (nonPrioritizedRules
-              .size() - 1))) // no
-      // item is selected (had to use nonPrioritizedRules.size() - 1 because it
-      // doesn't work using selected index = -1 or
-      // selected value == null!
-      {
+      if ((nonPrioritizedRules.size() == 0) || 
+      		(nonPrioritizedRuleList.getSelectedIndex() > 
+      		(nonPrioritizedRules.size() - 1))) { // no item is selected (had to 
+      																				 // use nonPrioritizedRules.size()
+      																				 // - 1 because it doesn't work 
+      																				 // using selected index = -1 or
+      																				 // selected value == null!
         // disable button:
         rightArrowButton.setEnabled(false);
       }
-    }
-
-    else if (source == leftArrowButton) {
+    } else if (source == leftArrowButton) {
       int selIndex = prioritizedRuleList.getSelectedIndex();
-      String tempStr = (String) (prioritizedRules.elementAt(selIndex)); // remove
-                                                                        // rule
-                                                                        // from
-                                                                        // righthand
-                                                                        // list
-      prioritizedRules.remove(selIndex); // remove rule from righthand list
+      String tempStr = prioritizedRules.elementAt(selIndex); 
+      // remove rule from righthand list:
+      prioritizedRules.remove(selIndex); 
       nonPrioritizedRules.add(tempStr); // add to lefthand list
       String tempSelectedVal = ((String) (nonPrioritizedRuleList
           .getSelectedValue()));
       // reset list data:
       nonPrioritizedRuleList.setListData(nonPrioritizedRules);
       // reset selected value:
-      if ((tempSelectedVal != null) && (tempSelectedVal.length() > 0)) // selection
-                                                                       // before
-                                                                       // resetting
-                                                                       // list
-                                                                       // data
-                                                                       // was
-                                                                       // non-empty
-      {
+      if ((tempSelectedVal != null) && (tempSelectedVal.length() > 0)) { 
+      	// selection before resetting list data was non-empty
         nonPrioritizedRuleList.setSelectedValue(tempSelectedVal, true);
       }
       prioritizedRuleList.repaint();
-      if ((prioritizedRules.size() == 0)
-          || (prioritizedRuleList.getSelectedIndex() > (prioritizedRules.size() - 1))) // no
-      // item is selected (had to use prioritizedRules.size() - 1 because it
-      // doesn't work using selected index = -1 or
-      // selected value == null!
-      {
+      if ((prioritizedRules.size() == 0) || 
+      		(prioritizedRuleList.getSelectedIndex() > 
+      		(prioritizedRules.size() - 1))) { // no item is selected (had to use 
+      																			// prioritizedRules.size() - 1 
+      																			// because it doesn't work using 
+      																			// selected index = -1 or selected 
+      																			// value == null!
         // disable butons:
         leftArrowButton.setEnabled(false);
         moveUpButton.setEnabled(false);
         moveDownButton.setEnabled(false);
       }
-    }
-
-    else if (source == moveUpButton) {
+    } else if (source == moveUpButton) {
       int selIndex = prioritizedRuleList.getSelectedIndex();
-      if (selIndex > 0) // first list element wasn't chosen
-      {
-        String tempRule = (String) (prioritizedRules.remove(selIndex)); // remove
-                                                                        // rule
+      if (selIndex > 0) { // first list element wasn't chosen
+        String tempRule = prioritizedRules.remove(selIndex); // remove rule
         prioritizedRules.insertElementAt(tempRule, (selIndex - 1)); // move up
         prioritizedRuleList.setSelectedIndex(selIndex - 1);
         prioritizedRuleList.repaint();
-        if ((prioritizedRules.size() == 0)
-            || (prioritizedRuleList.isSelectionEmpty())) // no item is selected
-        {
+        if ((prioritizedRules.size() == 0) || 
+        		(prioritizedRuleList.isSelectionEmpty())) { // no item is selected
           // disable butons:
           leftArrowButton.setEnabled(false);
           moveUpButton.setEnabled(false);
           moveDownButton.setEnabled(false);
         }
       }
-    }
-
-    else if (source == moveDownButton) {
+    } else if (source == moveDownButton) {
       int selIndex = prioritizedRuleList.getSelectedIndex();
-      if (selIndex < (prioritizedRules.size() - 1)) // last list element wasn't
-                                                    // chosen
-      {
-        String tempRule = (String) (prioritizedRules.remove(selIndex)); // remove
-                                                                        // rule
+      if (selIndex < (prioritizedRules.size() - 1)) { // last list element 
+      																								// wasn't chosen
+        String tempRule = prioritizedRules.remove(selIndex); // remove rule
         prioritizedRules.insertElementAt(tempRule, (selIndex + 1)); // move down
         prioritizedRuleList.setSelectedIndex(selIndex + 1);
         prioritizedRuleList.repaint();
-        if ((prioritizedRules.size() == 0)
-            || (prioritizedRuleList.isSelectionEmpty())) // no item is selected
-        {
+        if ((prioritizedRules.size() == 0) || 
+        		(prioritizedRuleList.isSelectionEmpty())) { // no item is selected
           // disable butons:
           leftArrowButton.setEnabled(false);
           moveUpButton.setEnabled(false);
           moveDownButton.setEnabled(false);
         }
       }
-    }
-
-    else if (source == okButton) // okButton has been pressed
-    {
+    } else if (source == okButton) { // okButton has been pressed
       // update non-prioritized rules:
       for (int i = 0; i < nonPrioritizedRules.size(); i++) {
-        String tempRuleName = (String) nonPrioritizedRules.elementAt(i);
+        String tempRuleName = nonPrioritizedRules.elementAt(i);
         Rule tempR = action.getRule(tempRuleName);
         tempR.setPriority(-1);
       }
 
       // update prioritized rules:
       for (int i = 0; i < prioritizedRules.size(); i++) {
-        String tempRuleName = (String) prioritizedRules.elementAt(i);
+        String tempRuleName = prioritizedRules.elementAt(i);
         Rule tempR = action.getRule(tempRuleName);
         tempR.setPriority(i);
       }
@@ -324,9 +286,8 @@ public class TriggerRulePrioritizer extends JDialog implements ActionListener {
     }
   }
 
-  private void setupListSelectionListeners() // enables/disables buttons
-                                             // according to list selections
-  {
+  // enables/disables buttons according to list selections
+  private void setupListSelectionListeners() { 
     // Copied from a Java tutorial:
     ListSelectionModel rowSM = nonPrioritizedRuleList.getSelectionModel();
     rowSM.addListSelectionListener(new ListSelectionListener() {

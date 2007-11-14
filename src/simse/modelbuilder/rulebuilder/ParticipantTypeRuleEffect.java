@@ -5,16 +5,19 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import java.util.*;
-import simse.modelbuilder.objectbuilder.*;
+import simse.modelbuilder.objectbuilder.Attribute;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+
+import java.util.Vector;
 
 public class ParticipantTypeRuleEffect implements Cloneable {
   private SimSEObjectType ssObjType; // pointer to the SimSEObjectType for this
                                      // participant type
-  private Vector<ParticipantAttributeRuleEffect> attributeEffects; // Vector of ParticipantAttributeRuleEffects
-                                   // for the attributes of this participant
+  // Vector of ParticipantAttributeRuleEffects for the attributes of this 
+  // participant:
+  private Vector<ParticipantAttributeRuleEffect> attributeEffects; 
   private OtherActionsEffect otherActEffect; // the effect of this action on the
-                                 // participant's other actions
+                                 						 // participant's other actions
 
   public ParticipantTypeRuleEffect(SimSEObjectType type) {
     ssObjType = type;
@@ -34,7 +37,7 @@ public class ParticipantTypeRuleEffect implements Cloneable {
       // participant:
       cl.ssObjType = ssObjType; // NOTE: since this is a pointer to the object
                                 // type, it must remain a pointer to the
-      // object type, even in the clone. So BE CAREFUL!!
+      													// object type, even in the clone. So BE CAREFUL
 
       // clone attribute effects:
       Vector<ParticipantAttributeRuleEffect> clonedAttEffects = 
@@ -67,17 +70,8 @@ public class ParticipantTypeRuleEffect implements Cloneable {
     return otherActEffect;
   }
 
-  public ParticipantAttributeRuleEffect getAttributeEffect(String attName) // returns
-                                                                           // the
-                                                                           // effect
-                                                                           // for
-                                                                           // the
-                                                                           // attribute
-                                                                           // with
-                                                                           // the
-                                                                           // specified
-  // name
-  {
+  // returns the effect for the attribute with the specified name
+  public ParticipantAttributeRuleEffect getAttributeEffect(String attName) { 
     for (int i = 0; i < attributeEffects.size(); i++) {
       ParticipantAttributeRuleEffect tempEffect = attributeEffects.elementAt(i);
       if (tempEffect.getAttribute().getName().equals(attName)) {
@@ -87,19 +81,8 @@ public class ParticipantTypeRuleEffect implements Cloneable {
     return null;
   }
 
-  public void addAttributeEffect(ParticipantAttributeRuleEffect newAttEffect) // if
-                                                                              // there
-                                                                              // is
-                                                                              // already
-                                                                              // an
-                                                                              // effect
-                                                                              // for
-                                                                              // this
-                                                                              // attribute,
-                                                                              // the
-                                                                              // new
-  // one replaces it
-  {
+  // if there is already an effect for this attribute, the new one replaces it
+  public void addAttributeEffect(ParticipantAttributeRuleEffect newAttEffect) {
     for (int i = 0; i < attributeEffects.size(); i++) {
       ParticipantAttributeRuleEffect tempEffect = attributeEffects.elementAt(i);
       if (tempEffect.getAttribute().getName().equals(
@@ -110,17 +93,14 @@ public class ParticipantTypeRuleEffect implements Cloneable {
     attributeEffects.add(newAttEffect);
   }
 
+  // adds the new effect in the specified position
   public void addAttributeEffect(ParticipantAttributeRuleEffect newAttEffect,
-      int position) // adds the new effect in the specified
-  // position
-  {
+      int position) {
     attributeEffects.add(position, newAttEffect);
   }
 
-  public void removeAttributeEffect(String attName) // removes the attribute
-                                                    // effect for the attribute
-                                                    // with the specified name
-  {
+  // removes the attribute effect for the attribute with the specified name
+  public void removeAttributeEffect(String attName) { 
     for (int i = 0; i < attributeEffects.size(); i++) {
       ParticipantAttributeRuleEffect tempEffect = attributeEffects.elementAt(i);
       if (tempEffect.getAttribute().getName().equals(attName)) {

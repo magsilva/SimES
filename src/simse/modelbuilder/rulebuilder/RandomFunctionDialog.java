@@ -5,10 +5,19 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import java.awt.event.*;
-import java.awt.*;
-import javax.swing.*;
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class RandomFunctionDialog extends JDialog implements ActionListener {
   private JTextArea echoedField; // echoed text field in the button pad gui
@@ -76,15 +85,13 @@ public class RandomFunctionDialog extends JDialog implements ActionListener {
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource();
     if (source == cancelButton) {
       setVisible(false);
       dispose();
-    }
-
-    else if (source == okButton) {
+    } else if (source == okButton) {
       ok();
     }
   }
@@ -123,10 +130,8 @@ public class RandomFunctionDialog extends JDialog implements ActionListener {
     }
   }
 
-  private void setFocusedTextFieldText(String text) // sets the echoed text 
-  																							    // field to the specified 
-  																									// text
-  {
+  // sets the echoed text field to the specified text
+  private void setFocusedTextFieldText(String text) { 
     echoedField.setText(text);
   }
 }

@@ -56,7 +56,8 @@ public class ObjectFileManipulator {
             	// end of object types
               endOfObjectTypes = true;
             } else { // not end of object types yet
-              if (currentLine.equals(ModelFileManipulator.BEGIN_OBJECT_TAG)) {
+              if (currentLine.equals(
+              		ModelFileManipulator.BEGIN_OBJECT_TYPE_TAG)) {
               	/*
               	 * create a new object in memory with the type and name
               	 * specified in the following 2 lines of the file:
@@ -66,7 +67,8 @@ public class ObjectFileManipulator {
                 boolean endOfObj = false;
                 while (!endOfObj) {
                   currentLine = reader.readLine(); // get the next line
-                  if (currentLine.equals(ModelFileManipulator.END_OBJECT_TAG)) {
+                  if (currentLine.equals(
+                  		ModelFileManipulator.END_OBJECT_TYPE_TAG)) {
                   	// end of object
                     endOfObj = true;
                     // add object type to defined object types:

@@ -5,29 +5,41 @@
 
 package simse.modelbuilder.rulebuilder;
 
-import simse.modelbuilder.objectbuilder.*;
-import simse.modelbuilder.actionbuilder.*;
+import simse.modelbuilder.actionbuilder.ActionTypeParticipant;
+import simse.modelbuilder.objectbuilder.SimSEObjectType;
+import simse.modelbuilder.objectbuilder.SimSEObjectTypeTypes;
 
-import java.awt.event.*;
-import java.awt.*;
-import javax.swing.*;
-import java.util.*;
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 public class NumParticipantsDialog extends JDialog implements ActionListener {
-  private Vector participants; // participants to choose from
+  private Vector<ActionTypeParticipant> participants; // participants to choose 
+  																										// from
   private JTextArea echoedField; // echoed text field in the button gui
   private boolean trimWhitespace; // whether or not to trip the trailing
                                   // whitespace in the text field b4 appending
                                   // to it
-
   private JComboBox activeList; // list of active statuses
   private JComboBox partList; // list of participants
   private JButton okButton;
   private JButton cancelButton;
 
-  public NumParticipantsDialog(JDialog owner, Vector parts, 
-      JTextArea echoedTField, boolean trim) {
+  public NumParticipantsDialog(JDialog owner, 
+  		Vector<ActionTypeParticipant> parts, JTextArea echoedTField, 
+  		boolean trim) {
     super(owner, true);
     setTitle("Num Participants");
 
@@ -90,15 +102,13 @@ public class NumParticipantsDialog extends JDialog implements ActionListener {
     setVisible(true);
   }
 
-  public void actionPerformed(ActionEvent evt) // handles user actions
-  {
+  // handles user actions
+  public void actionPerformed(ActionEvent evt) { 
     Object source = evt.getSource();
     if (source == cancelButton) {
       setVisible(false);
       dispose();
-    }
-
-    else if (source == okButton) {
+    } else if (source == okButton) {
       String active = (String) activeList.getSelectedItem();
       String activeString = new String();
       if (active.equals("All")) {
@@ -125,24 +135,22 @@ public class NumParticipantsDialog extends JDialog implements ActionListener {
 
   private void refreshPartList() {
     for (int i = 0; i < participants.size(); i++) {
-      ActionTypeParticipant tempPart = (ActionTypeParticipant) participants
-          .elementAt(i);
+      ActionTypeParticipant tempPart = participants.elementAt(i);
       // add participant name:
       partList.addItem(tempPart.getName());
-      Vector types = tempPart.getAllSimSEObjectTypes();
-      for (int j = 0; j < types.size(); j++) // add all of this participant's
-                                             // SimSEObjectTypes to the list:
-      {
-        SimSEObjectType tempType = (SimSEObjectType) types.elementAt(j);
+      Vector<SimSEObjectType> types = tempPart.getAllSimSEObjectTypes();
+      for (int j = 0; j < types.size(); j++) { 
+      	// add all of this participant's
+      	// SimSEObjectTypes to the list:
+        SimSEObjectType tempType = types.elementAt(j);
         partList.addItem(tempPart.getName() + " " + tempType.getName() + " "
             + SimSEObjectTypeTypes.getText(tempType.getType()));
       }
     }
   }
 
-  private void setFocusedTextFieldText(String text) // sets the echoed field
-                                                    // to the specified text
-  {
+  // sets the echoed field to the specified text
+  private void setFocusedTextFieldText(String text) { 
     echoedField.setText(text);
   }
 }
