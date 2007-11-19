@@ -860,7 +860,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("JButton[] buttonList;");
       writer.write(NEWLINE);
-      writer.write("Vector<SSObject> objs;");
+      writer.write("Vector<? extends SSObject> objs;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("switch (index)");
@@ -931,7 +931,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("buttonList = toolButton;");
       writer.write(NEWLINE);
-      writer.write("objs = new Vector();");
+      writer.write("objs = new Vector<SSObject>();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -1107,7 +1107,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector<SSObject> objs;");
+      writer.write("Vector<? extends SSObject> objs;");
       writer.write(NEWLINE);
       writer.write("switch(index)");
       writer.write(NEWLINE);

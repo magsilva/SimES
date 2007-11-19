@@ -83,13 +83,13 @@ public class ChooseActionToJoinDialogGenerator implements
       // member variables:
       writer.write("private JFrame gui;");
       writer.write(NEWLINE);
-      writer.write("private Vector actions;");
+      writer.write("private Vector<? extends simse.adts.actions.Action> actions;");
       writer.write(NEWLINE);
       writer.write("private State state;");
       writer.write(NEWLINE);
       writer.write("private Employee emp;");
       writer.write(NEWLINE);
-      writer.write("private Vector radioButtons;");
+      writer.write("private Vector<JRadioButton> radioButtons;");
       writer.write(NEWLINE);
       writer.write("private ButtonGroup radioButtonGroup;");
       writer.write(NEWLINE);
@@ -104,7 +104,7 @@ public class ChooseActionToJoinDialogGenerator implements
 
       // constructor:
       writer
-          .write("public ChooseActionToJoinDialog(JFrame owner, Vector acts, Employee e, State s, String menText, RuleExecutor re)");
+          .write("public ChooseActionToJoinDialog(JFrame owner, Vector<? extends simse.adts.actions.Action> acts, Employee e, State s, String menText, RuleExecutor re)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -122,7 +122,7 @@ public class ChooseActionToJoinDialogGenerator implements
       writer.write(NEWLINE);
       writer.write("ruleExec = re;");
       writer.write(NEWLINE);
-      writer.write("radioButtons = new Vector();");
+      writer.write("radioButtons = new Vector<JRadioButton>();");
       writer.write(NEWLINE);
       writer.write("radioButtonGroup = new ButtonGroup();");
       writer.write(NEWLINE);
@@ -137,7 +137,7 @@ public class ChooseActionToJoinDialogGenerator implements
       writer.write("String actionName = new String();");
       writer.write(NEWLINE);
       writer
-          .write("simse.adts.actions.Action tempAct = (simse.adts.actions.Action)actions.elementAt(0);");
+          .write("simse.adts.actions.Action tempAct = actions.elementAt(0);");
       writer.write(NEWLINE);
 
       // make a Vector of all the action types with user triggers:
@@ -206,10 +206,12 @@ public class ChooseActionToJoinDialogGenerator implements
             writer.write(NEWLINE);
           }
           ActionTypeParticipant tempPart = parts.elementAt(k);
+          String metaTypeName = CodeGeneratorUtils.getUpperCaseLeading(
+          		SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType()));
           writer.write("label.append(\"" + tempPart.getName() + "(s): \");");
           writer.write(NEWLINE);
-          writer.write("Vector all" + tempPart.getName() + "s = act.getAll"
-              + tempPart.getName() + "s();");
+          writer.write("Vector<" + metaTypeName + "> all" + tempPart.getName() +
+          		"s = act.getAll" + tempPart.getName() + "s();");
           writer.write(NEWLINE);
           writer.write("for(int j=0; j<all" + tempPart.getName()
               + "s.size(); j++)");
@@ -226,9 +228,7 @@ public class ChooseActionToJoinDialogGenerator implements
           writer.write(NEWLINE);
           writer.write(SimSEObjectTypeTypes.getText(tempPart
               .getSimSEObjectTypeType())
-              + " a = ("
-              + SimSEObjectTypeTypes.getText(tempPart.getSimSEObjectTypeType())
-              + ")all" + tempPart.getName() + "s.elementAt(j);");
+              + " a = all" + tempPart.getName() + "s.elementAt(j);");
           writer.write(NEWLINE);
           // go through all allowable SimSEObjectTypes for this participant:
           Vector<SimSEObjectType> ssObjTypes = tempPart.getAllSimSEObjectTypes();
@@ -367,7 +367,7 @@ public class ChooseActionToJoinDialogGenerator implements
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("JRadioButton tempRButt = (JRadioButton)radioButtons.elementAt(i);");
+          .write("JRadioButton tempRButt = radioButtons.elementAt(i);");
       writer.write(NEWLINE);
       writer.write("if(tempRButt.isSelected())");
       writer.write(NEWLINE);
@@ -399,16 +399,16 @@ public class ChooseActionToJoinDialogGenerator implements
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("JRadioButton rButt  = (JRadioButton)radioButtons.elementAt(i);");
+          .write("JRadioButton rButt  = radioButtons.elementAt(i);");
       writer.write(NEWLINE);
       writer.write("if(rButt.isSelected())");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("simse.adts.actions.Action tempAct = (simse.adts.actions.Action)actions.elementAt(i);");
+          .write("simse.adts.actions.Action tempAct = actions.elementAt(i);");
       writer.write(NEWLINE);
-      writer.write("Vector participantNames = new Vector();");
+      writer.write("Vector<String> participantNames = new Vector<String>();");
       writer.write(NEWLINE);
 
       // go through all action types w/ user triggers:
@@ -532,7 +532,7 @@ public class ChooseActionToJoinDialogGenerator implements
         writer.write(NEWLINE);
       }
       writer
-          .write("ChooseRoleToPlayDialog crtpd = new ChooseRoleToPlayDialog(gui, participantNames, emp, tempAct, menuText, ruleExec);");
+          .write("new ChooseRoleToPlayDialog(gui, participantNames, emp, tempAct, menuText, ruleExec);");
       writer.write(NEWLINE);
       writer.write("setVisible(false);");
       writer.write(NEWLINE);
@@ -561,12 +561,12 @@ public class ChooseActionToJoinDialogGenerator implements
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("JRadioButton rButt = (JRadioButton)radioButtons.elementAt(i);");
+          .write("JRadioButton rButt = radioButtons.elementAt(i);");
       writer.write(NEWLINE);
       writer
-          .write("simse.adts.actions.Action tempAct = (simse.adts.actions.Action)actions.elementAt(i);");
+          .write("simse.adts.actions.Action tempAct = actions.elementAt(i);");
       writer.write(NEWLINE);
-      writer.write("Vector participantNames = new Vector();");
+      writer.write("Vector<String> participantNames = new Vector<String>();");
       writer.write(NEWLINE);
 
       // go through all action types w/ user triggers:
@@ -690,7 +690,7 @@ public class ChooseActionToJoinDialogGenerator implements
         writer.write(NEWLINE);
       }
       writer
-          .write("ChooseRoleToPlayDialog crtpd = new ChooseRoleToPlayDialog(owner, participantNames, emp, tempAct, menuText, ruleExec);");
+          .write("new ChooseRoleToPlayDialog(owner, participantNames, emp, tempAct, menuText, ruleExec);");
       writer.write(NEWLINE);
       writer.write("dispose();");
       writer.write(NEWLINE);

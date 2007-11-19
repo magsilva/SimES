@@ -96,7 +96,7 @@ public class ChooseRoleToPlayDialogGenerator implements CodeGeneratorConstants {
       
       // constructor:
       writer
-          .write("public ChooseRoleToPlayDialog(JFrame owner, Vector partNames, Employee e, simse.adts.actions.Action act, String menText, RuleExecutor re)");
+          .write("public ChooseRoleToPlayDialog(JFrame owner, Vector<String> partNames, Employee e, simse.adts.actions.Action act, String menText, RuleExecutor re)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);

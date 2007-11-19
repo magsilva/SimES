@@ -73,9 +73,9 @@ public class ParticipantSelectionDialogsDriverGenerator implements
       writer.write(NEWLINE);
       
       // member variables:
-      writer.write("private Vector partNames;");
+      writer.write("private Vector<String> partNames;");
       writer.write(NEWLINE);
-      writer.write("private Vector partsVector;");
+      writer.write("private Vector<Vector<? extends SSObject>> partsVector;");
       writer.write(NEWLINE);
       writer.write("private simse.adts.actions.Action action;");
       writer.write(NEWLINE);
@@ -92,7 +92,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements
       
       // constructor:
       writer
-          .write("public ParticipantSelectionDialogsDriver(JFrame gui, Vector pNames, Vector parts, simse.adts.actions.Action act, State s, RuleExecutor re, DestroyerChecker dc, Employee emp, String mText)");
+          .write("public ParticipantSelectionDialogsDriver(JFrame gui, Vector<String> pNames, Vector<Vector<? extends SSObject>> parts, simse.adts.actions.Action act, State s, RuleExecutor re, DestroyerChecker dc, Employee emp, String mText)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -118,14 +118,14 @@ public class ParticipantSelectionDialogsDriverGenerator implements
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("String participantName = (String)partNames.elementAt(i);");
+      writer.write("String participantName = partNames.elementAt(i);");
       writer.write(NEWLINE);
-      writer.write("Vector participants = (Vector)partsVector.elementAt(i);");
+      writer.write("Vector<? extends SSObject> participants = partsVector.elementAt(i);");
       writer.write(NEWLINE);
       writer
           .write("// check to see if any of these possible participants have already been added to the action in a different role:");
       writer.write(NEWLINE);
-      writer.write("Vector allParts = action.getAllParticipants();");
+      writer.write("Vector<SSObject> allParts = action.getAllParticipants();");
       writer.write(NEWLINE);
       writer.write("Enumeration participantsEnum = participants.elements();");
       writer.write(NEWLINE);
@@ -140,7 +140,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("SSObject tempObj2 = (SSObject)allParts.elementAt(k);");
+      writer.write("SSObject tempObj2 = allParts.elementAt(k);");
       writer.write(NEWLINE);
       writer.write("if(tempObj == tempObj2)");
       writer.write(NEWLINE);
@@ -158,7 +158,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements
       writer.write(NEWLINE);
 
       writer
-          .write("if((participants.size() == 0) || ((SSObject)participants.elementAt(0) instanceof Employee))");
+          .write("if((participants.size() == 0) || (participants.elementAt(0) instanceof Employee))");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -166,7 +166,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("SSObject tempObj = (SSObject)allParts.elementAt(j);");
+      writer.write("SSObject tempObj = allParts.elementAt(j);");
       writer.write(NEWLINE);
       writer.write("if((selectedEmp != null) && (tempObj == selectedEmp))");
       writer.write(NEWLINE);
@@ -212,7 +212,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements
       writer.write("participants.remove(selectedEmp);");
       writer.write(NEWLINE);
       writer
-          .write("EmployeeParticipantSelectionDialog psd = new EmployeeParticipantSelectionDialog(gui, participantName, participants, action, state, selectedEmp);");
+          .write("EmployeeParticipantSelectionDialog psd = new EmployeeParticipantSelectionDialog(gui, participantName, new Vector<SSObject>(participants), action, state, selectedEmp);");
       writer.write(NEWLINE);
       writer.write("if(psd.actionCancelled())");
       writer.write(NEWLINE);
@@ -231,7 +231,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("EmployeeParticipantSelectionDialog psd = new EmployeeParticipantSelectionDialog(gui, participantName, participants, action, state, null);");
+          .write("EmployeeParticipantSelectionDialog psd = new EmployeeParticipantSelectionDialog(gui, participantName, new Vector<SSObject>(participants), action, state, null);");
       writer.write(NEWLINE);
       writer.write("if(psd.actionCancelled())");
       writer.write(NEWLINE);
@@ -253,7 +253,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("NonEmployeeParticipantSelectionDialog psd = new NonEmployeeParticipantSelectionDialog(gui, participantName, participants, action, state);");
+          .write("NonEmployeeParticipantSelectionDialog psd = new NonEmployeeParticipantSelectionDialog(gui, participantName, new Vector<SSObject>(participants), action, state);");
       writer.write(NEWLINE);
       writer.write("if(psd.actionCancelled())");
       writer.write(NEWLINE);
@@ -300,13 +300,13 @@ public class ParticipantSelectionDialogsDriverGenerator implements
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("Vector participants = action.getAllParticipants();");
+        writer.write("Vector<SSObject> participants = action.getAllParticipants();");
         writer.write(NEWLINE);
         writer.write("for(int i=0; i<participants.size(); i++)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("SSObject obj = (SSObject)participants.elementAt(i);");
+        writer.write("SSObject obj = participants.elementAt(i);");
         writer.write(NEWLINE);
         writer.write("if(obj instanceof Employee)");
         writer.write(NEWLINE);

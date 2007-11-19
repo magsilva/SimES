@@ -86,7 +86,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements
       // member variables:
       writer.write("private String partName;");
       writer.write(NEWLINE);
-      writer.write("private Vector participants;");
+      writer.write("private Vector<SSObject> participants;");
       writer.write(NEWLINE);
       writer.write("private simse.adts.actions.Action action;");
       writer.write(NEWLINE);
@@ -98,7 +98,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements
       writer.write(NEWLINE);
       writer.write("private int maxNumParts;");
       writer.write(NEWLINE);
-      writer.write("private Vector checkBoxes;");
+      writer.write("private Vector<JCheckBox> checkBoxes;");
       writer.write(NEWLINE);
       writer.write("private JButton checkAllButton;");
       writer.write(NEWLINE);
@@ -113,7 +113,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements
       
       // constructor:
       writer
-          .write("public EmployeeParticipantSelectionDialog(JFrame owner, String pName, Vector parts, simse.adts.actions.Action act, State s, Employee emp)");
+          .write("public EmployeeParticipantSelectionDialog(JFrame owner, String pName, Vector<SSObject> parts, simse.adts.actions.Action act, State s, Employee emp)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -138,7 +138,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("checkBoxes = new Vector();");
+      writer.write("checkBoxes = new Vector<JCheckBox>();");
       writer.write(NEWLINE);
       writer.write("setTitle(\"Participant Selection\");");
       writer.write(NEWLINE);
@@ -196,7 +196,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("SSObject tempObj = (SSObject)participants.elementAt(i);");
+      writer.write("SSObject tempObj = participants.elementAt(i);");
       writer.write(NEWLINE);
       writer.write("String label = new String();");
       writer.write(NEWLINE);
@@ -530,13 +530,13 @@ public class EmployeeParticipantSelectionDialogGenerator implements
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector checkedBoxes = new Vector();");
+      writer.write("Vector<JCheckBox> checkedBoxes = new Vector<JCheckBox>();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<checkBoxes.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("JCheckBox tempCBox = (JCheckBox)checkBoxes.elementAt(i);");
+      writer.write("JCheckBox tempCBox = checkBoxes.elementAt(i);");
       writer.write(NEWLINE);
       writer.write("if(tempCBox.isSelected())");
       writer.write(NEWLINE);
@@ -575,7 +575,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer
-          .write("JCheckBox checkedBox = (JCheckBox)checkedBoxes.elementAt(i);");
+          .write("JCheckBox checkedBox = checkedBoxes.elementAt(i);");
       writer.write(NEWLINE);
       writer.write("String cBoxText = checkedBox.getText();");
       writer.write(NEWLINE);
@@ -602,7 +602,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements
       writer.write(NEWLINE);
       writer.write("for (int i = 0; i < checkBoxes.size(); i++) {");
       writer.write(NEWLINE);
-      writer.write("((JCheckBox) checkBoxes.elementAt(i)).setSelected(true);");
+      writer.write("checkBoxes.elementAt(i).setSelected(true);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -612,7 +612,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements
       writer.write(NEWLINE);
       writer.write("for (int i = 0; i < checkBoxes.size(); i++) {");
       writer.write(NEWLINE);
-      writer.write("((JCheckBox) checkBoxes.elementAt(i)).setSelected(false);");
+      writer.write("checkBoxes.elementAt(i).setSelected(false);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -709,9 +709,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements
                     writer.write(NEWLINE);
                     writer.write("((" + CodeGeneratorUtils.getUpperCaseLeading(
                     		tempAct.getName()) + "Action)action).add" + 
-                    		tempPart.getName() + "((" + 
-                    		SimSEObjectTypeTypes.getText(tempType.getType()) + 
-                    		")a);");
+                    		tempPart.getName() + "(a);");
                     writer.write(NEWLINE);
                     writer.write(CLOSED_BRACK);
                     writer.write(NEWLINE);

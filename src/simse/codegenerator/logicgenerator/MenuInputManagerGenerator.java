@@ -787,7 +787,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
          * "s" + j + ".remove(e);"); writer.write(NEWLINE);
          * writer.write(CLOSED_BRACK); writer.write(NEWLINE); } } }
          */
-        writer.write("Vector d = new Vector();");
+        writer.write("Vector<Vector<? extends SSObject>> d = new Vector<Vector<? extends SSObject>>();");
         writer.write(NEWLINE);
 
         for (int j = 0; j < triggers.size(); j++) {
@@ -1114,7 +1114,10 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write("Vector b = new Vector();");
+        writer.write("Vector<" + 
+        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + 
+        		"Action> b = new Vector<" + 
+        		CodeGeneratorUtils.getUpperCaseLeading(act.getName()) + "Action>();");
         writer.write(NEWLINE);
         writer.write("for(int i=0; i<allActions.size(); i++)");
         writer.write(NEWLINE);

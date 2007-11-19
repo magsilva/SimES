@@ -144,11 +144,11 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // "getAllActions" method:
-      writer.write("public Vector getAllActions()");
+      writer.write("public Vector<simse.adts.actions.Action> getAllActions()");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector all = new Vector();");
+      writer.write("Vector<simse.adts.actions.Action> all = new Vector<simse.adts.actions.Action>();");
       writer.write(NEWLINE);
       for (int i = 0; i < acts.size(); i++) {
         ActionType tempAct = acts.elementAt(i);
@@ -164,21 +164,21 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // "getAllActions(SSObject) method:
-      writer.write("public Vector getAllActions(SSObject a)");
+      writer.write("public Vector<simse.adts.actions.Action> getAllActions(SSObject a)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector all = new Vector();");
+      writer.write("Vector<simse.adts.actions.Action> all = new Vector<simse.adts.actions.Action>();");
       writer.write(NEWLINE);
-      writer.write("Vector actions = getAllActions();");
+      writer.write("Vector<simse.adts.actions.Action> actions = getAllActions();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<actions.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Action b = (Action)(actions.elementAt(i));");
+      writer.write("Action b = actions.elementAt(i);");
       writer.write(NEWLINE);
-      writer.write("Vector parts = b.getAllParticipants();");
+      writer.write("Vector<SSObject> parts = b.getAllParticipants();");
       writer.write(NEWLINE);
       writer.write("for(int j=0; j<parts.size(); j++)");
       writer.write(NEWLINE);
@@ -205,21 +205,21 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // "getAllActiveActions(SSObject) method:
-      writer.write("public Vector getAllActiveActions(SSObject a)");
+      writer.write("public Vector<simse.adts.actions.Action> getAllActiveActions(SSObject a)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector all = new Vector();");
+      writer.write("Vector<simse.adts.actions.Action> all = new Vector<simse.adts.actions.Action>();");
       writer.write(NEWLINE);
-      writer.write("Vector actions = getAllActions();");
+      writer.write("Vector<simse.adts.actions.Action> actions = getAllActions();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<actions.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Action b = (Action)(actions.elementAt(i));");
+      writer.write("Action b = actions.elementAt(i);");
       writer.write(NEWLINE);
-      writer.write("Vector parts = b.getAllActiveParticipants();");
+      writer.write("Vector<SSObject> parts = b.getAllActiveParticipants();");
       writer.write(NEWLINE);
       writer.write("for(int j=0; j<parts.size(); j++)");
       writer.write(NEWLINE);
@@ -246,21 +246,21 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // "getAllInactiveActions(SSObject) method:
-      writer.write("public Vector getAllInactiveActions(SSObject a)");
+      writer.write("public Vector<simse.adts.actions.Action> getAllInactiveActions(SSObject a)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector all = new Vector();");
+      writer.write("Vector<simse.adts.actions.Action> all = new Vector<simse.adts.actions.Action>();");
       writer.write(NEWLINE);
-      writer.write("Vector actions = getAllActions();");
+      writer.write("Vector<simse.adts.actions.Action> actions = getAllActions();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<actions.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Action b = (Action)(actions.elementAt(i));");
+      writer.write("Action b = actions.elementAt(i);");
       writer.write(NEWLINE);
-      writer.write("Vector parts = b.getAllInactiveParticipants();");
+      writer.write("Vector<SSObject> parts = b.getAllInactiveParticipants();");
       writer.write(NEWLINE);
       writer.write("for(int j=0; j<parts.size(); j++)");
       writer.write(NEWLINE);
@@ -294,19 +294,20 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       // go through all action types:
       for (int i = 0; i < acts.size(); i++) {
         ActionType tempAct = acts.elementAt(i);
-        writer.write("Vector " + tempAct.getName().toLowerCase() + "actions = "
-            + tempAct.getName().substring(0, 1).toLowerCase() + i
-            + ".getAllActions();");
+        String uCaseTempActName = 
+        	CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName());
+        writer.write("Vector <" + uCaseTempActName + "Action> " + 
+        		tempAct.getName().toLowerCase() + "actions = " + 
+        		tempAct.getName().substring(0, 1).toLowerCase() + i + 
+        		".getAllActions();");
         writer.write(NEWLINE);
         writer.write("for(int i=0; i<" + tempAct.getName().toLowerCase()
             + "actions.size(); i++)");
         writer.write(NEWLINE);
         writer.write(OPEN_BRACK);
         writer.write(NEWLINE);
-        writer.write(CodeGeneratorUtils.getUpperCaseLeading(tempAct.getName()) +
-        		"Action b = (" + CodeGeneratorUtils.getUpperCaseLeading(
-        				tempAct.getName()) + "Action)" + 
-        				tempAct.getName().toLowerCase() + "actions.elementAt(i);");
+        writer.write(uCaseTempActName + "Action b = " + 
+        		tempAct.getName().toLowerCase() + "actions.elementAt(i);");
         writer.write(NEWLINE);
         // go through all participants:
         Vector<ActionTypeParticipant> participants = 
@@ -436,7 +437,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // member variables:
-      writer.write("private Vector " + lCaseName + "s;");
+      writer.write("private Vector <" + uCaseName + "> " + lCaseName + "s;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
 
@@ -445,7 +446,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write(lCaseName + "s = new Vector();");
+      writer.write(lCaseName + "s = new Vector<" + uCaseName + ">();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -459,13 +460,14 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(uCaseName + "StateRepository cl = (" + uCaseName + 
           "StateRepository) super.clone();");
       writer.write(NEWLINE);
-      writer.write("Vector cloned" + lCaseName + "s = new Vector();");
+      writer.write("Vector<" + uCaseName + "> cloned" + lCaseName + 
+      		"s = new Vector<" + uCaseName + ">();");
       writer.write(NEWLINE);
       writer.write("for (int i = 0; i < " + lCaseName + "s.size(); i++) {");
       writer.write(NEWLINE);
       writer.write("cloned" + lCaseName + "s.addElement((" + uCaseName + 
-          ")(((" + uCaseName + ")(" + lCaseName + 
-          "s.elementAt(i))).clone()));");
+          ")(" + lCaseName + 
+          "s.elementAt(i).clone()));");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -499,8 +501,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer.write(CodeGeneratorUtils.getUpperCaseLeading(objType.getName()) + 
-      		" " + objType.getName().toLowerCase() + " = (" + 
-      		CodeGeneratorUtils.getUpperCaseLeading(objType.getName()) + ")" + 
+      		" " + objType.getName().toLowerCase() + " = " +
       		objType.getName().toLowerCase() + "s.elementAt(i);");
       writer.write(NEWLINE);
       writer.write("if(" + objType.getName().toLowerCase() + ".get"
@@ -565,24 +566,21 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       if (keyAtt.getType() == AttributeTypes.STRING) { // string key attribute
-        writer.write("if(((" + CodeGeneratorUtils.getUpperCaseLeading(
-        		objType.getName()) + ")" + objType.getName().toLowerCase() + 
-        		"s.elementAt(i)).get" + CodeGeneratorUtils.getUpperCaseLeading(
+        writer.write("if(" + objType.getName().toLowerCase() + 
+        		"s.elementAt(i).get" + CodeGeneratorUtils.getUpperCaseLeading(
         				keyAtt.getName()) + "().equals(" + 
         				keyAtt.getName().toLowerCase() + "))");
       } else { // int, double, or boolean key attribute
-        writer.write("if(((" + CodeGeneratorUtils.getUpperCaseLeading(
-        		objType.getName()) + ")" + objType.getName().toLowerCase() + 
-        		"s.elementAt(i)).get" + CodeGeneratorUtils.getUpperCaseLeading(
+        writer.write("if(" + objType.getName().toLowerCase() + 
+        		"s.elementAt(i).get" + CodeGeneratorUtils.getUpperCaseLeading(
         				keyAtt.getName()) + "() == " + keyAtt.getName().toLowerCase() +
         				")");
       }
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("return (" + CodeGeneratorUtils.getUpperCaseLeading(
-      		objType.getName()) + ")(" + objType.getName().toLowerCase() + 
-      		"s.elementAt(i));");
+      writer.write("return " + objType.getName().toLowerCase() + 
+      		"s.elementAt(i);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -595,7 +593,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // "getAll" method:
-      writer.write("public Vector getAll()");
+      writer.write("public Vector<" + uCaseName + "> getAll()");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -711,11 +709,12 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // "getAll" method:
-      writer.write("public Vector getAll()");
+      writer.write("public Vector<" + typeName + "> getAll()");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector all = new Vector();");
+      writer.write("Vector<" + typeName + "> all = new Vector<" + typeName + 
+      		">();");
       writer.write(NEWLINE);
       for (int i = 0; i < objs.size(); i++) {
         SimSEObjectType tempType = objs.elementAt(i);
@@ -784,7 +783,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // member variables:
-      writer.write("private Vector actions;");
+      writer.write("private Vector<" + uCaseName + "Action> actions;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
 
@@ -793,7 +792,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("actions = new Vector();");
+      writer.write("actions = new Vector<" + uCaseName + "Action>();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -807,12 +806,13 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(uCaseName + "ActionStateRepository cl = (" + uCaseName +
           "ActionStateRepository) (super.clone());");
       writer.write(NEWLINE);
-      writer.write("Vector clonedActions = new Vector();");
+      writer.write("Vector<" + uCaseName + 
+      		"Action> clonedActions = new Vector<" + uCaseName + "Action>();");
       writer.write(NEWLINE);
       writer.write("for (int i = 0; i < actions.size(); i++) {");
       writer.write(NEWLINE);
-      writer.write("clonedActions.add((" + uCaseName + "Action)(((" + uCaseName
-          + "Action)(actions.elementAt(i))).clone()));");
+      writer.write("clonedActions.add((" + uCaseName + 
+      		"Action)actions.elementAt(i).clone());");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -879,7 +879,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // "getAllActions()" method:
-      writer.write("public Vector getAllActions()");
+      writer.write("public Vector<" + uCaseName + "Action> getAllActions()");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
@@ -890,21 +890,22 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // "getAllActions(object)" method:
-      writer.write("public Vector getAllActions(SSObject a)");
+      writer.write("public Vector<" + uCaseName + 
+      		"Action> getAllActions(SSObject a)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector all = new Vector();");
+      writer.write("Vector<" + uCaseName + "Action> all = new Vector<" + 
+      		uCaseName + "Action>();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<actions.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer.write(CodeGeneratorUtils.getUpperCaseLeading(actType.getName()) + 
-      		"Action b = (" + CodeGeneratorUtils.getUpperCaseLeading(
-      				actType.getName()) + "Action)(actions.elementAt(i));");
+      		"Action b = actions.elementAt(i);");
       writer.write(NEWLINE);
-      writer.write("Vector parts = b.getAllParticipants();");
+      writer.write("Vector<SSObject> parts = b.getAllParticipants();");
       writer.write(NEWLINE);
       writer.write("for(int j=0; j<parts.size(); j++)");
       writer.write(NEWLINE);
@@ -931,21 +932,22 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // "getAllActiveActions(object)" method:
-      writer.write("public Vector getAllActiveActions(SSObject a)");
+      writer.write("public Vector<" + uCaseName + 
+      		"Action> getAllActiveActions(SSObject a)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector all = new Vector();");
+      writer.write("Vector<" + uCaseName + "Action> all = new Vector<" + 
+      		uCaseName + "Action>();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<actions.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer.write(CodeGeneratorUtils.getUpperCaseLeading(actType.getName()) + 
-      		"Action b = (" + CodeGeneratorUtils.getUpperCaseLeading(
-      				actType.getName()) + "Action)(actions.elementAt(i));");
+      		"Action b = actions.elementAt(i);");
       writer.write(NEWLINE);
-      writer.write("Vector parts = b.getAllActiveParticipants();");
+      writer.write("Vector<SSObject> parts = b.getAllActiveParticipants();");
       writer.write(NEWLINE);
       writer.write("for(int j=0; j<parts.size(); j++)");
       writer.write(NEWLINE);
@@ -972,21 +974,22 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
 
       // "getAllInactiveActions(object)" method:
-      writer.write("public Vector getAllInactiveActions(SSObject a)");
+      writer.write("public Vector<" + uCaseName + 
+      		"Action> getAllInactiveActions(SSObject a)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Vector all = new Vector();");
+      writer.write("Vector<" + uCaseName + "Action> all = new Vector<" + 
+      		uCaseName + "Action>();");
       writer.write(NEWLINE);
       writer.write("for(int i=0; i<actions.size(); i++)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
       writer.write(CodeGeneratorUtils.getUpperCaseLeading(actType.getName()) + 
-      		"Action b = (" + CodeGeneratorUtils.getUpperCaseLeading(
-      				actType.getName()) + "Action)(actions.elementAt(i));");
+      		"Action b = actions.elementAt(i);");
       writer.write(NEWLINE);
-      writer.write("Vector parts = b.getAllInactiveParticipants();");
+      writer.write("Vector<SSObject> parts = b.getAllInactiveParticipants();");
       writer.write(NEWLINE);
       writer.write("for(int j=0; j<parts.size(); j++)");
       writer.write(NEWLINE);
@@ -1019,8 +1022,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
       writer.write("for (int i = 0; i < actions.size(); i++) {");
       writer.write(NEWLINE);
       writer.write(CodeGeneratorUtils.getUpperCaseLeading(actType.getName()) + 
-      		"Action act = (" + CodeGeneratorUtils.getUpperCaseLeading(
-      				actType.getName()) + "Action)actions.get(i);");
+      		"Action act = actions.get(i);");
       writer.write(NEWLINE);
       writer.write("if (act.getId() == id) {");
       writer.write(NEWLINE);
@@ -1056,8 +1058,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
     	writer.write("for (int i = 0; i < actions.size(); i++) {");
     	writer.write(NEWLINE);
     	writer.write(CodeGeneratorUtils.getUpperCaseLeading(actType.getName()) + 
-    			"Action act = (" + CodeGeneratorUtils.getUpperCaseLeading(
-    					actType.getName()) + "Action)actions.elementAt(i);");
+    			"Action act = actions.elementAt(i);");
     	writer.write(NEWLINE);
     	writer.write("act.refetchParticipants(artifactRep, customerRep, employeeRep, projectRep, toolRep);");
     	writer.write(CLOSED_BRACK);

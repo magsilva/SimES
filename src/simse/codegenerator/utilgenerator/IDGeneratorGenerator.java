@@ -43,7 +43,7 @@ public class IDGeneratorGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("public class IDGenerator {");
       writer.write(NEWLINE);
-      writer.write("private static ArrayList usedIDs = new ArrayList();");
+      writer.write("private static ArrayList<Integer> usedIDs = new ArrayList<Integer>();");
       writer.write(NEWLINE);
       writer.write("private static Random ranNumGen = new Random();");
       writer.write(NEWLINE);
