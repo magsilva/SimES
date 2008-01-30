@@ -43443,36 +43443,6 @@ eddie_murphy.gif
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Mimi
-true
-true
-2
-7
-
-- Employee - SoftwareEngineer - Emily
-true
-true
-13
-2
-
-- Employee - SoftwareEngineer - Andre
-true
-true
-3
-1
-
-- Employee - SoftwareEngineer - Anita
-true
-true
-13
-8
-
-- Employee - SoftwareEngineer - Calvin
-true
-true
-9
-4
-
 - Employee - SoftwareEngineer - Roger
 true
 true
@@ -43484,6 +43454,36 @@ true
 true
 7
 1
+
+- Employee - SoftwareEngineer - Anita
+true
+true
+13
+8
+
+- Employee - SoftwareEngineer - Andre
+true
+true
+3
+1
+
+- Employee - SoftwareEngineer - Calvin
+true
+true
+9
+4
+
+- Employee - SoftwareEngineer - Mimi
+true
+true
+2
+7
+
+- Employee - SoftwareEngineer - Emily
+true
+true
+13
+2
 
 <endSOPUsers>
 401
