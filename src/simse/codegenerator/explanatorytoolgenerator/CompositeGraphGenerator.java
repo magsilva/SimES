@@ -125,19 +125,23 @@ public class CompositeGraphGenerator implements CodeGeneratorConstants {
     	writer.write(NEWLINE);
     	writer.write("private JSeparator separator;");
     	writer.write(NEWLINE);
+    	writer.write("private Branch branch; // branch from which this graph is generated");
+    	writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // constructor:
       writer
-          .write("public CompositeGraph(ObjectGraph objGraph, ActionGraph actGraph, String branchName) {");
+          .write("public CompositeGraph(ObjectGraph objGraph, ActionGraph actGraph, Branch branch) {");
       writer.write(NEWLINE);
   		writer.write("super();");
   		writer.write(NEWLINE);
+  		writer.write("this.branch = branch;");
+  		writer.write(NEWLINE);
   		writer.write("String title = \"Composite Graph\";");
   		writer.write(NEWLINE);
-  		writer.write("if (branchName != null) {");
+  		writer.write("if (branch.getName() != null) {");
   		writer.write(NEWLINE);
-  		writer.write("title = title.concat(\" - \" + branchName);");
+  		writer.write("title = title.concat(\" - \" + branch.getName());");
   		writer.write(NEWLINE);
   		writer.write(CLOSED_BRACK);
   		writer.write(NEWLINE);
@@ -334,7 +338,7 @@ public class CompositeGraphGenerator implements CodeGeneratorConstants {
 			writer.write(NEWLINE);
 			writer.write("tempState.setLogger(tempLogger);");
 			writer.write(NEWLINE);
-			writer.write("SimSE.startNewBranch(tempState, newBranchName);");
+			writer.write("SimSE.startNewBranch(tempState, new Branch(newBranchName, lastRightClickedX, tempClock.getTime(), branch, null));");
     	writer.write(NEWLINE);
     	writer.write(CLOSED_BRACK);
     	writer.write(NEWLINE);

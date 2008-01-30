@@ -225,28 +225,35 @@ public class CodeGenerator {
 	      writer.write(NEWLINE);
 	      writer.write("import simse.engine.*;");
 	      writer.write(NEWLINE);
+	      writer.write("import simse.explanatorytool.Branch;");
+	      writer.write(NEWLINE);
+	      writer.write("import simse.explanatorytool.MultipleTimelinesBrowser;");
+	      writer.write(NEWLINE);
+	      writer.write(NEWLINE);
+	      writer.write("import java.util.ArrayList;");
+	      writer.write(NEWLINE);
 	      writer.write("public class SimSE");
 	      writer.write(NEWLINE);
 	      writer.write(OPEN_BRACK);
 	      writer.write(NEWLINE);
 	      
 	      // member variables:
-	      writer.write("private static int numBranches = 0;");
-	      writer.write(NEWLINE);
-	      
-	      // constructor:
-	      writer.write("public SimSE(){}");
-	      writer.write(NEWLINE);
+	    	writer.write("private static ArrayList<Branch> branches = new ArrayList<Branch>();");
+	    	writer.write(NEWLINE);
+	    	writer.write("private static ArrayList<SimSEGUI> guis = new ArrayList<SimSEGUI>();");
+	    	writer.write(NEWLINE);
+	    	writer.write("private static MultipleTimelinesBrowser timelinesBrowser = new MultipleTimelinesBrowser();");
+	    	writer.write(NEWLINE);
 	      writer.write(NEWLINE);
 	      
 	      // startNewBranch method:
-	    	writer.write("public static void startNewBranch(State state, String branchName) {");
+	    	writer.write("public static void startNewBranch(State state, Branch branch) {");
 	    	writer.write(NEWLINE);
 	    	writer.write("Logic logic = new Logic(state);");
 	    	writer.write(NEWLINE);
 	    	writer.write("Engine engine = new Engine(logic, state);");
 	    	writer.write(NEWLINE);
-	    	writer.write("SimSEGUI gui = new SimSEGUI(engine, state, logic, branchName);");
+	    	writer.write("SimSEGUI gui = new SimSEGUI(engine, state, logic, branch, timelinesBrowser);");
 	    	writer.write(NEWLINE);
 	    	writer.write("state.getClock().setGUI(gui);");
 	    	writer.write(NEWLINE);
@@ -256,38 +263,51 @@ public class CodeGenerator {
 	    	writer.write(NEWLINE);
 	    	writer.write("logic.getTriggerChecker().update(false, gui);");
 	    	writer.write(NEWLINE);
-	    	writer.write("numBranches++;");
+	  		writer.write("branches.add(branch);");
+	  		writer.write(NEWLINE);
+	  		writer.write("guis.add(gui);");
+	  		writer.write(NEWLINE);
+	  		writer.write("timelinesBrowser.update();");
 	    	writer.write(NEWLINE);
 	    	writer.write(CLOSED_BRACK);
 	    	writer.write(NEWLINE);
 	    	writer.write(NEWLINE);
 	    	
-	    	// "getNumBranches" method:
-	    	writer.write("public static int getNumBranches() {");
+	    	// "getBranches" method:
+	    	writer.write("public static ArrayList<Branch> getBranches() {");
 	    	writer.write(NEWLINE);
-	    	writer.write("return numBranches;");
-	    	writer.write(NEWLINE);
-	    	writer.write(CLOSED_BRACK);
-	    	writer.write(NEWLINE);
-	    	writer.write(NEWLINE);
-	    	
-	    	// "incrementNumBranches" method:
-	    	writer.write("public static void incrementNumBranches() {");
-	    	writer.write(NEWLINE);
-	    	writer.write("numBranches++;");
+	    	writer.write("return branches;");
 	    	writer.write(NEWLINE);
 	    	writer.write(CLOSED_BRACK);
 	    	writer.write(NEWLINE);
 	    	writer.write(NEWLINE);
 	    	
-	    	// "decrementNumBranches" method:
-	    	writer.write("public static void decrementNumBranches() {");
+	    	// "getNumOpenBranches" method:
+	    	writer.write("// returns total number of open branches");
 	    	writer.write(NEWLINE);
-	    	writer.write("if (numBranches > 0) {");
+	    	writer.write("public static int getNumOpenBranches() {");
 	    	writer.write(NEWLINE);
-	    	writer.write("numBranches--;");
+	    	writer.write("int numOpen = 0;");
+	    	writer.write(NEWLINE);
+	    	writer.write("for (Branch b : branches) {");
+	    	writer.write(NEWLINE);
+	    	writer.write("if (!b.isClosed()) {");
+	    	writer.write(NEWLINE);
+	    	writer.write("numOpen++;");
+	    	writer.write(CLOSED_BRACK);
 	    	writer.write(NEWLINE);
 	    	writer.write(CLOSED_BRACK);
+	    	writer.write(NEWLINE);
+	    	writer.write("return numOpen;");
+	    	writer.write(NEWLINE);
+	    	writer.write(CLOSED_BRACK);
+	    	writer.write(NEWLINE);
+	    	writer.write(NEWLINE);
+	    	
+	    	// "getGUIs" method:
+	    	writer.write("public static ArrayList<SimSEGUI> getGUIs() {");
+	    	writer.write(NEWLINE);
+	    	writer.write("return guis;");
 	    	writer.write(NEWLINE);
 	    	writer.write(CLOSED_BRACK);
 	    	writer.write(NEWLINE);
@@ -298,7 +318,7 @@ public class CodeGenerator {
 	      writer.write(NEWLINE);
 	      writer.write(OPEN_BRACK);
 	      writer.write(NEWLINE);
-	      writer.write("startNewBranch(new State(), null);");
+	      writer.write("startNewBranch(new State(), new Branch(null, 0, 0, null, null));");
 	      writer.write(CLOSED_BRACK);
 	      writer.write(NEWLINE);
 	      

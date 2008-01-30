@@ -151,17 +151,21 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
     	writer.write(NEWLINE);
     	writer.write("private XYSeries[] series;");
     	writer.write(NEWLINE);
+    	writer.write("private Branch branch; // branch from which this graph is generated");
+    	writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // constructor:
       writer
-          .write("public ObjectGraph(String title, ArrayList<State> log, String objTypeType, String objType, String keyAttVal, String[] attributes, boolean showChart, String branchName) {");
+          .write("public ObjectGraph(String title, ArrayList<State> log, String objTypeType, String objType, String keyAttVal, String[] attributes, boolean showChart, Branch branch) {");
       writer.write(NEWLINE);
   		writer.write("super();");
   		writer.write(NEWLINE);
-  		writer.write("if (branchName != null) {");
+  		writer.write("this.branch = branch;");
   		writer.write(NEWLINE);
-  		writer.write("title = title.concat(\" - \" + branchName);");
+  		writer.write("if (branch.getName() != null) {");
+  		writer.write(NEWLINE);
+  		writer.write("title = title.concat(\" - \" + branch.getName());");
   		writer.write(NEWLINE);
   		writer.write(CLOSED_BRACK);
   		writer.write(NEWLINE);
@@ -474,7 +478,7 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
 	    	writer.write(NEWLINE);
 	    	writer.write("lastRightClickedX = (int)Math.rint(chartX);");
 	    	writer.write(NEWLINE);
-	    	writer.write("if (domainRange != null && lastRightClickedX >= domainRange.getLowerBound() && lastRightClickedX <= domainRange.getUpperBound()) { // clicked within domain range");
+	    	writer.write("if (domainRange != null && lastRightClickedX >= domainRange.getLowerBound() && lastRightClickedX <= (domainRange.getUpperBound() - 1) && lastRightClickedX >= 0) { // clicked within domain range");
 	    	writer.write(NEWLINE);
 	    	writer.write("if (chartPanel.getPopupMenu().getComponentIndex(newBranchItem) == -1) { // no new branch item on menu currently");
 	    	writer.write(NEWLINE);
@@ -548,7 +552,7 @@ public class ObjectGraphGenerator implements CodeGeneratorConstants {
     	writer.write(NEWLINE);
     	writer.write("tempState.setLogger(tempLogger);");
     	writer.write(NEWLINE);
-    	writer.write("SimSE.startNewBranch(tempState, newBranchName);");
+    	writer.write("SimSE.startNewBranch(tempState, new Branch(newBranchName, lastRightClickedX, tempClock.getTime(), branch, null));");
     	writer.write(NEWLINE);
     	writer.write(CLOSED_BRACK);
     	writer.write(NEWLINE);

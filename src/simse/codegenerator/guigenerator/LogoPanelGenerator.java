@@ -447,6 +447,8 @@ public class LogoPanelGenerator implements CodeGeneratorConstants {
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
 			writer.write(NEWLINE);
+			writer.write("gui.close();");
+			writer.write(NEWLINE);
 			writer.write("gui.dispose();");
 			writer.write(NEWLINE);
 			writer.write("SimSE.main(new String[]{});");

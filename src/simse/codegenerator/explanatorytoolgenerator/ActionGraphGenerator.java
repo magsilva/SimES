@@ -159,6 +159,8 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
     	writer.write(NEWLINE);
     	writer.write("private XYSeriesCollection dataset;");
     	writer.write(NEWLINE);
+    	writer.write("private Branch branch; // branch from which this action graph is generated");
+    	writer.write(NEWLINE);
       writer
           .write("private Hashtable<Integer, XYSeries> series = new Hashtable<Integer, XYSeries>(); // a Hashtable to map action ids to XYSeries");
       writer.write(NEWLINE);
@@ -188,15 +190,15 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
 
       // constructor:
       writer
-          .write("public ActionGraph(ArrayList<State> log, String[] actionNames, boolean showChart, String branchName) {");
+          .write("public ActionGraph(ArrayList<State> log, String[] actionNames, boolean showChart, Branch branch) {");
       writer.write(NEWLINE);
       writer.write("super();");
       writer.write(NEWLINE);
   		writer.write("String title = \"Action Graph\";");
   		writer.write(NEWLINE);
-  		writer.write("if (branchName != null) {");
+  		writer.write("if (branch.getName() != null) {");
   		writer.write(NEWLINE);
-  		writer.write("title = title.concat(\" - \" + branchName);");
+  		writer.write("title = title.concat(\" - \" + branch.getName());");
   		writer.write(NEWLINE);
   		writer.write(CLOSED_BRACK);
   		writer.write(NEWLINE);
@@ -671,7 +673,7 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
 			writer.write(NEWLINE);
 			writer.write("tempState.setLogger(tempLogger);");
 			writer.write(NEWLINE);
-			writer.write("SimSE.startNewBranch(tempState, newBranchName);");
+			writer.write("SimSE.startNewBranch(tempState, new Branch(newBranchName, lastRightClickedX, tempClock.getTime(), branch, null));");
     	writer.write(NEWLINE);
     	writer.write(CLOSED_BRACK);
     	writer.write(NEWLINE);

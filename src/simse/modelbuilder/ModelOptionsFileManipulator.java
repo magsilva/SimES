@@ -62,8 +62,10 @@ public class ModelOptionsFileManipulator {
             		ModelFileManipulator.END_MODEL_OPTIONS_TAG)) { // old format
               break;
             } else { // new format 9/12/07 that includes expl tool access option
-            	options.setExplanatoryToolAccessOption((
-            			Boolean.parseBoolean(currentLine)));
+//            	options.setExplanatoryToolAccessOption((
+//            			Boolean.parseBoolean(currentLine)));
+            	// commented out 1/28/08 when implementing multiple timelines 
+            	// browser
             }
             
             currentLine = reader.readLine();
@@ -71,8 +73,10 @@ public class ModelOptionsFileManipulator {
             		ModelFileManipulator.END_MODEL_OPTIONS_TAG)) { // old format
               break;
             } else { // new format 10/2/07 that includes branching option
-            	options.setAllowBranchingOption((
-            			Boolean.parseBoolean(currentLine)));
+//            	options.setAllowBranchingOption((
+//            			Boolean.parseBoolean(currentLine)));
+            	// commented out 1/28/08 when implementing multiple timelines 
+            	// browser
             }
           }
         }

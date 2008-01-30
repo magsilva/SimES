@@ -157,7 +157,11 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import simse.engine.*;");
       writer.write(NEWLINE);
+      writer.write("import simse.explanatorytool.Branch;");
+      writer.write(NEWLINE);
       writer.write("import simse.explanatorytool.ExplanatoryTool;");
+      writer.write(NEWLINE);
+      writer.write("import simse.explanatorytool.MultipleTimelinesBrowser;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("import java.awt.event.*;");
@@ -166,9 +170,13 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import java.awt.Dimension;");
       writer.write(NEWLINE);
-      writer.write("import javax.swing.*;");
-      writer.write(NEWLINE);
       writer.write("import java.awt.Color;");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("import java.util.ArrayList;");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("import javax.swing.*;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("public class SimSEGUI extends JFrame implements ActionListener");
@@ -203,16 +211,20 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private ExplanatoryTool expTool;");
       writer.write(NEWLINE);
-      writer.write("private String branchName; // name of this particular game");
+      writer.write("private static MultipleTimelinesBrowser timelinesBrowser;");
+      writer.write(NEWLINE);
+      writer.write("private Branch branch; // branch associated with this particular game");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // constructor:
-      writer.write("public SimSEGUI(Engine e, State s, Logic l, String branchName)");
+      writer.write("public SimSEGUI(Engine e, State s, Logic l, Branch branch, MultipleTimelinesBrowser browser)");
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("this.branchName = branchName;");
+      writer.write("this.branch = branch;");
+      writer.write(NEWLINE);
+      writer.write("timelinesBrowser = browser;");
       writer.write(NEWLINE);
       writer.write("reset(e,s,l);");
       writer.write(NEWLINE);
@@ -232,6 +244,9 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write("engine = e;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+  		writer.write("expTool = new ExplanatoryTool(this, state.getLogger().getLog(), branch, timelinesBrowser);");
+  		writer.write(NEWLINE);
+  		writer.write(NEWLINE);
       writer.write("attribPanel = new AttributePanel(this, state, engine);");
       writer.write(NEWLINE);
       writer.write("tabPanel = new TabPanel(this, state, logic, attribPanel);");
@@ -243,9 +258,9 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
   		writer.write("String title = \"SimSE\";");
   		writer.write(NEWLINE);
-  		writer.write("if (branchName != null) {");
+  		writer.write("if (branch.getName() != null) {");
   		writer.write(NEWLINE);
-  		writer.write("title = title.concat(\" - \" + branchName);");
+  		writer.write("title = title.concat(\" - \" + branch.getName());");
   		writer.write(NEWLINE);
   		writer.write(CLOSED_BRACK);
   		writer.write(NEWLINE);
@@ -325,14 +340,6 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("if (source == analyzeSimItem) {");
       writer.write(NEWLINE);
-			writer.write("if (expTool == null) { // explanatory tool has not been started yet");
-			writer.write(NEWLINE);
-			writer.write("expTool = new ExplanatoryTool(this, state.getLogger().getLog(), branchName);");
-			writer.write(NEWLINE);
-			writer.write(CLOSED_BRACK);
-			writer.write(NEWLINE);
-			writer.write("else { // explanatory tool has already been started");
-			writer.write(NEWLINE);
 			writer.write("if (expTool.getState() == Frame.ICONIFIED) {");
 			writer.write(NEWLINE);
 			writer.write("expTool.setState(Frame.NORMAL);");
@@ -342,8 +349,6 @@ public class GUIGenerator implements CodeGeneratorConstants {
 			writer.write("expTool.setVisible(true);");
 			writer.write(NEWLINE);
 			writer.write(CLOSED_BRACK);
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -444,15 +449,30 @@ public class GUIGenerator implements CodeGeneratorConstants {
       	writer.write(CLOSED_BRACK);
       	writer.write(NEWLINE);
       }
-  		writer.write("if (expTool != null) {");
-  		writer.write(NEWLINE);
   		writer.write("expTool.update();");
   		writer.write(NEWLINE);
-  		writer.write(CLOSED_BRACK);
+  		writer.write("branch.update(state);");
   		writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+      
+      // "close" method:
+    	writer.write("public void close() {");
+    	writer.write(NEWLINE);
+    	writer.write("branch.setClosed();");
+    	writer.write(NEWLINE);
+    	writer.write("if (!timelinesBrowser.isVisible() && SimSE.getNumOpenBranches() == 0) {");
+    	writer.write(NEWLINE);
+    	writer.write("System.exit(0);");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write("timelinesBrowser.update();");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
 
       // ExitListener class:
       writer.write("public class ExitListener extends WindowAdapter");
@@ -463,13 +483,7 @@ public class GUIGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("SimSE.decrementNumBranches();");
-      writer.write(NEWLINE);
-      writer.write("if (SimSE.getNumBranches() == 0) {");
-      writer.write(NEWLINE);
-      writer.write("System.exit(0);");
-      writer.write(NEWLINE);
-      writer.write(CLOSED_BRACK);
+      writer.write("close();");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);

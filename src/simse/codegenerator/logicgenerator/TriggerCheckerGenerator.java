@@ -503,6 +503,8 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
             writer.write(NEWLINE);
             writer.write("state.getClock().stop();");
             writer.write(NEWLINE);
+            writer.write("state.setScore(v);");
+            writer.write(NEWLINE);
             writer.write("((SimSEGUI)gui).update();");
             writer.write(NEWLINE);
             writer

@@ -470,6 +470,8 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 	                writer.write(NEWLINE);
 	                writer.write("state.getClock().stop();");
 	                writer.write(NEWLINE);
+	                writer.write("state.setScore(v);");
+	                writer.write(NEWLINE);
 	                writer.write("((SimSEGUI)parent).update();");
 	                writer.write(NEWLINE);
 	                writer
@@ -1087,6 +1089,8 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
                     + scoringAttConst.getAttribute().getName() + "();");
                 writer.write(NEWLINE);
                 writer.write("state.getClock().stop();");
+                writer.write(NEWLINE);
+                writer.write("state.setScore(v);");
                 writer.write(NEWLINE);
                 writer.write("((SimSEGUI)parent).update();");
                 writer.write(NEWLINE);

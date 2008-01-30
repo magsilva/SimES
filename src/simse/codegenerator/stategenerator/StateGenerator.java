@@ -79,6 +79,8 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private Logger logger;");
       writer.write(NEWLINE);
+      writer.write("private Number score;");
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // constructor:
@@ -101,6 +103,8 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write("logger = new Logger(this);");
       writer.write(NEWLINE);
       writer.write("clock = new Clock(logger);");
+      writer.write(NEWLINE);
+      writer.write("score = new Integer(-1);");
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
@@ -132,6 +136,18 @@ public class StateGenerator implements CodeGeneratorConstants {
       writer.write("cl.clock = null;");
       writer.write(NEWLINE);
       writer.write("cl.logger = null;");
+      writer.write(NEWLINE);
+			writer.write("if (score instanceof Integer) {");
+			writer.write(NEWLINE);
+			writer.write("cl.score = new Integer(score.intValue());");
+			writer.write(NEWLINE);
+			writer.write(CLOSED_BRACK);
+			writer.write(NEWLINE);
+			writer.write("else { // Double");
+			writer.write(NEWLINE);
+			writer.write("cl.score = new Double(score.doubleValue());");
+			writer.write(NEWLINE);
+			writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write("return cl;");
       writer.write(NEWLINE);
@@ -251,6 +267,23 @@ public class StateGenerator implements CodeGeneratorConstants {
     	writer.write("public void setLogger(Logger logger) {");
     	writer.write(NEWLINE);
     	writer.write("this.logger = logger;");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	
+    	// getScore method:
+    	writer.write("public Number getScore() {");
+    	writer.write(NEWLINE);
+    	writer.write("return score;");
+    	writer.write(NEWLINE);
+    	writer.write(CLOSED_BRACK);
+    	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
+    	
+    	// setScore method:
+    	writer.write("public void setScore(Number score) {");
+    	writer.write(NEWLINE);
+    	writer.write("this.score = score;");
     	writer.write(NEWLINE);
     	writer.write(CLOSED_BRACK);
     	writer.write(NEWLINE);

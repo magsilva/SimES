@@ -12,21 +12,25 @@ public class ModelOptions {
   																	 				 // "everyone stop what you're 
   																					 // doing" option on the employees'
   																					 // menus
-  private boolean expToolAccessibleDuringGame; // whether or not to make the 
-  																		 				 // explanatory tool accessible 
-  																						 // during the game
-  private boolean allowBranching; // whether or not to allow branching multiple
-  															  // games through the explanatory tool
+  private boolean expToolAccessibleDuringGame = true; // whether or not to make 
+  																										// the explanatory tool 
+  																										// accessible during the 
+  																										// game; set to true
+  																										// 1/29/08 when 
+  																										// implementing multiple
+  																										// timelines browser
+  private boolean allowBranching = true; // whether or not to allow branching 
+  																			 // multiple games through the 
+  																			 // explanatory tool; set to true 
+  																			 // 1/29/08 when implementing multiple
+  																			 // timelines browser
   private File iconDirectory; // directory containing icons for this model
   private File codeGenerationDestinationDirectory; // directory to generate code 
   																								 // into
 
   public ModelOptions(boolean includeEveryoneStopOption, 
-  		boolean expToolAccessibleDuringGame, boolean allowBranching, 
   		File iconDirectory, File codeGenerationDestinationDirectory) {
     this.includeEveryoneStopOption = includeEveryoneStopOption;
-    this.expToolAccessibleDuringGame = expToolAccessibleDuringGame;
-    this.allowBranching = allowBranching;
     this.iconDirectory = iconDirectory;
     this.codeGenerationDestinationDirectory = 
     	codeGenerationDestinationDirectory;
@@ -34,8 +38,6 @@ public class ModelOptions {
 
   public ModelOptions() {
     includeEveryoneStopOption = false;
-    expToolAccessibleDuringGame = false;
-    allowBranching = false;
   }
 
   public boolean getEveryoneStopOption() {
@@ -50,17 +52,17 @@ public class ModelOptions {
     return expToolAccessibleDuringGame;
   }
 
-  public void setExplanatoryToolAccessOption(boolean option) {
-    expToolAccessibleDuringGame = option;
-  }
-  
+//  public void setExplanatoryToolAccessOption(boolean option) {
+//    expToolAccessibleDuringGame = option;
+//  }
+//  
   public boolean getAllowBranchingOption() {
   	return allowBranching;
   }
-  
-  public void setAllowBranchingOption(boolean option) {
-  	allowBranching = option;
-  }
+//  
+//  public void setAllowBranchingOption(boolean option) {
+//  	allowBranching = option;
+//  }
   
   public File getIconDirectory() {
     return iconDirectory;
@@ -83,8 +85,6 @@ public class ModelOptions {
    */
   public void clearAll() {
     includeEveryoneStopOption = false;
-    expToolAccessibleDuringGame = false;
-    allowBranching = false;
     iconDirectory = null;
     codeGenerationDestinationDirectory = null;
   }

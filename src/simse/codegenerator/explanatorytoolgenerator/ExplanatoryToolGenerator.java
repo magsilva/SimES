@@ -32,7 +32,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import javax.swing.JOptionPane;;
+import javax.swing.JOptionPane;
 
 public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
   private ModelOptions options;
@@ -56,6 +56,10 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
 																											// class
 	private RuleDescriptionsGenerator ruleDescGen; // generates the
 																									// RuleDescriptions class
+	private BranchGenerator branchGen; // generates the Branch class
+	private MultipleTimelinesBrowserGenerator browserGen; // generates the
+																												 // MulitpleTimelinesBrowser
+																												 // class
 
   public ExplanatoryToolGenerator(ModelOptions options, 
       DefinedObjectTypes objTypes, CreatedObjects objs, 
@@ -82,6 +86,10 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
         options.getCodeGenerationDestinationDirectory());
     ruleDescGen = new RuleDescriptionsGenerator(acts, 
         options.getCodeGenerationDestinationDirectory());
+    branchGen = new BranchGenerator(
+    		options.getCodeGenerationDestinationDirectory());
+    browserGen = new MultipleTimelinesBrowserGenerator(
+    		options.getCodeGenerationDestinationDirectory());
   }
 
 /*
@@ -100,6 +108,8 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
     trigDescGen.generate();
     destDescGen.generate();
     ruleDescGen.generate();
+    branchGen.generate();
+    browserGen.generate();
     generateExplanatoryTool();
   }
 
@@ -122,11 +132,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("import simse.state.State;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
-      writer.write("import javax.swing.*;");
-      writer.write(NEWLINE);
-      writer.write("import javax.swing.event.ListSelectionEvent;");
-      writer.write(NEWLINE);
-      writer.write("import javax.swing.event.ListSelectionListener;");
+      writer.write("import org.jfree.ui.RefineryUtilities;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("import java.awt.event.*;");
@@ -135,11 +141,19 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("import java.awt.Dimension;");
       writer.write(NEWLINE);
-      writer.write("import java.awt.Point;");
+      writer.write("import java.awt.Frame;");
+      writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("import java.util.ArrayList;");
       writer.write(NEWLINE);
       writer.write("import java.util.Vector;");
+      writer.write(NEWLINE);
+      writer.write(NEWLINE);
+      writer.write("import javax.swing.*;");
+      writer.write(NEWLINE);
+      writer.write("import javax.swing.event.ListSelectionEvent;");
+      writer.write(NEWLINE);
+      writer.write("import javax.swing.event.ListSelectionListener;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer
@@ -151,6 +165,9 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
     	writer.write("private ArrayList<JFrame> visibleGraphs; // holds all of the currently visible graphs");
     	writer.write(NEWLINE);
+    	writer.write("private static MultipleTimelinesBrowser timelinesBrowser;");
+      writer.write(NEWLINE);
+      writer.write("private JButton multipleTimelinesButton;");
       writer.write(NEWLINE);
       writer
           .write("private JComboBox objectList; // for choosing an object whose attributes to graph");
@@ -184,22 +201,24 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("private Box mainPane;");
       writer.write(NEWLINE);
-      writer.write("private String branchName;");
+      writer.write("private Branch branch;");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
 
       // constructor:
-      writer.write("public ExplanatoryTool(JFrame owner, ArrayList<State> log, String branchName) {");
+      writer.write("public ExplanatoryTool(JFrame owner, ArrayList<State> log, Branch branch, MultipleTimelinesBrowser browser) {");
       writer.write(NEWLINE);
   		writer.write("super();");
   		writer.write(NEWLINE);
-  		writer.write("this.branchName = branchName;");
+  		writer.write("this.branch = branch;");
+  		writer.write(NEWLINE);
+  		writer.write("timelinesBrowser = browser;");
   		writer.write(NEWLINE);
   		writer.write("String title = \"Explanatory Tool\";");
   		writer.write(NEWLINE);
-  		writer.write("if (branchName != null) {");
+  		writer.write("if (branch.getName() != null) {");
   		writer.write(NEWLINE);
-  		writer.write("title = title.concat(\" - \" + branchName);");
+  		writer.write("title = title.concat(\" - \" + branch.getName());");
   		writer.write(NEWLINE);
   		writer.write(CLOSED_BRACK);
   		writer.write(NEWLINE);
@@ -215,6 +234,15 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write("mainPane = Box.createVerticalBox();");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
+  		writer.write("JPanel multipleTimelinesPanel = new JPanel();");
+  		writer.write(NEWLINE);
+  		writer.write("multipleTimelinesButton = new JButton(\"Multiple Timelines Browser\");");
+  		writer.write(NEWLINE);
+  		writer.write("multipleTimelinesButton.addActionListener(this);");
+  		writer.write(NEWLINE);
+  		writer.write("multipleTimelinesPanel.add(multipleTimelinesButton);");
+  		writer.write(NEWLINE);
+  		writer.write(NEWLINE);
       writer.write("// Create main sub-panel:");
       writer.write(NEWLINE);
       writer.write("JPanel generateGraphsPanel = new JPanel();");
@@ -534,6 +562,14 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("// Add panes to main pane and main sub-pane:");
       writer.write(NEWLINE);
+  		writer.write("mainPane.add(multipleTimelinesPanel);");
+  		writer.write(NEWLINE);
+  		writer.write("JSeparator separator0 = new JSeparator();");
+  		writer.write(NEWLINE);
+  		writer.write("separator0.setMaximumSize(new Dimension(2900, 1));");
+  		writer.write(NEWLINE);
+  		writer.write("mainPane.add(separator0);");
+  		writer.write(NEWLINE);
       writer.write("generateGraphsPanel.add(objectPane);");
       writer.write(NEWLINE);
       writer.write("generateGraphsPanel.add(actionPane);");
@@ -599,16 +635,10 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write("// Make it show up in the center of the screen:");
       writer.write(NEWLINE);
-      writer.write("Point ownerLoc = owner.getLocationOnScreen();");
-      writer.write(NEWLINE);
-      writer.write("Point thisLoc = new Point();");
-      writer.write(NEWLINE);
-      writer
-          .write("thisLoc.setLocation((ownerLoc.getX() + (owner.getWidth() / 2) - (this.getWidth() / 2)), (ownerLoc.getY() + (owner.getHeight() / 2) - (this.getHeight() / 2)));");
-      writer.write(NEWLINE);
-      writer.write("setLocation(thisLoc);");
-      writer.write(NEWLINE);
-      writer.write("setVisible(true);");
+  		writer.write("RefineryUtilities.centerFrameOnScreen(this);");
+  		writer.write(NEWLINE);
+  		writer.write("setVisible(false);");
+  		writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
       writer.write(NEWLINE);
@@ -625,6 +655,18 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer.write(NEWLINE);
       writer.write(CLOSED_BRACK);
       writer.write(NEWLINE);
+      writer.write("else if (source == multipleTimelinesButton) {");
+      writer.write(NEWLINE);
+  		writer.write("if (timelinesBrowser.getState() == Frame.ICONIFIED) {");
+  		writer.write(NEWLINE);
+  		writer.write("timelinesBrowser.setState(Frame.NORMAL);");
+  		writer.write(NEWLINE);
+  		writer.write(CLOSED_BRACK);
+  		writer.write(NEWLINE);
+  		writer.write("timelinesBrowser.setVisible(true);");
+  		writer.write(NEWLINE);
+  		writer.write(CLOSED_BRACK);
+  		writer.write(NEWLINE);
       writer
           .write("else if (source == generateObjGraphButton) { // generateObjGraphButton has been pressed");
       writer.write(NEWLINE);
@@ -662,7 +704,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
           .write("if (attributes.length > 0) { // at least one attribute is selected");
       writer.write(NEWLINE);
       writer
-          .write("ObjectGraph graph = new ObjectGraph(title, log, objTypeType, objType, keyAttVal, attributes, true, branchName);");
+          .write("ObjectGraph graph = new ObjectGraph(title, log, objTypeType, objType, keyAttVal, attributes, true, branch);");
       writer.write(NEWLINE);
       writer.write("visibleGraphs.add(graph);");
       writer.write(NEWLINE);
@@ -694,7 +736,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
       writer
           .write("if (actions.length > 0) { // at least one attribute is selected");
       writer.write(NEWLINE);
-      writer.write("ActionGraph graph = new ActionGraph(log, actions, true, branchName);");
+      writer.write("ActionGraph graph = new ActionGraph(log, actions, true, branch);");
       writer.write(NEWLINE);
       writer.write("visibleGraphs.add(graph);");
       writer.write(NEWLINE);
@@ -746,7 +788,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
           .write("if (attributes.length > 0) { // at least one attribute is selected");
       writer.write(NEWLINE);
       writer
-          .write("ObjectGraph objGraph = new ObjectGraph(title, log, objTypeType, objType, keyAttVal, attributes, false, branchName);");
+          .write("ObjectGraph objGraph = new ObjectGraph(title, log, objTypeType, objType, keyAttVal, attributes, false, branch);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer
@@ -764,13 +806,13 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
           .write("if (actions.length > 0) { // at least one attribute is selected");
       writer.write(NEWLINE);
       writer
-          .write("ActionGraph actGraph = new ActionGraph(log, actions, false, branchName);");
+          .write("ActionGraph actGraph = new ActionGraph(log, actions, false, branch);");
       writer.write(NEWLINE);
       writer.write(NEWLINE);
       writer.write("// generate composite graph:");
       writer.write(NEWLINE);
       writer
-          .write("CompositeGraph compGraph = new CompositeGraph(objGraph, actGraph, branchName);");
+          .write("CompositeGraph compGraph = new CompositeGraph(objGraph, actGraph, branch);");
       writer.write(NEWLINE);
       writer.write("visibleGraphs.add(compGraph);");
       writer.write(NEWLINE);
@@ -898,6 +940,15 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
     	writer.write(NEWLINE);
     	writer.write(CLOSED_BRACK);
     	writer.write(NEWLINE);
+    	writer.write(NEWLINE);
+  		writer.write("// update timelines browser:");
+  		writer.write(NEWLINE);
+  		writer.write("if (timelinesBrowser != null) {");
+  		writer.write(NEWLINE);
+  		writer.write("timelinesBrowser.update();");
+  		writer.write(NEWLINE);
+  		writer.write(CLOSED_BRACK);
+  		writer.write(NEWLINE);
     	writer.write(CLOSED_BRACK);
     	writer.write(NEWLINE);
     	writer.write(NEWLINE);
