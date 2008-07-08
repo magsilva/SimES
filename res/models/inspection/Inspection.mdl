@@ -6438,12 +6438,12 @@ alex.gif
 Employee
 SoftwareEngineer
 Andre
-andre.gif
+andre2.png
 
 Employee
 SoftwareEngineer
 Anita
-anita.gif
+anita2.png
 
 Employee
 SoftwareEngineer
@@ -6523,29 +6523,17 @@ Generic Project
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Calvin
+- Employee - SoftwareEngineer - Emily
 true
 true
 12
-3
-
-- Employee - SoftwareEngineer - David
-true
-true
-8
-7
-
-- Employee - SoftwareEngineer - Anita
-true
-true
-6
-7
-
-- Employee - SoftwareEngineer - Chris J.
-true
-true
-2
 5
+
+- Employee - SoftwareEngineer - Alex
+true
+true
+4
+7
 
 - Employee - SoftwareEngineer - Paul
 true
@@ -6553,10 +6541,22 @@ true
 2
 3
 
-- Employee - SoftwareEngineer - Alex
+- Employee - SoftwareEngineer - Andre
 true
 true
-4
+6
+1
+
+- Employee - SoftwareEngineer - Chris J.
+true
+true
+2
+5
+
+- Employee - SoftwareEngineer - Anita
+true
+true
+6
 7
 
 - Employee - SoftwareEngineer - Scott
@@ -6565,23 +6565,11 @@ true
 4
 1
 
-- Employee - SoftwareEngineer - Emily
+- Employee - SoftwareEngineer - Calvin
 true
 true
 12
-5
-
-- Employee - SoftwareEngineer - Chris V.
-true
-true
-10
-1
-
-- Employee - SoftwareEngineer - Andre
-true
-true
-6
-1
+3
 
 - Employee - SoftwareEngineer - Ping
 true
@@ -6593,6 +6581,18 @@ true
 true
 true
 8
+1
+
+- Employee - SoftwareEngineer - David
+true
+true
+8
+7
+
+- Employee - SoftwareEngineer - Chris V.
+true
+true
+10
 1
 
 <endSOPUsers>

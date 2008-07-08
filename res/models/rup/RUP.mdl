@@ -137675,7 +137675,7 @@ Idle
 Employee
 SoftwareEngineer
 Amalia
-emily.gif
+anita2.png
 
 Employee
 SoftwareEngineer
@@ -137720,7 +137720,7 @@ ping.gif
 Employee
 SoftwareEngineer
 Tai
-andre.gif
+andre2.png
 
 Artifact
 ProjectPlan
@@ -137900,11 +137900,11 @@ use_case_blue.GIF
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Roger
+- Employee - SoftwareEngineer - Anne
 true
 true
-9
-7
+1
+2
 
 - Employee - SoftwareEngineer - Gretchen
 true
@@ -137918,11 +137918,17 @@ true
 6
 3
 
-- Employee - SoftwareEngineer - Dwight
+- Employee - SoftwareEngineer - Erica
 true
 true
-3
-1
+9
+0
+
+- Employee - SoftwareEngineer - Tai
+true
+true
+14
+8
 
 - Employee - SoftwareEngineer - Corey
 true
@@ -137936,23 +137942,17 @@ true
 12
 2
 
-- Employee - SoftwareEngineer - Anne
+- Employee - SoftwareEngineer - Dwight
 true
 true
+3
 1
-2
 
-- Employee - SoftwareEngineer - Tai
-true
-true
-14
-8
-
-- Employee - SoftwareEngineer - Erica
+- Employee - SoftwareEngineer - Roger
 true
 true
 9
-0
+7
 
 - Employee - SoftwareEngineer - Paxton
 true

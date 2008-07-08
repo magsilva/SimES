@@ -43358,12 +43358,12 @@ PayRate
 Employee
 SoftwareEngineer
 Andre
-andre.gif
+andre2.png
 
 Employee
 SoftwareEngineer
 Anita
-anita.gif
+anita2.png
 
 Employee
 SoftwareEngineer
@@ -43443,11 +43443,11 @@ eddie_murphy.gif
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Roger
+- Employee - SoftwareEngineer - Andre
 true
 true
-5
-8
+3
+1
 
 - Employee - SoftwareEngineer - Pedro
 true
@@ -43455,23 +43455,17 @@ true
 7
 1
 
+- Employee - SoftwareEngineer - Roger
+true
+true
+5
+8
+
 - Employee - SoftwareEngineer - Anita
 true
 true
 13
 8
-
-- Employee - SoftwareEngineer - Andre
-true
-true
-3
-1
-
-- Employee - SoftwareEngineer - Calvin
-true
-true
-9
-4
 
 - Employee - SoftwareEngineer - Mimi
 true
@@ -43484,6 +43478,12 @@ true
 true
 13
 2
+
+- Employee - SoftwareEngineer - Calvin
+true
+true
+9
+4
 
 <endSOPUsers>
 401
