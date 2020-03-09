@@ -308,10 +308,8 @@ public class GraphicsBuilderGUI extends JPanel implements ActionListener {
 			// list out all picture filenames and store in pictureFiles[]:
 			String pictureFiles[] = imageDir.list(); 
 			for (int i = 0; i < pictureFiles.length; i++) {
-				if (isImageFile(pictureFiles[i])) { // to prevent non-image files from
-																						// being loaded
-					ImageIcon img = new ImageIcon(imageDir.getPath().concat(
-							"\\" + pictureFiles[i]));
+				if (isImageFile(pictureFiles[i])) { // to prevent non-image files from being loaded
+					ImageIcon img = new ImageIcon(imageDir.getPath().concat(File.separator + pictureFiles[i]));
 					imagesToFilenames.put(img, pictureFiles[i]);
 					JButton button = new JButton(img);
 					button.addActionListener(this);

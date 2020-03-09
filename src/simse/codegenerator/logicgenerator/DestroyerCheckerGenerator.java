@@ -50,7 +50,7 @@ public class DestroyerCheckerGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     try {
-      destFile = new File(directory, ("simse\\logic\\DestroyerChecker.java"));
+      destFile = new File(directory, ("simse" + File.separator + "logic" + File.separator + "DestroyerChecker.java"));
       if (destFile.exists()) {
         destFile.delete(); // delete old version of file
       }

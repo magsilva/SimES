@@ -32,7 +32,7 @@ public class ActionGraphGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     File actGraphFile = new File(directory,
-        ("simse\\explanatorytool\\ActionGraph.java"));
+        ("simse" + File.separator + "explanatorytool" + File.separator + "ActionGraph.java"));
     if (actGraphFile.exists()) {
       actGraphFile.delete(); // delete old version of file
     }

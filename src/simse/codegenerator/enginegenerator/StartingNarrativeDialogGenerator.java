@@ -28,7 +28,7 @@ implements CodeGeneratorConstants {
   // causes the class to be generated
   public void generate() {
     File snFile = new File(directory,
-        ("simse\\engine\\StartingNarrativeDialog.java"));
+        ("simse" + File.separator + "engine" + File.separator + "StartingNarrativeDialog.java"));
     if (snFile.exists()) {
       snFile.delete(); // delete old version of file
     }

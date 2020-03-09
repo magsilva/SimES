@@ -22,7 +22,7 @@ public class BranchGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     File branchFile = new File(directory,
-        ("simse\\explanatorytool\\Branch.java"));
+        ("simse" + File.separator + "explanatorytool" + File.separator + "Branch.java"));
     if (branchFile.exists()) {
       branchFile.delete(); // delete old version of file
     }

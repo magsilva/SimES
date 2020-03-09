@@ -22,7 +22,7 @@ public class SimSEAboutDialogGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     File aboutDialogFile = new File(directory,
-        ("simse\\gui\\SimSEAboutDialog.java"));
+        ("simse" + File.separator + "gui" + File.separator + "SimSEAboutDialog.java"));
     if (aboutDialogFile.exists()) {
       aboutDialogFile.delete(); // delete old version of file
     }

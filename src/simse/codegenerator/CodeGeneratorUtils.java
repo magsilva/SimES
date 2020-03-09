@@ -55,8 +55,7 @@ public class CodeGeneratorUtils {
 					outStream.close();
 				} else { // is a directory
 					// recurse:
-					copyDir(inFile.getPath(), new String(destinationDirPath + "\\" + 
-							inFile.getName()));
+					copyDir(inFile.getPath(), new String(destinationDirPath + File.separator + inFile.getName()));
 				}
 			}
 		} catch (FileNotFoundException e) {

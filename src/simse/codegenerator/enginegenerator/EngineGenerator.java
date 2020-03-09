@@ -38,7 +38,7 @@ public class EngineGenerator implements CodeGeneratorConstants {
     sndg.generate();
 
     // generate Engine:
-    File engineFile = new File(directory, ("simse\\engine\\Engine.java"));
+    File engineFile = new File(directory, ("simse" + File.separator + "engine" + File.separator + "Engine.java"));
     if (engineFile.exists()) {
       engineFile.delete(); // delete old version of file
     }

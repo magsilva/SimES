@@ -65,7 +65,7 @@ public class RuleExecutorGenerator implements CodeGeneratorConstants {
   // returns true if generation successful, false otherwise
   public boolean generate() {
     try {
-      ruleExFile = new File(directory, ("simse\\logic\\RuleExecutor.java"));
+      ruleExFile = new File(directory, ("simse" + File.separator + "logic" + File.separator + "RuleExecutor.java"));
       if (ruleExFile.exists()) {
         ruleExFile.delete(); // delete old version of file
       }

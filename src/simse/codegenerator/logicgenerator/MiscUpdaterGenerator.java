@@ -34,7 +34,7 @@ public class MiscUpdaterGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     try {
-      muFile = new File(directory, ("simse\\logic\\MiscUpdater.java"));
+      muFile = new File(directory, ("simse" + File.separator + "logic" + File.separator + "MiscUpdater.java"));
       if (muFile.exists()) {
         muFile.delete(); // delete old version of file
       }

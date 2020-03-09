@@ -117,7 +117,7 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
   private void generateExplanatoryTool() { 
     File expToolFile = new File(options.
         getCodeGenerationDestinationDirectory(),
-        ("simse\\explanatorytool\\ExplanatoryTool.java"));
+        ("simse" + File.separator + "explanatorytool" + File.separator + "ExplanatoryTool.java"));
     if (expToolFile.exists()) {
       expToolFile.delete(); // delete old version of file
     }
@@ -1218,13 +1218,13 @@ public class ExplanatoryToolGenerator implements CodeGeneratorConstants {
         if (ze == null) {
           break;
         }
-        new File(options.getCodeGenerationDestinationDirectory() + "\\lib\\" +
+        new File(options.getCodeGenerationDestinationDirectory() + File.separator + "lib" + File.separator +
             ze.getName()).createNewFile();
         byte[] buffer = new byte[1024];
         int len = 1024;
         BufferedOutputStream out = new BufferedOutputStream(
             new FileOutputStream(
-            		options.getCodeGenerationDestinationDirectory() + "\\lib\\" + 
+            		options.getCodeGenerationDestinationDirectory() + File.separator + "lib" + File.separator + 
                 ze.getName()));
         while ((len = zis.read(buffer, 0, len)) >= 0) {
           out.write(buffer, 0, len);

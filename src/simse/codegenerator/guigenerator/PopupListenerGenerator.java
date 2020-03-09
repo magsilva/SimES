@@ -21,7 +21,7 @@ public class PopupListenerGenerator implements CodeGeneratorConstants {
   }
 
   public void generate() {
-    File pulFile = new File(directory, ("simse\\gui\\PopupListener.java"));
+    File pulFile = new File(directory, ("simse" + File.separator + "gui" + File.separator + "PopupListener.java"));
     if (pulFile.exists()) {
       pulFile.delete(); // delete old version of file
     }

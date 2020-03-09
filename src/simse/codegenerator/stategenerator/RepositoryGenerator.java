@@ -65,7 +65,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
 
     // generate ActionStateRepository:
     File asrFile = new File(options.getCodeGenerationDestinationDirectory(),
-        ("simse\\state\\ActionStateRepository.java"));
+        ("simse" + File.separator + "state" + File.separator + "ActionStateRepository.java"));
     if (asrFile.exists()) {
       asrFile.delete(); // delete old version of file
     }
@@ -415,7 +415,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
     		objType.getName());
     String lCaseName = objType.getName().toLowerCase();
     File repFile = new File(options.getCodeGenerationDestinationDirectory(), 
-        ("simse\\state\\" + uCaseName + "StateRepository.java"));
+        ("simse" + File.separator + "state" + File.separator + uCaseName + "StateRepository.java"));
     if (repFile.exists()) {
       repFile.delete(); // delete old version of file
     }
@@ -626,7 +626,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
 
   private void generateMetaObjectTypeRepository(String typeName) {
     File repFile = new File(options.getCodeGenerationDestinationDirectory(),
-        ("simse\\state\\" + typeName + "StateRepository.java"));
+        ("simse" + File.separator + "state" + File.separator + typeName + "StateRepository.java"));
     if (repFile.exists()) {
       repFile.delete(); // delete old version of file
     }
@@ -758,7 +758,7 @@ public class RepositoryGenerator implements CodeGeneratorConstants {
     String uCaseName = CodeGeneratorUtils.getUpperCaseLeading(
     		actType.getName());
     File repFile = new File(options.getCodeGenerationDestinationDirectory(),
-        ("simse\\state\\" + uCaseName + "ActionStateRepository.java"));
+        ("simse" + File.separator + "state" + File.separator + uCaseName + "ActionStateRepository.java"));
     if (repFile.exists()) {
       repFile.delete(); // delete old version of file
     }

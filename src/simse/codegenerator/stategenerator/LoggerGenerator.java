@@ -24,7 +24,7 @@ public class LoggerGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     File loggerFile = new File(directory, 
-    		("simse\\state\\Logger\\Logger.java"));
+    		("simse" + File.separator + "state" + File.separator + "logger" + File.separator + "Logger.java"));
     if (loggerFile.exists()) {
       loggerFile.delete(); // delete old version of file
     }

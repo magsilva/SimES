@@ -41,7 +41,7 @@ public class ParticipantSelectionDialogsDriverGenerator implements
   public void generate() {
     try {
       psddFile = new File(directory,
-          ("simse\\logic\\dialogs\\ParticipantSelectionDialogsDriver.java"));
+          ("simse" + File.separator + "logic" + File.separator + "dialogs" + File.separator + "ParticipantSelectionDialogsDriver.java"));
       if (psddFile.exists()) {
         psddFile.delete(); // delete old version of file
       }

@@ -37,7 +37,7 @@ public class ActionPanelGenerator implements CodeGeneratorConstants {
   }
 
   public void generate() {
-    File actPanelFile = new File(directory, ("simse\\gui\\ActionPanel.java"));
+    File actPanelFile = new File(directory, ("simse" + File.separator + "gui" + File.separator + "ActionPanel.java"));
     if (actPanelFile.exists()) {
       actPanelFile.delete(); // delete old version of file
     }

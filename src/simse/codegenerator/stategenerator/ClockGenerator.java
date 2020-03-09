@@ -23,7 +23,7 @@ public class ClockGenerator implements CodeGeneratorConstants {
   }
 
   public void generate() {
-    File clockFile = new File(directory, ("simse\\state\\Clock.java"));
+    File clockFile = new File(directory, ("simse" + File.separator + "state" + File.separator + "Clock.java"));
     if (clockFile.exists()) {
       clockFile.delete(); // delete old version of file
     }

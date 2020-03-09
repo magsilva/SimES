@@ -55,7 +55,7 @@ public class ImageLoader {
       //ZipFile zf = new ZipFile(new File(url.getPath()));
       //Enumeration en = zf.entries();
 
-      String tmp = "images\\"; //(zf.getEntry("images") == null) ? "images\\" :
+      String tmp = "images" + File.separator; //(zf.getEntry("images") == null) ? "images\\" :
       // "";
       dir += tmp;
 

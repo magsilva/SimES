@@ -60,7 +60,7 @@ public class SimSEMapGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     // generate file:
-    File ssmFile = new File(directory, ("simse\\gui\\SimSEMap.java"));
+    File ssmFile = new File(directory, ("simse" + File.separator + "gui" + File.separator + "SimSEMap.java"));
     if (ssmFile.exists()) {
       ssmFile.delete(); // delete old version of file
     }

@@ -36,7 +36,7 @@ public class DestroyerDescriptionsGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     File destDescFile = new File(directory,
-        ("simse\\explanatorytool\\DestroyerDescriptions.java"));
+        ("simse" + File.separator + "explanatorytool" + File.separator + "DestroyerDescriptions.java"));
     if (destDescFile.exists()) {
       destDescFile.delete(); // delete old version of file
     }

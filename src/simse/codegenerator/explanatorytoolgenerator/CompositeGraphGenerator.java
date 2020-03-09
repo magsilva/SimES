@@ -25,7 +25,7 @@ public class CompositeGraphGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     File compGraphFile = new File(directory,
-        ("simse\\explanatorytool\\CompositeGraph.java"));
+        ("simse" + File.separator + "explanatorytool" + File.separator + "CompositeGraph.java"));
     if (compGraphFile.exists()) {
       compGraphFile.delete(); // delete old version of file
     }

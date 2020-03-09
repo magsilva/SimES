@@ -39,7 +39,7 @@ public class AtAGlanceFramesGenerator implements CodeGeneratorConstants {
   private void generateFrameFile(String type) {
     // generate file:
     File frameFile = new File(directory,
-        ("simse\\gui\\" + type + "sAtAGlanceFrame.java"));
+        ("simse" + File.separator + "gui" + File.separator + type + "sAtAGlanceFrame.java"));
     if (frameFile.exists()) {
       frameFile.delete(); // delete old version of file
     }

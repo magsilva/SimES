@@ -206,7 +206,7 @@ public class CodeGenerator {
 	
 	    // generate main SimSE component:
 	    File ssFile = new File(options.getCodeGenerationDestinationDirectory(), 
-	        ("simse\\SimSE.java"));
+	        ("simse" + File.separator + "SimSE.java"));
 	    if (ssFile.exists()) {
 	      ssFile.delete(); // delete old version of file
 	    }

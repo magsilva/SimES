@@ -21,7 +21,7 @@ public class LogoPanelGenerator implements CodeGeneratorConstants {
   }
 
   public void generate() {
-    File logoPanelFile = new File(directory, ("simse\\gui\\LogoPanel.java"));
+    File logoPanelFile = new File(directory, ("simse" + File.separator + "gui" + File.separator + "LogoPanel.java"));
     if (logoPanelFile.exists()) {
       logoPanelFile.delete(); // delete old version of file
     }

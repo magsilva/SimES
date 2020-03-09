@@ -44,7 +44,7 @@ public class ChooseActionToDestroyDialogGenerator implements
   public void generate() {
     try {
       catddFile = new File(directory,
-          ("simse\\logic\\dialogs\\ChooseActionToDestroyDialog.java"));
+          ("simse" + File.separator + "logic" + File.separator + "dialogs" + File.separator + "ChooseActionToDestroyDialog.java"));
       if (catddFile.exists()) {
         catddFile.delete(); // delete old version of file
       }

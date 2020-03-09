@@ -44,7 +44,7 @@ public class NonEmployeeParticipantSelectionDialogGenerator implements
   public void generate() {
     try {
       psdFile = new File(directory,
-          ("simse\\logic\\dialogs\\NonEmployeeParticipantSelectionDialog.java"));
+          ("simse" + File.separator + "logic" + File.separator + "dialogs" + File.separator + "NonEmployeeParticipantSelectionDialog.java"));
       if (psdFile.exists()) {
         psdFile.delete(); // delete old version of file
       }

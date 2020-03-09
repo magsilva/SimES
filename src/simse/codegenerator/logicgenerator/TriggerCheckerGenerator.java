@@ -57,7 +57,7 @@ public class TriggerCheckerGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     try {
-      trigFile = new File(directory, ("simse\\logic\\TriggerChecker.java"));
+      trigFile = new File(directory, ("simse" + File.separator + "logic" + File.separator + "TriggerChecker.java"));
       if (trigFile.exists()) {
         trigFile.delete(); // delete old version of file
       }

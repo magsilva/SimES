@@ -29,7 +29,7 @@ public class RuleInfoPanelGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     File ruleInfoFile = new File(directory,
-        ("simse\\explanatorytool\\RuleInfoPanel.java"));
+        ("simse" + File.separator + "explanatorytool" + File.separator + "RuleInfoPanel.java"));
     if (ruleInfoFile.exists()) {
       ruleInfoFile.delete(); // delete old version of file
     }

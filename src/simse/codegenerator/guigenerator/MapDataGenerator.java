@@ -21,7 +21,7 @@ public class MapDataGenerator implements CodeGeneratorConstants {
   }
 
   public void generate() {
-    File mdFile = new File(directory, ("simse\\gui\\MapData.java"));
+    File mdFile = new File(directory, ("simse" + File.separator + "gui" + File.separator + "MapData.java"));
     if (mdFile.exists()) {
       mdFile.delete(); // delete old version of file
     }

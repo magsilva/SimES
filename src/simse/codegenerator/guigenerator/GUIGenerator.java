@@ -108,12 +108,12 @@ public class GUIGenerator implements CodeGeneratorConstants {
 	  } else {
 	    CodeGeneratorUtils.copyDir(options.getIconDirectory().getPath(),
 	        (options.getCodeGenerationDestinationDirectory().getPath() + 
-	            "\\simse\\gui\\" + (new File(options.getIconDirectory().
+	        		File.separator + "simse" + File.separator + "gui" + File.separator + (new File(options.getIconDirectory().
 	                getPath())).getName()));
 	
 	    ImageLoader.copyImagesToDir(
 	    		options.getCodeGenerationDestinationDirectory().getPath() + 
-	    		"\\simse\\gui\\");
+	    		File.separator + "simse" + File.separator + "gui" + File.separator);
 	
 	    imageLoaderGen.generate();
 	    clockPanelGen.generate();
@@ -138,7 +138,7 @@ public class GUIGenerator implements CodeGeneratorConstants {
   private void generateMainGUI() { 
     File mainGUIFile = new File(
         options.getCodeGenerationDestinationDirectory(), 
-        ("simse\\gui\\SimSEGUI.java"));
+        ("simse" + File.separator + "gui" + File.separator + "SimSEGUI.java"));
     if (mainGUIFile.exists()) {
       mainGUIFile.delete(); // delete old version of file
     }

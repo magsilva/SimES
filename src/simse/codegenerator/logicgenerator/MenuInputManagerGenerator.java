@@ -66,7 +66,7 @@ public class MenuInputManagerGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     try {
-      mimFile = new File(directory, ("simse\\logic\\MenuInputManager.java"));
+      mimFile = new File(directory, ("simse" + File.separator + "logic" + File.separator + "MenuInputManager.java"));
       if (mimFile.exists()) {
         mimFile.delete(); // delete old version of file
       }

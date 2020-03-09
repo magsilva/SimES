@@ -35,7 +35,7 @@ public class ActionInfoPanelGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     File actInfoFile = new File(directory,
-        ("simse\\explanatorytool\\ActionInfoPanel.java"));
+        ("simse" + File.separator + "explanatorytool" + File.separator + "ActionInfoPanel.java"));
     if (actInfoFile.exists()) {
       actInfoFile.delete(); // delete old version of file
     }

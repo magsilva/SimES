@@ -21,7 +21,7 @@ public class DisplayedEmployeeGenerator implements CodeGeneratorConstants {
   }
 
   public void generate() {
-    File deFile = new File(directory, ("simse\\gui\\DisplayedEmployee.java"));
+    File deFile = new File(directory, ("simse" + File.separator + "gui" + File.separator + "DisplayedEmployee.java"));
     if (deFile.exists()) {
       deFile.delete(); // delete old version of file
     }

@@ -21,7 +21,7 @@ public class ImageLoaderGenerator implements CodeGeneratorConstants {
   }
 
   public void generate() {
-    File ilFile = new File(directory, ("simse\\gui\\ImageLoader.java"));
+    File ilFile = new File(directory, ("simse" + File.separator + "gui" + File.separator + "ImageLoader.java"));
     if (ilFile.exists()) {
       ilFile.delete(); // delete old version of file
     }

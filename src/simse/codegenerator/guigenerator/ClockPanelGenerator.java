@@ -21,7 +21,7 @@ public class ClockPanelGenerator implements CodeGeneratorConstants {
   }
 
   public void generate() {
-    File clockPanelFile = new File(directory, ("simse\\gui\\ClockPanel.java"));
+    File clockPanelFile = new File(directory, ("simse" + File.separator + "gui" + File.separator + "ClockPanel.java"));
     if (clockPanelFile.exists()) {
       clockPanelFile.delete(); // delete old version of file
     }

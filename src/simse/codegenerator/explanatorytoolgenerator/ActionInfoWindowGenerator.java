@@ -22,7 +22,7 @@ public class ActionInfoWindowGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     File actWindowFile = new File(directory,
-        ("simse\\explanatorytool\\ActionInfoWindow.java"));
+        ("simse" + File.separator + "explanatorytool" + File.separator + "ActionInfoWindow.java"));
     if (actWindowFile.exists()) {
       actWindowFile.delete(); // delete old version of file
     }

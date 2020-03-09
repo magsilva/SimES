@@ -35,7 +35,7 @@ public class TriggerDescriptionsGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     File trigDescFile = new File(directory,
-        ("simse\\explanatorytool\\TriggerDescriptions.java"));
+        ("simse" + File.separator + "explanatorytool" + File.separator + "TriggerDescriptions.java"));
     if (trigDescFile.exists()) {
       trigDescFile.delete(); // delete old version of file
     }

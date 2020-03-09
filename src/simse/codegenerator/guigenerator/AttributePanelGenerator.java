@@ -32,7 +32,7 @@ public class AttributePanelGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     File attPanelFile = 
-    	new File(directory, ("simse\\gui\\AttributePanel.java"));
+    	new File(directory, ("simse" + File.separator + "gui" + File.separator + "AttributePanel.java"));
     if (attPanelFile.exists()) {
       attPanelFile.delete(); // delete old version of file
     }

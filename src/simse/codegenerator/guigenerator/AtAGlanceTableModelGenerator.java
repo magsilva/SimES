@@ -41,7 +41,7 @@ public class AtAGlanceTableModelGenerator implements CodeGeneratorConstants {
 
   private void generateTableModelFile(SimSEObjectType type) {
     // generate file:
-    File tableModelFile = new File(directory, ("simse\\gui\\"
+    File tableModelFile = new File(directory, ("simse" + File.separator + "gui" + File.separator 
         + CodeGeneratorUtils.getUpperCaseLeading(type.getName()) + 
         "TableModel.java"));
     if (tableModelFile.exists()) {

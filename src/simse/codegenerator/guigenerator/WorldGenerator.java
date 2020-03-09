@@ -23,7 +23,7 @@ public class WorldGenerator {
   }
 
   public void generate() {
-    File worldFile = new File(directory, ("simse\\gui\\World.java"));
+    File worldFile = new File(directory, ("simse" + File.separator + "gui" + File.separator + "World.java"));
     if (worldFile.exists()) {
       worldFile.delete(); // delete old version of file
     }

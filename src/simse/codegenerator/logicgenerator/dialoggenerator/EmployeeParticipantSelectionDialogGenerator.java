@@ -43,7 +43,7 @@ public class EmployeeParticipantSelectionDialogGenerator implements
   public void generate() {
     try {
       psdFile = new File(directory,
-          ("simse\\logic\\dialogs\\EmployeeParticipantSelectionDialog.java"));
+          ("simse" + File.separator + "logic" + File.separator + "dialogs" + File.separator + "EmployeeParticipantSelectionDialog.java"));
       if (psdFile.exists()) {
         psdFile.delete(); // delete old version of file
       }

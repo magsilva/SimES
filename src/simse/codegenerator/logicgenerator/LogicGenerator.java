@@ -94,7 +94,7 @@ public class LogicGenerator implements CodeGeneratorConstants {
     boolean success = ruleGen.generate();
 
     // generate outer logic component:
-    File logicFile = new File(directory, ("simse\\logic\\Logic.java"));
+    File logicFile = new File(directory, ("simse" + File.separator + "logic" + File.separator + "Logic.java"));
     if (logicFile.exists()) {
       logicFile.delete(); // delete old version of file
     }

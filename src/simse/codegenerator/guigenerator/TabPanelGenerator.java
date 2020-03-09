@@ -46,7 +46,7 @@ public class TabPanelGenerator implements CodeGeneratorConstants {
 
   public void generate() {
     // generate file:
-    File tabPanelFile = new File(directory, ("simse\\gui\\TabPanel.java"));
+    File tabPanelFile = new File(directory, ("simse" + File.separator + "gui" + File.separator + "TabPanel.java"));
     if (tabPanelFile.exists()) {
       tabPanelFile.delete(); // delete old version of file
     }
