@@ -3,8 +3,8 @@ false
 <endAllowHireFire>
 <beginModelOptions>
 true
-C:\Users\Emily\Documents\workspace\res\models\waterfall\icons
-C:\Users\Emily\Documents\workspace\waterfallGame
+/home/magsilva/Dropbox/Projects/SimSE/res/models/waterfall/icons
+/home/magsilva/t
 true
 true
 <endModelOptions>
@@ -1218,7 +1218,7 @@ ProductivityInCodingUnadjusted
 <endInstantiatedAttribute>
 <beginInstantiatedAttribute>
 ErrorRateInRequirementsUnadjusted
-0.0050
+0.005
 <endInstantiatedAttribute>
 <beginInstantiatedAttribute>
 ErrorRateInDesignUnadjusted
@@ -43443,23 +43443,17 @@ eddie_murphy.gif
 <endGraphics>
 <beginMap>
 <beginSOPUsers>
-- Employee - SoftwareEngineer - Andre
+- Employee - SoftwareEngineer - Calvin
 true
 true
-3
-1
+9
+4
 
 - Employee - SoftwareEngineer - Pedro
 true
 true
 7
 1
-
-- Employee - SoftwareEngineer - Roger
-true
-true
-5
-8
 
 - Employee - SoftwareEngineer - Anita
 true
@@ -43473,17 +43467,23 @@ true
 2
 7
 
+- Employee - SoftwareEngineer - Roger
+true
+true
+5
+8
+
 - Employee - SoftwareEngineer - Emily
 true
 true
 13
 2
 
-- Employee - SoftwareEngineer - Calvin
+- Employee - SoftwareEngineer - Andre
 true
 true
-9
-4
+3
+1
 
 <endSOPUsers>
 401
