@@ -269,7 +269,7 @@ public class WorldGenerator {
       writer.write(NEWLINE);
       writer.write(OPEN_BRACK);
       writer.write(NEWLINE);
-      writer.write("Thread.sleep(1000);");
+      writer.write("Thread.sleep(200);");
       writer.write(NEWLINE);
       writer.write("employeeGone = false;");
       writer.write(NEWLINE);
